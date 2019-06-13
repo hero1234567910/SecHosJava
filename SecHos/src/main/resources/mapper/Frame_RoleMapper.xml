@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basic.javaframe.dao.Frame_RoleDao">
+    <resultMap type="com.basic.javaframe.entity.Frame_Role" id="Frame_Role">
+        <result property="rowId"    column="row_id"    />
+        <result property="rowGuid" column="row_guid"   />
+        <result property="delFlag" column="del_flag"   />
+        <result property="createTime" column="create_time"   />
+        <result property="roleName" column="role_name"   />
+        <result property="roleType" column="role_type"/>
+        <result property="mainIndex" column="main_index"/>
+        <result property="sortSq" column="sort_sq"/>
+    </resultMap>
+
+    <!-- 查询角色列表 -->
+    <select id="selectFrameRoleList" resultType="com.basic.javaframe.entity.Frame_Role">
+        select * from frame_role t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by sort_sq desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+	
+    <!-- 查询所有角色 -->
+    <select id="getAllRole" resultType="com.basic.javaframe.entity.Frame_Role">
+        select * from frame_role where del_flag = 0
+    </select>
+    
+    <!-- 查询角色数量 -->
+    <select id="getCount" resultType="int">
+        select count(*) from frame_role t <include refid="where_clause" />
+    </select>
+
+    <!--角色名重复检测-->
+    <select id="checkUserByRoleName" resultType="com.basic.javaframe.entity.Frame_Role">
+        select * from frame_role where role_name = #{roleName}
+    </select>
+
+    <!-- 新增角色  -->
+    <insert id="insertFrameRole" parameterType="com.basic.javaframe.entity.Frame_Role" useGeneratedKeys="true" keyProperty="row_id">
+        insert into frame_role (
+			 `row_id`,
+			  `row_guid`,
+			  `del_flag`,
+			  `create_time`,
+			  `role_name`,
+			  `role_type`,
+			  `main_index`,
+			  `sort_sq`
+		) values (
+			  #{rowId},
+			  #{rowGuid},
+			  #{delFlag},
+			  #{createTime},
+			  #{roleName},
+			  #{roleType},
+			  #{mainIndex},
+			  #{sortSq}
+		);
+    </insert>
+
+    <!-- 更新数据 -->
+    <update id="updateFrameRole" parameterType="com.basic.javaframe.entity.Frame_Role">
+        update frame_role
+        <set>
+            <if test="rowId != null">`row_id` = #{rowId}, </if>
+            <if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
+            <if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+            <if test="createTime != null">`create_time` = #{createTime}, </if>
+            <if test="roleName != null">`role_name` = #{roleName}, </if>
+            <if test="roleType != null">`role_type` = #{roleType}, </if>
+            <if test="mainIndex != null">`main_index` = #{mainIndex}, </if>
+            <if test="sortSq != null">`sort_sq` = #{sortSq}</if>
+        </set>
+        where row_id = #{rowId}
+    </update>
+
+    <!-- 批量删除  -->
+    <delete id="deleteFrameRoleByRowGuid">
+        update frame_role set `del_flag` = 1 where row_guid in
+        <foreach item="item" collection="rowGuid" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+            <if test="rowGuid != null and rowGuid != ''"> and t.row_guid = #{rowGuid} </if>
+            <if test="delFlag != null and delFlag != ''"> and t.del_flag = #{delFlag} </if>
+            <if test="createTime != null and createTime != ''"> and t.create_time = #{createTime} </if>
+            <if test="roleName != null and roleName != ''"> and t.role_name like concat('%',#{roleName},'%') </if>
+            <if test="roleType != null and roleType != ''"> and t.role_type = #{roleType} </if>
+            <if test="mainIndex != null and mainIndex != ''"> and t.main_index = #{mainIndex} </if>
+            <if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
+            and t.del_flag = 0
+        </where>
+    </sql>
+</mapper>

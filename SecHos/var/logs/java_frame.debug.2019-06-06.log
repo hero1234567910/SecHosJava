@@ -1,0 +1,120 @@
+2019-06-06 10:19:37.361 [restartedMain] DEBUG com.basic.javaframe.DemoApplication - Running with Spring Boot v2.1.3.RELEASE, Spring v5.1.5.RELEASE
+2019-06-06 10:19:54.122 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-06-06 10:19:54.154 [http-nio-9090-exec-2] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==>  Preparing: select content from Information_Info where sort_sq = 1 
+2019-06-06 10:19:54.185 [http-nio-9090-exec-2] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==> Parameters: 
+2019-06-06 10:19:54.185 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: d81a0e48(String)
+2019-06-06 10:19:54.238 [http-nio-9090-exec-2] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - <==      Total: 1
+2019-06-06 10:19:54.239 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 4
+2019-06-06 10:19:54.258 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==>  Preparing: select g.*,f.content_url as goodsUrl from hos_goods g left join frame_attach f on g.goods_img_guid = f.form_rowGuid where g.goods_type_guid = ? and g.del_flag = 0 and g.is_shelf = 0 
+2019-06-06 10:19:54.258 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==> Parameters: 5d8cf12d-ee82-4b9c-8736-0b478daccd61(String)
+2019-06-06 10:19:54.265 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - <==      Total: 2
+2019-06-06 10:19:54.265 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==>  Preparing: select g.*,f.content_url as goodsUrl from hos_goods g left join frame_attach f on g.goods_img_guid = f.form_rowGuid where g.goods_type_guid = ? and g.del_flag = 0 and g.is_shelf = 0 
+2019-06-06 10:19:54.266 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==> Parameters: 0b9ddc27-f5c1-4c38-867c-e119a0a79f8f(String)
+2019-06-06 10:19:54.271 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - <==      Total: 2
+2019-06-06 10:19:54.272 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==>  Preparing: select g.*,f.content_url as goodsUrl from hos_goods g left join frame_attach f on g.goods_img_guid = f.form_rowGuid where g.goods_type_guid = ? and g.del_flag = 0 and g.is_shelf = 0 
+2019-06-06 10:19:54.272 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==> Parameters: 5ddfaecc-51cb-4fa2-a426-f1b759bfeeb2(String)
+2019-06-06 10:19:54.279 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - <==      Total: 6
+2019-06-06 10:19:54.280 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==>  Preparing: select g.*,f.content_url as goodsUrl from hos_goods g left join frame_attach f on g.goods_img_guid = f.form_rowGuid where g.goods_type_guid = ? and g.del_flag = 0 and g.is_shelf = 0 
+2019-06-06 10:19:54.280 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==> Parameters: 8ea179df-8706-44e9-bab3-37ce5ccaa55c(String)
+2019-06-06 10:19:54.283 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - <==      Total: 0
+2019-06-06 10:19:59.811 [http-nio-9090-exec-6] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = '0' and del_flag = 0 
+2019-06-06 10:19:59.812 [http-nio-9090-exec-6] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==> Parameters: 
+2019-06-06 10:19:59.819 [http-nio-9090-exec-6] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - <==      Total: 2
+2019-06-06 10:19:59.824 [http-nio-9090-exec-7] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==>  Preparing: select content from Information_Info where sort_sq = 1 
+2019-06-06 10:19:59.825 [http-nio-9090-exec-7] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==> Parameters: 
+2019-06-06 10:19:59.828 [http-nio-9090-exec-7] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - <==      Total: 1
+2019-06-06 10:23:49.455 [http-nio-9090-exec-10] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==>  Preparing: select content from Information_Info where sort_sq = 1 
+2019-06-06 10:23:49.455 [http-nio-9090-exec-9] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = '0' and del_flag = 0 
+2019-06-06 10:23:49.455 [http-nio-9090-exec-10] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==> Parameters: 
+2019-06-06 10:23:49.455 [http-nio-9090-exec-9] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==> Parameters: 
+2019-06-06 10:23:49.469 [http-nio-9090-exec-9] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - <==      Total: 2
+2019-06-06 10:23:49.472 [http-nio-9090-exec-10] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - <==      Total: 1
+2019-06-06 10:25:14.086 [http-nio-9090-exec-1] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = '0' and del_flag = 0 
+2019-06-06 10:25:14.087 [http-nio-9090-exec-1] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==> Parameters: 
+2019-06-06 10:25:14.090 [http-nio-9090-exec-3] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==>  Preparing: select content from Information_Info where sort_sq = 1 
+2019-06-06 10:25:14.090 [http-nio-9090-exec-3] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==> Parameters: 
+2019-06-06 10:25:14.095 [http-nio-9090-exec-1] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - <==      Total: 2
+2019-06-06 10:25:14.104 [http-nio-9090-exec-3] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - <==      Total: 1
+2019-06-06 10:25:24.831 [http-nio-9090-exec-5] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = '0' and del_flag = 0 
+2019-06-06 10:25:24.831 [http-nio-9090-exec-5] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==> Parameters: 
+2019-06-06 10:25:24.837 [http-nio-9090-exec-5] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - <==      Total: 2
+2019-06-06 10:25:24.851 [http-nio-9090-exec-6] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==>  Preparing: select content from Information_Info where sort_sq = 1 
+2019-06-06 10:25:24.852 [http-nio-9090-exec-6] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==> Parameters: 
+2019-06-06 10:25:24.859 [http-nio-9090-exec-6] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - <==      Total: 1
+2019-06-06 10:26:02.882 [http-nio-9090-exec-8] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = '0' and del_flag = 0 
+2019-06-06 10:26:02.883 [http-nio-9090-exec-8] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==> Parameters: 
+2019-06-06 10:26:02.886 [http-nio-9090-exec-8] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - <==      Total: 2
+2019-06-06 10:26:02.915 [http-nio-9090-exec-9] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==>  Preparing: select content from Information_Info where sort_sq = 1 
+2019-06-06 10:26:02.916 [http-nio-9090-exec-9] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==> Parameters: 
+2019-06-06 10:26:02.919 [http-nio-9090-exec-9] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - <==      Total: 1
+2019-06-06 10:27:55.223 [http-nio-9090-exec-2] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = '0' and del_flag = 0 
+2019-06-06 10:27:55.224 [http-nio-9090-exec-2] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==> Parameters: 
+2019-06-06 10:27:55.226 [http-nio-9090-exec-3] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==>  Preparing: select content from Information_Info where sort_sq = 1 
+2019-06-06 10:27:55.228 [http-nio-9090-exec-3] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==> Parameters: 
+2019-06-06 10:27:55.261 [http-nio-9090-exec-3] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - <==      Total: 1
+2019-06-06 10:27:55.262 [http-nio-9090-exec-2] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - <==      Total: 2
+2019-06-06 10:28:41.735 [http-nio-9090-exec-4] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = '0' and del_flag = 0 
+2019-06-06 10:28:41.736 [http-nio-9090-exec-4] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==> Parameters: 
+2019-06-06 10:28:41.739 [http-nio-9090-exec-4] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - <==      Total: 2
+2019-06-06 10:28:41.752 [http-nio-9090-exec-5] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==>  Preparing: select content from Information_Info where sort_sq = 1 
+2019-06-06 10:28:41.752 [http-nio-9090-exec-5] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==> Parameters: 
+2019-06-06 10:28:41.809 [http-nio-9090-exec-5] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - <==      Total: 1
+2019-06-06 10:29:34.219 [http-nio-9090-exec-7] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = '0' and del_flag = 0 
+2019-06-06 10:29:34.219 [http-nio-9090-exec-8] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==>  Preparing: select content from Information_Info where sort_sq = 1 
+2019-06-06 10:29:34.219 [http-nio-9090-exec-7] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==> Parameters: 
+2019-06-06 10:29:34.219 [http-nio-9090-exec-8] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==> Parameters: 
+2019-06-06 10:29:34.222 [http-nio-9090-exec-8] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - <==      Total: 1
+2019-06-06 10:29:34.224 [http-nio-9090-exec-7] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - <==      Total: 2
+2019-06-06 10:29:48.241 [http-nio-9090-exec-10] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = '0' and del_flag = 0 
+2019-06-06 10:29:48.242 [http-nio-9090-exec-10] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==> Parameters: 
+2019-06-06 10:29:48.242 [http-nio-9090-exec-3] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==>  Preparing: select content from Information_Info where sort_sq = 1 
+2019-06-06 10:29:48.243 [http-nio-9090-exec-3] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==> Parameters: 
+2019-06-06 10:29:48.249 [http-nio-9090-exec-3] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - <==      Total: 1
+2019-06-06 10:29:48.250 [http-nio-9090-exec-10] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - <==      Total: 2
+2019-06-06 11:12:00.553 [restartedMain] DEBUG com.basic.javaframe.DemoApplication - Running with Spring Boot v2.1.3.RELEASE, Spring v5.1.5.RELEASE
+2019-06-06 11:12:14.783 [restartedMain] DEBUG com.basic.javaframe.DemoApplication - Running with Spring Boot v2.1.3.RELEASE, Spring v5.1.5.RELEASE
+2019-06-06 11:12:24.707 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-06-06 11:12:24.743 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: d81a0e48(String)
+2019-06-06 11:12:24.746 [http-nio-9090-exec-2] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==>  Preparing: select content from Information_Info where sort_sq = 1 
+2019-06-06 11:12:24.747 [http-nio-9090-exec-2] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==> Parameters: 
+2019-06-06 11:12:24.775 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 3
+2019-06-06 11:12:24.776 [http-nio-9090-exec-2] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - <==      Total: 1
+2019-06-06 11:12:24.793 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==>  Preparing: select g.*,f.content_url as goodsUrl from hos_goods g left join frame_attach f on g.goods_img_guid = f.form_rowGuid where g.goods_type_guid = ? and g.del_flag = 0 and g.is_shelf = 0 
+2019-06-06 11:12:24.793 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==> Parameters: 5d8cf12d-ee82-4b9c-8736-0b478daccd61(String)
+2019-06-06 11:12:24.810 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - <==      Total: 3
+2019-06-06 11:12:24.810 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==>  Preparing: select g.*,f.content_url as goodsUrl from hos_goods g left join frame_attach f on g.goods_img_guid = f.form_rowGuid where g.goods_type_guid = ? and g.del_flag = 0 and g.is_shelf = 0 
+2019-06-06 11:12:24.811 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==> Parameters: 0b9ddc27-f5c1-4c38-867c-e119a0a79f8f(String)
+2019-06-06 11:12:24.825 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - <==      Total: 2
+2019-06-06 11:12:24.826 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==>  Preparing: select g.*,f.content_url as goodsUrl from hos_goods g left join frame_attach f on g.goods_img_guid = f.form_rowGuid where g.goods_type_guid = ? and g.del_flag = 0 and g.is_shelf = 0 
+2019-06-06 11:12:24.827 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==> Parameters: 5ddfaecc-51cb-4fa2-a426-f1b759bfeeb2(String)
+2019-06-06 11:12:24.850 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - <==      Total: 6
+2019-06-06 11:12:34.417 [http-nio-9090-exec-6] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==>  Preparing: select content from Information_Info where sort_sq = 1 
+2019-06-06 11:12:34.417 [http-nio-9090-exec-6] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==> Parameters: 
+2019-06-06 11:12:34.420 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-06-06 11:12:34.421 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: d81a0e48(String)
+2019-06-06 11:12:34.441 [http-nio-9090-exec-6] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - <==      Total: 1
+2019-06-06 11:12:34.444 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 3
+2019-06-06 11:12:34.444 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==>  Preparing: select g.*,f.content_url as goodsUrl from hos_goods g left join frame_attach f on g.goods_img_guid = f.form_rowGuid where g.goods_type_guid = ? and g.del_flag = 0 and g.is_shelf = 0 
+2019-06-06 11:12:34.445 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==> Parameters: 5d8cf12d-ee82-4b9c-8736-0b478daccd61(String)
+2019-06-06 11:12:34.481 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - <==      Total: 3
+2019-06-06 11:12:34.482 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==>  Preparing: select g.*,f.content_url as goodsUrl from hos_goods g left join frame_attach f on g.goods_img_guid = f.form_rowGuid where g.goods_type_guid = ? and g.del_flag = 0 and g.is_shelf = 0 
+2019-06-06 11:12:34.483 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==> Parameters: 0b9ddc27-f5c1-4c38-867c-e119a0a79f8f(String)
+2019-06-06 11:12:34.797 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - <==      Total: 2
+2019-06-06 11:12:34.798 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==>  Preparing: select g.*,f.content_url as goodsUrl from hos_goods g left join frame_attach f on g.goods_img_guid = f.form_rowGuid where g.goods_type_guid = ? and g.del_flag = 0 and g.is_shelf = 0 
+2019-06-06 11:12:34.798 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==> Parameters: 5ddfaecc-51cb-4fa2-a426-f1b759bfeeb2(String)
+2019-06-06 11:12:34.830 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - <==      Total: 6
+2019-06-06 11:12:51.412 [http-nio-9090-exec-9] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-06-06 11:12:51.412 [http-nio-9090-exec-9] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: d81a0e48(String)
+2019-06-06 11:12:51.524 [http-nio-9090-exec-10] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==>  Preparing: select content from Information_Info where sort_sq = 1 
+2019-06-06 11:12:51.525 [http-nio-9090-exec-10] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - ==> Parameters: 
+2019-06-06 11:12:51.534 [http-nio-9090-exec-9] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 3
+2019-06-06 11:12:51.536 [http-nio-9090-exec-9] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==>  Preparing: select g.*,f.content_url as goodsUrl from hos_goods g left join frame_attach f on g.goods_img_guid = f.form_rowGuid where g.goods_type_guid = ? and g.del_flag = 0 and g.is_shelf = 0 
+2019-06-06 11:12:51.536 [http-nio-9090-exec-9] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==> Parameters: 5d8cf12d-ee82-4b9c-8736-0b478daccd61(String)
+2019-06-06 11:12:51.566 [http-nio-9090-exec-10] DEBUG c.b.j.dao.InformationInfoDao.getMInfoMation - <==      Total: 1
+2019-06-06 11:12:51.640 [http-nio-9090-exec-9] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - <==      Total: 3
+2019-06-06 11:12:51.641 [http-nio-9090-exec-9] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==>  Preparing: select g.*,f.content_url as goodsUrl from hos_goods g left join frame_attach f on g.goods_img_guid = f.form_rowGuid where g.goods_type_guid = ? and g.del_flag = 0 and g.is_shelf = 0 
+2019-06-06 11:12:51.642 [http-nio-9090-exec-9] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==> Parameters: 0b9ddc27-f5c1-4c38-867c-e119a0a79f8f(String)
+2019-06-06 11:12:51.666 [http-nio-9090-exec-9] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - <==      Total: 2
+2019-06-06 11:12:51.667 [http-nio-9090-exec-9] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==>  Preparing: select g.*,f.content_url as goodsUrl from hos_goods g left join frame_attach f on g.goods_img_guid = f.form_rowGuid where g.goods_type_guid = ? and g.del_flag = 0 and g.is_shelf = 0 
+2019-06-06 11:12:51.667 [http-nio-9090-exec-9] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - ==> Parameters: 5ddfaecc-51cb-4fa2-a426-f1b759bfeeb2(String)
+2019-06-06 11:12:51.710 [http-nio-9090-exec-9] DEBUG c.b.javaframe.dao.HosGoodsDao.getGoodsByTypeGuid - <==      Total: 6

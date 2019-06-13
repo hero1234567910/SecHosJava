@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basic.javaframe.dao.Form_TableInfoDao">
+    <resultMap type="com.basic.javaframe.entity.Form_TableInfo" id="Form_TableInfo">
+        <result property="rowId"    column="row_id"    />
+        <result property="rowGuid" column="row_guid"   />
+        <result property="tableName" column="table_name"   />
+        <result property="physicalName" column="physical_name"   />
+        <result property="projectName" column="project_name"   />
+        <result property="controllerName" column="controller_name"/>
+        <result property="sortSq" column="sort_sq"/>
+    </resultMap>
+
+    <!-- 查询角色列表 -->
+    <select id="selectFormTableInfoList" resultType="com.basic.javaframe.entity.Form_TableInfo">
+        select * from form_tableinfo t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by sort_sq desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+	
+    <select id="selectFormTableInfoById" resultType="com.basic.javaframe.entity.Form_TableInfo">
+        select * from form_tableinfo where row_id = #{value}
+    </select> 
+    
+    <!-- 查询角色数量 -->
+    <select id="getCount" resultType="int">
+        select count(*) from form_tableinfo t <include refid="where_clause" />
+    </select>
+
+    <!-- 新增角色  -->
+    <insert id="insertFormTableInfo" parameterType="com.basic.javaframe.entity.Form_TableInfo" useGeneratedKeys="true" keyProperty="row_id">
+        insert into form_tableinfo (
+			 `row_id`,
+			  `row_guid`,
+			  `table_name`,
+			  `physical_name`,
+			  `project_name`,
+			  `controller_name`,
+			  `sort_sq`
+		) values (
+			  #{rowId},
+			  #{rowGuid},
+			  #{tableName},
+			  #{physicalName},
+			  #{projectName},
+			  #{controllerName},
+			  #{sortSq}
+		);
+    </insert>
+    <!--表单关联-->
+    <insert id="insertGuid" parameterType="com.basic.javaframe.entity.Form_TableInfo" useGeneratedKeys="true" keyProperty="row_id">
+        insert into form_tablefield( `allow_to`) values (#{rowGuid});
+    </insert>
+    <!-- 更新数据 -->
+    <update id="updateFormTableInfo" parameterType="com.basic.javaframe.entity.Form_TableInfo">
+        update form_tableinfo
+        <set>
+            <if test="rowId != null">`row_id` = #{rowId}, </if>
+            <if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
+            <if test="tableName != null">`table_name` = #{tableName}, </if>
+            <if test="physicalName != null">`physical_name` = #{physicalName}, </if>
+            <if test="projectName != null">`project_name` = #{projectName}, </if>
+            <if test="controllerName != null">`controller_name` = #{controllerName}, </if>
+            <if test="sortSq != null">`sort_sq` = #{sortSq}</if>
+        </set>
+        where row_id = #{rowId}
+    </update>
+
+    <!-- 批量删除  -->
+    <delete id="deleteFormTableInfoById">
+        delete from form_tableinfo  where row_id in
+        <foreach item="rowId" collection="array" open="(" separator="," close=")">
+            #{rowId}
+        </foreach>
+    </delete>
+
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+            <if test="rowGuid != null and rowGuid != ''"> and t.row_guid = #{rowGuid} </if>
+            <if test="tableName != null and tableName != ''"> and t.table_name like concat('%',#{tableName},'%') </if>
+            <if test="physicalName != null and physicalName != ''"> and t.physical_name like concat('%',#{physicalName},'%') </if>
+            <if test="projectName != null and projectName != ''"> and t.project_name =#{projectName} </if>
+            <if test="controllerName != null and controllerName != ''"> and t.controller_name = #{controllerName} </if>
+            <if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
+
+        </where>
+    </sql>
+</mapper>

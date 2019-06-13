@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basic.javaframe.dao.Frame_ModuleRightDao">
+
+    <!-- 新增模块权限  -->
+    <insert id="insertFrameModuleRight" parameterType="com.basic.javaframe.entity.Frame_ModuleRight"
+            useGeneratedKeys="true" keyProperty="row_id">
+        insert into frame_moduleright (
+			  `row_id`,
+			  `module_guid`,
+			  `allow_to`,
+			  `allow_type`
+		) values (
+			  #{rowId},
+			  #{moduleGuid},
+			  #{allowTo},
+			  #{allowType}
+		);
+    </insert>
+
+    <!--删除角色所有内容-->
+    <delete id="deleteModuleRoleByGuid" parameterType="java.lang.String">
+           delete from frame_moduleright where allow_to in
+        <foreach collection="rowGuid" item="item" open="(" separator="," close=")">
+         #{item}
+        </foreach>
+    </delete>
+ 
+    <!-- 批量新增之前的删除  -->
+    <delete id="deleteModuleRightBatch">
+        delete from frame_moduleright where allow_to = #{roleGuid}
+    </delete>
+
+    <!--批量新增-->
+    <insert id="insertModuleRightBatch" parameterType="java.util.List" useGeneratedKeys="true">
+		insert into frame_moduleright(
+		      `row_id`,
+			  `module_guid`,
+			  `allow_to`,
+			  `allow_type`
+		)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.rowId},
+            #{item.moduleGuid},
+            #{item.allowTo},
+            #{item.allowType}
+            )
+        </foreach>
+	</insert>
+
+    <!-- 更新数据 -->
+    <update id="updateFrameModule" parameterType="com.basic.javaframe.entity.Frame_ModuleRight">
+        update frame_moduleright
+        <set>
+            <if test="rowId != null">`row_id` = #{rowId},</if>
+            <if test="moduleGuid != null">`module_guid` = #{moduleGuid},</if>
+            <if test="allowTo != null">`allow_to` = #{allowTo},</if>
+            <if test="allowType != null">`allow_type` = #{allowType}</if>
+        </set>
+        where row_id = #{rowId}
+    </update>
+
+    <!-- 批量删除  -->
+    <delete id="deleteFrameModuleById">
+        delete from frame_moduleright where allow_to = #{roleGuid}
+    </delete>
+
+    <select id="selectModuleByRoleGuid" resultType="com.basic.javaframe.entity.Frame_ModuleRight">
+	    select * from frame_moduleright where allow_to = #{roleGuid}
+	</select>
+</mapper>

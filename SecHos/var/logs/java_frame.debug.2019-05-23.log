@@ -1,0 +1,437 @@
+2019-05-23 09:19:00.726 [restartedMain] DEBUG com.basic.javaframe.DemoApplication - Running with Spring Boot v2.1.3.RELEASE, Spring v5.1.5.RELEASE
+2019-05-23 09:19:43.438 [http-nio-9090-exec-1] DEBUG c.b.j.dao.Frame_UserDao.getFrameUserByLoginId - ==>  Preparing: select * from frame_user where login_id = ? and del_flag = 0 
+2019-05-23 09:19:43.459 [http-nio-9090-exec-1] DEBUG c.b.j.dao.Frame_UserDao.getFrameUserByLoginId - ==> Parameters: admin(String)
+2019-05-23 09:19:43.519 [http-nio-9090-exec-1] DEBUG c.b.j.dao.Frame_UserDao.getFrameUserByLoginId - <==      Total: 1
+2019-05-23 09:19:43.926 [http-nio-9090-exec-1] DEBUG c.basic.javaframe.dao.Frame_UserDao.getDeptByGuid - ==>  Preparing: select dept_guid from frame_user where row_guid = ? 
+2019-05-23 09:19:43.926 [http-nio-9090-exec-1] DEBUG c.basic.javaframe.dao.Frame_UserDao.getDeptByGuid - ==> Parameters: 8532db7a-b412-4296-8934-9cede3c655eb(String)
+2019-05-23 09:19:43.942 [http-nio-9090-exec-1] DEBUG c.basic.javaframe.dao.Frame_UserDao.getDeptByGuid - <==      Total: 1
+2019-05-23 09:19:43.942 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.Frame_DeptDao.getDeptNameByGuid - ==>  Preparing: select dept_name from frame_dept where row_guid=? and del_flag = 0 
+2019-05-23 09:19:43.942 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.Frame_DeptDao.getDeptNameByGuid - ==> Parameters: (String)
+2019-05-23 09:19:43.958 [http-nio-9090-exec-1] DEBUG c.b.javaframe.dao.Frame_DeptDao.getDeptNameByGuid - <==      Total: 0
+2019-05-23 09:19:44.291 [http-nio-9090-exec-2] DEBUG c.basic.javaframe.dao.Frame_UserDao.findUserByGuid - ==>  Preparing: select * from frame_user where row_guid = ? and del_flag = 0 
+2019-05-23 09:19:44.291 [http-nio-9090-exec-2] DEBUG c.basic.javaframe.dao.Frame_UserDao.findUserByGuid - ==> Parameters: 8532db7a-b412-4296-8934-9cede3c655eb(String)
+2019-05-23 09:19:44.299 [http-nio-9090-exec-2] DEBUG c.basic.javaframe.dao.Frame_UserDao.findUserByGuid - <==      Total: 1
+2019-05-23 09:19:44.311 [http-nio-9090-exec-2] DEBUG c.b.j.dao.Frame_Role_UserDao.getCheckedRole - ==>  Preparing: select role_guid from frame_role_user where user_guid = ? 
+2019-05-23 09:19:44.311 [http-nio-9090-exec-2] DEBUG c.b.j.dao.Frame_Role_UserDao.getCheckedRole - ==> Parameters: 8532db7a-b412-4296-8934-9cede3c655eb(String)
+2019-05-23 09:19:44.315 [http-nio-9090-exec-2] DEBUG c.b.j.dao.Frame_Role_UserDao.getCheckedRole - <==      Total: 2
+2019-05-23 09:19:44.331 [http-nio-9090-exec-2] DEBUG c.b.j.d.F.selectModuleByRoleGuid - ==>  Preparing: select * from frame_moduleright where allow_to = ? 
+2019-05-23 09:19:44.331 [http-nio-9090-exec-2] DEBUG c.b.j.d.F.selectModuleByRoleGuid - ==> Parameters: Bf6p0CI4(String)
+2019-05-23 09:19:44.335 [http-nio-9090-exec-2] DEBUG c.b.j.d.F.selectModuleByRoleGuid - <==      Total: 9
+2019-05-23 09:19:44.335 [http-nio-9090-exec-2] DEBUG c.basic.javaframe.dao.Frame_ModuleDao.findModules - ==>  Preparing: select * from frame_module where pmodule_code = '0' and del_flag = 0 
+2019-05-23 09:19:44.335 [http-nio-9090-exec-2] DEBUG c.basic.javaframe.dao.Frame_ModuleDao.findModules - ==> Parameters: 
+2019-05-23 09:19:44.343 [http-nio-9090-exec-2] DEBUG c.basic.javaframe.dao.Frame_ModuleDao.findModules - <==      Total: 3
+2019-05-23 09:19:44.347 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.347 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: eede6a12-a9aa-4a70-a973-62010e6dac9f(String)
+2019-05-23 09:19:44.355 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 4
+2019-05-23 09:19:44.355 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.355 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 2a554195-9c2c-4836-9547-0f77b2991be9(String)
+2019-05-23 09:19:44.359 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:44.359 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.359 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: dc1c6a41-c65a-4d80-85b3-d7587eeb94f9(String)
+2019-05-23 09:19:44.387 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:44.387 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.387 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: c1cb05ae-a9d6-4813-b8c5-17738e550a04(String)
+2019-05-23 09:19:44.391 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:44.391 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.391 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 217c11cb-fa84-4a81-a8f3-71fa01bae9b5(String)
+2019-05-23 09:19:44.395 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:44.395 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.395 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 1a0e02dc-a77c-4e0c-95b6-3fccbcffa349(String)
+2019-05-23 09:19:44.403 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 6
+2019-05-23 09:19:44.403 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.403 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 1c4fe4ef-ca8b-4f25-9430-c8fdcdff5299(String)
+2019-05-23 09:19:44.407 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:44.407 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.411 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 0b3fd10b-0ccf-4b0d-8799-1d06be057995(String)
+2019-05-23 09:19:44.411 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:44.411 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.415 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 8178a488-6df6-4dd8-85ad-6af745dce24c(String)
+2019-05-23 09:19:44.419 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:44.419 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.419 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 9d8dbf55-773e-49e8-9adb-06f855cc3a14(String)
+2019-05-23 09:19:44.423 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:44.423 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.423 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 38b94cf7-f818-4a10-b491-a534d1cfda88(String)
+2019-05-23 09:19:44.427 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:44.431 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.431 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 5aea81df-c0ed-43a0-b8d0-2416535c50ae(String)
+2019-05-23 09:19:44.431 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:44.435 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.435 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: kKutYZWa(String)
+2019-05-23 09:19:44.443 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 9
+2019-05-23 09:19:44.443 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.443 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 9uLG21LJ(String)
+2019-05-23 09:19:44.446 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:44.447 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.447 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: mYzuiFh6(String)
+2019-05-23 09:19:44.451 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:44.451 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.451 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: P2qSssnA(String)
+2019-05-23 09:19:44.455 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:44.455 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.455 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: cmIOpIHK(String)
+2019-05-23 09:19:44.455 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:44.455 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.455 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: M0UMzjjb(String)
+2019-05-23 09:19:44.511 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:44.515 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.515 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 6YoAcfu1(String)
+2019-05-23 09:19:44.723 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:44.723 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.723 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: AnOD9PnB(String)
+2019-05-23 09:19:44.727 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:44.727 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.731 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: MuEmF4Dh(String)
+2019-05-23 09:19:44.739 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:44.739 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:44.739 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: be79231d-6def-4f21-a44c-5b6a68ba9170(String)
+2019-05-23 09:19:44.743 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:44.975 [http-nio-9090-exec-2] DEBUG c.b.j.d.F.selectModuleByRoleGuid - ==>  Preparing: select * from frame_moduleright where allow_to = ? 
+2019-05-23 09:19:44.975 [http-nio-9090-exec-2] DEBUG c.b.j.d.F.selectModuleByRoleGuid - ==> Parameters: YKCCr7sH(String)
+2019-05-23 09:19:45.023 [http-nio-9090-exec-2] DEBUG c.b.j.d.F.selectModuleByRoleGuid - <==      Total: 22
+2019-05-23 09:19:45.023 [http-nio-9090-exec-2] DEBUG c.basic.javaframe.dao.Frame_ModuleDao.findModules - ==>  Preparing: select * from frame_module where pmodule_code = '0' and del_flag = 0 
+2019-05-23 09:19:45.023 [http-nio-9090-exec-2] DEBUG c.basic.javaframe.dao.Frame_ModuleDao.findModules - ==> Parameters: 
+2019-05-23 09:19:45.039 [http-nio-9090-exec-2] DEBUG c.basic.javaframe.dao.Frame_ModuleDao.findModules - <==      Total: 3
+2019-05-23 09:19:45.043 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.043 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: eede6a12-a9aa-4a70-a973-62010e6dac9f(String)
+2019-05-23 09:19:45.051 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 4
+2019-05-23 09:19:45.055 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.055 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 2a554195-9c2c-4836-9547-0f77b2991be9(String)
+2019-05-23 09:19:45.119 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:45.119 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.119 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: dc1c6a41-c65a-4d80-85b3-d7587eeb94f9(String)
+2019-05-23 09:19:45.127 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:45.127 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.127 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: c1cb05ae-a9d6-4813-b8c5-17738e550a04(String)
+2019-05-23 09:19:45.131 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:45.131 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.135 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 217c11cb-fa84-4a81-a8f3-71fa01bae9b5(String)
+2019-05-23 09:19:45.139 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:45.139 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.139 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 1a0e02dc-a77c-4e0c-95b6-3fccbcffa349(String)
+2019-05-23 09:19:45.147 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 6
+2019-05-23 09:19:45.151 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.151 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 1c4fe4ef-ca8b-4f25-9430-c8fdcdff5299(String)
+2019-05-23 09:19:45.155 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:45.155 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.159 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 0b3fd10b-0ccf-4b0d-8799-1d06be057995(String)
+2019-05-23 09:19:45.163 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:45.163 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.163 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 8178a488-6df6-4dd8-85ad-6af745dce24c(String)
+2019-05-23 09:19:45.187 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:45.191 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.191 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 9d8dbf55-773e-49e8-9adb-06f855cc3a14(String)
+2019-05-23 09:19:45.203 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:45.203 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.203 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 38b94cf7-f818-4a10-b491-a534d1cfda88(String)
+2019-05-23 09:19:45.207 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:45.207 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.211 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 5aea81df-c0ed-43a0-b8d0-2416535c50ae(String)
+2019-05-23 09:19:45.215 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:45.215 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.215 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: kKutYZWa(String)
+2019-05-23 09:19:45.239 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 9
+2019-05-23 09:19:45.239 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.243 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 9uLG21LJ(String)
+2019-05-23 09:19:45.247 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:45.247 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.247 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: mYzuiFh6(String)
+2019-05-23 09:19:45.251 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:45.251 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.251 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: P2qSssnA(String)
+2019-05-23 09:19:45.255 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:45.255 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.255 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: cmIOpIHK(String)
+2019-05-23 09:19:45.259 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:45.259 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.259 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: M0UMzjjb(String)
+2019-05-23 09:19:45.263 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:45.263 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.263 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: 6YoAcfu1(String)
+2019-05-23 09:19:45.267 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:45.267 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.267 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: AnOD9PnB(String)
+2019-05-23 09:19:45.271 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:45.271 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.271 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: MuEmF4Dh(String)
+2019-05-23 09:19:45.275 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:45.275 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==>  Preparing: select * from frame_module where pmodule_code = ? and del_flag = 0 
+2019-05-23 09:19:45.275 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - ==> Parameters: be79231d-6def-4f21-a44c-5b6a68ba9170(String)
+2019-05-23 09:19:45.279 [http-nio-9090-exec-2] DEBUG c.b.javaframe.dao.Frame_ModuleDao.getByPmoduleCode - <==      Total: 0
+2019-05-23 09:19:55.952 [http-nio-9090-exec-4] DEBUG c.basic.javaframe.dao.Frame_UserDao.findUserByGuid - ==>  Preparing: select * from frame_user where row_guid = ? and del_flag = 0 
+2019-05-23 09:19:55.956 [http-nio-9090-exec-4] DEBUG c.basic.javaframe.dao.Frame_UserDao.findUserByGuid - ==> Parameters: 8532db7a-b412-4296-8934-9cede3c655eb(String)
+2019-05-23 09:19:55.971 [http-nio-9090-exec-4] DEBUG c.basic.javaframe.dao.Frame_UserDao.findUserByGuid - <==      Total: 1
+2019-05-23 09:19:56.079 [http-nio-9090-exec-3] DEBUG com.basic.javaframe.dao.HosGoodsDao.getList - ==>  Preparing: select t.*,f.content_url as goodsUrl from hos_goods t left join frame_attach f on t.goods_img_guid = f.form_rowGuid WHERE 1=1 and t.del_flag =0 order by t.sort_sq desc limit ?, ? 
+2019-05-23 09:19:56.083 [http-nio-9090-exec-3] DEBUG com.basic.javaframe.dao.HosGoodsDao.getList - ==> Parameters: 0(Integer), 10(Integer)
+2019-05-23 09:19:56.083 [http-nio-9090-exec-6] DEBUG com.basic.javaframe.dao.HosOrderDao.getList - ==>  Preparing: select * from hos_order t WHERE 1=1 and t.del_flag =0 order by row_id desc limit ?, ? 
+2019-05-23 09:19:56.083 [http-nio-9090-exec-6] DEBUG com.basic.javaframe.dao.HosOrderDao.getList - ==> Parameters: 0(Integer), 10(Integer)
+2019-05-23 09:19:56.091 [http-nio-9090-exec-4] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = '0' and del_flag = 0 
+2019-05-23 09:19:56.091 [http-nio-9090-exec-4] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==> Parameters: 
+2019-05-23 09:19:56.211 [http-nio-9090-exec-4] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - <==      Total: 4
+2019-05-23 09:19:56.215 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-05-23 09:19:56.215 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: 9707a0cb(String)
+2019-05-23 09:19:56.219 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 1
+2019-05-23 09:19:56.223 [http-nio-9090-exec-6] DEBUG com.basic.javaframe.dao.HosOrderDao.getList - <==      Total: 10
+2019-05-23 09:19:56.223 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-05-23 09:19:56.247 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: bd45977f(String)
+2019-05-23 09:19:56.251 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 0
+2019-05-23 09:19:56.251 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-05-23 09:19:56.255 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: d81a0e48(String)
+2019-05-23 09:19:56.275 [http-nio-9090-exec-3] DEBUG com.basic.javaframe.dao.HosGoodsDao.getList - <==      Total: 10
+2019-05-23 09:19:56.275 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 4
+2019-05-23 09:19:56.279 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-05-23 09:19:56.279 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: e0164be7(String)
+2019-05-23 09:19:56.307 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 0
+2019-05-23 09:19:56.307 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-05-23 09:19:56.307 [http-nio-9090-exec-6] DEBUG com.basic.javaframe.dao.HosOrderDao.getCount - ==>  Preparing: select count(*) from hos_order t WHERE 1=1 and t.del_flag =0 
+2019-05-23 09:19:56.307 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: 54b9d19d(String)
+2019-05-23 09:19:56.307 [http-nio-9090-exec-6] DEBUG com.basic.javaframe.dao.HosOrderDao.getCount - ==> Parameters: 
+2019-05-23 09:19:56.315 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 0
+2019-05-23 09:19:56.315 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-05-23 09:19:56.315 [http-nio-9090-exec-6] DEBUG com.basic.javaframe.dao.HosOrderDao.getCount - <==      Total: 1
+2019-05-23 09:19:56.319 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: cd346cb1(String)
+2019-05-23 09:19:56.319 [http-nio-9090-exec-3] DEBUG com.basic.javaframe.dao.HosGoodsDao.getCount - ==>  Preparing: select count(*) from hos_goods t left join frame_attach f on t.goods_img_guid = f.form_rowGuid WHERE 1=1 and t.del_flag =0 
+2019-05-23 09:19:56.319 [http-nio-9090-exec-3] DEBUG com.basic.javaframe.dao.HosGoodsDao.getCount - ==> Parameters: 
+2019-05-23 09:19:56.327 [http-nio-9090-exec-3] DEBUG com.basic.javaframe.dao.HosGoodsDao.getCount - <==      Total: 1
+2019-05-23 09:19:56.327 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 0
+2019-05-23 09:19:56.327 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-05-23 09:19:56.327 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: 749d1a8f(String)
+2019-05-23 09:19:56.635 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 0
+2019-05-23 09:19:56.635 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-05-23 09:19:56.635 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: d40ec23d(String)
+2019-05-23 09:19:56.675 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 1
+2019-05-23 09:19:56.675 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-05-23 09:19:56.675 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: 93035bf1(String)
+2019-05-23 09:19:56.683 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 0
+2019-05-23 09:19:56.683 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-05-23 09:19:56.683 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: 3d483953(String)
+2019-05-23 09:19:56.699 [http-nio-9090-exec-4] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 0
+2019-05-23 09:19:56.759 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:19:56.759 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:19:56.763 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:19:56.763 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:19:56.763 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:19:56.775 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:19:56.775 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:19:56.775 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:19:56.795 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:19:56.795 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:19:56.795 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:19:56.799 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:19:56.803 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:19:56.803 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:19:56.807 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:19:56.807 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:19:56.807 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:19:56.815 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:19:56.815 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:19:56.815 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:19:56.819 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:19:56.819 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:19:56.823 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:19:56.827 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:19:56.827 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:19:56.827 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:19:56.835 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:19:56.835 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:19:56.835 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:19:56.847 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:19:56.847 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:19:56.847 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:19:56.859 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:19:56.859 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:19:56.859 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:19:56.871 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:19:56.875 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:19:56.875 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:19:56.875 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:19:56.879 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:19:56.879 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:19:56.883 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:19:56.883 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:19:56.883 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:19:56.887 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:19:56.891 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:19:56.891 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:19:56.903 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:19:56.903 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:19:56.903 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:19:56.911 [http-nio-9090-exec-6] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:19:56.911 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:19:56.911 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:19:56.915 [http-nio-9090-exec-6] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:20:06.297 [http-nio-9090-exec-5] DEBUG com.basic.javaframe.dao.HosOrderDao.getList - ==>  Preparing: select * from hos_order t WHERE 1=1 and t.del_flag =0 order by row_id desc limit ?, ? 
+2019-05-23 09:20:06.301 [http-nio-9090-exec-5] DEBUG com.basic.javaframe.dao.HosOrderDao.getList - ==> Parameters: 0(Integer), 10(Integer)
+2019-05-23 09:20:07.838 [http-nio-9090-exec-5] DEBUG com.basic.javaframe.dao.HosOrderDao.getList - <==      Total: 10
+2019-05-23 09:20:07.848 [http-nio-9090-exec-5] DEBUG com.basic.javaframe.dao.HosOrderDao.getCount - ==>  Preparing: select count(*) from hos_order t WHERE 1=1 and t.del_flag =0 
+2019-05-23 09:20:07.848 [http-nio-9090-exec-5] DEBUG com.basic.javaframe.dao.HosOrderDao.getCount - ==> Parameters: 
+2019-05-23 09:20:07.852 [http-nio-9090-exec-5] DEBUG com.basic.javaframe.dao.HosOrderDao.getCount - <==      Total: 1
+2019-05-23 09:20:07.860 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:20:07.860 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:20:07.864 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:20:07.864 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:20:07.864 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:20:07.868 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:20:07.868 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:20:07.868 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:20:07.872 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:20:07.872 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:20:07.872 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:20:07.876 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:20:07.876 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:20:07.876 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:20:07.884 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:20:07.884 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:20:07.884 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:20:07.888 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:20:07.888 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:20:07.888 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:20:07.888 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:20:07.888 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:20:07.892 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:20:07.892 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:20:07.896 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:20:07.896 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:20:07.900 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:20:07.904 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:20:07.904 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:20:07.916 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:20:07.916 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:20:07.916 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:20:07.928 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:20:07.928 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:20:07.928 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:20:07.932 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:20:07.932 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:20:07.932 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:20:07.936 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:20:07.936 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:20:07.936 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:20:07.940 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:20:07.940 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:20:07.940 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:20:07.948 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:20:07.948 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:20:07.948 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:20:07.952 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:20:07.952 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:20:07.952 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:20:07.952 [http-nio-9090-exec-5] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:20:07.952 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:20:07.956 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:20:07.956 [http-nio-9090-exec-5] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:20:41.842 [http-nio-9090-exec-8] DEBUG com.basic.javaframe.dao.HosOrderDao.getList - ==>  Preparing: select * from hos_order t WHERE 1=1 and t.del_flag =0 order by row_id desc limit ?, ? 
+2019-05-23 09:20:41.843 [http-nio-9090-exec-8] DEBUG com.basic.javaframe.dao.HosOrderDao.getList - ==> Parameters: 0(Integer), 10(Integer)
+2019-05-23 09:20:41.848 [http-nio-9090-exec-8] DEBUG com.basic.javaframe.dao.HosOrderDao.getList - <==      Total: 10
+2019-05-23 09:20:41.860 [http-nio-9090-exec-8] DEBUG com.basic.javaframe.dao.HosOrderDao.getCount - ==>  Preparing: select count(*) from hos_order t WHERE 1=1 and t.del_flag =0 
+2019-05-23 09:20:41.860 [http-nio-9090-exec-8] DEBUG com.basic.javaframe.dao.HosOrderDao.getCount - ==> Parameters: 
+2019-05-23 09:20:41.864 [http-nio-9090-exec-8] DEBUG com.basic.javaframe.dao.HosOrderDao.getCount - <==      Total: 1
+2019-05-23 09:20:41.872 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:20:41.872 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:20:41.876 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:20:41.876 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:20:41.876 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:20:41.880 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:20:41.880 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:20:41.884 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:20:41.888 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:20:41.888 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:20:41.888 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:20:41.892 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:20:41.896 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:20:41.896 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:20:41.900 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:20:41.900 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:20:41.900 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:20:41.904 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:20:41.904 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:20:41.904 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:20:41.908 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:20:41.908 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:20:41.908 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:20:41.912 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:20:41.912 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:20:41.912 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:20:41.916 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:20:41.916 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:20:41.916 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:20:41.920 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:20:41.920 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:20:41.920 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:20:41.924 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:20:41.928 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:20:41.928 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:20:41.928 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:20:41.932 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:20:41.932 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:20:41.932 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:20:41.932 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:20:41.932 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:20:41.940 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:20:41.940 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:20:41.944 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:20:41.944 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:20:41.944 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:20:41.944 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:20:41.948 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 09:20:41.948 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==>  Preparing: select * from frame_codes where code_name = ? 
+2019-05-23 09:20:41.948 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - ==> Parameters: 订单状态(String)
+2019-05-23 09:20:41.952 [http-nio-9090-exec-8] DEBUG c.b.javaframe.dao.Frame_CodesDao.getCodesByName - <==      Total: 1
+2019-05-23 09:20:41.956 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==>  Preparing: select * from frame_codevalue where code_guid = ? 
+2019-05-23 09:20:41.956 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - ==> Parameters: b55f5f1c-b554-4d4e-9c7c-ce0872f47566(String)
+2019-05-23 09:20:41.960 [http-nio-9090-exec-8] DEBUG c.b.j.dao.Frame_CodeValueDao.getCodeValueByName - <==      Total: 6
+2019-05-23 10:20:30.107 [http-nio-9090-exec-9] DEBUG com.basic.javaframe.dao.HosUserDao.getList - ==>  Preparing: select * from hos_user t WHERE 1=1 and t.del_flag =0 order by sort_sq desc limit ?, ? 
+2019-05-23 10:20:30.108 [http-nio-9090-exec-9] DEBUG com.basic.javaframe.dao.HosUserDao.getList - ==> Parameters: 0(Integer), 10(Integer)
+2019-05-23 10:20:30.124 [http-nio-9090-exec-9] DEBUG com.basic.javaframe.dao.HosUserDao.getList - <==      Total: 5
+2019-05-23 10:20:30.138 [http-nio-9090-exec-9] DEBUG com.basic.javaframe.dao.HosUserDao.getCount - ==>  Preparing: select count(*) from hos_user t WHERE 1=1 and t.del_flag =0 
+2019-05-23 10:20:30.139 [http-nio-9090-exec-9] DEBUG com.basic.javaframe.dao.HosUserDao.getCount - ==> Parameters: 
+2019-05-23 10:20:30.141 [http-nio-9090-exec-9] DEBUG com.basic.javaframe.dao.HosUserDao.getCount - <==      Total: 1
+2019-05-23 10:20:38.943 [http-nio-9090-exec-7] DEBUG com.basic.javaframe.dao.HosGoodstypeDao.getList - ==>  Preparing: select * from hos_goodstype t WHERE 1=1 and t.del_flag = 0 order by sort_sq desc limit ?, ? 
+2019-05-23 10:20:38.944 [http-nio-9090-exec-7] DEBUG com.basic.javaframe.dao.HosGoodstypeDao.getList - ==> Parameters: 0(Integer), 10(Integer)
+2019-05-23 10:20:38.960 [http-nio-9090-exec-7] DEBUG com.basic.javaframe.dao.HosGoodstypeDao.getList - <==      Total: 10
+2019-05-23 10:20:39.112 [http-nio-9090-exec-7] DEBUG com.basic.javaframe.dao.HosGoodstypeDao.getCount - ==>  Preparing: select count(*) from hos_goodstype t WHERE 1=1 and t.del_flag = 0 
+2019-05-23 10:20:39.113 [http-nio-9090-exec-7] DEBUG com.basic.javaframe.dao.HosGoodstypeDao.getCount - ==> Parameters: 
+2019-05-23 10:20:39.171 [http-nio-9090-exec-7] DEBUG com.basic.javaframe.dao.HosGoodstypeDao.getCount - <==      Total: 1
+2019-05-23 10:20:39.204 [http-nio-9090-exec-10] DEBUG c.basic.javaframe.dao.Frame_UserDao.findUserByGuid - ==>  Preparing: select * from frame_user where row_guid = ? and del_flag = 0 
+2019-05-23 10:20:39.204 [http-nio-9090-exec-10] DEBUG c.basic.javaframe.dao.Frame_UserDao.findUserByGuid - ==> Parameters: 8532db7a-b412-4296-8934-9cede3c655eb(String)
+2019-05-23 10:20:39.214 [http-nio-9090-exec-10] DEBUG c.basic.javaframe.dao.Frame_UserDao.findUserByGuid - <==      Total: 1
+2019-05-23 10:20:39.218 [http-nio-9090-exec-10] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = '0' and del_flag = 0 
+2019-05-23 10:20:39.219 [http-nio-9090-exec-10] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - ==> Parameters: 
+2019-05-23 10:20:39.235 [http-nio-9090-exec-10] DEBUG c.b.j.dao.HosGoodstypeDao.findTopGoodsTypes - <==      Total: 4
+2019-05-23 10:20:39.235 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-05-23 10:20:39.236 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: 9707a0cb(String)
+2019-05-23 10:20:39.239 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 1
+2019-05-23 10:20:39.240 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-05-23 10:20:39.240 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: bd45977f(String)
+2019-05-23 10:20:39.246 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 0
+2019-05-23 10:20:39.246 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-05-23 10:20:39.247 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: d81a0e48(String)
+2019-05-23 10:20:39.250 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 4
+2019-05-23 10:20:39.250 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-05-23 10:20:39.251 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: e0164be7(String)
+2019-05-23 10:20:39.255 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 0
+2019-05-23 10:20:39.255 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-05-23 10:20:39.255 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: 54b9d19d(String)
+2019-05-23 10:20:39.257 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 0
+2019-05-23 10:20:39.258 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-05-23 10:20:39.258 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: cd346cb1(String)
+2019-05-23 10:20:39.261 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 0
+2019-05-23 10:20:39.262 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-05-23 10:20:39.262 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: 749d1a8f(String)
+2019-05-23 10:20:39.264 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 0
+2019-05-23 10:20:39.264 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-05-23 10:20:39.265 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: d40ec23d(String)
+2019-05-23 10:20:39.284 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 1
+2019-05-23 10:20:39.285 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-05-23 10:20:39.285 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: 93035bf1(String)
+2019-05-23 10:20:39.341 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 0
+2019-05-23 10:20:39.341 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==>  Preparing: select * from hos_goodstype where pgoods_type_code = ? and del_flag = 0 
+2019-05-23 10:20:39.341 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - ==> Parameters: 3d483953(String)
+2019-05-23 10:20:39.378 [http-nio-9090-exec-10] DEBUG c.b.javaframe.dao.HosGoodstypeDao.getByPgoodsCode - <==      Total: 0
+2019-05-23 10:51:36.381 [restartedMain] DEBUG com.basic.javaframe.DemoApplication - Running with Spring Boot v2.1.3.RELEASE, Spring v5.1.5.RELEASE
+2019-05-23 10:58:12.118 [restartedMain] DEBUG com.basic.javaframe.DemoApplication - Running with Spring Boot v2.1.3.RELEASE, Spring v5.1.5.RELEASE
+2019-05-23 10:59:07.084 [restartedMain] DEBUG com.basic.javaframe.DemoApplication - Running with Spring Boot v2.1.3.RELEASE, Spring v5.1.5.RELEASE
+2019-05-23 15:38:02.340 [restartedMain] DEBUG com.basic.javaframe.DemoApplication - Running with Spring Boot v2.1.3.RELEASE, Spring v5.1.5.RELEASE
+2019-05-23 15:38:46.675 [http-nio-9090-exec-7] DEBUG com.basic.javaframe.dao.HosOrderDao.getByRowGuid - ==>  Preparing: select * from hos_order where row_guid = ? 
+2019-05-23 15:38:46.708 [http-nio-9090-exec-7] DEBUG com.basic.javaframe.dao.HosOrderDao.getByRowGuid - ==> Parameters: 5c052be8-5df0-4898-ac82-ffcb7f3da485(String)
+2019-05-23 15:38:46.732 [http-nio-9090-exec-7] DEBUG com.basic.javaframe.dao.HosOrderDao.getByRowGuid - <==      Total: 1

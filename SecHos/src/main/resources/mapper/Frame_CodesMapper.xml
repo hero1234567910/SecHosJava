@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.Frame_CodesDao">
+
+    <resultMap id="Frame_Codes" type="com.basic.javaframe.entity.Frame_Codes">
+        <result property="rowId" column="row_id"></result>
+        <result property="rowGuid" column="row_guid"></result>
+        <result property="codeName" column="code_name"></result>
+        <result property="codeMask" column="code_mask"></result>
+    </resultMap>
+
+    <!--获取代码参数列表-->
+    <select id="getCodes" resultType="com.basic.javaframe.entity.Frame_Codes">
+        select * from frame_codes t
+        <include refid="where_clause"/>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by row_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <!-- 获取参数类别数量 -->
+    <select id="getCount" resultType="int">
+        select count(*) from frame_codes t
+        <include refid="where_clause"/>
+    </select>
+
+
+    <!--增加参数类别 -->
+    <insert id="insertCodes" parameterType="com.basic.javaframe.entity.Frame_Codes" useGeneratedKeys="true"
+            keyProperty="row_id">
+		insert into frame_codes (
+			  `row_id`,
+			  `row_guid`,
+			  `code_name`,
+			  `code_mask`
+		) values (
+			  #{rowId},
+			  #{rowGuid},
+			  #{codeName},
+			  #{codeMask}
+		);
+	</insert>
+
+    <!--单个更新参数类别-->
+    <update id="updateCodes" parameterType="com.basic.javaframe.entity.Frame_Codes">
+        update frame_codes
+        <set>
+            <if test="rowId != null">`row_id` = #{rowId},</if>
+            <if test="rowGuid != null">`row_guid` = #{rowGuid},</if>
+            <if test="codeName != null">`code_name` = #{codeName},</if>
+            <if test="codeMask != null">`code_mask` = #{codeMask}</if>
+        </set>
+        where row_id =#{rowId}
+    </update>
+
+    <!--批量更新参数类别-->
+    <update id="updateCodesBatch" parameterType="java.util.List" >
+      <foreach collection="list" item="item" index="index"  separator=","  >
+          update frame_codes
+          <set>
+              <if test="rowId != null">`row_id` = #{item.rowId},</if>
+              <if test="rowGuid != null">`row_guid` = #{item.rowGuid},</if>
+              <if test="codeName != null">`code_name` = #{item.codeName}</if>
+              <if test="codeMask != null">`code_mask` = #{item.codeMask}</if>
+          </set>
+          where row_id = #{item.rowId}
+      </foreach>
+    </update>
+	
+    <!-- 根据代码名获取 -->
+    <select id="getCodesByName" resultType="com.basic.javaframe.entity.Frame_Codes">
+        select * from frame_codes where code_name = #{codeName}
+    </select>
+    
+    <!--获取所有代码类别-->
+    <select id="getAllCodes" resultType="com.basic.javaframe.entity.Frame_Codes">
+        select * from frame_codes
+    </select>
+    
+    <!--批量删除参数类别-->
+    <delete id="deleteCodes" parameterType="java.lang.Integer">
+        delete from frame_codes where row_id in
+        <foreach collection="array" item="rowId" open="(" separator="," close=")">
+            #{rowId}
+        </foreach>
+    </delete>
+
+    <select id="checkCodeName" resultType="int">
+        select count(*) from frame_codes t<include refid="where_clause2"/>
+    </select>
+
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId  != null and rowId  != ''">and t.row_id = #{rowId }</if>
+            <if test="rowGuid  != null and rowGuid  != ''">and t.row_guid = #{rowGuid }</if>
+            <if test="codeName != null and codeName !=''">and t.code_name like concat('%',#{codeName},'%')</if>
+            <if test="codeNameValue != null and codeNameValue !=''">and t.code_name =#{codeNameValue}</if>
+            <if test="codeMask != null and codeMask !=''">and t.code_mask = #{codeMask}</if>
+        </where>
+    </sql>
+
+    <sql id="where_clause2">
+        <where>
+            1=1
+            <if test="rowId  != null and rowId  != ''">and t.row_id = #{rowId }</if>
+            <if test="rowGuid  != null and rowGuid  != ''">and t.row_guid != #{rowGuid }</if>
+            <if test="codeName != null and codeName !=''">and t.code_name like concat('%',#{codeName},'%')</if>
+            <if test="codeNameValue != null and codeNameValue !=''">and t.code_name =#{codeNameValue}</if>
+            <if test="codeMask != null and codeMask !=''">and t.code_mask = #{codeMask}</if>
+        </where>
+    </sql>
+</mapper>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.Frame_CodeValueDao">
+
+    <resultMap id="Frame_CodeValue" type="com.basic.javaframe.entity.Frame_CodeValue">
+        <result property="rowId" column="row_id"></result>
+        <result property="rowGuid" column="row_guid"></result>
+        <result property="itemValue" column="item_value"></result>
+        <result property="itemText" column="item_text"></result>
+        <result property="sortSq" column="sort_sq"></result>
+        <result property="codeGuid" column="code_guid"></result>
+        <association property="rowGuid" column="row_guid" javaType="com.basic.javaframe.entity.Frame_Codes">
+            <id property="rowId" column="row_id"></id>
+            <result property="rowGuid" column="row_guid"></result>
+        </association>
+    </resultMap>
+
+    <!--获取代码参数列表-->
+    <select id="getCodeValue" resultType="com.basic.javaframe.entity.Frame_CodeValue">
+        select * from frame_codevalue t
+        <include refid="where_clause"/>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by t.sort_sq desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <!--查询代码关联字段-->
+    <select id="getCodesToValue" resultType="com.basic.javaframe.entity.Frame_CodeValue">
+        select t.row_Id,t.item_value,t.item_text,t.sort_sq from frame_codevalue t,frame_codes t2 where t.code_guid=#{rowGuid}
+
+    </select>
+
+	<select id="getCodeValueByName" resultType="com.basic.javaframe.entity.Frame_CodeValue">
+	    select * from frame_codevalue where code_guid = #{ruid}
+	</select>	
+    
+    <!-- 获取参数类别数量 -->
+    <select id="getCount" resultType="int">
+        select count(*) from frame_codevalue t
+        <include refid="where_clause"/>
+    </select>
+	
+   <select id="getCodeByValue" resultType="com.basic.javaframe.entity.Frame_CodeValue">
+        select * from frame_codevalue where code_guid = #{codeGuid}
+    </select>
+
+    <!--增加参数类别 -->
+    <insert id="insertCodeValue" parameterType="com.basic.javaframe.entity.Frame_CodeValue" useGeneratedKeys="true"
+            keyProperty="row_id">
+		insert into frame_codevalue (
+			  `row_id`,
+			  `row_guid`,
+			  `item_value`,
+			  `item_text`,
+			  `sort_sq`,
+			  `code_guid`
+		) values (
+			  #{rowId},
+			  #{rowGuid},
+			  #{itemValue},
+			  #{itemText},
+			  #{sortSq},
+			  #{codeGuid}
+		);
+	</insert>
+
+    <!--更新参数类别-->
+    <update id="updateCodeValue" parameterType="com.basic.javaframe.entity.Frame_CodeValue">
+        update frame_codevalue
+        <set>
+            <if test="rowId != null">`row_id` = #{rowId},</if>
+            <if test="rowGuid != null">`row_guid` = #{rowGuid},</if>
+            <if test="itemValue != null">`item_value` = #{itemValue},</if>
+            <if test="itemText != null">`item_text` = #{itemText},</if>
+            <if test="sortSq != null">`sort_sq` = #{sortSq},</if>
+            <if test="codeGuid != null">`code_guid` = #{codeGuid}</if>
+        </set>
+        where row_id = #{rowId}
+    </update>
+
+    <!--批量删除参数类别-->
+    <delete id="deleteCodeValue" parameterType="java.lang.Integer">
+        delete from frame_codevalue where row_id in
+        <foreach collection="array" item="rowId" open="(" separator="," close=")">
+            #{rowId}
+        </foreach>
+    </delete>
+
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId  != null and rowId  != ''">and t.row_id = #{rowId }</if>
+            <if test="rowGuid  != null and rowGuid  != ''">and t.row_guid = #{rowGuid }</if>
+            <if test="itemValue != null and itemValue !=''">and t.item_value = #{itemValue}</if>
+            <if test="itemText != null and itemText !=''">and t.item_text = #{itemText}</if>
+            <if test="sortSq != null and sortSq !=''">and t.sort_sq= #{sortSq}</if>
+            <if test="codeGuid != null and codeGuid !=''">and t.code_guid =#{codeGuid}</if>
+        </where>
+    </sql>
+
+</mapper>

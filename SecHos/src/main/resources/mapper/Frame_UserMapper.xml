@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.Frame_UserDao">
+
+    <resultMap id="Frame_User" type="com.basic.javaframe.entity.Frame_User">
+        <result property="rowId" column="row_id"></result>
+        <result property="rowGuid" column="row_guid"></result>
+        <result property="delFlag" column="del_flag"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="userName" column="user_name"></result>
+        <result property="loginId" column="login_id"></result>
+        <result property="sex" column="sex"></result>
+        <result property="gongHao" column="gong_hao"></result>
+        <result property="password" column="password"></result>
+        <result property="deptGuid" column="dept_guid"></result>
+        <result property="duty" column="duty"></result>
+        <result property="tel" column="tel"></result>
+        <result property="mobile" column="mobile"></result>
+        <result property="isForbid" column="is_forbid"></result>
+        <result property="lastloginTime" column="lastlogin_time"></result>
+        <result property="sortSq" column="sort_sq"></result>
+        <result property="openid" column="openid"></result>
+        <association property="Frame_Role_User" javaType="com.basic.javaframe.entity.Frame_Role_User">
+            <result property="rowId" column="row_id"></result>
+            <result property="userGuid" column="user_guid"></result>
+            <result property="roleGuid" column="role_guid"></result>
+        </association>
+    </resultMap>
+
+    <!--获取正常用户列表-->
+    <select id="getUser" resultType="com.basic.javaframe.entity.Frame_User">
+        select * from frame_user t
+        <include refid="where_clause"/>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by sort_sq desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <!--通过角色获取用户列表-->
+    <select id="getUserFromRole" resultType="com.basic.javaframe.entity.Frame_User">
+        select t.* from frame_user t,frame_role_user t2
+        where t.row_guid = t2.user_guid and t2.role_guid = #{roleGuid}
+                and t.del_flag = 0
+    </select>
+
+
+    <select id="getFrameUserByLoginId" resultType="com.basic.javaframe.entity.Frame_User">
+        select * from frame_user where login_id = #{loginId} and del_flag = 0
+    </select>
+
+    <!--用户名重复检测-->
+    <!-- 验证重复性 -->
+    <select id="checkUser" resultType="int">
+        select count(*) from frame_user t<include refid="where_clause2" />
+    </select>
+
+    <!--验证旧密码-->
+    <select id="checkOldPassword" resultType="String">
+        select password from frame_user where row_guid=#{rowGuid} and del_flag=0
+    </select>
+
+    <!--写入新密码-->
+    <update id="updateNewPassword" parameterType="String">
+        update frame_user
+        <set>
+            <if test="password != null">`password` = #{password}, </if>
+        </set>
+        where row_guid=#{rowGuid}
+    </update>
+
+    <!-- 通过guid查询 -->
+    <select id="findUserByGuid" resultType="com.basic.javaframe.entity.Frame_User">
+        select * from frame_user where row_guid = #{guid} and del_flag = 0
+    </select>
+
+    <!--通过userGuid 查询该用户的部门guid-->
+    <select id="findDeptByGuid" resultType="java.lang.String">
+        select dept_guid from frame_user where row_guid=#{rowGuid} and del_flag = 0
+    </select>
+
+    <!-- 获取用户数量 -->
+    <select id="getCount" resultType="int">
+        select count(*) from frame_user t
+        <include refid="where_clause"/>
+    </select>
+
+    <!-- 通过用户ID查询-->
+    <select id="getById" resultType="com.basic.javaframe.entity.Frame_User">
+		select * from frame_user t
+		where t.row_id = #{rowId} and t.del_flag = 0
+	</select>
+
+    <!-- 根据用户行标获取部门行标 -->
+	<select id="getDeptByGuid" resultType="String">
+		select dept_guid from frame_user where row_guid = #{rowGuid}    
+	</select>
+	
+    <!--启用用户 -->
+    <update id="enableUserById" parameterType="com.basic.javaframe.entity.Frame_User">
+        update frame_user set is_forbid = 0 where row_id in
+        <foreach collection="array" item="rowId" open="(" separator="," close=")">
+            #{rowId}
+        </foreach>
+    </update>
+
+    <!--禁用用户 -->
+    <update id="forbidUserById" parameterType="com.basic.javaframe.entity.Frame_User">
+        update frame_user set is_forbid = 1 where row_id in
+        <foreach collection="array" item="rowId" open="(" separator="," close=")">
+            #{rowId}
+        </foreach>
+    </update>
+
+    <!--增加用户 -->
+    <insert id="insert" parameterType="com.basic.javaframe.entity.Frame_User" useGeneratedKeys="true"
+            keyProperty="row_id">
+		insert into frame_user (
+			  `row_id`,
+			  `row_guid`,
+			  `del_flag`,
+			  `create_time`,
+			  `user_name`,
+			  `login_id`,
+			  `sex`,
+			  `gong_hao`,
+			  `password`,
+			  `dept_guid`,
+			  `duty`,
+			  `tel`,
+			  `mobile`,
+			  `is_forbid`,
+			  `lastlogin_time`,
+			  `sort_sq`,
+			  `openid`
+		) values (
+			  #{rowId},
+			  #{rowGuid},
+			  #{delFlag},
+			  #{createTime},
+			  #{userName},
+			  #{loginId},
+			  #{sex},
+			  #{gongHao},
+			  #{password},
+			  #{deptGuid},
+			  #{duty},
+			  #{tel},
+			  #{mobile},
+			  #{isForbid},
+			  #{lastloginTime},
+			  #{sortSq},
+			  #{openid}
+		);
+	</insert>
+
+    <!--更新用户-->
+    <update id="update" parameterType="com.basic.javaframe.entity.Frame_User">
+        update frame_user
+        <set>
+            <if test="rowGuid != null">`row_guid` = #{rowGuid},</if>
+            <if test="delFlag != null">`del_flag` = #{delFlag},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="userName != null">`user_name` = #{userName},</if>
+            <if test="loginId != null">`login_id` = #{loginId},</if>
+            <if test="sex != null">`sex` = #{sex},</if>
+            <if test="gongHao != null">`gong_hao` = #{gongHao},</if>
+            <if test="password != null">`password` = #{password},</if>
+            <if test="deptGuid != null">`dept_guid` = #{deptGuid},</if>
+            <if test="duty != null">`duty` = #{duty},</if>
+            <if test="tel != null">`tel` = #{tel},</if>
+            <if test="mobile != null">`mobile` = #{mobile},</if>
+            <if test="isForbid != null">`is_forbid` = #{isForbid},</if>
+            <if test="lastloginTime != null">`lastlogin_time` = #{lastloginTime},</if>
+            <if test="sortSq != null">`sort_sq` = #{sortSq},</if>
+            <if test="openid != null">`openid` = #{openid}</if>
+        </set>
+        where row_guid = #{rowGuid}
+    </update>
+    <!--更新用户-->
+    <update id="updateAdmin" parameterType="com.basic.javaframe.entity.Frame_User">
+        update frame_user
+        <set>
+            <if test="userName != null">`user_name` = #{userName},</if>
+            <if test="sex != null">`sex` = #{sex},</if>
+            <if test="tel != null">`tel` = #{tel},</if>
+            <if test="mobile != null">`mobile` = #{mobile},</if>
+        </set>
+        where row_guid = #{rowGuid}
+    </update>
+
+    <!--批量重置用户密码-->
+    <update id="resetPasswordById" parameterType="java.util.List">
+        update frame_user set password =#{password} where row_id in
+        <foreach collection="rowId" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+    <!--批量删除用户-->
+    <update id="deleteUserById" parameterType="java.lang.String">
+        update frame_user set del_flag = 1 where row_guid in
+        <foreach collection="array" item="rowGuid" open="(" separator="," close=")">
+            #{rowGuid}
+        </foreach>
+    </update>
+
+
+    <!--修改用户排序号 -->
+    <update id="saveSortSq" parameterType="java.util.List">
+
+        <foreach collection="sortSq" item="item" open="" separator=";" close="">
+            update frame_user
+            <set>
+                <if test="sortSq != null">`sort_sq` = #{item},</if>
+            </set>
+        </foreach>
+        where row_id in
+        <foreach collection="rowId" item="rowId" open="(" separator="," close=")">
+            #{rowId}
+        </foreach>
+    </update>
+
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId  != null and rowId  != ''">and t.row_id = #{rowId }</if>
+            <if test="rowGuid  != null and rowGuid  != ''">and t.row_guid = #{rowGuid }</if>
+            <if test="delFlag != null and delFlag != ''">and t.del_flag = #{delFlag}</if>
+            <if test="createTime != null and createTime != ''">and t.create_time = #{createTime}</if>
+            <if test="userName != null and userName != ''">and t.user_name like concat('%',#{userName},'%')</if>
+            <if test="loginId  != null and loginId   != ''">and t.login_id like concat('%',#{loginId},'%')</if>
+            <if test="sex != null and sex != ''">and t.sex = #{sex}</if>
+            <if test="gongHao != null and gongHao!= ''">and t.gong_hao = #{gongHao}</if>
+            <if test="password != null and password != ''">and t.password = #{password}</if>
+            <if test="deptGuid != null and deptGuid  != ''">and t.dept_guid = #{deptGuid }</if>
+            <if test="duty != null and duty != ''">and t.duty = #{duty}</if>
+            <if test="tel != null and tel != ''">and t.tel = #{tel}</if>
+            <if test="mobile != null and mobile != ''">and t.mobile = #{mobile}</if>
+            <if test="isForbid  != null and isForbid != ''">and t.is_forbid = #{isForbid}</if>
+            <if test="lastloginTime != null and lastloginTime != ''">and t.lastlogin_time = #{lastloginTime}</if>
+            <if test="sortSq  != null and sortSq!= ''">and t.sort_sq = #{sortSq }</if>
+            <if test="openid != null">and t.openid = #{openid}</if>
+            and t.del_flag = 0
+        </where>
+    </sql>
+
+    <sql id="where_clause2">
+        <where>
+            1=1
+            <if test="rowId  != null and rowId  != ''">and t.row_id = #{rowId }</if>
+            <if test="rowGuid  != null and rowGuid  != ''">and t.row_guid = #{rowGuid }</if>
+            <if test="delFlag != null and delFlag != ''">and t.del_flag = #{delFlag}</if>
+            <if test="createTime != null and createTime != ''">and t.create_time = #{createTime}</if>
+            <if test="userName != null and userName != ''">and t.user_name like concat('%',#{userName},'%')</if>
+            <if test="loginId  != null and loginId   != ''">and t.login_id = #{loginId}</if>
+            <if test="loginIdValue != null and loginIdValue != ''"> and t.login_id = #{loginIdValue}</if>
+            <if test="sex != null and sex != ''">and t.sex = #{sex}</if>
+            <if test="gongHao != null and gongHao!= ''">and t.gong_hao = #{gongHao}</if>
+            <if test="password != null and password != ''">and t.password = #{password}</if>
+            <if test="deptGuid != null and deptGuid  != ''">and t.dept_guid = #{deptGuid }</if>
+            <if test="duty != null and duty != ''">and t.duty = #{duty}</if>
+            <if test="tel != null and tel != ''">and t.tel = #{tel}</if>
+            <if test="mobile != null and mobile != ''">and t.mobile = #{mobile}</if>
+            <if test="isForbid  != null and isForbid != ''">and t.is_forbid = #{isForbid}</if>
+            <if test="lastloginTime != null and lastloginTime != ''">and t.lastlogin_time = #{lastloginTime}</if>
+            <if test="sortSq  != null and sortSq!= ''">and t.sort_sq = #{sortSq }</if>
+            <if test="openid != null">and t.openid = #{openid}</if>
+            and t.del_flag = 0
+        </where>
+    </sql>
+
+</mapper>

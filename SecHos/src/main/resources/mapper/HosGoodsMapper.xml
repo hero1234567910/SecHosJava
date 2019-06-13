@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.HosGoodsDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.basic.javaframe.entity.HosGoods" id="HosGoodsMap">
+        <result property="rowId" column="row_id"/>
+        <result property="rowGuid" column="row_guid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="sortSq" column="sort_sq"/>
+        <result property="goodsName" column="goods_name"/>
+        <result property="goodsTypeGuid" column="goods_type_guid"/>
+        <result property="goodsPrice" column="goods_price"/>
+        <result property="goodsImgGuid" column="goods_img_guid"/>
+        <result property="goodsInfo" column="goods_info"/>
+        <result property="isShelf" column="is_shelf"/>
+    </resultMap>
+
+    <select id="getList" resultType="com.basic.javaframe.entity.HosGoods">
+        select t.*,f.content_url as goodsUrl from hos_goods t left join frame_attach f
+        on t.goods_img_guid = f.form_rowGuid
+        <include refid="where_clause"/>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by t.sort_sq desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="getCount" resultType="int">
+        select count(*) from hos_goods t left join frame_attach f on t.goods_img_guid = f.form_rowGuid
+        <include refid="where_clause"/>
+    </select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''">and t.row_id = #{rowId}</if>
+            <if test="rowIdVague != null and rowIdVague != ''">and t.row_id like concat('%',#{rowIdVague},'%')</if>
+            <if test="rowGuid != null and rowGuid != ''">and t.row_guid = #{rowGuid}</if>
+            <if test="rowGuidVague != null and rowGuidVague != ''">and t.row_guid like concat('%',#{rowGuidVague},'%')
+            </if>
+            <if test="createTime != null and createTime != ''">and t.create_time = #{createTime}</if>
+            <if test="createTimeVague != null and createTimeVague != ''">and t.create_time like
+                concat('%',#{createTimeVague},'%')
+            </if>
+            <if test="delFlag != null and delFlag != ''">and t.del_flag = #{delFlag}</if>
+            <if test="delFlagVague != null and delFlagVague != ''">and t.del_flag like concat('%',#{delFlagVague},'%')
+            </if>
+            <if test="sortSq != null and sortSq != ''">and t.sort_sq = #{sortSq}</if>
+            <if test="sortSqVague != null and sortSqVague != ''">and t.sort_sq like concat('%',#{sortSqVague},'%')</if>
+            <if test="goodsName != null and goodsName != ''">and t.goods_name = #{goodsName}</if>
+            <if test="goodsNameVague != null and goodsNameVague != ''">and t.goods_name like
+                concat('%',#{goodsNameVague},'%')
+            </if>
+            <if test="goodsTypeGuid != null and goodsTypeGuid != ''">and t.goods_type_guid = #{goodsTypeGuid}</if>
+            <if test="goodsTypeGuidVague != null and goodsTypeGuidVague != ''">and t.goods_type_guid like
+                concat('%',#{goodsTypeGuidVague},'%')
+            </if>
+            <if test="goodsPrice != null and goodsPrice != ''">and t.goods_price = #{goodsPrice}</if>
+            <if test="goodsPriceVague != null and goodsPriceVague != ''">and t.goods_price like
+                concat('%',#{goodsPriceVague},'%')
+            </if>
+            <if test="goodsImgGuid != null and goodsImgGuid != ''">and t.goods_imgGuid = #{goodsImgGuid}</if>
+            <if test="goodsImgGuidVague != null and goodsImgGuidVague != ''">and t.goods_imgGuid like
+                concat('%',#{goodsImgGuidVague},'%')
+            </if>
+            <if test="goodsInfo != null and goodsInfo != ''">and t.goods_info = #{goodsInfo}</if>
+            <if test="goodsInfoVague != null and goodsInfoVague != ''">and t.goods_info like
+                concat('%',#{goodsInfoVague},'%')
+            </if>
+            <if test="isShelf != null and isShelf != ''">and t.is_shelf = #{isShelf}</if>
+            <if test="isShelfVague != null and isShelfVague != ''">and t.is_shelf like concat('%',#{isShelfVague},'%')
+            </if>
+            and t.del_flag =0
+        </where>
+    </sql>
+
+    <insert id="save" parameterType="com.basic.javaframe.entity.HosGoods" useGeneratedKeys="true" keyProperty="rowId">
+		insert into hos_goods
+		(
+			`row_guid`, 
+			`create_time`, 
+			`del_flag`, 
+			`sort_sq`, 
+			`goods_name`, 
+			`goods_type_guid`,
+			`goods_price`, 
+			`goods_img_guid`,
+			`goods_info`, 
+			`is_shelf`
+		)
+		values
+		(
+			#{rowGuid}, 
+			#{createTime}, 
+			#{delFlag}, 
+			#{sortSq}, 
+			#{goodsName}, 
+			#{goodsTypeGuid}, 
+			#{goodsPrice}, 
+			#{goodsImgGuid}, 
+			#{goodsInfo}, 
+			#{isShelf}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.basic.javaframe.entity.HosGoods">
+        update hos_goods
+        <set>
+            <if test="rowGuid != null">`row_guid` = #{rowGuid},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="delFlag != null">`del_flag` = #{delFlag},</if>
+            <if test="sortSq != null">`sort_sq` = #{sortSq},</if>
+            <if test="goodsName != null">`goods_name` = #{goodsName},</if>
+            <if test="goodsTypeGuid != null">`goods_type_guid` = #{goodsTypeGuid},</if>
+            <if test="goodsPrice != null">`goods_price` = #{goodsPrice},</if>
+            <if test="goodsImgGuid != null">`goods_img_guid` = #{goodsImgGuid},</if>
+            <if test="goodsInfo != null">`goods_info` = #{goodsInfo},</if>
+            <if test="isShelf != null">`is_shelf` = #{isShelf}</if>
+        </set>
+        where row_guid = #{rowGuid}
+    </update>
+
+    <delete id="deleteBatch">
+        update hos_goods set `del_flag` = 1 where row_guid in
+        <foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+            #{rowGuid}
+        </foreach>
+    </delete>
+
+    <!--删除与食品类别相关的所有食品-->
+    <update id="deleteGoods">
+        update hos_goods set `del_flag` = 1 where goods_type_guid in
+        <foreach item="goodsTypeGuid" collection="array" open="(" separator="," close=")">
+            #{goodsTypeGuid}
+        </foreach>
+    </update>
+
+    <!--批量上架-->
+    <update id="goodsUpShelf">
+        update hos_goods set `is_shelf`= 0 where row_guid in
+        <foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+            #{rowGuid}
+        </foreach>
+    </update>
+
+    <!--批量下架-->
+    <update id="goodsDownShelf">
+        update hos_goods set `is_shelf`= 1 where row_guid in
+        <foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+            #{rowGuid}
+        </foreach>
+    </update>
+
+    <!--食品名重复检测-->
+    <!-- 验证重复性 -->
+    <select id="checkGoods" resultType="int">
+        select count(*) from hos_goods t
+        <include refid="where_clause"/>
+    </select>
+
+    <!-- 根据食品行标获取食品类别行标 -->
+    <select id="getGoodsByGuid" resultType="String">
+		select goods_type_guid from hos_goods where row_guid = #{rowGuid}
+	</select>
+	
+    <!-- 根据类别行标获取对应菜品 -->
+    <select id="getGoodsByTypeGuid" resultType="com.basic.javaframe.entity.HosGoods">
+        select g.*,f.content_url as goodsUrl from hos_goods g 
+        left join frame_attach f on g.goods_img_guid = f.form_rowGuid
+        where g.goods_type_guid = #{guid} and g.del_flag = 0 and g.is_shelf = 0
+    </select>
+
+    <!--通过食品行标获取名称-->
+    <select id="getGoodsNameByGuid" resultType="String">
+        select goods_name from hos_goods where row_guid = #{rowGuid} and del_flag =0
+    </select>
+
+    <!--通过食品行标获取价格-->
+    <select id="getGoodsPriceByGuid" resultType="java.math.BigDecimal">
+        select goods_price from hos_goods where row_guid = #{rowGuid} and del_flag =0
+    </select>
+</mapper>

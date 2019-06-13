@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.Frame_User_ExtraDao">
+
+    <resultMap id="Frame_User_Extra" type="com.basic.javaframe.entity.Frame_User_Extra">
+        <result property="rowId" column="row_id"></result>
+        <result property="rowGuid" column="row_guid"></result>
+        <result property="delFlag" column="del_flag"></result>
+        <result property="createTime" column="create_time"></result>
+        <result property="userGuid" column="user_guid"></result>
+        <result property="idCard" column="id_card"></result>
+        <result property="birthday" column="birthday"></result>
+        <result property="address" column="address"></result>
+        <result property="qq" column="qq"></result>
+        <result property="weiXin" column="weixin"></result>
+        <result property="carNumber" column="car_number"></result>
+        <result property="email" column="email"></result>
+        <result property="loginip" column="usb_key"></result>
+        <result property="usbKey" column="usb_key"></result>
+        <result property="qrCode" column="qrcode"></result>
+    </resultMap>
+
+    <!--获取用户列表-->
+    <select id="getUserExtra" resultType="com.basic.javaframe.entity.Frame_User_Extra">
+        select * from frame_user_extra t
+        <include refid="where_clause"/>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by sort_sq desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <!-- 获取用户数量 -->
+    <select id="getCount" resultType="int">
+        select count(*) from frame_user_extra t
+        <include refid="where_clause"/>
+    </select>
+
+    <!--增加用户 -->
+    <insert id="insertExtra" parameterType="com.basic.javaframe.entity.Frame_User_Extra" useGeneratedKeys="true"
+            keyProperty="row_id">
+		insert into frame_user_extra (
+			  `row_id`,
+			  `row_guid`,
+			  `del_flag`,
+			  `create_time`,
+			  `user_guid`,
+			  `id_card`,
+			  `birthday`,
+			  `address`,
+			  `qq`,	
+			  `weixin`,
+			  `car_number`,
+			  `email`,
+			  `login_ip`,
+			  `usb_key`,
+			  `qrcode`
+		) values (
+			  #{rowId},
+			  #{rowGuid},
+			  #{delFlag},
+			  #{createTime},
+			  #{userGuid},
+			  #{idCard},
+			  #{birthday},
+			  #{address},
+			  #{qq},
+			  #{weiXin},
+			  #{carNumber},
+			  #{email},
+			  #{loginip},
+			  #{usbKey},
+			  #{qrCode}
+		);
+	</insert>
+
+
+    <!--更新用户-->
+    <update id="updateExtra" parameterType="com.basic.javaframe.entity.Frame_User_Extra">
+        update frame_user_extra
+        <set>
+            <if test="rowId != null">`row_id` = #{rowId},</if>
+            <if test="rowGuid != null">`row_guid` = #{rowGuid},</if>
+            <if test="delFlag != null">`del_flag` = #{delFlag},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="userGuid != null">`user_guid` = #{userGuid},</if>
+            <if test="idCard != null">`id_card` = #{idCard},</if>
+            <if test="birthday != null">`birthday` = #{birthday},</if>
+            <if test="address != null">`address` = #{address},</if>
+            <if test="qq != null">`qq` = #{qq},</if>
+            <if test="weiXin != null">`weixin` = #{weiXin},</if>
+            <if test="carNumber != null">`car_number` = #{carNumber},</if>
+            <if test="email != null">`email` = #{email},</if>
+            <if test="loginip != null">`login_ip` = #{loginip},</if>
+            <if test="usbKey != null">`usb_key` = #{usbKey},</if>
+            <if test="qrCode != null">`qrcode` = #{qrCode},</if>
+        </set>
+        where row_id = #{rowId}
+    </update>
+
+    <!--批量删除用户-->
+    <update id="deleteExtraBatch" parameterType="java.lang.Integer">
+        update frame_user_extra set del_flag = 1 where row_id in
+        <foreach collection="array" item="rowId" open="(" separator="," close=")">
+            #{rowId}
+        </foreach>
+    </update>
+
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''">and t.row_id = #{rowId}</if>
+            <if test="rowGuid != null and rowGuid != ''">and t.row_guid = #{rowGuid}</if>
+            <if test="delFlag != null and delFlag != ''">and t.del_flag = #{delFlag}</if>
+            <if test="createTime != null and createTime != ''">and t.create_time = #{createTime}</if>
+            <if test="userGuid != null and userGuid != ''">and t.user_guid = #{userGuid}</if>
+            <if test="idCard != null and idCard != ''">and t.id_card like concat('%',#{idCard},'%')</if>
+            <if test="birthday != null and birthday != ''">and t.birthday = #{birthday}</if>
+            <if test="address != null and address != ''">and t.address = #{address}</if>
+            <if test="qq != null and qq != ''">and t.qq = #{qq}</if>
+            <if test="weiXin != null and weiXin != ''">and t.weixin = #{weiXin}</if>
+            <if test="carNumber != null and carNumber != ''">and t.car_number = #{carNumber}</if>
+            <if test="email != null and email != ''">and t.email = #{email}</if>
+            <if test="loginip != null and loginip != ''">and t.login_ip = #{loginip}</if>
+            <if test="usbKey != null and usbKey != ''">and t.usb_key = #{usbKey}</if>
+            <if test="qrCode != null and qrCode != ''">and t.qrcode = #{qrCode}</if>
+            and t.del_flag = 0
+        </where>
+    </sql>
+
+</mapper>

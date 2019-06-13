@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.HosOrderitemDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.basic.javaframe.entity.HosOrderitem" id="hosOrderitemMap">
+        <result property="rowId" column="row_id"/>
+        <result property="rowGuid" column="row_guid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="sortSq" column="sort_sq"/>
+        <result property="goodsGuid" column="goods_guid"/>
+        <result property="count" column="count"/>
+        <result property="totalMoney" column="total_money"/>
+        <result property="orderGuid" column="order_guid"/>
+        <result property="itemPrice" column="item_price"/>
+    </resultMap>
+
+	<select id="getList" resultType="com.basic.javaframe.entity.HosOrderitem">
+		select * from hos_orderitem t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by sort_sq  desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="getCount" resultType="int">
+		select count(*) from hos_orderitem t  <include refid="where_clause" />
+	</select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+    		<if test="rowIdVague != null and rowIdVague != ''"> and t.row_id like concat('%',#{rowIdVague},'%') </if>
+            <if test="rowGuid != null and rowGuid != ''"> and t.row_guid = #{rowGuid} </if>
+    		<if test="rowGuidVague != null and rowGuidVague != ''"> and t.row_guid like concat('%',#{rowGuidVague},'%') </if>
+            <if test="createTime != null and createTime != ''"> and t.create_time = #{createTime} </if>
+    		<if test="createTimeVague != null and createTimeVague != ''"> and t.create_time like concat('%',#{createTimeVague},'%') </if>
+            <if test="delFlag != null and delFlag != ''"> and t.del_flag = #{delFlag} </if>
+    		<if test="delFlagVague != null and delFlagVague != ''"> and t.del_flag like concat('%',#{delFlagVague},'%') </if>
+            <if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
+    		<if test="sortSqVague != null and sortSqVague != ''"> and t.sort_sq like concat('%',#{sortSqVague},'%') </if>
+            <if test="goodsGuid != null and goodsGuid != ''"> and t.goods_guid = #{goodsGuid} </if>
+    		<if test="goodsGuidVague != null and goodsGuidVague != ''"> and t.goods_guid like concat('%',#{goodsGuidVague},'%') </if>
+            <if test="count != null and count != ''"> and t.count = #{count} </if>
+    		<if test="countVague != null and countVague != ''"> and t.count like concat('%',#{countVague},'%') </if>
+            <if test="totalMoney != null and totalMoney != ''"> and t.total_money = #{totalMoney} </if>
+    		<if test="totalMoneyVague != null and totalMoneyVague != ''"> and t.total_money like concat('%',#{totalMoneyVague},'%') </if>
+            <if test="orderGuid != null and orderGuid != ''"> and t.order_guid = #{orderGuid} </if>
+    		<if test="orderGuidVague != null and orderGuidVague != ''"> and t.order_guid like concat('%',#{orderGuidVague},'%') </if>
+            <if test="itemPrice != null and itemPrice != ''"> and t.item_price = #{itemPrice} </if>
+    		<if test="itemPriceVague != null and itemPriceVague != ''"> and t.item_price like concat('%',#{itemPriceVague},'%') </if>
+			and t.del_flag =0
+        </where>
+    </sql>
+	 
+	<insert id="save" parameterType="com.basic.javaframe.entity.HosOrderitem" useGeneratedKeys="true" keyProperty="rowId">
+		insert into hos_orderitem
+		(
+			`row_guid`, 
+			`create_time`, 
+			`del_flag`, 
+			`sort_sq`, 
+			`goods_guid`, 
+			`count`, 
+			`total_money`, 
+			`order_guid`, 
+			`item_price`
+		)
+		values
+		(
+			#{rowGuid}, 
+			#{createTime}, 
+			#{delFlag}, 
+			#{sortSq}, 
+			#{goodsGuid}, 
+			#{count}, 
+			#{totalMoney}, 
+			#{orderGuid}, 
+			#{itemPrice}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.basic.javaframe.entity.HosOrderitem">
+		update hos_orderitem 
+		<set>
+			<if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+			<if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+			<if test="goodsGuid != null">`goods_guid` = #{goodsGuid}, </if>
+			<if test="count != null">`count` = #{count}, </if>
+			<if test="totalMoney != null">`total_money` = #{totalMoney}, </if>
+			<if test="orderGuid != null">`order_guid` = #{orderGuid}, </if>
+			<if test="itemPrice != null">`item_price` = #{itemPrice}</if>
+		</set>
+		where row_guid = #{rowGuid}
+	</update>
+	
+	<delete id="deleteBatch">
+		update hos_orderitem set `del_flag` = 1 where row_guid in 
+		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+			#{rowGuid}
+		</foreach>
+	</delete>
+
+	<!--通过itemGuid查询goodsGuid-->
+	<select id="getGoodsByItemGuid" resultType="java.lang.String">
+		select goods_guid from hos_orderitem where order_guid= #{orderGuid} and del_flag =0
+	</select>
+</mapper>

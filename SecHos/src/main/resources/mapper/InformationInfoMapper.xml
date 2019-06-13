@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.InformationInfoDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.basic.javaframe.entity.InformationInfo" id="informationInfoMap">
+        <result property="rowId" column="row_id"/>
+        <result property="rowGuid" column="row_guid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="sortSq" column="sort_sq"/>
+        <result property="title" column="title"/>
+        <result property="infoType" column="info_type"/>
+        <result property="infoUrl" column="info_url"/>
+        <result property="content" column="content"/>
+        <result property="infoDate" column="info_date"/>
+        <result property="createUserName" column="create_userName"/>
+        <result property="createUserGuid" column="create_userGuid"/>
+        <result property="createDeptName" column="create_deptName"/>
+        <result property="createDeptGuid" column="create_deptGuid"/>
+        <result property="status" column="status"/>
+        <result property="attachGuid" column="attach_guid"/>
+        <result property="clickTimes" column="click_times"/>
+        <result property="typeName" column="type_name"/>
+    </resultMap>
+
+    <!--获取所有信息页面-->
+    <select id="getList" resultType="com.basic.javaframe.entity.InformationInfo">
+        select * from Information_Info t
+        <include refid="where_clause"/>
+        <if test="categorys != null and categorys !=''">
+            and t.category_guid in
+            <foreach item="category" collection="categorys" open="(" separator="," close=")">
+                #{category}
+            </foreach>
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by row_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <!--获取审核通过后的信息页面-->
+    <select id="getList2" resultType="com.basic.javaframe.entity.InformationInfo">
+        select * from Information_Info t
+        <include refid="where_clause2"/>
+        <if test="categorys != null and categorys !=''">
+            and t.category_guid in
+            <foreach item="category" collection="categorys" open="(" separator="," close=")">
+                #{category}
+            </foreach>
+        </if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by row_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <!--审核通过信息数量-->
+    <select id="getCount2" resultType="int">
+        select count(*) from Information_Info t
+        <include refid="where_clause2"/>
+        <if test="categorys != null and categorys !=''">
+            and t.category_guid in
+            <foreach item="category" collection="categorys" open="(" separator="," close=")">
+                #{category}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="getCount" resultType="int">
+        select count(*) from Information_Info t
+        <include refid="where_clause"/>
+        <if test="categorys != null and categorys !=''">
+            and t.category_guid in
+            <foreach item="category" collection="categorys" open="(" separator="," close=")">
+                #{category}
+            </foreach>
+        </if>
+    </select>
+
+    <!--通过时间查询-->
+    <select id="getInfoByTime" resultType="com.basic.javaframe.entity.InformationInfo">
+        select t.title ,t.info_type,t.create_userName,t.info_date from Information_Info t
+        <where>
+            <if test="startTime!=null and startTime!=''">
+                and t.info_date &gt;=#{startTime}
+            </if>
+            <if test="endTime!=null and endTime!=''">
+                and t.info_date &lt;=#{endTime}
+            </if>
+            and t.del_flag = 0
+        </where>
+    </select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''">and t.row_id = #{rowId}</if>
+            <if test="rowIdVague != null and rowIdVague != ''">and t.row_id like concat('%',#{rowIdVague},'%')</if>
+            <if test="rowGuid != null and rowGuid != ''">and t.row_guid = #{rowGuid}</if>
+            <if test="rowGuidVague != null and rowGuidVague != ''">and t.row_guid like concat('%',#{rowGuidVague},'%')
+            </if>
+            <if test="createTime != null and createTime != ''">and t.create_time = #{createTime}</if>
+            <if test="createTimeVague != null and createTimeVague != ''">and t.create_time like
+                concat('%',#{createTimeVague},'%')
+            </if>
+            <if test="delFlag != null and delFlag != ''">and t.del_flag = #{delFlag}</if>
+            <if test="delFlagVague != null and delFlagVague != ''">and t.del_flag like concat('%',#{delFlagVague},'%')
+            </if>
+            <if test="sortSq != null and sortSq != ''">and t.sort_sq = #{sortSq}</if>
+            <if test="sortSqVague != null and sortSqVague != ''">and t.sort_sq like concat('%',#{sortSqVague},'%')</if>
+            <if test="title != null and title != ''">and t.title = #{title}</if>
+            <if test="titleVague != null and titleVague != ''">and t.title like concat('%',#{titleVague},'%')</if>
+            <if test="infoType != null and infoType != ''">and t.info_type = #{infoType}</if>
+            <if test="infoTypeVague != null and infoTypeVague != ''">and t.info_type like
+                concat('%',#{infoTypeVague},'%')
+            </if>
+            <if test="infoUrl != null and infoUrl != ''">and t.info_url = #{infoUrl}</if>
+            <if test="infoUrlVague != null and infoUrlVague != ''">and t.info_url like concat('%',#{infoUrlVague},'%')
+            </if>
+            <if test="content != null and content != ''">and t.content = #{content}</if>
+            <if test="contentVague != null and contentVague != ''">and t.content like concat('%',#{contentVague},'%')
+            </if>
+            <if test=" startTime != null and startTime != '' and endTime != null and endTime != '' ">
+                AND DATE_FORMAT( t.info_date, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
+            </if>
+            <if test="infoDate != null and infoDate != ''">and t.info_date = #{infoDate}</if>
+            <if test="infoDateVague != null and infoDateVague != ''">and t.info_date like
+                concat('%',#{infoDateVague},'%')
+            </if>
+            <if test="createUserName != null and createUserName != ''">and t.create_userName = #{createUserName}</if>
+            <if test="createUserNameVague != null and createUserNameVague != ''">and t.create_userName like
+                concat('%',#{createUserNameVague},'%')
+            </if>
+            <if test="createUserGuid != null and createUserGuid != ''">and t.create_userGuid = #{createUserGuid}</if>
+            <if test="createUserGuidVague != null and createUserGuidVague != ''">and t.create_userGuid like
+                concat('%',#{createUserGuidVague},'%')
+            </if>
+            <if test="createDeptName != null and createDeptName != ''">and t.create_deptName = #{createDeptName}</if>
+            <if test="createDeptNameVague != null and createDeptNameVague != ''">and t.create_deptName like
+                concat('%',#{createDeptNameVague},'%')
+            </if>
+            <if test="createDeptGuid != null and createDeptGuid != ''">and t.create_deptGuid = #{createDeptGuid}</if>
+            <if test="createDeptGuidVague != null and createDeptGuidVague != ''">and t.create_deptGuid like
+                concat('%',#{createDeptGuidVague},'%')
+            </if>
+            <if test="status != null and status != ''">and t.status = #{status}</if>
+            <if test="statusVague != null and statusVague != ''">and t.status like concat('%',#{statusVague},'%')</if>
+            <if test="attachGuid != null and attachGuid != ''">and t.attach_guid = #{attachGuid}</if>
+            <if test="attachGuidVague != null and attachGuidVague != ''">and t.attach_guid like
+                concat('%',#{attachGuidVague},'%')
+            </if>
+            <if test="clickTimes != null and clickTimes != ''">and t.click_times = #{clickTimes}</if>
+            <if test="clickTimesVague != null and clickTimesVague != ''">and t.click_times like
+                concat('%',#{clickTimesVague},'%')
+            </if>
+            <if test="typeName != null and typeName != ''">and t.type_name = #{typeName}</if>
+            <if test="typeNameVague != null and typeNameVague != ''">and t.type_name like
+                concat('%',#{typeNameVague},'%')
+            </if>
+            <if test="categoryGuid != null and categoryGuid != ''">and t.category_guid = #{categoryGuid}</if>
+            and t.del_flag = 0
+        </where>
+    </sql>
+
+    <insert id="save" parameterType="com.basic.javaframe.entity.InformationInfo" useGeneratedKeys="true"
+            keyProperty="rowId">
+		insert into Information_Info
+		(
+			`row_guid`, 
+			`create_time`, 
+			`title`, 
+			`info_type`, 
+			`info_url`, 
+			`content`, 
+			`info_date`, 
+			`create_userName`, 
+			`create_userGuid`, 
+			`create_deptName`, 
+			`create_deptGuid`, 
+			`status`, 
+			`attach_guid`, 
+			`click_times`,
+			`type_name`,
+			`category_guid`
+		)
+		values
+		(
+			#{rowGuid}, 
+			#{createTime}, 
+			#{title}, 
+			#{infoType}, 
+			#{infoUrl}, 
+			#{content}, 
+			#{infoDate}, 
+			#{createUserName}, 
+			#{createUserGuid}, 
+			#{createDeptName}, 
+			#{createDeptGuid}, 
+			#{status}, 
+			#{attachGuid}, 
+			#{clickTimes},
+			#{typeName},
+			#{categoryGuid}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.basic.javaframe.entity.InformationInfo">
+        update Information_Info
+        <set>
+            <if test="rowGuid != null">`row_guid` = #{rowGuid},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="delFlag != null">`del_flag` = #{delFlag},</if>
+            <if test="sortSq != null">`sort_sq` = #{sortSq},</if>
+            <if test="title != null">`title` = #{title},</if>
+            <if test="infoType != null">`info_type` = #{infoType},</if>
+            <if test="infoUrl != null">`info_url` = #{infoUrl},</if>
+            <if test="content != null">`content` = #{content},</if>
+            <if test="infoDate != null">`info_date` = #{infoDate},</if>
+            <if test="createUserName != null">`create_userName` = #{createUserName},</if>
+            <if test="createUserGuid != null">`create_userGuid` = #{createUserGuid},</if>
+            <if test="createDeptName != null">`create_deptName` = #{createDeptName},</if>
+            <if test="createDeptGuid != null">`create_deptGuid` = #{createDeptGuid},</if>
+            <if test="status != null">`status` = #{status},</if>
+            <if test="attachGuid != null">`attach_guid` = #{attachGuid},</if>
+            <if test="clickTimes != null">`click_times` = #{clickTimes},</if>
+            <if test="typeName != null">`type_name` = #{typeName},</if>
+            <if test="categoryGuid != null">`category_guid` = #{categoryGuid}</if>
+                
+        </set>
+        where row_guid = #{rowGuid}
+    </update>
+
+    <!--批量删除-->
+    <update id="deleteBatch" parameterType="java.lang.Integer">
+        update Information_Info set del_flag = 1 where row_id in
+        <foreach item="rowId" collection="array" open="(" separator="," close=")">
+            #{rowId}
+        </foreach>
+    </update>
+
+    <!--审核通知通过-->
+    <update id="auditPassInfo" >
+        update Information_Info set status=1 where row_guid =#{rowGuid}
+    </update>
+
+    <!--审核通知不通过-->
+    <update id="auditFailInfo" >
+        update Information_Info set status=3 where row_guid =#{rowGuid}
+    </update>
+
+
+    <!-- 搜索数据区域2号 -->
+    <sql id="where_clause2">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''">and t.row_id = #{rowId}</if>
+            <if test="rowIdVague != null and rowIdVague != ''">and t.row_id like concat('%',#{rowIdVague},'%')</if>
+            <if test="rowGuid != null and rowGuid != ''">and t.row_guid = #{rowGuid}</if>
+            <if test="rowGuidVague != null and rowGuidVague != ''">and t.row_guid like concat('%',#{rowGuidVague},'%')
+            </if>
+            <if test="createTime != null and createTime != ''">and t.create_time = #{createTime}</if>
+            <if test="createTimeVague != null and createTimeVague != ''">and t.create_time like
+                concat('%',#{createTimeVague},'%')
+            </if>
+            <if test="delFlag != null and delFlag != ''">and t.del_flag = #{delFlag}</if>
+            <if test="delFlagVague != null and delFlagVague != ''">and t.del_flag like concat('%',#{delFlagVague},'%')
+            </if>
+            <if test="sortSq != null and sortSq != ''">and t.sort_sq = #{sortSq}</if>
+            <if test="sortSqVague != null and sortSqVague != ''">and t.sort_sq like concat('%',#{sortSqVague},'%')</if>
+            <if test="title != null and title != ''">and t.title = #{title}</if>
+            <if test="titleVague != null and titleVague != ''">and t.title like concat('%',#{titleVague},'%')</if>
+            <if test="infoType != null and infoType != ''">and t.info_type = #{infoType}</if>
+            <if test="infoTypeVague != null and infoTypeVague != ''">and t.info_type like
+                concat('%',#{infoTypeVague},'%')
+            </if>
+            <if test="infoUrl != null and infoUrl != ''">and t.info_url = #{infoUrl}</if>
+            <if test="infoUrlVague != null and infoUrlVague != ''">and t.info_url like concat('%',#{infoUrlVague},'%')
+            </if>
+            <if test="content != null and content != ''">and t.content = #{content}</if>
+            <if test="contentVague != null and contentVague != ''">and t.content like concat('%',#{contentVague},'%')
+            </if>
+            <if test=" startTime != null and startTime != '' and endTime != null and endTime != '' ">
+                AND DATE_FORMAT( t.info_date, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
+            </if>
+            <if test="infoDate != null and infoDate != ''">and t.info_date = #{infoDate}</if>
+            <if test="infoDateVague != null and infoDateVague != ''">and t.info_date like
+                concat('%',#{infoDateVague},'%')
+            </if>
+            <if test="createUserName != null and createUserName != ''">and t.create_userName = #{createUserName}</if>
+            <if test="createUserNameVague != null and createUserNameVague != ''">and t.create_userName like
+                concat('%',#{createUserNameVague},'%')
+            </if>
+            <if test="createUserGuid != null and createUserGuid != ''">and t.create_userGuid = #{createUserGuid}</if>
+            <if test="createUserGuidVague != null and createUserGuidVague != ''">and t.create_userGuid like
+                concat('%',#{createUserGuidVague},'%')
+            </if>
+            <if test="createDeptName != null and createDeptName != ''">and t.create_deptName = #{createDeptName}</if>
+            <if test="createDeptNameVague != null and createDeptNameVague != ''">and t.create_deptName like
+                concat('%',#{createDeptNameVague},'%')
+            </if>
+            <if test="createDeptGuid != null and createDeptGuid != ''">and t.create_deptGuid = #{createDeptGuid}</if>
+            <if test="createDeptGuidVague != null and createDeptGuidVague != ''">and t.create_deptGuid like
+                concat('%',#{createDeptGuidVague},'%')
+            </if>
+            <if test="status != null and status != ''">and t.status = #{status}</if>
+            <if test="statusVague != null and statusVague != ''">and t.status like concat('%',#{statusVague},'%')</if>
+            <if test="attachGuid != null and attachGuid != ''">and t.attach_guid = #{attachGuid}</if>
+            <if test="attachGuidVague != null and attachGuidVague != ''">and t.attach_guid like
+                concat('%',#{attachGuidVague},'%')
+            </if>
+            <if test="clickTimes != null and clickTimes != ''">and t.click_times = #{clickTimes}</if>
+            <if test="clickTimesVague != null and clickTimesVague != ''">and t.click_times like
+                concat('%',#{clickTimesVague},'%')
+            </if>
+            <if test="typeName != null and typeName != ''">and t.type_name = #{typeName}</if>
+            <if test="typeNameVague != null and typeNameVague != ''">and t.type_name like
+                concat('%',#{typeNameVague},'%')
+            </if>
+            <if test="categoryGuid != null and categoryGuid != ''">and t.category_guid = #{categoryGuid}</if>
+
+            and t.del_flag = 0 and t.status = 1
+        </where>
+    </sql>
+
+    <!--发布选中 -->
+    <update id="deliverInfoById" parameterType="com.basic.javaframe.entity.InformationInfo">
+        update Information_Info set status = 1  where row_id in
+        <foreach collection="array" item="rowId" open="(" separator="," close=")">
+            #{rowId}
+        </foreach>
+    </update>
+
+    <!--停止发布 -->
+    <update id="stopDeliverById" parameterType="com.basic.javaframe.entity.InformationInfo">
+        update Information_Info set status = -1  where row_id in
+        <foreach collection="array" item="rowId" open="(" separator="," close=")">
+            #{rowId}
+        </foreach>
+    </update>
+
+    <!--动态获取信息类型名称-->
+    <update id = "getTypeName" parameterType="com.basic.javaframe.entity.InformationInfo">
+       update Information_Info,frame_codevalue set Information_Info.type_name = frame_codevalue.item_text where frame_codevalue.item_value = Information_Info.info_type and frame_codevalue.code_guid='1c57eb25-b03c-4691-a502-e4a4c46fc745';
+    </update>
+
+    <!--信息发布-->
+    <update id="infoOn" parameterType="com.basic.javaframe.entity.InformationInfo">
+        update Information_Info set sort_sq = 1
+        where row_id=#{rowId}
+    </update>
+
+    <update id="infoOff" parameterType="com.basic.javaframe.entity.InformationInfo">
+        update Information_Info set sort_sq = 0
+        where row_id!=#{rowId}
+    </update>
+    
+    <select id="getMInfoMation" resultType="java.lang.String">
+        select content from Information_Info where sort_sq = 1
+    </select>
+    
+    
+</mapper>

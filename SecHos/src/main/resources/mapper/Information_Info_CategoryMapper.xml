@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basic.javaframe.dao.Information_Info_CategoryDao">
+    <resultMap type="com.basic.javaframe.entity.Information_Info_Category" id="Information_Info_Category">
+        <result property="rowId"    column="row_id"    />
+        <result property="rowGuid" column="row_guid"   />
+        <result property="createTime" column="create_time"   />
+        <result property="delFlag" column="del_flag"   />
+        <result property="infoGuid" column="info_guid"   />
+        <result property="categoryGuid" column="category_guid"/>
+        <result property="sortSq" column="sort_sq"/>
+    </resultMap>
+
+    <!-- 查询角色列表 -->
+    <select id="selectInfoCategoryList" resultType="com.basic.javaframe.entity.Information_Info_Category">
+        select * from Information_Info_Category t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by sort_sq desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="selectInfoCategoryById" resultType="com.basic.javaframe.entity.Information_Info_Category">
+        select * from Information_Info_Category where row_id = #{value}
+    </select>
+
+    <!-- 查询角色数量 -->
+    <select id="getCount" resultType="int">
+        select count(*) from Information_Info_Category t <include refid="where_clause" />
+    </select>
+
+    <!--根据cateGuid查询infoGuid-->
+    <select id="getInfoByCateGuid" resultType="java.lang.String">
+        select info_guid from Information_Info_Category where category_guid =#{categoryGuid}
+    </select>
+
+    <!-- 新增角色  -->
+    <insert id="insert" parameterType="com.basic.javaframe.entity.Information_Info_Category" useGeneratedKeys="true" keyProperty="row_guid">
+        insert into Information_Info_Category (
+			 `row_id`,
+			  `row_guid`,
+			  `create_time`,
+			  `del_flag`,
+			  `info_guid`,
+			  `category_guid`,
+			  `sort_sq`
+		) values (
+			  #{rowId},
+			  #{rowGuid},
+			  #{createTime},
+			  #{delFlag},
+			  #{infoGuid},
+			  #{categoryGuid},
+			  #{sortSq}
+		);
+    </insert>
+    <!-- 更新数据 -->
+    <update id="update" parameterType="com.basic.javaframe.entity.Information_Info_Category">
+        update Information_Info_Category
+        <set>
+            <if test="rowId != null">`row_id` = #{rowId}, </if>
+            <if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
+            <if test="createTime != null">`create_time` = #{createTime}, </if>
+            <if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+            <if test="infoGuid != null">`info_guid` = #{infoGuid}, </if>
+            <if test="categoryGuid != null">`category_guid` = #{categoryGuid}, </if>
+            <if test="sortSq != null">`sort_sq` = #{sortSq}</if>
+        </set>
+        where row_id = #{rowId}
+    </update>
+
+    <!-- 批量删除  -->
+    <delete id="deleteByIds">
+        delete from Information_Info_Category where row_id in
+        <foreach item="rowId" collection="array" open="(" separator="," close=")">
+            #{rowId}
+        </foreach>
+    </delete>
+
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+            <if test="rowGuid != null and rowGuid != ''"> and t.row_guid = #{rowGuid} </if>
+            <if test="createTime != null and createTime != ''"> and t.create_time =#{createTime} </if>
+            <if test="delFlag != null and delFlag != ''"> and t.del_flag ={delFlag} </if>
+            <if test="infoGuid != null and infoGuid != ''"> and t.info_guid =#{infoGuid} </if>
+            <if test="categoryGuid != null and categoryGuid != ''"> and t.category_guid = #{categoryGuid} </if>
+            <if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
+
+        </where>
+    </sql>
+</mapper>

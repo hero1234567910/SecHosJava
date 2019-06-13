@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basic.javaframe.dao.Form_TableFieldDao">
+    <resultMap type="com.basic.javaframe.entity.Form_TableField" id="Form_TableField">
+        <result property="rowId"    column="row_id"    />
+        <result property="rowGuid" column="row_guid"   />
+        <result property="fieldName" column="field_name"   />
+        <result property="fieldType" column="field_type"   />
+        <result property="fieldLength" column="field_length"   />
+        <result property="decimalLength" column="decimal_length"/>
+        <result property="fieldDisplayName" column="field_displayName"/>
+        <result property="sortSq" column="sort_sq"/>
+        <result property="isQueryCondition" column="is_querycondition"/>
+        <result property="mustFill" column="must_fill"/>
+        <result property="fieldDisplayType" column="field_displaytype"/>
+        <result property="showInadd" column="show_inadd"/>
+        <result property="allowTo" column="allow_to"/>
+        <result property="codesGuid" column="codes_guid"/>
+        <association property="rowGuid" column="row_guid" javaType="com.basic.javaframe.entity.Form_TableInfo">
+            <id property="rowId" column="rowId"/>
+            <result property="rowGuid" column="row_guid"/>
+        </association>
+
+    </resultMap>
+
+    <!-- 查询角色列表 -->
+    <select id="selectFormTableFieldList" resultType="com.basic.javaframe.entity.Form_TableField">
+        select * from form_tablefield t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by sort_sq desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <!--查询表单关联字段-->
+    <select id="getAllowTo"  resultType="com.basic.javaframe.entity.Form_TableField">
+        select t.row_id,t.field_name,t.field_type,t.field_displayName,t.must_fill,t.field_length,t.decimal_length,t.show_inadd,t.field_displaytype,t.is_querycondition from form_tablefield t ,form_tableinfo t1 where  t.allow_to =#{rowGuid}
+    </select>
+
+    <!-- 查询角色数量 -->
+    <select id="getCount" resultType="int">
+        select count(*) from form_tablefield t <include refid="where_clause" />
+    </select>
+	
+    <select id="selectFieldByTableName" resultType="com.basic.javaframe.entity.Form_TableField">
+        select * from form_tablefield where allow_to = #{rowGuid}
+    </select>
+    
+    <!-- 新增角色  -->
+    <insert id="insertFormTableField" parameterType="com.basic.javaframe.entity.Form_TableField" useGeneratedKeys="true" keyProperty="row_id">
+        insert into form_tablefield (
+			 `row_id`,
+			  `row_guid`,
+			  `field_name`,
+			  `field_type`,
+			  `field_length`,
+			  `decimal_length`,
+			  `field_displayName`,
+			  `sort_sq`,
+			  `is_querycondition`,
+			  `must_fill`,
+			  `field_displaytype`,
+			  `show_inadd`,
+			  `allow_to`,
+			  `codes_guid`
+		) values (
+			  #{rowId},
+			  #{rowGuid},
+			  #{fieldName},
+			  #{fieldType},
+			  #{fieldLength},
+			  #{decimalLength},
+			  #{fieldDisplayName},
+			  #{sortSq},
+			  #{isQueryCondition},
+			  #{mustFill},
+			  #{fieldDisplayType},
+			  #{showInadd},
+			  #{allowTo},
+			  #{codesGuid}
+
+		);
+    </insert>
+
+    <!-- 更新数据 -->
+    <update id="updateFormTableField" parameterType="com.basic.javaframe.entity.Form_TableField">
+        update form_tablefield
+        <set>
+            <if test="rowId != null">`row_id` = #{rowId}, </if>
+            <if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
+            <if test="fieldName != null">`field_name` = #{fieldName}, </if>
+            <if test="fieldType != null">`field_type` = #{fieldType}, </if>
+            <if test="fieldLength != null">`field_length` = #{fieldLength}, </if>
+            <if test="decimalLength != null">`decimal_length` = #{decimalLength}, </if>
+            <if test="fieldDisplayName != null">`field_displayName` = #{fieldDisplayName},</if>
+            <if test="sortSq != null">`sort_sq` = #{sortSq},</if>
+            <if test="isQueryCondition != null">`is_querycondition` = #{isQueryCondition},</if>
+            <if test="mustFill != null">`must_fill` = #{mustFill},</if>
+            <if test="fieldDisplayType != null">`field_displaytype` = #{fieldDisplayType},</if>
+            <if test="showInadd != null">`show_inadd` = #{showInadd},</if>
+            <if test="allowTo != null">`allow_to` = #{allowTo},</if>
+            <if test="codesGuid != null">`codes_guid` = #{codesGuid}</if>
+        </set>
+        where row_id = #{rowId}
+    </update>
+
+    <!-- 批量删除  -->
+    <delete id="deleteFormTableFieldById">
+        delete from form_tablefield  where row_id in
+        <foreach item="rowId" collection="array" open="(" separator="," close=")">
+            #{rowId}
+        </foreach>
+    </delete>
+
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+            <if test="rowGuid != null and rowGuid != ''"> and t.row_guid = #{rowGuid} </if>
+            <if test="fieldName != null and fieldName != ''"> and t.field_name =#{fieldName} </if>
+            <if test="fieldType != null and fieldType != ''"> and t.field_type =#{fieldType} </if>
+            <if test="fieldLength != null and fieldLength != ''"> and t.field_length =#{fieldLength} </if>
+            <if test="decimalLength != null and decimalLength != ''"> and t.decimal_length = #{decimalLength} </if>
+            <if test="fieldDisplayName != null and fieldDisplayName != ''"> and t.field_dispalyName = #{fieldDisplayName} </if>
+            <if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
+            <if test="isQueryCondition != null and isQueryCondition != ''"> and t.is_querycondition = #{isQueryCondition} </if>
+            <if test="mustFill != null and mustFill != ''"> and t.must_fill = #{mustFill} </if>
+            <if test="fieldDisplayType != null and fieldDisplayType != ''"> and t.field_displaytype= #{fieldDisplayType} </if>
+            <if test="showInadd != null and showInadd != ''"> and t.show_inadd = #{showInadd} </if>
+            <if test="allowTo !=null and allowTo !=''"> and t.allow_to = #{allowTo}</if>
+            <if test="codesGuid !=null and codesGuid !=''"> and t.codes_guid = #{codesGuid}</if>
+        </where>
+    </sql>
+</mapper>

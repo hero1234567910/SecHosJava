@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.Frame_ConfigDao">
+
+    <resultMap id="Frame_Config" type="com.basic.javaframe.entity.Frame_Config">
+        <result property="rowId" column="row_id"></result>
+        <result property="rowGuid" column="row_guid"></result>
+        <result property="categoryGuid" column="category_guid"></result>
+        <result property="configName" column="config_name"></result>
+        <result property="configValue" column="config_value"></result>
+        <result property="description" column="description"></result>
+        <result property="sortSq" column="sort_sq"></result>
+    </resultMap>
+
+    <!--获取系统参数列表-->
+    <select id="getConfig" resultType="com.basic.javaframe.entity.Frame_Config">
+        select * from frame_config t
+        <include refid="where_clause"/>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by sort_sq desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <!-- 获取参数类别数量 -->
+    <select id="getCount" resultType="int">
+        select count(*) from frame_config t
+        <include refid="where_clause"/>
+    </select>
+
+
+    <!--获取默认密码-->
+    <select id="getDefaultPassWord" resultType="java.lang.String">
+        select config_value from frame_config t where
+        t.row_guid = '344e9e76-00ea-470d-8dc4-368c3f058770'
+    </select>
+
+    <!--查询基本参数关联字段-->
+    <select id="getAllowTo"  resultType="com.basic.javaframe.entity.Form_TableField">
+        select t.row_id,t.config_name,t.config_value,t.description,t.sort_sq from frame_config t ,frame_configcategory t1 where  t.category_guid =#{rowGuid}
+    </select>
+
+    <!--增加参数类别 -->
+    <insert id="insertConfig" parameterType="com.basic.javaframe.entity.Frame_Config" useGeneratedKeys="true"
+            keyProperty="row_id">
+		insert into frame_config (
+			  `row_id`,
+			  `row_guid`,
+			  `category_guid`,
+			  `config_name`,
+			  `config_value`,
+			  `description`,
+			  `sort_sq`
+		) values (
+			  #{rowId},
+			  #{rowGuid},
+			  #{categoryGuid},
+			  #{configName},
+			  #{configValue},
+			  #{description},
+			  #{sortSq}
+		);
+	</insert>
+
+    <!--更新参数类别-->
+    <update id="updateConfig" parameterType="com.basic.javaframe.entity.Frame_Config">
+        update frame_config
+        <set>
+            <if test="rowId != null">`row_id` = #{rowId},</if>
+            <if test="rowGuid != null">`row_guid` = #{rowGuid},</if>
+            <if test="categoryGuid != null">`category_guid` = #{categoryGuid},</if>
+            <if test="configName != null">`config_name` = #{configName},</if>
+            <if test="configValue != null">`config_value` = #{configValue},</if>
+            <if test="description != null">`description` = #{description},</if>
+            <if test="sortSq != null">`sort_sq` = #{sortSq}</if>
+        </set>
+        where row_id = #{rowId}
+    </update>
+
+    <!--批量删除参数类别-->
+    <delete id="deleteConfig" parameterType="java.lang.Integer">
+        delete from frame_config where row_id in
+        <foreach collection="array" item="rowId" open="(" separator="," close=")">
+            #{rowId}
+        </foreach>
+    </delete>
+
+    <!-- 根据类别行号批量删除  -->
+    <delete id="deleteConfigByCategoryGuid">
+        delete from frame_config where category_guid =#{categoryGuid}
+    </delete>
+
+    <!--验证参数名是否重复-->
+    <select id="checkConfigName" resultType="int">
+        select count(*) from frame_config t<include refid="where_clause2" />
+    </select>
+	
+    <select id="getConfigByName" resultType="com.basic.javaframe.entity.Frame_Config">
+        select * from frame_config where config_name = #{name}
+    </select>
+    
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId  != null and rowId  != ''">and t.row_id = #{rowId }</if>
+            <if test="rowGuid  != null and rowGuid  != ''">and t.row_guid = #{rowGuid }</if>
+            <if test="categoryGuid != null and categoryGuid !=''">and t.category_guid = #{categoryGuid}</if>
+            <if test="configName != null and configName !=''">and t.config_name like concat('%',#{configName},'%')</if>
+            <if test="configNameValue != null and configNameValue != ''"> and t.config_name = #{configNameValue}</if>
+            <if test="configValue != null and configValue !=''">and t.config_value = #{configValue}</if>
+            <if test="description != null and description !=''">and t.description = #{description}</if>
+            <if test="sortSq  != null and sortSq!= ''">and t.sort_sq = #{sortSq }</if>
+        </where>
+    </sql>
+
+    <sql id="where_clause2">
+        <where>
+            1=1
+            <if test="rowId  != null and rowId  != ''">and t.row_id = #{rowId }</if>
+            <if test="rowGuid  != null and rowGuid  != ''">and t.row_guid != #{rowGuid }</if>
+            <if test="categoryGuid != null and categoryGuid !=''">and t.category_guid = #{categoryGuid}</if>
+            <if test="configName != null and configName !=''">and t.config_name like concat('%',#{configName},'%')</if>
+            <if test="configNameValue != null and configNameValue != ''"> and t.config_name = #{configNameValue}</if>
+            <if test="configValue != null and configValue !=''">and t.config_value = #{configValue}</if>
+            <if test="description != null and description !=''">and t.description = #{description}</if>
+            <if test="sortSq  != null and sortSq!= ''">and t.sort_sq = #{sortSq }</if>
+        </where>
+    </sql>
+
+</mapper>

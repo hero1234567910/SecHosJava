@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basic.javaframe.dao.Frame_AttachDao">
+    <resultMap type="com.basic.javaframe.entity.Frame_Attach" id="Frame_Attach">
+        <result property="rowId"    column="row_id"    />
+        <result property="rowGuid" column="row_guid"   />
+        <result property="createTime" column="create_time"/>
+        <result property="delFlag" column="del_flag"   />
+        <result property="attachName" column="attach_name"   />
+        <result property="contentType" column="content_type"   />
+        <result property="contentLength" column="content_length"/>
+        <result property="contentUrl" column="content_url"/>
+        <result property="formRowGuid" column="form_rowGuid"/>
+        <result property="sortSq" column="sort_sq"/>
+    </resultMap>
+
+    <!-- 查询角色列表 -->
+    <select id="selectFrameAttachList" resultType="com.basic.javaframe.entity.Frame_Attach">
+        select * from frame_attach t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by sort_sq desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="selectFrameAttachById" resultType="com.basic.javaframe.entity.Frame_Attach">
+        select * from frame_attach where row_id = #{value}
+    </select>
+	
+    <select id="getAttachList" resultType="com.basic.javaframe.entity.Frame_Attach">
+        select * from frame_attach where form_rowGuid = #{guid}
+    </select>
+    
+    <!-- 查询角色数量 -->
+    <select id="getCount" resultType="int">
+        select count(*) from frame_attach t <include refid="where_clause" />
+    </select>
+
+    <!-- 新增角色  -->
+    <insert id="insertFrameAttach" parameterType="com.basic.javaframe.entity.Frame_Attach" useGeneratedKeys="true" keyProperty="row_guid">
+        insert into frame_attach (
+			 `row_id`,
+			  `row_guid`,
+			  `create_time`,
+			  `del_flag`,
+			  `attach_name`,
+			  `content_type`,
+			  `content_length`,
+			  `content_url`,
+			  `form_rowGuid`,
+			  `sort_sq`
+		) values (
+			  #{rowId},
+			  #{rowGuid},
+			  #{createTime},
+			  #{delFlag},
+			  #{attachName},
+			  #{contentType},
+			  #{contentLength},
+			  #{contentUrl},
+			  #{formRowGuid},
+			  #{sortSq}
+		);
+    </insert>
+
+    <!-- 更新数据 -->
+    <update id="updateFrameAttach" parameterType="com.basic.javaframe.entity.Frame_Attach">
+        update frame_attach
+        <set>
+            <if test="rowId != null">`row_id` = #{rowId}, </if>
+            <if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
+            <if test="createTime != null">`create_time` = #{createTime}, </if>
+            <if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+            <if test="attachName != null">`attach_name` = #{attachName}, </if>
+            <if test="contentType != null">`content_type` = #{contentType}, </if>
+            <if test="contentLength != null">`content_length` = #{contentLength}, </if>
+            <if test="contentUrl != null">`content_url` = #{contentUrl}, </if>
+            <if test="formRowGuid != null">`form_rowGuid` = #{formRowGuid}, </if>
+            <if test="sortSq != null">`sort_sq` = #{sortSq}</if>
+        </set>
+        where row_id = #{rowId}
+    </update>
+	
+    <update id="updateAttach">
+        update frame_attach set form_rowGuid = #{attachGuid} where row_guid in 
+        <foreach item="rowGuid" collection="rowGuid" open="(" separator="," close=")">
+            #{rowGuid}
+        </foreach>
+    </update>
+    
+    <!-- 批量删除  -->
+    <delete id="deleteFrameAttachById">
+        delete from frame_attach where row_guid in
+        <foreach item="guid" collection="guids" open="(" separator="," close=")">
+            #{guid}
+        </foreach>
+    </delete>
+	
+    <!--  根据记录标识查询附件 -->
+    <select id="getByFormGuid" resultType="com.basic.javaframe.entity.Frame_Attach">
+        select * from frame_attach where row_guid = #{guid}
+    </select>
+    
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+            <if test="rowGuid != null and rowGuid != ''"> and t.row_guid = #{rowGuid} </if>
+            <if test="createTime != null and createTime != ''"> and t.create_time =#{createTime} </if>
+            <if test="delFlag != null and delFlag != ''"> and t.del_flag =#{delFlag} </if>
+            <if test="attachName != null and attachName != ''"> and t.attach_name =#{attachName} </if>
+            <if test="contentType != null and contentType != ''"> and t.content_type = #{contentType} </if>
+            <if test="contentLength != null and contentLength != ''"> and t.content_length = #{contentLength} </if>
+            <if test="contentUrl != null and contentUrl != ''"> and t.content_url = #{contentUrl} </if>
+            <if test="formRowGuid != null and formRowGuid != ''"> and t.form_rowGuid = #{formRowGuid} </if>
+            <if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
+        </where>
+    </sql>
+</mapper>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.basic.javaframe.dao.Frame_Role_UserDao">
+
+    <resultMap type="com.basic.javaframe.entity.Frame_Role_User" id="Frame_Role_User">
+        <result property="rowId"    column="row_id"    />
+        <result property="userGuid"    column="user_guid"    />
+        <result property="roleGuid"    column="row_guid"    />
+    </resultMap>
+
+    <!-- 查询用户与角色关系列表 -->
+    <select id="selectFrameRoleUserList" resultType="com.basic.javaframe.entity.Frame_Role_User">
+        select * from frame_role_user t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by sort_sq desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+	
+    <select id="getCheckedRole" resultType="string">
+        select role_guid from frame_role_user where user_guid = #{userGuid}
+    </select>
+    
+    <!-- 查询数量 -->
+    <select id="getCount" resultType="int">
+        select count(*) from frame_role_user t <include refid="where_clause" />
+    </select>
+
+    <!-- 新增部门  -->
+    <insert id="insertFrameRoleUser" parameterType="com.basic.javaframe.entity.Frame_Role_User" useGeneratedKeys="true" keyProperty="row_id">
+        insert into frame_role_user (
+			  `row_id`,
+			  `user_guid`,
+			  `role_guid`
+		) values (
+			  #{rowId},
+			  #{userGuid},
+			  #{roleGuid}
+		);
+    </insert>
+    
+    <!--批量新增-->
+    <insert id="insertBatch" parameterType="java.util.List" useGeneratedKeys="true">
+		insert into frame_role_user(
+		      `row_id`,
+			  `user_guid`,
+			  `role_guid`
+		)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.rowId},
+            #{item.userGuid},
+            #{item.roleGuid}
+            )
+        </foreach>
+	</insert>
+
+    <!-- 更新数据 -->
+    <update id="updateFrameRoleUser" parameterType="com.basic.javaframe.entity.Frame_Dept">
+        update frame_dept
+        <set>
+            <if test="rowId != null">`row_id` = #{rowId}, </if>
+            <if test="userGuid != null">`user_guid` = #{userGuid}, </if>
+            <if test="roleGuid != null">`role_guid` = #{roleGuid} </if>
+        </set>
+        where row_id = #{rowId}
+    </update>
+	
+    <delete id="deleteByUserId">
+        delete from frame_role_user where user_guid = #{userGuid}
+    </delete>
+
+    <delete id="deleteRoleUserByGuid">
+        delete from frame_role_user where user_guid in
+        <foreach collection="userGuid" item="userGuid" open="(" separator="," close=")">
+            #{userGuid}
+        </foreach>
+    </delete>
+
+
+    <!-- 批量删除  -->
+    <delete id="deleteFrameRoleUser">
+        update frame_role_user set `del_flag` = 1 where row_id in
+        <foreach item="rowId" collection="array" open="(" separator="," close=")">
+            #{rowId}
+        </foreach>
+    </delete>
+
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+            <if test="userGuid != null and userGuid != ''"> and t.user_guid = #{userGuid} </if>
+            <if test="roleGuid != null and roleGuid != ''"> and t.role_guid = #{roleGuid} </if>
+        </where>
+    </sql>
+</mapper>

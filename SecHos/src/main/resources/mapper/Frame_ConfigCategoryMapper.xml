@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.Frame_ConfigCategoryDao">
+
+    <resultMap id="Frame_ConfigCategory" type="com.basic.javaframe.entity.Frame_ConfigCateGory">
+        <result property="rowId" column="row_id"></result>
+        <result property="rowGuid" column="row_guid"></result>
+        <result property="categoryName" column="category_name"></result>
+        <result property="sortSq" column="sort_sq"></result>
+    </resultMap>
+
+    <!--获取系统参数列表-->
+    <select id="getConfigCategory" resultType="com.basic.javaframe.entity.Frame_ConfigCateGory">
+        select * from frame_configcategory t
+        <include refid="where_clause"/>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by t.sort_sq desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <!--查询所有参数类别-->
+    <select id="getAllCategory" resultType="com.basic.javaframe.entity.Frame_ConfigCateGory">
+        select * from frame_configcategory
+    </select>
+
+    <!-- 获取参数类别数量 -->
+    <select id="getCount" resultType="int">
+        select count(*) from frame_configcategory t
+        <include refid="where_clause"/>
+    </select>
+
+
+    <!--增加系统参数 -->
+    <insert id="insertConfigCategory" parameterType="com.basic.javaframe.entity.Frame_ConfigCateGory"
+            useGeneratedKeys="true"
+            keyProperty="row_id">
+		insert into frame_configcategory (
+			  `row_id`,
+			  `row_guid`,
+			  `category_name`,
+			  `sort_sq`
+		) values (
+			  #{rowId},
+			  #{rowGuid},
+			  #{categoryName},
+			  #{sortSq}
+		);
+	</insert>
+
+    <!--更新系统参数类别-->
+    <update id="updateConfigCategory" parameterType="com.basic.javaframe.entity.Frame_ConfigCateGory">
+        update frame_configcategory
+        <set>
+            <if test="rowId != null">`row_id` = #{rowId},</if>
+            <if test="rowGuid != null">`row_guid` = #{rowGuid},</if>
+            <if test="sortSq != null">`sort_sq` = #{sortSq},</if>
+            <if test="categoryName != null">`category_name` = #{categoryName}</if>
+        </set>
+        where row_id = #{rowId}
+    </update>
+
+    <!--删除参数类别-->
+    <delete id="deleteConfigCategory" parameterType="java.lang.String">
+        delete from frame_configcategory where row_guid = #{rowGuid}
+    </delete>
+
+    <!--类别名重复性验证-->
+    <select id="checkCategoryName" resultType="int">
+        select count(*) from frame_configcategory t
+        <include refid="where_clause"/>
+    </select>
+
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId  != null and rowId  != ''">and t.row_id = #{rowId }</if>
+            <if test="rowGuid  != null and rowGuid  != ''">and t.row_guid = #{rowGuid }</if>
+            <if test="categoryName != null and categoryName !=''">and t.category_name = #{categoryName}</if>
+            <if test="sortSq  != null and sortSq!= ''">and t.sort_sq = #{sortSq }</if>
+        </where>
+    </sql>
+
+</mapper>
