@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.PatientDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.basic.javaframe.entity.Patient" id="patientMap">
+        <result property="rowId" column="row_id"/>
+        <result property="rowGuid" column="row_guid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="sortSq" column="sort_sq"/>
+        <result property="patientBirth" column="patient_birth"/>
+        <result property="patientName" column="patient_name"/>
+        <result property="patientSex" column="patient_sex"/>
+        <result property="patientIdcard" column="patient_idcard"/>
+        <result property="patientAddress" column="patient_address"/>
+        <result property="patientMobile" column="patient_mobile"/>
+        <result property="openid" column="openid"/>
+        <result property="patid" column="patid"/>
+    </resultMap>
+
+	<select id="getList" resultType="com.basic.javaframe.entity.Patient">
+		select * from patient t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by row_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="getCount" resultType="int">
+		select count(*) from patient t  <include refid="where_clause" />
+	</select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+    		<if test="rowIdVague != null and rowIdVague != ''"> and t.row_id like concat('%',#{rowIdVague},'%') </if>
+            <if test="rowGuid != null and rowGuid != ''"> and t.row_guid = #{rowGuid} </if>
+    		<if test="rowGuidVague != null and rowGuidVague != ''"> and t.row_guid like concat('%',#{rowGuidVague},'%') </if>
+            <if test="createTime != null and createTime != ''"> and t.create_time = #{createTime} </if>
+    		<if test="createTimeVague != null and createTimeVague != ''"> and t.create_time like concat('%',#{createTimeVague},'%') </if>
+            <if test="delFlag != null and delFlag != ''"> and t.del_flag = #{delFlag} </if>
+    		<if test="delFlagVague != null and delFlagVague != ''"> and t.del_flag like concat('%',#{delFlagVague},'%') </if>
+            <if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
+    		<if test="sortSqVague != null and sortSqVague != ''"> and t.sort_sq like concat('%',#{sortSqVague},'%') </if>
+            <if test="patientBirth != null and patientBirth != ''"> and t.patient_birth = #{patientBirth} </if>
+    		<if test="patientBirthVague != null and patientBirthVague != ''"> and t.patient_birth like concat('%',#{patientBirthVague},'%') </if>
+            <if test="patientName != null and patientName != ''"> and t.patient_name = #{patientName} </if>
+    		<if test="patientNameVague != null and patientNameVague != ''"> and t.patient_name like concat('%',#{patientNameVague},'%') </if>
+            <if test="patientSex != null and patientSex != ''"> and t.patient_sex = #{patientSex} </if>
+    		<if test="patientSexVague != null and patientSexVague != ''"> and t.patient_sex like concat('%',#{patientSexVague},'%') </if>
+            <if test="patientIdcard != null and patientIdcard != ''"> and t.patient_idcard = #{patientIdcard} </if>
+    		<if test="patientIdcardVague != null and patientIdcardVague != ''"> and t.patient_idcard like concat('%',#{patientIdcardVague},'%') </if>
+            <if test="patientAddress != null and patientAddress != ''"> and t.patient_address = #{patientAddress} </if>
+    		<if test="patientAddressVague != null and patientAddressVague != ''"> and t.patient_address like concat('%',#{patientAddressVague},'%') </if>
+            <if test="patientMobile != null and patientMobile != ''"> and t.patient_mobile = #{patientMobile} </if>
+    		<if test="patientMobileVague != null and patientMobileVague != ''"> and t.patient_mobile like concat('%',#{patientMobileVague},'%') </if>
+            <if test="openid != null and openid != ''"> and t.openid = #{openid} </if>
+    		<if test="openidVague != null and openidVague != ''"> and t.openid like concat('%',#{openidVague},'%') </if>
+            <if test="patid != null and patid != ''"> and t.patid = #{patid} </if>
+    		<if test="patidVague != null and patidVague != ''"> and t.patid like concat('%',#{patidVague},'%') </if>
+        </where>
+    </sql>
+	 
+	<insert id="save" parameterType="com.basic.javaframe.entity.Patient" useGeneratedKeys="true" keyProperty="rowId">
+		insert into patient
+		(
+			`row_guid`, 
+			`create_time`, 
+			`del_flag`, 
+			`sort_sq`, 
+			`patient_birth`, 
+			`patient_name`, 
+			`patient_sex`, 
+			`patient_idcard`, 
+			`patient_address`, 
+			`patient_mobile`, 
+			`openid`, 
+			`patid`
+		)
+		values
+		(
+			#{rowGuid}, 
+			#{createTime}, 
+			#{delFlag}, 
+			#{sortSq}, 
+			#{patientBirth}, 
+			#{patientName}, 
+			#{patientSex}, 
+			#{patientIdcard}, 
+			#{patientAddress}, 
+			#{patientMobile}, 
+			#{openid}, 
+			#{patid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.basic.javaframe.entity.Patient">
+		update patient 
+		<set>
+			<if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+			<if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+			<if test="patientBirth != null">`patient_birth` = #{patientBirth}, </if>
+			<if test="patientName != null">`patient_name` = #{patientName}, </if>
+			<if test="patientSex != null">`patient_sex` = #{patientSex}, </if>
+			<if test="patientIdcard != null">`patient_idcard` = #{patientIdcard}, </if>
+			<if test="patientAddress != null">`patient_address` = #{patientAddress}, </if>
+			<if test="patientMobile != null">`patient_mobile` = #{patientMobile}, </if>
+			<if test="openid != null">`openid` = #{openid}, </if>
+			<if test="patid != null">`patid` = #{patid}</if>
+		</set>
+		where row_guid = #{rowGuid}
+	</update>
+	
+	<delete id="deleteBatch">
+		update patient set `del_flag` = 1 where row_guid in 
+		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+			#{rowGuid}
+		</foreach>
+	</delete>
+
+</mapper>
