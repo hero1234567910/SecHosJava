@@ -22,7 +22,7 @@
     </resultMap>
 
 	<select id="getList" resultType="com.basic.javaframe.entity.SecHos_Patient">
-		select * from secHosPatient t <include refid="where_clause" />
+		select * from sechos_patient t <include refid="where_clause" />
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -37,7 +37,7 @@
 	</select>
 	
  	<select id="getCount" resultType="int">
-		select count(*) from secHosPatient t  <include refid="where_clause" />
+		select count(*) from sechos_patient t  <include refid="where_clause" />
 	</select>
 
     <!-- 搜索数据区域 -->
@@ -75,7 +75,7 @@
     </sql>
 	 
 	<insert id="save" parameterType="com.basic.javaframe.entity.SecHos_Patient" useGeneratedKeys="true" keyProperty="rowId">
-		insert into secHosPatient
+		insert into sechos_patient
 		(
 			`row_guid`, 
 			`create_time`, 
@@ -110,7 +110,7 @@
 	</insert>
 	 
 	<update id="update" parameterType="com.basic.javaframe.entity.SecHos_Patient">
-		update secHosPatient
+		update sechos_patient
 		<set>
 			<if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
 			<if test="createTime != null">`create_time` = #{createTime}, </if>
@@ -130,7 +130,7 @@
 	</update>
 	
 	<delete id="deleteBatch">
-		update secHosPatient set `del_flag` = 1 where row_guid in
+		update sechos_patient set `del_flag` = 1 where row_guid in
 		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
 			#{rowGuid}
 		</foreach>
@@ -138,6 +138,6 @@
 
 	<!--根据openid查询就诊人-->
 	<select id="getPatientByOpenid" resultType="com.basic.javaframe.entity.SecHos_Patient">
-		select * from secHosPatient where openid =#{openid} and del_flag=0
+		select * from sechos_patient where openid =#{openid} and del_flag=0
 	</select>
 </mapper>
