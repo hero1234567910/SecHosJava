@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.basic.javaframe.dao.PatientDao">
+<mapper namespace="com.basic.javaframe.dao.SecHos_PatientDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.basic.javaframe.entity.Patient" id="patientMap">
+    <resultMap type="com.basic.javaframe.entity.SecHos_Patient" id="patientMap">
         <result property="rowId" column="row_id"/>
         <result property="rowGuid" column="row_guid"/>
         <result property="createTime" column="create_time"/>
@@ -21,8 +21,8 @@
 		<result property="headImgUrl" column="headimgUrl"/>
     </resultMap>
 
-	<select id="getList" resultType="com.basic.javaframe.entity.Patient">
-		select * from patient t <include refid="where_clause" />
+	<select id="getList" resultType="com.basic.javaframe.entity.SecHos_Patient">
+		select * from secHosPatient t <include refid="where_clause" />
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -37,7 +37,7 @@
 	</select>
 	
  	<select id="getCount" resultType="int">
-		select count(*) from patient t  <include refid="where_clause" />
+		select count(*) from secHosPatient t  <include refid="where_clause" />
 	</select>
 
     <!-- 搜索数据区域 -->
@@ -74,8 +74,8 @@
         </where>
     </sql>
 	 
-	<insert id="save" parameterType="com.basic.javaframe.entity.Patient" useGeneratedKeys="true" keyProperty="rowId">
-		insert into patient
+	<insert id="save" parameterType="com.basic.javaframe.entity.SecHos_Patient" useGeneratedKeys="true" keyProperty="rowId">
+		insert into secHosPatient
 		(
 			`row_guid`, 
 			`create_time`, 
@@ -109,8 +109,8 @@
 		)
 	</insert>
 	 
-	<update id="update" parameterType="com.basic.javaframe.entity.Patient">
-		update patient 
+	<update id="update" parameterType="com.basic.javaframe.entity.SecHos_Patient">
+		update secHosPatient
 		<set>
 			<if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
 			<if test="createTime != null">`create_time` = #{createTime}, </if>
@@ -130,14 +130,14 @@
 	</update>
 	
 	<delete id="deleteBatch">
-		update patient set `del_flag` = 1 where row_guid in 
+		update secHosPatient set `del_flag` = 1 where row_guid in
 		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
 			#{rowGuid}
 		</foreach>
 	</delete>
 
 	<!--根据openid查询就诊人-->
-	<select id="getPatientByOpenid" resultType="com.basic.javaframe.entity.Patient">
-		select * from patient where openid =#{openid} and del_flag=0
+	<select id="getPatientByOpenid" resultType="com.basic.javaframe.entity.SecHos_Patient">
+		select * from secHosPatient where openid =#{openid} and del_flag=0
 	</select>
 </mapper>

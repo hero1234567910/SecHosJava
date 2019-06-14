@@ -5,17 +5,14 @@ import java.util.List;
 import java.util.Map;
 import com.basic.javaframe.common.utils.DateUtil;
 import com.basic.javaframe.common.utils.LayuiUtil;
+import com.basic.javaframe.entity.SecHos_Patient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
-import javax.servlet.http.HttpServletRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 import com.basic.javaframe.common.customclass.PassToken;
-import com.basic.javaframe.entity.Patient;
-import com.basic.javaframe.service.PatientService;
+import com.basic.javaframe.service.SecHos_PatientService;
 import com.basic.javaframe.common.utils.PageUtils;
 import com.basic.javaframe.common.utils.Query;
 import com.basic.javaframe.common.utils.R;
@@ -31,9 +28,9 @@ import com.basic.javaframe.common.utils.R;
 @RestController
 @CrossOrigin
 @RequestMapping("sys/patient")
-public class PatientController {
+public class SecHos_PatientController {
 	@Autowired
-	private PatientService patientService;
+	private SecHos_PatientService secHosPatientService;
 	
 	/**
 	 * 列表数据
@@ -45,9 +42,9 @@ public class PatientController {
 	public LayuiUtil listData(@RequestParam Map<String, Object> params){
 		//查询列表数据
         Query query = new Query(params);
-		List<Patient> patientList = patientService.getList(query);
-		int total = patientService.getCount(query);
-		PageUtils pageUtil = new PageUtils(patientList, total, query.getLimit(), query.getPage());
+		List<SecHos_Patient> secHosPatientList = secHosPatientService.getList(query);
+		int total = secHosPatientService.getCount(query);
+		PageUtils pageUtil = new PageUtils(secHosPatientList, total, query.getLimit(), query.getPage());
 		return LayuiUtil.data(pageUtil.getTotalCount(), pageUtil.getList());
 	}
 
@@ -57,17 +54,17 @@ public class PatientController {
     @ApiOperation(value="添加患者")
     @ResponseBody
     @RequestMapping(value="/add",produces="application/json;charset=utf-8",method=RequestMethod.POST)
-    public R add(@RequestBody Patient patient){
+    public R add(@RequestBody SecHos_Patient secHosPatient){
     	//如果排序号为空，则自动转为0
-    	if (patient.getSortSq() == null) {
-			patient.setSortSq(0);
+    	if (secHosPatient.getSortSq() == null) {
+			secHosPatient.setSortSq(0);
 		}
     	//生成uuid作为rowguid
         String uuid = java.util.UUID.randomUUID().toString();
-		patient.setRowGuid(uuid);
+		secHosPatient.setRowGuid(uuid);
 		Date createTime = DateUtil.changeDate(new Date());
-		patient.setCreateTime(createTime);
-		patientService.save(patient);
+		secHosPatient.setCreateTime(createTime);
+		secHosPatientService.save(secHosPatient);
         return R.ok();  
     }
 
@@ -77,8 +74,8 @@ public class PatientController {
 	@ApiOperation(value="修改患者")
     @ResponseBody
 	@RequestMapping(value="/update", produces = "application/json; charset=utf-8", method=RequestMethod.PUT)
-	public R update(@RequestBody Patient patient){
-		patientService.update(patient);
+	public R update(@RequestBody SecHos_Patient secHosPatient){
+		secHosPatientService.update(secHosPatient);
 		return R.ok();
 	}
 
@@ -89,7 +86,7 @@ public class PatientController {
 	@ResponseBody
 	@RequestMapping(value="/delete",produces="application/json;charset=utf-8",method=RequestMethod.POST)
 	public R delete(@RequestBody String[] rowGuids){
-		patientService.deleteBatch(rowGuids);
+		secHosPatientService.deleteBatch(rowGuids);
 		return R.ok();
 	}
 	

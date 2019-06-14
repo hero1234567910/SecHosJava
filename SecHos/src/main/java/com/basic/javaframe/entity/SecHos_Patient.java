@@ -6,11 +6,11 @@ import java.util.Date;
 
 
  /**
- * <p>Title: Patient</p>
+ * <p>Title: SecHos_Patient</p>
  * <p>Description:</p>
  * @author 
  */
-public class Patient implements Serializable {
+public class SecHos_Patient implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/****/
