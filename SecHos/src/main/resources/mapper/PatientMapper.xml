@@ -18,6 +18,7 @@
         <result property="patientMobile" column="patient_mobile"/>
         <result property="openid" column="openid"/>
         <result property="patid" column="patid"/>
+		<result property="headImgUrl" column="headimgUrl"/>
     </resultMap>
 
 	<select id="getList" resultType="com.basic.javaframe.entity.Patient">
@@ -69,6 +70,7 @@
     		<if test="openidVague != null and openidVague != ''"> and t.openid like concat('%',#{openidVague},'%') </if>
             <if test="patid != null and patid != ''"> and t.patid = #{patid} </if>
     		<if test="patidVague != null and patidVague != ''"> and t.patid like concat('%',#{patidVague},'%') </if>
+			<if test="headImgUrl != null and headImgUrl != ''"> and t.headimgUrl = #{headImgUrl} </if>
         </where>
     </sql>
 	 
@@ -86,7 +88,8 @@
 			`patient_address`, 
 			`patient_mobile`, 
 			`openid`, 
-			`patid`
+			`patid`,
+			`headimgUrl`
 		)
 		values
 		(
@@ -101,7 +104,8 @@
 			#{patientAddress}, 
 			#{patientMobile}, 
 			#{openid}, 
-			#{patid}
+			#{patid},
+			#{headImgUrl}
 		)
 	</insert>
 	 
@@ -119,7 +123,8 @@
 			<if test="patientAddress != null">`patient_address` = #{patientAddress}, </if>
 			<if test="patientMobile != null">`patient_mobile` = #{patientMobile}, </if>
 			<if test="openid != null">`openid` = #{openid}, </if>
-			<if test="patid != null">`patid` = #{patid}</if>
+			<if test="patid != null">`patid` = #{patid},</if>
+			<if test="headImgUrl != null">`headimgUrl` = #{headImgUrl}</if>
 		</set>
 		where row_guid = #{rowGuid}
 	</update>
@@ -131,4 +136,8 @@
 		</foreach>
 	</delete>
 
+	<!--根据openid查询就诊人-->
+	<select id="getPatientByOpenid" resultType="com.basic.javaframe.entity.Patient">
+		select * from patient where openid =#{openid} and del_flag=0
+	</select>
 </mapper>

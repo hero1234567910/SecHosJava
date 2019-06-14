@@ -39,8 +39,18 @@ public class Patient implements Serializable {
 	private String openid;
 	/**卫宁患者id**/
 	private String patid;
+	/**微信头像地址**/
+	private String headImgUrl;
 
-	/**
+	 public String getHeadImgUrl() {
+		 return headImgUrl;
+	 }
+
+	 public void setHeadImgUrl(String headImgUrl) {
+		 this.headImgUrl = headImgUrl;
+	 }
+
+	 /**
 	 * 设置：
 	 */
 	public void setRowId(Integer rowId) {

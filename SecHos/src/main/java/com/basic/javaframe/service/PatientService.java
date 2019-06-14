@@ -22,4 +22,6 @@ public interface PatientService {
 	void update(Patient patient);
 	
 	void deleteBatch(String[] rowGuids);
+
+	Patient getPatientByOpenid(String openid);
 }

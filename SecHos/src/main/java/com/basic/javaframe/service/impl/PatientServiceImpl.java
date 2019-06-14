@@ -43,5 +43,10 @@ public class PatientServiceImpl implements PatientService {
 	public void deleteBatch(String[] rowGuids){
 		patientDao.deleteBatch(rowGuids);
 	}
-	
+
+	@Override
+	public Patient getPatientByOpenid(String openid) {
+		return patientDao.getPatientByOpenid(openid);
+	}
+
 }
