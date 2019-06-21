@@ -113,10 +113,7 @@ public class InformationInfoController {
         informationInfo.setAttachGuid(attachGuid);
         String categoryGuid = java.util.UUID.randomUUID().toString();
         informationInfo.setCategoryGuid(categoryGuid);
-        //以下为食堂精简化内容
-        if(informationInfo.getStatus()==null){
-            informationInfo.setStatus(1);
-        }
+
         informationInfoService.save(informationInfo);
 
         //新增完以后再去更新附件表
@@ -129,20 +126,14 @@ public class InformationInfoController {
         inforCategory.setCreateTime(createTime);
         inforCategory.setInfoGuid(informationInfo.getCategoryGuid());
 
-        //以下为食堂精简化内容
         String[] cateGorys = informationInfo.getCategoryGuids();
         if (cateGorys == null || cateGorys.length == 0) {
-            informationInfo.setCategoryGuid("71db2efe-5a99-4d30-83b4-2f4d9a999000");
+            return R.error("发布栏目为空");
         }
-
-        //暂时注释
-//        if (cateGorys == null || cateGorys.length == 0) {
-//            return R.error("发布栏目为空");
-//        }
-//        for (int i = 0; i < cateGorys.length; i++) {
-//            inforCategory.setCategoryGuid(cateGorys[i]);
-//            infoCategoryService.insert(inforCategory);
-//        }
+        for (int i = 0; i < cateGorys.length; i++) {
+            inforCategory.setCategoryGuid(cateGorys[i]);
+            infoCategoryService.insert(inforCategory);
+        }
 
         return R.ok().put("msg", "提交成功");
     }
@@ -168,9 +159,10 @@ public class InformationInfoController {
      */
     @ApiOperation(value = "删除发布信息")
     @ResponseBody
-    @RequestMapping(value = "/deleteInfo/{rowIds}", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
-    public R delete(@PathVariable("rowIds") Integer[] rowIds) {
-        informationInfoService.deleteBatch(rowIds);
+    @RequestMapping(value = "/deleteInfo/{categoryGuids}", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
+    public R delete(@PathVariable("categoryGuids") String[] categoryGuids) {
+        informationInfoService.deleteBatch(categoryGuids);
+        infoCategoryService.deleteByCateGuids(categoryGuids);
         return R.ok();
     }
 

@@ -45,8 +45,8 @@ public class Information_Info_CategoryServiceImpl implements Information_Info_Ca
     }
 
     @Override
-    public void deleteByIds(Integer[] ids) {
-        InfoCategoryDao.deleteByIds(ids);
+    public void deleteByCateGuids(String[] categoryGuids) {
+        InfoCategoryDao.deleteByCateGuids(categoryGuids);
     }
 
     @Override
@@ -57,5 +57,10 @@ public class Information_Info_CategoryServiceImpl implements Information_Info_Ca
     @Override
     public List<String> getInfoByCateGuid(String categoryGuid) {
         return InfoCategoryDao.getInfoByCateGuid(categoryGuid);
+    }
+
+    @Override
+    public String getSingleInfoByCateGuid(String categoryGuid) {
+        return InfoCategoryDao.getSingleInfoByCateGuid(categoryGuid);
     }
 }

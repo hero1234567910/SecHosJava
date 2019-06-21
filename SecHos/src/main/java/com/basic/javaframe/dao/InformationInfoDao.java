@@ -70,4 +70,11 @@ public interface InformationInfoDao extends BaseDao<InformationInfo> {
      * @return
      */
 	String getMInfoMation();
+
+    /**
+     * 获取单个医院简介信息
+     * @param categoryGuid
+     * @return
+     */
+	InformationInfo getHosIntroduction(String categoryGuid);
 }

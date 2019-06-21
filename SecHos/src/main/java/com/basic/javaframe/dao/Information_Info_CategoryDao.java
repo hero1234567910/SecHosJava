@@ -53,10 +53,10 @@ public interface Information_Info_CategoryDao {
     /**
      * 批量删除信息
      *
-     * @param ids 需要删除的数据ID
+     * @param categoryGuids 需要删除的数据ID
      * @return 结果
      */
-    int deleteByIds(Integer[] ids);
+    int deleteByCateGuids(String[] categoryGuids);
 
     int getCount(Map<String, Object> params);
 
@@ -66,4 +66,11 @@ public interface Information_Info_CategoryDao {
      * @return
      */
     List<String> getInfoByCateGuid(@Param("categoryGuid") String categoryGuid);
+
+    /**
+     * 通过栏目guid获取单个信息
+     * @param categoryGuid
+     * @return
+     */
+    String getSingleInfoByCateGuid(String categoryGuid);
 }

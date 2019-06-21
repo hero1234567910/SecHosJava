@@ -30,7 +30,7 @@ public interface InformationInfoService {
 	
 	void update(InformationInfo informationInfo);
 	
-	void deleteBatch(Integer[] rowIds);
+	void deleteBatch(String[] categoryGuids);
 
 	/**
 	 * 审核通过
@@ -57,4 +57,11 @@ public interface InformationInfoService {
 	void infoOff(Integer id);
 
 	String getMInfoMation();
+
+	/**
+	 * 获取最新的单个医院简介信息
+	 * @param categoryGuid
+	 * @return
+	 */
+	InformationInfo getHosIntroduction(String categoryGuid);
 }

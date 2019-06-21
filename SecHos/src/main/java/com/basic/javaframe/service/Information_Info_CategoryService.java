@@ -52,10 +52,10 @@ public interface Information_Info_CategoryService {
     /**
      * 批量删除信息
      *
-     * @param ids 需要删除的数据ID
+     * @param categoryGuids 需要删除的数据ID
      * @return 结果
      */
-    void deleteByIds(Integer[] ids);
+    void deleteByCateGuids(String[] categoryGuids);
 
     int getCount(Map<String, Object> params);
 
@@ -64,4 +64,10 @@ public interface Information_Info_CategoryService {
      * @param categoryGuid
      */
     List<String> getInfoByCateGuid(String categoryGuid);
+
+    /**
+     * 通过栏目GUID获取单个信息
+     * @param categoryGuid
+     */
+    String getSingleInfoByCateGuid(String categoryGuid);
 }

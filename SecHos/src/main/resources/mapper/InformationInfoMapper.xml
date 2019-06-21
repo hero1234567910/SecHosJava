@@ -23,6 +23,7 @@
         <result property="attachGuid" column="attach_guid"/>
         <result property="clickTimes" column="click_times"/>
         <result property="typeName" column="type_name"/>
+        <result property="categoryGuid" column="category_guid"/>
     </resultMap>
 
     <!--获取所有信息页面-->
@@ -249,10 +250,10 @@
     </update>
 
     <!--批量删除-->
-    <update id="deleteBatch" parameterType="java.lang.Integer">
-        update Information_Info set del_flag = 1 where row_id in
-        <foreach item="rowId" collection="array" open="(" separator="," close=")">
-            #{rowId}
+    <update id="deleteBatch" parameterType="java.lang.String">
+        update Information_Info set del_flag = 1 where category_guid in
+        <foreach item="categoryGuid" collection="array" open="(" separator="," close=")">
+            #{categoryGuid}
         </foreach>
     </update>
 
@@ -376,5 +377,9 @@
         select content from Information_Info where sort_sq = 1
     </select>
     
-    
+    <!--获取医院简介信息-->
+    <select id="getHosIntroduction" resultType="com.basic.javaframe.entity.InformationInfo">
+        select * from Information_Info where category_guid=#{categoryGuid} and del_flag=0 and status=1
+        order by create_time desc limit 1;
+    </select>
 </mapper>

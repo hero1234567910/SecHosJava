@@ -50,8 +50,8 @@ public class InformationInfoServiceImpl implements InformationInfoService {
 	}
 
 	@Override
-	public void deleteBatch(Integer[] rowIds){
-		informationInfoDao.deleteBatch(rowIds);
+	public void deleteBatch(String[] categoryGuids){
+		informationInfoDao.deleteBatch(categoryGuids);
 	}
 
 	@Override
@@ -95,6 +95,11 @@ public class InformationInfoServiceImpl implements InformationInfoService {
 	public String getMInfoMation() {
 		// TODO Auto-generated method stub
 		return informationInfoDao.getMInfoMation();
+	}
+
+	@Override
+	public InformationInfo getHosIntroduction(String categoryGuid) {
+		return informationInfoDao.getHosIntroduction(categoryGuid);
 	}
 
 }
