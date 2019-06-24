@@ -138,7 +138,7 @@ public class Wx_CommonControllerApi extends BaseController{
 			if (params.get("action") != null) {
 				if (PatientEnum.OUTPATIENT.getCode().equals(params.get("action"))) {
 					//门诊患者
-					//wx_CommonServiceApi.bingdingOutPatient();
+					wx_CommonServiceApi.bingdingOutPatient();
 				}
 				if (PatientEnum.HOSPITALIZED.getCode().equals(params.get("action"))) {
 					//住院患者
