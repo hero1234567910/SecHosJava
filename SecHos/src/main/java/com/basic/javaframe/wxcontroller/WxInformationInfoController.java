@@ -146,4 +146,99 @@ public class WxInformationInfoController {
         return R.ok().put("data",informationInfo);
     }
 
+    /**
+     * 微信端获取入院导引信息
+     * @param categoryGuid
+     * @return
+     */
+    @PassToken
+    @ApiOperation(value = "微信端获取入院导引信息")
+    @ResponseBody
+    @RequestMapping(value = "/getDirectAdmission",produces = "application/json;charset=utf-8", method = RequestMethod.GET)
+    public R getDirectAdmission(String categoryGuid){
+        categoryGuid = "b4ccf311-761b-4a86-a203-21b9a7e17039";
+        String infoGuid = infoCategoryService.getSingleInfoByCateGuid(categoryGuid);
+        InformationInfo informationInfo = informationInfoService.getHosIntroduction(infoGuid);
+        return R.ok().put("data",informationInfo);
+    }
+
+    /**
+     * 微信端获取住院须知信息
+     * @param categoryGuid
+     * @return
+     */
+    @PassToken
+    @ApiOperation(value = "微信端获取住院须知信息")
+    @ResponseBody
+    @RequestMapping(value = "/getHospitalisation",produces = "application/json;charset=utf-8", method = RequestMethod.GET)
+    public R getHospitalisation(String categoryGuid){
+        categoryGuid = "eff540e6-10cf-4012-8508-22d893dd0f9a";
+        String infoGuid = infoCategoryService.getSingleInfoByCateGuid(categoryGuid);
+        InformationInfo informationInfo = informationInfoService.getHosIntroduction(infoGuid);
+        return R.ok().put("data",informationInfo);
+    }
+
+    /**
+     * 微信端获取出院导引信息
+     * @param categoryGuid
+     * @return
+     */
+    @PassToken
+    @ApiOperation(value = "微信端获取出院导引信息")
+    @ResponseBody
+    @RequestMapping(value = "/getOutHospitalInfo",produces = "application/json;charset=utf-8", method = RequestMethod.GET)
+    public R getOutHospitalInfo(String categoryGuid){
+        categoryGuid = "914fcc0a-8db4-4ba4-a1d2-38e0d5bdf12e";
+        String infoGuid = infoCategoryService.getSingleInfoByCateGuid(categoryGuid);
+        InformationInfo informationInfo = informationInfoService.getHosIntroduction(infoGuid);
+        return R.ok().put("data",informationInfo);
+    }
+
+    /**
+     * 微信端获取出院须知信息
+     * @param categoryGuid
+     * @return
+     */
+    @PassToken
+    @ApiOperation(value = "微信端获取出院须知信息")
+    @ResponseBody
+    @RequestMapping(value = "/getOutNeedKnow",produces = "application/json;charset=utf-8", method = RequestMethod.GET)
+    public R getOutNeedKnow(String categoryGuid){
+        categoryGuid = "6b6b12c7-943e-4e11-8837-35d67d948f22";
+        String infoGuid = infoCategoryService.getSingleInfoByCateGuid(categoryGuid);
+        InformationInfo informationInfo = informationInfoService.getHosIntroduction(infoGuid);
+        return R.ok().put("data",informationInfo);
+    }
+
+    /**
+     * 微信端获取科室简介信息
+     * @param categoryGuid
+     * @return
+     */
+    @PassToken
+    @ApiOperation(value = "微信端获取科室简介信息")
+    @ResponseBody
+    @RequestMapping(value = "/getDepartmentsIntroduction",produces = "application/json;charset=utf-8", method = RequestMethod.GET)
+    public R getDepartmentsIntroduction(String categoryGuid){
+        categoryGuid = "e1cd7e1d-bc09-42c4-9eed-6f8d8181fb06";
+        String infoGuid = infoCategoryService.getSingleInfoByCateGuid(categoryGuid);
+        InformationInfo informationInfo = informationInfoService.getHosIntroduction(infoGuid);
+        return R.ok().put("data",informationInfo);
+    }
+
+    /**
+     * 微信端获取健康教育信息
+     * @param categoryGuid
+     * @return
+     */
+    @PassToken
+    @ApiOperation(value = "微信端获取健康教育信息")
+    @ResponseBody
+    @RequestMapping(value = "/getHealthEducation",produces = "application/json;charset=utf-8", method = RequestMethod.GET)
+    public R getHealthEducation(String categoryGuid){
+        categoryGuid = "7d1c5ff5-869d-4014-b1b1-6a757963efbb";
+        String infoGuid = infoCategoryService.getSingleInfoByCateGuid(categoryGuid);
+        InformationInfo informationInfo = informationInfoService.getHosIntroduction(infoGuid);
+        return R.ok().put("data",informationInfo);
+    }
 }
