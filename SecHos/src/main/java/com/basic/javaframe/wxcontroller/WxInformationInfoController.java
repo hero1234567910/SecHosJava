@@ -138,7 +138,7 @@ public class WxInformationInfoController {
     @PassToken
     @ApiOperation(value = "微信端获取就诊须知信息")
     @ResponseBody
-    @RequestMapping(value = "/getFloorDistribution",produces = "application/json;charset=utf-8", method = RequestMethod.GET)
+    @RequestMapping(value = "/getPatientNeedtoKnow",produces = "application/json;charset=utf-8", method = RequestMethod.GET)
     public R getPatientsNeedtoKnow(String categoryGuid){
         categoryGuid = "870d1b38-5615-4f42-9c3f-09ce31c33d45";
         String infoGuid = infoCategoryService.getSingleInfoByCateGuid(categoryGuid);
