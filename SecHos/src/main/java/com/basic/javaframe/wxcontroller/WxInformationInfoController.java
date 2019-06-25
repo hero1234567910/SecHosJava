@@ -92,9 +92,9 @@ public class WxInformationInfoController {
     public R getHosIntroduction(String categoryGuid){
         categoryGuid = "e83ae009-d5f3-45ee-9646-6c55e713efc1";
         String infoGuid = infoCategoryService.getSingleInfoByCateGuid(categoryGuid);
-        System.out.println(infoGuid);
+        //System.out.println(infoGuid);
         InformationInfo informationInfo = informationInfoService.getHosIntroduction(infoGuid);
-        System.out.println(informationInfo);
+        //System.out.println(informationInfo);
         return R.ok().put("data",informationInfo);
     }
 

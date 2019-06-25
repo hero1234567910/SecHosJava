@@ -43,7 +43,7 @@
 
     <!--根据cateGuid查询infoGuid(单个)-->
     <select id="getSingleInfoByCateGuid" resultType="java.lang.String">
-        select info_guid from Information_Info_Category where category_guid =#{categoryGuid} and del_flag =0 order by create_time desc limit 1;
+        select info_guid from Information_Info_Category where category_guid =#{categoryGuid} order by create_time desc limit 1;
     </select>
 
     <!-- 新增角色  -->
