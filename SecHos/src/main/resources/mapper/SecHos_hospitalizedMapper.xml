@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.SecHos_hospitalizedDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.basic.javaframe.entity.SecHos_hospitalized" id="sechosHospitalizedMap">
+        <result property="rowId" column="row_id"/>
+        <result property="rowGuid" column="row_guid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="sortSq" column="sort_sq"/>
+        <result property="medicalNumber" column="medical_number"/>
+        <result property="patid" column="patid"/>
+        <result property="patientRowGuid" column="patient_rowGuid"/>
+        <result property="hospitalizedStatus" column="hospitalized_status"/>
+    </resultMap>
+
+	<select id="getList" resultType="com.basic.javaframe.entity.SecHos_hospitalized">
+		select * from sechos_hospitalized t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by row_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="getCount" resultType="int">
+		select count(*) from sechos_hospitalized t  <include refid="where_clause" />
+	</select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+    		<if test="rowIdVague != null and rowIdVague != ''"> and t.row_id like concat('%',#{rowIdVague},'%') </if>
+            <if test="rowGuid != null and rowGuid != ''"> and t.row_guid = #{rowGuid} </if>
+    		<if test="rowGuidVague != null and rowGuidVague != ''"> and t.row_guid like concat('%',#{rowGuidVague},'%') </if>
+            <if test="createTime != null and createTime != ''"> and t.create_time = #{createTime} </if>
+    		<if test="createTimeVague != null and createTimeVague != ''"> and t.create_time like concat('%',#{createTimeVague},'%') </if>
+            <if test="delFlag != null and delFlag != ''"> and t.del_flag = #{delFlag} </if>
+    		<if test="delFlagVague != null and delFlagVague != ''"> and t.del_flag like concat('%',#{delFlagVague},'%') </if>
+            <if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
+    		<if test="sortSqVague != null and sortSqVague != ''"> and t.sort_sq like concat('%',#{sortSqVague},'%') </if>
+            <if test="medicalNumber != null and medicalNumber != ''"> and t.medical_number = #{medicalNumber} </if>
+    		<if test="medicalNumberVague != null and medicalNumberVague != ''"> and t.medical_number like concat('%',#{medicalNumberVague},'%') </if>
+            <if test="patid != null and patid != ''"> and t.patid = #{patid} </if>
+    		<if test="patidVague != null and patidVague != ''"> and t.patid like concat('%',#{patidVague},'%') </if>
+            <if test="patientRowGuid != null and patientRowGuid != ''"> and t.patient_rowGuid = #{patientRowGuid} </if>
+    		<if test="patientRowGuidVague != null and patientRowGuidVague != ''"> and t.patient_rowGuid like concat('%',#{patientRowGuidVague},'%') </if>
+            <if test="hospitalizedStatus != null and hospitalizedStatus != ''"> and t.hospitalized_status = #{hospitalizedStatus} </if>
+    		<if test="hospitalizedStatusVague != null and hospitalizedStatusVague != ''"> and t.hospitalized_status like concat('%',#{hospitalizedStatusVague},'%') </if>
+        </where>
+    </sql>
+	 
+	<insert id="save" parameterType="com.basic.javaframe.entity.SecHos_hospitalized" useGeneratedKeys="true" keyProperty="rowId">
+		insert into sechos_hospitalized
+		(
+			`row_guid`, 
+			`create_time`, 
+			`del_flag`, 
+			`sort_sq`, 
+			`medical_number`, 
+			`patid`, 
+			`patient_rowGuid`, 
+			`hospitalized_status`
+		)
+		values
+		(
+			#{rowGuid}, 
+			#{createTime}, 
+			#{delFlag}, 
+			#{sortSq}, 
+			#{medicalNumber}, 
+			#{patid}, 
+			#{patientRowGuid}, 
+			#{hospitalizedStatus}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.basic.javaframe.entity.SecHos_hospitalized">
+		update sechos_hospitalized 
+		<set>
+			<if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+			<if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+			<if test="medicalNumber != null">`medical_number` = #{medicalNumber}, </if>
+			<if test="patid != null">`patid` = #{patid}, </if>
+			<if test="patientRowGuid != null">`patient_rowGuid` = #{patientRowGuid}, </if>
+			<if test="hospitalizedStatus != null">`hospitalized_status` = #{hospitalizedStatus}</if>
+		</set>
+		where row_id = #{rowId}
+	</update>
+	
+	<delete id="deleteBatch">
+		delete from sechos_hospitalized where row_guid in 
+		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+			#{rowGuid}
+		</foreach>
+	</delete>
+
+</mapper>

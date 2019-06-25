@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.SecHos_OutpatientDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+
+	<select id="getList" resultType="com.basic.javaframe.entity.SecHos_Outpatient">
+		select * from sechos_outpatient t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by row_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="getCount" resultType="int">
+		select count(*) from sechos_outpatient t  <include refid="where_clause" />
+	</select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+    		<if test="rowIdVague != null and rowIdVague != ''"> and t.row_id like concat('%',#{rowIdVague},'%') </if>
+            <if test="rowGuid != null and rowGuid != ''"> and t.row_guid = #{rowGuid} </if>
+    		<if test="rowGuidVague != null and rowGuidVague != ''"> and t.row_guid like concat('%',#{rowGuidVague},'%') </if>
+            <if test="createTime != null and createTime != ''"> and t.create_time = #{createTime} </if>
+    		<if test="createTimeVague != null and createTimeVague != ''"> and t.create_time like concat('%',#{createTimeVague},'%') </if>
+            <if test="delFlag != null and delFlag != ''"> and t.del_flag = #{delFlag} </if>
+    		<if test="delFlagVague != null and delFlagVague != ''"> and t.del_flag like concat('%',#{delFlagVague},'%') </if>
+            <if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
+    		<if test="sortSqVague != null and sortSqVague != ''"> and t.sort_sq like concat('%',#{sortSqVague},'%') </if>
+            <if test="medicalNumberMZ != null and medicalNumberMZ != ''"> and t.medical_numberMZ = #{medicalNumberMZ} </if>
+            <if test="patidMZ != null and patidMZ != ''"> and t.patidMZ = #{patidMZ} </if>
+            <if test="patientRowGuidMZ != null and patientRowGuidMZ != ''"> and t.patient_rowGuidMZ = #{patientRowGuidMZ} </if>
+        </where>
+    </sql>
+	 
+	<insert id="save" parameterType="com.basic.javaframe.entity.SecHos_Outpatient" useGeneratedKeys="true" keyProperty="rowId">
+		insert into sechos_outpatient
+		(
+			`row_guid`, 
+			`create_time`, 
+			`del_flag`, 
+			`sort_sq`, 
+			`medical_numberMZ`, 
+			`patidMZ`, 
+			`patient_rowGuidMZ`
+		)
+		values
+		(
+			#{rowGuid}, 
+			#{createTime}, 
+			#{delFlag}, 
+			#{sortSq}, 
+			#{medicalNumberMZ}, 
+			#{patidMZ}, 
+			#{patientRowGuidMZ}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.basic.javaframe.entity.SecHos_Outpatient">
+		update sechos_outpatient 
+		<set>
+			<if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+			<if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+			<if test="medicalNumberMZ != null">`medical_numberMZ` = #{medicalNumberMZ}, </if>
+			<if test="patidMZ != null">`patidMZ` = #{patidMZ}, </if>
+			<if test="patientRowGuidMZ != null">`patient_rowGuidMZ` = #{patientRowGuidMZ}</if>
+		</set>
+		where row_id = #{rowId}
+	</update>
+	
+	<delete id="deleteBatch">
+		delete from sechos_outpatient where row_guid in 
+		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+			#{rowGuid}
+		</foreach>
+	</delete>
+
+</mapper>

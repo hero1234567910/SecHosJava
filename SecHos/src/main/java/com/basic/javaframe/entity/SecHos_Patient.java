@@ -2,6 +2,9 @@ package com.basic.javaframe.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 
@@ -18,12 +21,14 @@ public class SecHos_Patient implements Serializable {
 	/****/
 	private String rowGuid;
 	/****/
+	@JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
 	private Date createTime;
 	/****/
 	private Integer delFlag;
 	/****/
 	private Integer sortSq;
 	/**患者出生日期**/
+	@JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
 	private Date patientBirth;
 	/**患者姓名**/
 	private String patientName;
@@ -37,12 +42,32 @@ public class SecHos_Patient implements Serializable {
 	private String patientMobile;
 	/**微信唯一标识**/
 	private String openid;
-	/**卫宁患者id**/
-	private String patid;
+//	/**卫宁患者id**/
+//	private String patid;
 	/**微信头像地址**/
 	private String headImgUrl;
+	
+	private List<SecHos_hospitalized> hospitalizedList;
+	
+	private List<SecHos_Outpatient> outpatients;
 
-	 public String getHeadImgUrl() {
+	 public List<SecHos_Outpatient> getOutpatients() {
+		return outpatients;
+	}
+
+	public void setOutpatients(List<SecHos_Outpatient> outpatients) {
+		this.outpatients = outpatients;
+	}
+
+	public List<SecHos_hospitalized> getHospitalizedList() {
+		return hospitalizedList;
+	}
+
+	public void setHospitalizedList(List<SecHos_hospitalized> hospitalizedList) {
+		this.hospitalizedList = hospitalizedList;
+	}
+
+	public String getHeadImgUrl() {
 		 return headImgUrl;
 	 }
 
@@ -194,16 +219,16 @@ public class SecHos_Patient implements Serializable {
 	public String getOpenid() {
 		return openid;
 	}
-	/**
-	 * 设置：卫宁患者id
-	 */
-	public void setPatid(String patid) {
-		this.patid = patid;
-	}
-	/**
-	 * 获取：卫宁患者id
-	 */
-	public String getPatid() {
-		return patid;
-	}
+//	/**
+//	 * 设置：卫宁患者id
+//	 */
+//	public void setPatid(String patid) {
+//		this.patid = patid;
+//	}
+//	/**
+//	 * 获取：卫宁患者id
+//	 */
+//	public String getPatid() {
+//		return patid;
+//	}
 }

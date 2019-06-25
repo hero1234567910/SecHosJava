@@ -61,6 +61,15 @@ public class DateUtil {
 		}
 		return null;
 	}
+	
+	public static Date changeStrToDate3(String dateStr){
+		try {
+			return  SDF_YMD.parse(dateStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	public static String getYmdhmsFName() {
 		return SDF_YMDHMS_FNAME.format(new Date());

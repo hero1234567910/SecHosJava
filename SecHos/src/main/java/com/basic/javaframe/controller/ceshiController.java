@@ -1,13 +1,10 @@
 package com.basic.javaframe.controller;
 
 import java.io.IOException;
-import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -30,13 +27,7 @@ public class ceshiController {
 	@ApiOperation(value="测试")
 	@RequestMapping(value="/test")
 	public void test(){
-		 
-//		PrintUtil.print();
-		try {
-			WebSocketServer.sendInfo("测试发送消息","20");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}  
+		System.out.println(DateUtil.changeStrToDate3("19901210"));
 	}
 	
 	//页面请求

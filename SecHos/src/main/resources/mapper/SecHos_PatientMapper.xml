@@ -17,8 +17,20 @@
         <result property="patientAddress" column="patient_address"/>
         <result property="patientMobile" column="patient_mobile"/>
         <result property="openid" column="openid"/>
-        <result property="patid" column="patid"/>
 		<result property="headImgUrl" column="headimgUrl"/>
+		<collection property="hospitalizedList" ofType="com.basic.javaframe.entity.SecHos_hospitalized">
+		    <id column="hospitalizedRowId" property="rowId"/>
+            <result property="rowGuid" column="hospitalizedrowGuid"/>
+            <result property="medicalNumber" column="medical_number"/>
+            <result property="patid" column="patid"/>
+            <result property="hospitalizedStatus" column="hospitalized_status"/>
+		</collection>
+		<collection property="outpatients" ofType="com.basic.javaframe.entity.SecHos_Outpatient">
+		    <id column="outpatientRowId" property="rowId"/>
+            <result property="rowGuid" column="outpatientrowGuid"/>
+            <result property="medicalNumberMZ" column="medical_numberMZ"/>
+            <result property="patidMZ" column="patidMZ"/>
+		</collection>
     </resultMap>
 
 	<select id="getList" resultType="com.basic.javaframe.entity.SecHos_Patient">
@@ -88,7 +100,6 @@
 			`patient_address`, 
 			`patient_mobile`, 
 			`openid`, 
-			`patid`,
 			`headimgUrl`
 		)
 		values
@@ -104,7 +115,6 @@
 			#{patientAddress}, 
 			#{patientMobile}, 
 			#{openid}, 
-			#{patid},
 			#{headImgUrl}
 		)
 	</insert>
@@ -123,7 +133,6 @@
 			<if test="patientAddress != null">`patient_address` = #{patientAddress}, </if>
 			<if test="patientMobile != null">`patient_mobile` = #{patientMobile}, </if>
 			<if test="openid != null">`openid` = #{openid}, </if>
-			<if test="patid != null">`patid` = #{patid},</if>
 			<if test="headImgUrl != null">`headimgUrl` = #{headImgUrl}</if>
 		</set>
 		where row_guid = #{rowGuid}
@@ -137,7 +146,15 @@
 	</delete>
 
 	<!--根据openid查询就诊人-->
-	<select id="getPatientByOpenid" resultType="com.basic.javaframe.entity.SecHos_Patient">
-		select * from sechos_patient where openid =#{openid} and del_flag=0
+	<select id="getPatientByOpenid" resultMap="patientMap">
+		select p.*,h.row_id as hospitalizedRowId,h.row_guid as hospitalizedrowGuid,
+		h.medical_number,h.patid,h.hospitalized_status,
+		o.row_id as outpatientRowId,o.row_guid as outpatientrowGuid,
+		o.medical_numberMZ,o.patidMZ 
+		from sechos_patient p left join sechos_hospitalized h
+		on p.row_guid = h.patient_rowGuid
+		left join sechos_outpatient o
+		on p.row_guid = o.patient_rowGuidMZ
+		where p.openid =#{openid} and p.del_flag=0
 	</select>
 </mapper>

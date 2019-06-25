@@ -40,6 +40,12 @@ public class Api_BaseService {
 	@Value(value="${wx.api.url}")
 	public String url;
 	
-//	@Value(value="${wx.api.secret}")
-//	public String secret;
+	@Value(value="${wn.yydm}")
+	public String yydm;
+	
+	@Value(value="${wn.accesskey}")
+	public String accesskey;
+	
+	@Value(value="${wn.url}")
+	public String wnUrl;
 }
