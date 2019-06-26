@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.Sechos_ConsultationDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.basic.javaframe.entity.Sechos_Consultation" id="sechosConsultationMap">
+        <result property="rowId" column="row_id"/>
+        <result property="rowGuid" column="row_guid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="sortSq" column="sort_sq"/>
+        <result property="consultationTime" column="consultation_time"/>
+        <result property="replyTime" column="reply_time"/>
+        <result property="consultationTitle" column="consultation_title"/>
+        <result property="consultationContent" column="consultation_content"/>
+        <result property="consultationName" column="consultation_name"/>
+        <result property="consultationMobile" column="consultation_mobile"/>
+        <result property="replyContent" column="reply_content"/>
+    </resultMap>
+
+	<select id="getList" resultType="com.basic.javaframe.entity.Sechos_Consultation">
+		select * from sechos_consultation t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by row_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="getCount" resultType="int">
+		select count(*) from sechos_consultation t  <include refid="where_clause" />
+	</select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+    		<if test="rowIdVague != null and rowIdVague != ''"> and t.row_id like concat('%',#{rowIdVague},'%') </if>
+            <if test="rowGuid != null and rowGuid != ''"> and t.row_guid = #{rowGuid} </if>
+    		<if test="rowGuidVague != null and rowGuidVague != ''"> and t.row_guid like concat('%',#{rowGuidVague},'%') </if>
+            <if test="createTime != null and createTime != ''"> and t.create_time = #{createTime} </if>
+    		<if test="createTimeVague != null and createTimeVague != ''"> and t.create_time like concat('%',#{createTimeVague},'%') </if>
+            <if test="delFlag != null and delFlag != ''"> and t.del_flag = #{delFlag} </if>
+    		<if test="delFlagVague != null and delFlagVague != ''"> and t.del_flag like concat('%',#{delFlagVague},'%') </if>
+            <if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
+    		<if test="sortSqVague != null and sortSqVague != ''"> and t.sort_sq like concat('%',#{sortSqVague},'%') </if>
+            <if test="consultationTime != null and consultationTime != ''"> and t.consultation_time = #{consultationTime} </if>
+    		<if test="consultationTimeVague != null and consultationTimeVague != ''"> and t.consultation_time like concat('%',#{consultationTimeVague},'%') </if>
+            <if test="replyTime != null and replyTime != ''"> and t.reply_time = #{replyTime} </if>
+    		<if test="replyTimeVague != null and replyTimeVague != ''"> and t.reply_time like concat('%',#{replyTimeVague},'%') </if>
+            <if test="consultationTitle != null and consultationTitle != ''"> and t.consultation_title = #{consultationTitle} </if>
+    		<if test="consultationTitleVague != null and consultationTitleVague != ''"> and t.consultation_title like concat('%',#{consultationTitleVague},'%') </if>
+            <if test="consultationContent != null and consultationContent != ''"> and t.consultation_content = #{consultationContent} </if>
+    		<if test="consultationContentVague != null and consultationContentVague != ''"> and t.consultation_content like concat('%',#{consultationContentVague},'%') </if>
+            <if test="consultationName != null and consultationName != ''"> and t.consultation_name = #{consultationName} </if>
+    		<if test="consultationNameVague != null and consultationNameVague != ''"> and t.consultation_name like concat('%',#{consultationNameVague},'%') </if>
+            <if test="consultationMobile != null and consultationMobile != ''"> and t.consultation_mobile = #{consultationMobile} </if>
+    		<if test="consultationMobileVague != null and consultationMobileVague != ''"> and t.consultation_mobile like concat('%',#{consultationMobileVague},'%') </if>
+            <if test="replyContent != null and replyContent != ''"> and t.reply_content = #{replyContent} </if>
+    		<if test="replyContentVague != null and replyContentVague != ''"> and t.reply_content like concat('%',#{replyContentVague},'%') </if>
+        </where>
+    </sql>
+	 
+	<insert id="save" parameterType="com.basic.javaframe.entity.Sechos_Consultation" useGeneratedKeys="true" keyProperty="rowId">
+		insert into sechos_consultation
+		(
+			`row_guid`, 
+			`create_time`, 
+			`del_flag`, 
+			`sort_sq`, 
+			`consultation_time`, 
+			`reply_time`, 
+			`consultation_title`, 
+			`consultation_content`, 
+			`consultation_name`, 
+			`consultation_mobile`, 
+			`reply_content`
+		)
+		values
+		(
+			#{rowGuid}, 
+			#{createTime}, 
+			#{delFlag}, 
+			#{sortSq}, 
+			#{consultationTime}, 
+			#{replyTime}, 
+			#{consultationTitle}, 
+			#{consultationContent}, 
+			#{consultationName}, 
+			#{consultationMobile}, 
+			#{replyContent}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.basic.javaframe.entity.Sechos_Consultation">
+		update sechos_consultation 
+		<set>
+			<if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+			<if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+			<if test="consultationTime != null">`consultation_time` = #{consultationTime}, </if>
+			<if test="replyTime != null">`reply_time` = #{replyTime}, </if>
+			<if test="consultationTitle != null">`consultation_title` = #{consultationTitle}, </if>
+			<if test="consultationContent != null">`consultation_content` = #{consultationContent}, </if>
+			<if test="consultationName != null">`consultation_name` = #{consultationName}, </if>
+			<if test="consultationMobile != null">`consultation_mobile` = #{consultationMobile}, </if>
+			<if test="replyContent != null">`reply_content` = #{replyContent}</if>
+		</set>
+		where row_id = #{rowId}
+	</update>
+	
+	<delete id="deleteBatch">
+		update sechos_consultation set `del_flag` = 1 where row_guid in 
+		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+			#{rowGuid}
+		</foreach>
+	</delete>
+
+	<update id="reply" parameterType="com.basic.javaframe.entity.Sechos_Consultation">
+		update sechos_consultation
+		<set>
+			<if test="replyTime != null">`reply_time` = #{replyTime}, </if>
+			<if test="replyContent != null">`reply_content` = #{replyContent}</if>
+		</set>
+		where row_id = #{rowId}
+	</update>
+
+</mapper>
