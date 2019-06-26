@@ -1,5 +1,7 @@
 package com.basic.javaframe.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -24,8 +26,10 @@ public class Sechos_Consultation implements Serializable {
 	/****/
 	private Integer sortSq;
 	/**咨询时间**/
+	@JsonFormat( pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private Date consultationTime;
 	/**回复时间**/
+	@JsonFormat( pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private Date replyTime;
 	/**咨询标题**/
 	private String consultationTitle;

@@ -115,7 +115,7 @@
 			<if test="consultationMobile != null">`consultation_mobile` = #{consultationMobile}, </if>
 			<if test="replyContent != null">`reply_content` = #{replyContent}</if>
 		</set>
-		where row_id = #{rowId}
+		where row_guid = #{rowGuid}
 	</update>
 	
 	<delete id="deleteBatch">
@@ -131,7 +131,7 @@
 			<if test="replyTime != null">`reply_time` = #{replyTime}, </if>
 			<if test="replyContent != null">`reply_content` = #{replyContent}</if>
 		</set>
-		where row_id = #{rowId}
+		where row_guid = #{rowGuid}
 	</update>
 
 </mapper>

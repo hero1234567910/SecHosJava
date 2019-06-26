@@ -65,6 +65,7 @@ public class Sechos_ConsultationController {
 		Date createTime = DateUtil.changeDate(new Date());
 		Date consultationTime = DateUtil.changeDate(new Date());
 		sechosConsultation.setCreateTime(createTime);
+		sechosConsultation.setDelFlag(0);
 		sechosConsultation.setConsultationTime(consultationTime);
 		sechosConsultationService.save(sechosConsultation);
         return R.ok();  
@@ -100,7 +101,7 @@ public class Sechos_ConsultationController {
 	@RequestMapping(value="/reply", produces = "application/json; charset=utf-8", method=RequestMethod.PUT)
 	public R reply(@RequestBody Sechos_Consultation sechosConsultation){
 		Date replyTime = DateUtil.changeDate(new Date());
-		sechosConsultation.setCreateTime(replyTime);
+		sechosConsultation.setReplyTime(replyTime);
 		sechosConsultationService.reply(sechosConsultation);
 		return R.ok();
 	}
