@@ -28,7 +28,7 @@ import com.basic.javaframe.common.utils.R;
 @RestController
 @CrossOrigin
 @RequestMapping("sys/sechosconsultation")
-public class SechosConsultationController {
+public class Sechos_ConsultationController {
 	@Autowired
 	private Sechos_ConsultationService sechosConsultationService;
 	

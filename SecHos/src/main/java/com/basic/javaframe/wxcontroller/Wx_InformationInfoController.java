@@ -3,7 +3,6 @@ package com.basic.javaframe.wxcontroller;
 import com.basic.javaframe.common.customclass.PassToken;
 import com.basic.javaframe.common.utils.*;
 import com.basic.javaframe.entity.InformationInfo;
-import com.basic.javaframe.entity.Information_Info_Category;
 import com.basic.javaframe.service.Frame_AttachService;
 import com.basic.javaframe.service.Frame_UserService;
 import com.basic.javaframe.service.InformationInfoService;
@@ -15,10 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 
 /**
@@ -32,9 +29,9 @@ import java.util.UUID;
 @RestController
 @CrossOrigin
 @RequestMapping("wx/sys/informationinfo")
-public class WxInformationInfoController {
+public class Wx_InformationInfoController {
 
-    private final static Logger logger = LoggerFactory.getLogger(WxInformationInfoController.class);
+    private final static Logger logger = LoggerFactory.getLogger(Wx_InformationInfoController.class);
     @Autowired
     private InformationInfoService informationInfoService;
 

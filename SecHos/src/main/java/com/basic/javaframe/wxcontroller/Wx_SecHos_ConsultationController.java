@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 @RequestMapping("wx/sys/sechosconsultation")
-public class WxSecHos_ConsultationController {
+public class Wx_SecHos_ConsultationController {
 
 
 
