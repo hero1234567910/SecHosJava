@@ -20,4 +20,10 @@ public interface Sechos_ConsultationDao extends BaseDao<Sechos_Consultation> {
 
 	Sechos_Consultation queryByGuid(@Param("rowGuid")String rowGuid);
 	
+
+    /**
+     * 获取未回复信息数量
+     * @return
+     */
+    int getReplyCount();
 }

@@ -55,4 +55,9 @@ public class Sechos_ConsultationServiceImpl implements Sechos_ConsultationServic
 		return sechosConsultationDao.queryByGuid(rowGuid);
 	}
 
+	@Override
+	public int getReplyCount() {
+		return sechosConsultationDao.getReplyCount();
+	}
+
 }

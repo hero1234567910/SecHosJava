@@ -30,4 +30,10 @@ public interface Sechos_ConsultationService {
 	void reply(Sechos_Consultation sechosConsultation);
 	
 	Sechos_Consultation queryByGuid(String rowGuid);
+
+	/**
+	 * 获取未回复信息数量
+	 * @return
+	 */
+	int getReplyCount();
 }
