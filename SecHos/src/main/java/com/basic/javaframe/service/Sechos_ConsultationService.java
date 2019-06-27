@@ -28,4 +28,6 @@ public interface Sechos_ConsultationService {
 	 * @param sechosConsultation
 	 */
 	void reply(Sechos_Consultation sechosConsultation);
+	
+	Sechos_Consultation queryByGuid(String rowGuid);
 }

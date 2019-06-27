@@ -366,7 +366,7 @@ public class Wx_CommonControllerApi extends BaseController{
 		@RequestMapping(value="/advancePay",produces="application/json;charset=utf-8",method=RequestMethod.POST)
 		public R advancePay(@RequestBody Map<String, String> params){
 			checkParams(params, "hzxm");
-//			params.put("jzlsh", value);
+			checkParams(params, "patid");
 			//预交金预充值
 			String result = wx_CommonServiceApi.beforehandPay(params);
 			JSONObject json = JSONObject.parseObject(result);

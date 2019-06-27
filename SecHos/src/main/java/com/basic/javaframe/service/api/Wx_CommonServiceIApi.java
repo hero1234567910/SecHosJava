@@ -151,10 +151,31 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 	 * @return
 	 */
 	public String beforehandPay(Map<String, String> params) {
+		//首先调取查询住院患者就诊记录获取住院就诊流水号
 		params.put("yydm", yydm);
 		params.put("accesskey", accesskey);
-		params.put("action","PUTZYYJJYS");
+		params.put("action", "GETZYJLPAT");
+		params.put("zyzt","0");
+		params.put("hzxm",params.get("hzxm"));
+		params.put("patid",params.get("patid"));
+		logger.info("查询住院患者就诊记录接口参数》》》"+JSONObject.toJSONString(params));
+		String result = HttpUtil.sendPost(wnUrl, params);
+		logger.info("查询住院患者就诊记录接口返回成功》》》"+JSONObject.toJSONString(result));
 		
+		//解析结果
+		JSONObject jsonObject = JSONObject.parseObject(result);
+		if (jsonObject.containsKey("success")) {
+			boolean resu = jsonObject.getBoolean("success");
+			if (resu) {
+				
+			}else {
+				throw new MyException("查询失败");
+			}
+		}else {
+			throw new MyException("查询住院患者就诊记录接口异常");
+		}
+		
+		params.put("action","PUTZYYJJYS");
 		logger.info("预交金预充值接口参数》》》"+JSONObject.toJSONString(params));
 		String res = HttpUtil.sendPost(wnUrl, params);
 		logger.info("预交金预充值接口返回成功》》》"+JSONObject.toJSONString(res));

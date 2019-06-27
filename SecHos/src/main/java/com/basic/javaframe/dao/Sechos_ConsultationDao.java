@@ -1,5 +1,7 @@
 package com.basic.javaframe.dao;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.basic.javaframe.entity.Sechos_Consultation;
 
 /**
@@ -15,5 +17,7 @@ public interface Sechos_ConsultationDao extends BaseDao<Sechos_Consultation> {
      * @return
      */
     int reply(Sechos_Consultation sechosConsultation);
+
+	Sechos_Consultation queryByGuid(@Param("rowGuid")String rowGuid);
 	
 }

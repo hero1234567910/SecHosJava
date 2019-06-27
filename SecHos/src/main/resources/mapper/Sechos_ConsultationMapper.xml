@@ -133,5 +133,8 @@
 		</set>
 		where row_guid = #{rowGuid}
 	</update>
-
+	
+	<select id="queryByGuid" resultType="com.basic.javaframe.entity.Sechos_Consultation">
+	    select * from sechos_consultation where row_guid = #{rowGuid}
+	</select>
 </mapper>

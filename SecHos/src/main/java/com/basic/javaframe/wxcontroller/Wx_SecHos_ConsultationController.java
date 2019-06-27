@@ -1,5 +1,6 @@
 package com.basic.javaframe.wxcontroller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.basic.javaframe.common.customclass.PassToken;
 import com.basic.javaframe.common.utils.*;
 import com.basic.javaframe.entity.Sechos_Consultation;
@@ -55,6 +56,7 @@ public class Wx_SecHos_ConsultationController {
             sechosConsultation.setSortSq(0);
         }
         //生成uuid作为rowguid
+        sechosConsultation.setDelFlag(0);
         String uuid = java.util.UUID.randomUUID().toString();
         sechosConsultation.setRowGuid(uuid);
         Date createTime = DateUtil.changeDate(new Date());
@@ -63,6 +65,21 @@ public class Wx_SecHos_ConsultationController {
         sechosConsultation.setConsultationTime(consultationTime);
         sechosConsultationService.save(sechosConsultation);
         return R.ok();
+    }
+    
+    /**
+     * 根据rowguid查询
+     * <p>Title: queryByGuid</p>  
+     * <p>Description: </p>
+     * @author hero  
+     * @return
+     */
+    @ApiOperation(value="根据rowGuid查询")
+    @ResponseBody
+    @RequestMapping(value="/queryByGuid",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+    public R queryByGuid(@RequestParam String rowGuid){
+    	Sechos_Consultation sechosConsultation =  sechosConsultationService.queryByGuid(rowGuid);
+    	return R.ok().put("data", sechosConsultation);
     }
 
 

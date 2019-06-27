@@ -49,4 +49,10 @@ public class Sechos_ConsultationServiceImpl implements Sechos_ConsultationServic
 		sechosConsultationDao.reply(sechosConsultation);
 	}
 
+	@Override
+	public Sechos_Consultation queryByGuid(String rowGuid) {
+		// TODO Auto-generated method stub
+		return sechosConsultationDao.queryByGuid(rowGuid);
+	}
+
 }
