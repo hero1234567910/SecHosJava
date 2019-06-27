@@ -17,6 +17,7 @@
         <result property="consultationName" column="consultation_name"/>
         <result property="consultationMobile" column="consultation_mobile"/>
         <result property="replyContent" column="reply_content"/>
+		<result property="replyStatus" column="reply_status"/>
     </resultMap>
 
 	<select id="getList" resultType="com.basic.javaframe.entity.Sechos_Consultation">
@@ -51,11 +52,14 @@
             <if test="delFlag != null and delFlag != ''"> and t.del_flag = #{delFlag} </if>
     		<if test="delFlagVague != null and delFlagVague != ''"> and t.del_flag like concat('%',#{delFlagVague},'%') </if>
             <if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
-    		<if test="sortSqVague != null and sortSqVague != ''"> and t.sort_sq like concat('%',#{sortSqVague},'%') </if>
+			<if test="sortSqVague != null and sortSqVague != ''"> and t.sort_sq like concat('%',#{sortSqVague},'%') </if>
             <if test="consultationTime != null and consultationTime != ''"> and t.consultation_time = #{consultationTime} </if>
     		<if test="consultationTimeVague != null and consultationTimeVague != ''"> and t.consultation_time like concat('%',#{consultationTimeVague},'%') </if>
             <if test="replyTime != null and replyTime != ''"> and t.reply_time = #{replyTime} </if>
     		<if test="replyTimeVague != null and replyTimeVague != ''"> and t.reply_time like concat('%',#{replyTimeVague},'%') </if>
+			<if test=" startTime != null and startTime != '' and endTime != null and endTime != '' ">
+				AND DATE_FORMAT( t.consultation_time, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
+			</if>
             <if test="consultationTitle != null and consultationTitle != ''"> and t.consultation_title = #{consultationTitle} </if>
     		<if test="consultationTitleVague != null and consultationTitleVague != ''"> and t.consultation_title like concat('%',#{consultationTitleVague},'%') </if>
             <if test="consultationContent != null and consultationContent != ''"> and t.consultation_content = #{consultationContent} </if>
@@ -66,6 +70,9 @@
     		<if test="consultationMobileVague != null and consultationMobileVague != ''"> and t.consultation_mobile like concat('%',#{consultationMobileVague},'%') </if>
             <if test="replyContent != null and replyContent != ''"> and t.reply_content = #{replyContent} </if>
     		<if test="replyContentVague != null and replyContentVague != ''"> and t.reply_content like concat('%',#{replyContentVague},'%') </if>
+			<if test="replyStatus != null and replyStatus != ''"> and t.reply_status = #{replyStatus} </if>
+			<if test="replyStatusVague != null and replyStatusVague != ''"> and t.reply_status like concat('%',#{replyStatusVague},'%') </if>
+    		 and del_flag = 0
         </where>
     </sql>
 	 
@@ -82,7 +89,8 @@
 			`consultation_content`, 
 			`consultation_name`, 
 			`consultation_mobile`, 
-			`reply_content`
+			`reply_content`,
+			`reply_status`
 		)
 		values
 		(
@@ -96,7 +104,8 @@
 			#{consultationContent}, 
 			#{consultationName}, 
 			#{consultationMobile}, 
-			#{replyContent}
+			#{replyContent},
+			#{replyStatus}
 		)
 	</insert>
 	 
@@ -114,6 +123,7 @@
 			<if test="consultationName != null">`consultation_name` = #{consultationName}, </if>
 			<if test="consultationMobile != null">`consultation_mobile` = #{consultationMobile}, </if>
 			<if test="replyContent != null">`reply_content` = #{replyContent}</if>
+			<if test="replyStatus != null">`reply_status` = #{replyStatus}</if>
 		</set>
 		where row_guid = #{rowGuid}
 	</update>
@@ -129,9 +139,14 @@
 		update sechos_consultation
 		<set>
 			<if test="replyTime != null">`reply_time` = #{replyTime}, </if>
-			<if test="replyContent != null">`reply_content` = #{replyContent}</if>
+			<if test="replyContent != null">`reply_content` = #{replyContent},</if>
+			<if test="replyContent != null">`reply_status` = #{replyStatus}</if>
 		</set>
 		where row_guid = #{rowGuid}
 	</update>
 
+	<!--获取未回复信息数量-->
+	<select id="getReplyCount" resultType="int">
+		select count(*) from sechos_consultation where reply_status = 0 and del_flag =0 ;
+	</select>
 </mapper>

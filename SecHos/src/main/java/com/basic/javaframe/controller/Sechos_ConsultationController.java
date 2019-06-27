@@ -66,6 +66,7 @@ public class Sechos_ConsultationController {
 		Date consultationTime = DateUtil.changeDate(new Date());
 		sechosConsultation.setCreateTime(createTime);
 		sechosConsultation.setDelFlag(0);
+		sechosConsultation.setReplyStatus(0);
 		sechosConsultation.setConsultationTime(consultationTime);
 		sechosConsultationService.save(sechosConsultation);
         return R.ok();  
@@ -102,8 +103,17 @@ public class Sechos_ConsultationController {
 	public R reply(@RequestBody Sechos_Consultation sechosConsultation){
 		Date replyTime = DateUtil.changeDate(new Date());
 		sechosConsultation.setReplyTime(replyTime);
+		sechosConsultation.setReplyStatus(1);
 		sechosConsultationService.reply(sechosConsultation);
 		return R.ok();
+	}
+
+	@ApiOperation(value="获得未回复咨询信息数量")
+	@ResponseBody
+	@RequestMapping(value="/getReplyCount", produces = "application/json; charset=utf-8", method=RequestMethod.GET)
+	public R getReplyCount(){
+		int count = sechosConsultationService.getReplyCount();
+		return R.ok().put("data",count);
 	}
 
 }

@@ -41,8 +41,18 @@ public class Sechos_Consultation implements Serializable {
 	private String consultationMobile;
 	/**回复内容**/
 	private String replyContent;
+	/**回复状态**/
+	private Integer replyStatus;
 
-	/**
+	 public Integer getReplyStatus() {
+		 return replyStatus;
+	 }
+
+	 public void setReplyStatus(Integer replyStatus) {
+		 this.replyStatus = replyStatus;
+	 }
+
+	 /**
 	 * 设置：
 	 */
 	public void setRowId(Integer rowId) {

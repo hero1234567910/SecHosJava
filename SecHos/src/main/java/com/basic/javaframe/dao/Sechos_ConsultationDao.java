@@ -15,5 +15,10 @@ public interface Sechos_ConsultationDao extends BaseDao<Sechos_Consultation> {
      * @return
      */
     int reply(Sechos_Consultation sechosConsultation);
-	
+
+    /**
+     * 获取未回复信息数量
+     * @return
+     */
+    int getReplyCount();
 }

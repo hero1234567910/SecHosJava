@@ -49,4 +49,9 @@ public class Sechos_ConsultationServiceImpl implements Sechos_ConsultationServic
 		sechosConsultationDao.reply(sechosConsultation);
 	}
 
+	@Override
+	public int getReplyCount() {
+		return sechosConsultationDao.getReplyCount();
+	}
+
 }

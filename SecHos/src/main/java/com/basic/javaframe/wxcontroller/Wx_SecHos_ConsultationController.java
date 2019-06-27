@@ -60,6 +60,8 @@ public class Wx_SecHos_ConsultationController {
         Date createTime = DateUtil.changeDate(new Date());
         Date consultationTime = DateUtil.changeDate(new Date());
         sechosConsultation.setCreateTime(createTime);
+        sechosConsultation.setReplyStatus(0);
+        sechosConsultation.setDelFlag(0);
         sechosConsultation.setConsultationTime(consultationTime);
         sechosConsultationService.save(sechosConsultation);
         return R.ok();
