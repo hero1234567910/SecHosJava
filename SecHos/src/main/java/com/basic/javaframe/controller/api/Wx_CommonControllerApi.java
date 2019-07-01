@@ -387,6 +387,56 @@ public class Wx_CommonControllerApi extends BaseController{
 		}
 		
 		/**
+		 * 获取检查报告列表
+		 * <p>Title: getReportList</p>  
+		 * <p>Description: </p>
+		 * @author hero  
+		 * @return
+		 */
+		@ApiOperation(value="获取检查报告列表")
+		@ResponseBody
+		@RequestMapping(value="/getReportList",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+		public R getReportList(@RequestBody Map<String, String> params){
+			checkParams(params, "hzxm");
+			checkParams(params, "patid");
+			checkParams(params, "jzlb");
+			checkParams(params, "ksrq");
+			checkParams(params, "jsrq");
+			String result = wx_CommonServiceApi.getReportListByPatid(params);
+			JSONObject json = JSONObject.parseObject(result);
+			if (json.getBoolean("success")) {
+				return R.ok().put("data", json.getJSONArray("risReports"));
+			}else{
+				return R.error(json.getString("message"));
+			}
+		}
+		
+		/**
+		 * 获取实验检查报告列表
+		 * <p>Title: getLabReportList</p>  
+		 * <p>Description: </p>
+		 * @author hero  
+		 * @return
+		 */
+		@ApiOperation(value="获取实验检查报告列表")
+		@ResponseBody
+		@RequestMapping(value="/getLabReportList",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+		public R getLabReportList(@RequestBody Map<String, String> params){
+			checkParams(params, "hzxm");
+			checkParams(params, "patid");
+			checkParams(params, "jzlb");
+			checkParams(params, "ksrq");
+			checkParams(params, "jsrq");
+			String result = wx_CommonServiceApi.getLabReportListByPatid(params);
+			JSONObject json = JSONObject.parseObject(result);
+			if (json.getBoolean("success")) {
+				return R.ok().put("data", json.getJSONArray("lisReports"));
+			}else{
+				return R.error(json.getString("message"));
+			}
+		}
+		
+		/**
 		 * 验证参数
 		 * <p>Title: checkParams</p>  
 		 * <p>Description: </p>

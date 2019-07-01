@@ -206,4 +206,43 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		return res;
 	}
 	
+	/**
+	 * 通过patid查询检查报告列表
+	 * <p>Title: getReportListByPatid</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @param params
+	 * @return
+	 */
+	public String getReportListByPatid(Map<String, String> params) {
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETRISLISTPAT");
+		
+		logger.info("查询检查报告列表接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("查询检查报告列表接口返回成功》》》"+JSONObject.toJSONString(res));
+		
+		return res;
+	}
+	
+	/**
+	 * 获取实验检查报告列表
+	 * <p>Title: getLabReportListByPatid</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @param params
+	 * @return
+	 */
+	public String getLabReportListByPatid(Map<String, String> params) {
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETLISLISTPAT");
+		
+		logger.info("查询实验检查报告列表接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("查询实验检查报告列表接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+	
 }
