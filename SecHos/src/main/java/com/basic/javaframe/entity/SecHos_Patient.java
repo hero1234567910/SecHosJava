@@ -42,8 +42,17 @@ public class SecHos_Patient implements Serializable {
 	private String patientMobile;
 	/**微信唯一标识**/
 	private String openid;
-//	/**卫宁患者id**/
-//	private String patid;
+	/**就诊类别*/
+	private Integer patientStatus;
+	
+	
+	public Integer getPatientStatus() {
+		return patientStatus;
+	}
+
+	public void setPatientStatus(Integer patientStatus) {
+		this.patientStatus = patientStatus;
+	}
 	/**微信头像地址**/
 	private String headImgUrl;
 	

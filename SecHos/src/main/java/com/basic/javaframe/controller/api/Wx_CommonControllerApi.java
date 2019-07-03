@@ -28,6 +28,7 @@ import com.basic.javaframe.common.WebSocket.WebSocketServer;
 import com.basic.javaframe.common.customclass.PassToken;
 import com.basic.javaframe.common.enumresource.DelFlagEnum;
 import com.basic.javaframe.common.enumresource.PatientEnum;
+import com.basic.javaframe.common.enumresource.PatientStatusEnum;
 import com.basic.javaframe.common.enumresource.SexEnum;
 import com.basic.javaframe.common.exception.MyException;
 import com.basic.javaframe.common.utils.DateUtil;
@@ -187,6 +188,7 @@ public class Wx_CommonControllerApi extends BaseController{
 						pa.setPatientMobile(json.getString("lxdh"));
 						pa.setPatientName(json.getString("hzxm"));
 						pa.setPatientSex((json.getString("sex") == SexEnum.MALE.getValue())?SexEnum.MALE.getCode():SexEnum.FEMALE.getCode());
+						pa.setPatientStatus(PatientStatusEnum.OUTPATIENT.getCode());
 						patientService.update(pa);
 						
 						//删除之前绑定的门诊记录
@@ -246,6 +248,7 @@ public class Wx_CommonControllerApi extends BaseController{
 						pa.setPatientMobile(json.getString("lxdh"));
 						pa.setPatientName(json.getString("hzxm"));
 						pa.setPatientSex((json.getString("sex") == SexEnum.MALE.getValue())?SexEnum.MALE.getCode():SexEnum.FEMALE.getCode());
+						pa.setPatientStatus(PatientStatusEnum.HOSPATIENT.getCode());
 						patientService.update(pa);
 						
 						//删除之前绑定的住院记录
@@ -303,55 +306,50 @@ public class Wx_CommonControllerApi extends BaseController{
 			checkParams(params, "birth");
 			checkParams(params, "lxdz");
 			checkParams(params, "lxdh");
-			if (params.get("action") != null) {
-				if (PatientEnum.OUTPATIENT.getCode().equals(params.get("action"))) {
-					//门诊患者
-					String result = wx_CommonServiceApi.bingdingOutPatient(params);
-					//解析结果
-					JSONObject jsonObject = JSONObject.parseObject(result);
-					if (jsonObject.containsKey("success")) {
-						boolean res = jsonObject.getBoolean("success");
-						if (res) {
-							//建档成功
-							
-							//直接绑定患者信息
-							SecHos_Patient pa = patientService.getPatientByOpenid(params.get("openid"));
-							if (pa == null) {
-								return R.error("未找到相关用户");
-							}
-							pa.setPatientAddress(params.get("lxdz"));
-							pa.setPatientBirth(DateUtil.changeStrToDate3(params.get("birth")));
-							pa.setPatientIdcard(params.get("zjh"));
-							pa.setPatientMobile(params.get("lxdh"));
-							pa.setPatientName(params.get("hzxm"));
-							pa.setPatientSex((params.get("sex") == SexEnum.MALE.getValue())?SexEnum.MALE.getCode():SexEnum.FEMALE.getCode());
-							patientService.update(pa);
-							
-							//删除之前绑定的门诊记录
-							List<SecHos_Outpatient> hoslist = pa.getOutpatients();
-							if (hoslist != null && hoslist.size() != 0) {
-								List<String> strlist = new ArrayList<>();
-								for (int i = 0; i < hoslist.size(); i++) {
-									String rowGuid = hoslist.get(i).getRowGuid();
-									strlist.add(rowGuid);
-								}
-								String[] rowGuids = strlist.toArray(new String[strlist.size()]);
-								outpatientService.deleteBatch(rowGuids);
-							}
-							
-							return R.ok("绑定成功").put("data",pa);
-						}else{
-							//建档失败
-							return R.error(jsonObject.getString("message"));
+			//门诊患者
+			String result = wx_CommonServiceApi.bingdingOutPatient(params);
+			//解析结果
+			JSONObject jsonObject = JSONObject.parseObject(result);
+			if (jsonObject.containsKey("success")) {
+				boolean res = jsonObject.getBoolean("success");
+				if (res) {
+					//建档成功
+					
+					//直接绑定患者信息
+					SecHos_Patient pa = patientService.getPatientByOpenid(params.get("openid"));
+					if (pa == null) {
+						return R.error("未找到相关用户");
+					}
+					pa.setPatientAddress(params.get("lxdz"));
+					pa.setPatientBirth(DateUtil.changeStrToDate3(params.get("birth")));
+					pa.setPatientIdcard(params.get("zjh"));
+					pa.setPatientMobile(params.get("lxdh"));
+					pa.setPatientName(params.get("hzxm"));
+					pa.setPatientSex((params.get("sex") == SexEnum.MALE.getValue())?SexEnum.MALE.getCode():SexEnum.FEMALE.getCode());
+					pa.setPatientStatus(PatientStatusEnum.OUTPATIENT.getCode());
+					patientService.update(pa);
+					
+					//删除之前绑定的门诊记录
+					List<SecHos_Outpatient> hoslist = pa.getOutpatients();
+					if (hoslist != null && hoslist.size() != 0) {
+						List<String> strlist = new ArrayList<>();
+						for (int i = 0; i < hoslist.size(); i++) {
+							String rowGuid = hoslist.get(i).getRowGuid();
+							strlist.add(rowGuid);
 						}
-					}else{
-						return R.error("门诊建档接口异常");
+						String[] rowGuids = strlist.toArray(new String[strlist.size()]);
+						outpatientService.deleteBatch(rowGuids);
 					}
 					
+					return R.ok("绑定成功").put("data",pa);
+				}else{
+					//建档失败
+					return R.error(jsonObject.getString("message"));
 				}
+			}else{
+				return R.error("门诊建档接口异常");
 			}
-			
-			return R.ok();
+					
 		}
 		
 		/**
