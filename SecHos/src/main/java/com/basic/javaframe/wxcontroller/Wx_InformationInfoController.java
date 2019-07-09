@@ -238,4 +238,20 @@ public class Wx_InformationInfoController {
         InformationInfo informationInfo = informationInfoService.getHosIntroduction(infoGuid);
         return R.ok().put("data",informationInfo);
     }
+
+    /**
+     * 微信端获取导诊台信息
+     * @param categoryGuid
+     * @return
+     */
+    @PassToken
+    @ApiOperation(value = "微信端获取导诊台信息")
+    @ResponseBody
+    @RequestMapping(value = "/getHospitalGuide",produces = "application/json;charset=utf-8", method = RequestMethod.GET)
+    public R getHospitalGuide(String categoryGuid){
+        categoryGuid = "1e582b7f-e01e-4d79-9633-e268467cd944";
+        String infoGuid = infoCategoryService.getSingleInfoByCateGuid(categoryGuid);
+        InformationInfo informationInfo = informationInfoService.getHosIntroduction(infoGuid);
+        return R.ok().put("data",informationInfo);
+    }
 }

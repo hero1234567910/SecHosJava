@@ -169,7 +169,7 @@ public class InformationCategoryController {
     		JSONObject obj = new JSONObject();
         	obj.put("name", v.getCategoryName());
         	obj.put("value", v.getRowGuid());
-        	obj.put("selected", "");
+        	obj.put("selected", "selected");
         	obj.put("disabled", "");
         	obj.put("is_needAudit", v.getIsNeedAudit());
         	array.add(obj);
