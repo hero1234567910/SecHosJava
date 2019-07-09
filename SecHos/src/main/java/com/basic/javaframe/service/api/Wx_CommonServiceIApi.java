@@ -164,10 +164,11 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		
 		//解析结果
 		JSONObject jsonObject = JSONObject.parseObject(result);
+		JSONArray array = new JSONArray();
 		if (jsonObject.containsKey("success")) {
 			boolean resu = jsonObject.getBoolean("success");
 			if (resu) {
-				
+				array = jsonObject.getJSONArray("zyjls");
 			}else {
 				throw new MyException("查询失败");
 			}
@@ -176,6 +177,7 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		}
 		
 		params.put("action","PUTZYYJJYS");
+		params.put("jzlsh", array.getJSONObject(0).getString("jzlsh"));
 		logger.info("预交金预充值接口参数》》》"+JSONObject.toJSONString(params));
 		String res = HttpUtil.sendPost(wnUrl, params);
 		logger.info("预交金预充值接口返回成功》》》"+JSONObject.toJSONString(res));
@@ -242,6 +244,105 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		logger.info("查询实验检查报告列表接口参数》》》"+JSONObject.toJSONString(params));
 		String res = HttpUtil.sendPost(wnUrl, params);
 		logger.info("查询实验检查报告列表接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+	
+	/**
+	 * 获取报告结果
+	 * <p>Title: getReportDetail</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @param params
+	 * @return
+	 */
+	public String getReportDetail(Map<String, String> params) {
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETRISRESULT");
+		
+		logger.info("查询检查报告结果接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("查询检查报告结果接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+	
+	/**
+	 * 获取实验报告结果
+	 * <p>Title: getLabReportDetail</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @param params
+	 * @return
+	 */
+	public String getLabReportDetail(Map<String, String> params) {
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETLISRESULT");
+		
+		logger.info("查询实验报告结果接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("查询实验报告结果接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+	
+	/**
+	 * 获取就诊流水号
+	 * <p>Title: getJzlsh</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @param params
+	 * @return
+	 */
+	public String getJzlsh(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETZYJLPAT");
+		params.put("zyzt","0");
+		
+		logger.info("获取就诊流水号接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("获取就诊流水号接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+	
+	/**
+	 * 获取汇总信息
+	 * <p>Title: getSummary</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @param params
+	 * @return
+	 */
+	public String getSummary(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETZYYJJHZ");
+
+		logger.info("获取汇总信息接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("获取汇总信息接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+	
+	/**
+	 * 获取详细信息
+	 * <p>Title: getAdvanceDetail</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @param params
+	 * @return
+	 */
+	public String getAdvanceDetail(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETZYYJJMX");
+
+		logger.info("获取明细信息接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("获取明细信息接口返回成功》》》"+JSONObject.toJSONString(res));
 		return res;
 	}
 	

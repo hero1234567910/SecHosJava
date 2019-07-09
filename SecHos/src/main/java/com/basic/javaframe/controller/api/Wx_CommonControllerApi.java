@@ -175,6 +175,9 @@ public class Wx_CommonControllerApi extends BaseController{
 					if (resu) {
 						//查询成功
 						JSONArray array = jsonObject.getJSONArray("patinfos");
+						if (array.size() == 0) {
+							return R.error("未查询到对应门诊用户信息");
+						}
 						//默认取第一个
 						JSONObject json = array.getJSONObject(0);
 						//直接绑定患者信息
@@ -191,31 +194,33 @@ public class Wx_CommonControllerApi extends BaseController{
 						pa.setPatientStatus(PatientStatusEnum.OUTPATIENT.getCode());
 						patientService.update(pa);
 						
-						//删除之前绑定的门诊记录
-						List<SecHos_Outpatient> hoslist = pa.getOutpatients();
-						if (hoslist != null && hoslist.size() != 0) {
-							List<String> strlist = new ArrayList<>();
-							for (int i = 0; i < hoslist.size(); i++) {
-								String rowGuid = hoslist.get(i).getRowGuid();
-								strlist.add(rowGuid);
-							}
-							String[] rowGuids = strlist.toArray(new String[strlist.size()]);
-							outpatientService.deleteBatch(rowGuids);
-						}
+//						//删除之前绑定的门诊记录
+//						List<SecHos_Outpatient> hoslist = pa.getOutpatients();
+//						if (hoslist != null && hoslist.size() != 0) {
+//							List<String> strlist = new ArrayList<>();
+//							for (int i = 0; i < hoslist.size(); i++) {
+//								String rowGuid = hoslist.get(i).getRowGuid();
+//								strlist.add(rowGuid);
+//							}
+//							String[] rowGuids = strlist.toArray(new String[strlist.size()]);
+//							outpatientService.deleteBatch(rowGuids);
+//						}
+//						
+//						for (int i = 0; i < array.size(); i++) {
+//							JSONObject obj = array.getJSONObject(i);
+//							SecHos_Outpatient ho = new SecHos_Outpatient();
+//							ho.setDelFlag(DelFlagEnum.NDELFLAG.getCode());
+//							ho.setCreateTime(DateUtil.changeDate(new Date()));
+//							String uuid = java.util.UUID.randomUUID().toString();
+//							ho.setRowGuid(uuid);
+//							ho.setMedicalNumberMZ(obj.getString("blh"));
+//							ho.setPatidMZ(obj.getString("patid"));
+//							ho.setPatientRowGuidMZ(pa.getRowGuid());
+//							outpatientService.save(ho);
+//						}
 						
-						for (int i = 0; i < array.size(); i++) {
-							JSONObject obj = array.getJSONObject(i);
-							SecHos_Outpatient ho = new SecHos_Outpatient();
-							ho.setDelFlag(DelFlagEnum.NDELFLAG.getCode());
-							ho.setCreateTime(DateUtil.changeDate(new Date()));
-							String uuid = java.util.UUID.randomUUID().toString();
-							ho.setRowGuid(uuid);
-							ho.setMedicalNumberMZ(obj.getString("blh"));
-							ho.setPatidMZ(obj.getString("patid"));
-							ho.setPatientRowGuidMZ(pa.getRowGuid());
-							outpatientService.save(ho);
-						}
-						return R.ok("绑定成功").put("data", pa);
+						//门诊只需要查一个医保类的 一个自费类的
+						return R.ok("查询门诊成功").put("data", array);
 					}else{
 						//查询失败
 						return R.error("未查询到门诊患者");
@@ -235,6 +240,9 @@ public class Wx_CommonControllerApi extends BaseController{
 					if (resu) {
 						//查询成功
 						JSONArray array = jsonObject.getJSONArray("patinfos");
+						if (array.size() == 0) {
+							return R.error("未查询到相应住院患者信息");
+						}
 						//默认取第一个
 						JSONObject json = array.getJSONObject(0);
 						//直接绑定患者信息
@@ -251,32 +259,32 @@ public class Wx_CommonControllerApi extends BaseController{
 						pa.setPatientStatus(PatientStatusEnum.HOSPATIENT.getCode());
 						patientService.update(pa);
 						
-						//删除之前绑定的住院记录
-						List<SecHos_hospitalized> hoslist = pa.getHospitalizedList();
-						if (hoslist != null && hoslist.size() != 0) {
-							List<String> strlist = new ArrayList<>();
-							for (int i = 0; i < hoslist.size(); i++) {
-								String rowGuid = hoslist.get(i).getRowGuid();
-								strlist.add(rowGuid);
-							}
-							String[] rowGuids = strlist.toArray(new String[strlist.size()]);
-							hospitalService.deleteBatch(rowGuids);
-						}
-						
-						for (int i = 0; i < array.size(); i++) {
-							JSONObject obj = array.getJSONObject(i);
-							SecHos_hospitalized ho = new SecHos_hospitalized();
-							ho.setDelFlag(DelFlagEnum.NDELFLAG.getCode());
-							ho.setCreateTime(DateUtil.changeDate(new Date()));
-							String uuid = java.util.UUID.randomUUID().toString();
-							ho.setRowGuid(uuid);
-							ho.setHospitalizedStatus(Integer.valueOf(obj.getString("zyzt")));
-							ho.setMedicalNumber(obj.getString("blh"));
-							ho.setPatid(obj.getString("patid"));
-							ho.setPatientRowGuid(pa.getRowGuid());
-							hospitalService.save(ho);
-						}
-						return R.ok("绑定成功").put("data", pa);
+//						//删除之前绑定的住院记录
+//						List<SecHos_hospitalized> hoslist = pa.getHospitalizedList();
+//						if (hoslist != null && hoslist.size() != 0) {
+//							List<String> strlist = new ArrayList<>();
+//							for (int i = 0; i < hoslist.size(); i++) {
+//								String rowGuid = hoslist.get(i).getRowGuid();
+//								strlist.add(rowGuid);
+//							}
+//							String[] rowGuids = strlist.toArray(new String[strlist.size()]);
+//							hospitalService.deleteBatch(rowGuids);
+//						}
+//						
+//						for (int i = 0; i < array.size(); i++) {
+//							JSONObject obj = array.getJSONObject(i);
+//							SecHos_hospitalized ho = new SecHos_hospitalized();
+//							ho.setDelFlag(DelFlagEnum.NDELFLAG.getCode());
+//							ho.setCreateTime(DateUtil.changeDate(new Date()));
+//							String uuid = java.util.UUID.randomUUID().toString();
+//							ho.setRowGuid(uuid);
+//							ho.setHospitalizedStatus(Integer.valueOf(obj.getString("zyzt")));
+//							ho.setMedicalNumber(obj.getString("blh"));
+//							ho.setPatid(obj.getString("patid"));
+//							ho.setPatientRowGuid(pa.getRowGuid());
+//							hospitalService.save(ho);
+//						}
+						return R.ok("绑定成功").put("data", array);
 					}else{
 						//查询失败
 						return R.error("未查询到住院患者，住院患者无法建档");
@@ -289,13 +297,13 @@ public class Wx_CommonControllerApi extends BaseController{
 		}
 		
 		/**
-		 * 绑定患者
+		 * 患者建档
 		 * <p>Title: bindingPatient</p>  	
 		 * <p>Description: </p>
 		 * @author hero  
 		 * @return
 		 */
-		@ApiOperation(value="绑定患者")
+		@ApiOperation(value="患者建档")
 		@ResponseBody
 		@RequestMapping(value="/bingdingPatient",produces="application/json;charset=utf-8",method=RequestMethod.POST)
 		public R bindingPatient(@RequestBody Map<String, String> params){
@@ -329,19 +337,19 @@ public class Wx_CommonControllerApi extends BaseController{
 					pa.setPatientStatus(PatientStatusEnum.OUTPATIENT.getCode());
 					patientService.update(pa);
 					
-					//删除之前绑定的门诊记录
-					List<SecHos_Outpatient> hoslist = pa.getOutpatients();
-					if (hoslist != null && hoslist.size() != 0) {
-						List<String> strlist = new ArrayList<>();
-						for (int i = 0; i < hoslist.size(); i++) {
-							String rowGuid = hoslist.get(i).getRowGuid();
-							strlist.add(rowGuid);
-						}
-						String[] rowGuids = strlist.toArray(new String[strlist.size()]);
-						outpatientService.deleteBatch(rowGuids);
-					}
+//					//删除之前绑定的门诊记录
+//					List<SecHos_Outpatient> hoslist = pa.getOutpatients();
+//					if (hoslist != null && hoslist.size() != 0) {
+//						List<String> strlist = new ArrayList<>();
+//						for (int i = 0; i < hoslist.size(); i++) {
+//							String rowGuid = hoslist.get(i).getRowGuid();
+//							strlist.add(rowGuid);
+//						}
+//						String[] rowGuids = strlist.toArray(new String[strlist.size()]);
+//						outpatientService.deleteBatch(rowGuids);
+//					}
 					
-					return R.ok("绑定成功").put("data",pa);
+					return R.ok("绑定成功");
 				}else{
 					//建档失败
 					return R.error(jsonObject.getString("message"));
@@ -350,6 +358,28 @@ public class Wx_CommonControllerApi extends BaseController{
 				return R.error("门诊建档接口异常");
 			}
 					
+		}
+		
+		/**
+		 * 绑定用户身份证和姓名
+		 * <p>Title: bindIdcard</p>  
+		 * <p>Description: </p>
+		 * @author hero  
+		 * @return
+		 */
+		@RequestMapping(value="/bindInfo",produces="application/json;charset=utf-8",method=RequestMethod.PUT)
+		public R bindIdcard(@RequestBody Map<String, String> params){
+			checkParams(params, "hzxm");
+			checkParams(params, "zjh");
+			checkParams(params, "openid");
+			SecHos_Patient pa = patientService.getPatientByOpenid(params.get("openid"));
+			if (pa == null) {
+				return R.error("绑定身份证异常");
+			}
+			pa.setPatientIdcard(params.get("zjh"));
+			pa.setPatientName(params.get("hzxm"));
+			patientService.update(pa);
+			return R.ok().put("绑定身份信息成功", pa);
 		}
 		
 		/**
@@ -385,6 +415,33 @@ public class Wx_CommonControllerApi extends BaseController{
 		}
 		
 		/**
+		 * 查询就诊记录(获取就诊流水号)
+		 * <p>Title: getJzlsh</p>  
+		 * <p>Description: </p>
+		 * @author hero  
+		 * @return
+		 */
+		@ApiOperation(value="获取就诊流水号")
+		@ResponseBody
+		@RequestMapping(value="/getJzlsh",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+		public R getJzlsh(@RequestBody Map<String, String> params){
+			checkParams(params, "hzxm");
+			checkParams(params, "patid");
+			String result = wx_CommonServiceApi.getJzlsh(params);
+			JSONObject json = JSONObject.parseObject(result);
+			if (json.getBoolean("success")) {
+				JSONArray arr = json.getJSONArray("zyjls");
+				if (arr.size() == 0) {
+					return R.error("未查到相关记录");
+				}
+				return R.ok().put("data", arr.getJSONObject(0));
+			}else{
+				return R.error(json.getString("message"));
+			}
+		}
+		
+		
+		/**
 		 * 获取检查报告列表
 		 * <p>Title: getReportList</p>  
 		 * <p>Description: </p>
@@ -410,6 +467,28 @@ public class Wx_CommonControllerApi extends BaseController{
 		}
 		
 		/**
+		 * 获取详细报告
+		 * <p>Title: getReportDetail</p>  
+		 * <p>Description: </p>
+		 * @author hero  
+		 * @return
+		 */
+		@ApiOperation(value="获取详细报告")
+		@ResponseBody
+		@RequestMapping(value="/getReportDetail",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+		public R getReportDetail(@RequestBody Map<String, String> params){
+			checkParams(params, "bgdh");
+			checkParams(params, "bglbdm");
+			String result = wx_CommonServiceApi.getReportDetail(params);
+			JSONObject json = JSONObject.parseObject(result);
+			if (json.getBoolean("success")) {
+				return R.ok().put("data", json.getJSONArray("risResults"));
+			}else{
+				return R.error(json.getString("message"));
+			}
+		}
+		
+		/**
 		 * 获取实验检查报告列表
 		 * <p>Title: getLabReportList</p>  
 		 * <p>Description: </p>
@@ -429,6 +508,80 @@ public class Wx_CommonControllerApi extends BaseController{
 			JSONObject json = JSONObject.parseObject(result);
 			if (json.getBoolean("success")) {
 				return R.ok().put("data", json.getJSONArray("lisReports"));
+			}else{
+				return R.error(json.getString("message"));
+			}
+		}
+		
+		/**
+		 * 获取实验详细报告
+		 * <p>Title: getReportDetail</p>  
+		 * <p>Description: </p>
+		 * @author hero  
+		 * @return
+		 */
+		@ApiOperation(value="获取详细报告")
+		@ResponseBody
+		@RequestMapping(value="/getLabReportDetail",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+		public R getLabReportDetail(@RequestBody Map<String, String> params){
+			checkParams(params, "bgdh");
+			checkParams(params, "bglbdm");
+			String result = wx_CommonServiceApi.getLabReportDetail(params);
+			JSONObject json = JSONObject.parseObject(result);
+			if (json.getBoolean("success")) {
+				return R.ok().put("data", json.getJSONArray("lisResults"));
+			}else{
+				return R.error(json.getString("message"));
+			}
+		}
+		
+		/**
+		 * 获取预交金汇总信息
+		 * <p>Title: getSummary</p>  
+		 * <p>Description: </p>
+		 * @author hero  
+		 * @return
+		 */
+		@ApiOperation(value="获取预交金汇总信息")
+		@ResponseBody
+		@RequestMapping(value="/getSummary",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+		public R getSummary(@RequestBody Map<String, String> params){
+			checkParams(params, "hzxm");
+			checkParams(params, "jzlsh");
+			String result = wx_CommonServiceApi.getSummary(params);
+			JSONObject json = JSONObject.parseObject(result);
+			if (json.getBoolean("success")) {
+				JSONArray arr = json.getJSONArray("zyyjjhzs");
+				if (arr.size() == 0) {
+					return R.error("未查到相关记录");
+				}
+				return R.ok().put("data", arr.getJSONObject(0));
+			}else{
+				return R.error(json.getString("message"));
+			}
+		}
+		
+		/**
+		 * 获取预交金详细信息
+		 * <p>Title: getAdvanceDetail</p>  
+		 * <p>Description: </p>
+		 * @author hero  
+		 * @return
+		 */
+		@ApiOperation(value="获取预交金详细信息")
+		@ResponseBody
+		@RequestMapping(value="/getAdvanceDetail",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+		public R getAdvanceDetail(@RequestBody Map<String, String> params){
+			checkParams(params, "jzlsh");
+			checkParams(params, "hzxm");
+			String result = wx_CommonServiceApi.getAdvanceDetail(params);
+			JSONObject json = JSONObject.parseObject(result);
+			if (json.getBoolean("success")) {
+				JSONArray arr = json.getJSONArray("zyyjjhzs");
+				if (arr.size() == 0) {
+					return R.error("未查到相关记录");
+				}
+				return R.ok().put("data", arr.getJSONObject(0));
 			}else{
 				return R.error(json.getString("message"));
 			}
