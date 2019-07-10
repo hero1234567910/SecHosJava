@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.Sechos_RechargerecordDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.basic.javaframe.entity.Sechos_Rechargerecord" id="sechosRechargerecordMap">
+        <result property="rowId" column="row_id"/>
+        <result property="rowGuid" column="row_guid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="sortSq" column="sort_sq"/>
+        <result property="merchantNumber" column="merchant_number"/>
+        <result property="payMoney" column="pay_money"/>
+        <result property="payTime" column="pay_time"/>
+        <result property="recordStatus" column="record_status"/>
+        <result property="patientRowGuid" column="patient_rowGuid"/>
+        <result property="payType" column="pay_type"/>
+    </resultMap>
+
+	<select id="getList" resultType="com.basic.javaframe.entity.Sechos_Rechargerecord">
+		select * from sechos_rechargerecord t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by row_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="getCount" resultType="int">
+		select count(*) from sechos_rechargerecord t  <include refid="where_clause" />
+	</select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+    		<if test="rowIdVague != null and rowIdVague != ''"> and t.row_id like concat('%',#{rowIdVague},'%') </if>
+            <if test="rowGuid != null and rowGuid != ''"> and t.row_guid = #{rowGuid} </if>
+    		<if test="rowGuidVague != null and rowGuidVague != ''"> and t.row_guid like concat('%',#{rowGuidVague},'%') </if>
+            <if test="createTime != null and createTime != ''"> and t.create_time = #{createTime} </if>
+    		<if test="createTimeVague != null and createTimeVague != ''"> and t.create_time like concat('%',#{createTimeVague},'%') </if>
+            <if test="delFlag != null and delFlag != ''"> and t.del_flag = #{delFlag} </if>
+    		<if test="delFlagVague != null and delFlagVague != ''"> and t.del_flag like concat('%',#{delFlagVague},'%') </if>
+            <if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
+    		<if test="sortSqVague != null and sortSqVague != ''"> and t.sort_sq like concat('%',#{sortSqVague},'%') </if>
+            <if test="merchantNumber != null and merchantNumber != ''"> and t.merchant_number = #{merchantNumber} </if>
+    		<if test="merchantNumberVague != null and merchantNumberVague != ''"> and t.merchant_number like concat('%',#{merchantNumberVague},'%') </if>
+            <if test="payMoney != null and payMoney != ''"> and t.pay_money = #{payMoney} </if>
+    		<if test="payMoneyVague != null and payMoneyVague != ''"> and t.pay_money like concat('%',#{payMoneyVague},'%') </if>
+            <if test="payTime != null and payTime != ''"> and t.pay_time = #{payTime} </if>
+    		<if test="payTimeVague != null and payTimeVague != ''"> and t.pay_time like concat('%',#{payTimeVague},'%') </if>
+            <if test="recordStatus != null and recordStatus != ''"> and t.record_status = #{recordStatus} </if>
+    		<if test="recordStatusVague != null and recordStatusVague != ''"> and t.record_status like concat('%',#{recordStatusVague},'%') </if>
+            <if test="patientRowGuid != null and patientRowGuid != ''"> and t.patient_rowGuid = #{patientRowGuid} </if>
+    		<if test="patientRowGuidVague != null and patientRowGuidVague != ''"> and t.patient_rowGuid like concat('%',#{patientRowGuidVague},'%') </if>
+            <if test="payType != null and payType != ''"> and t.pay_type = #{payType} </if>
+    		<if test="payTypeVague != null and payTypeVague != ''"> and t.pay_type like concat('%',#{payTypeVague},'%') </if>
+    		and t.del_flag =0
+        </where>
+    </sql>
+	 
+	<insert id="save" parameterType="com.basic.javaframe.entity.Sechos_Rechargerecord" useGeneratedKeys="true" keyProperty="rowId">
+		insert into sechos_rechargerecord
+		(
+			`row_guid`, 
+			`create_time`, 
+			`del_flag`, 
+			`sort_sq`, 
+			`merchant_number`, 
+			`pay_money`, 
+			`pay_time`, 
+			`record_status`, 
+			`patient_rowGuid`, 
+			`pay_type`
+		)
+		values
+		(
+			#{rowGuid}, 
+			#{createTime}, 
+			#{delFlag}, 
+			#{sortSq}, 
+			#{merchantNumber}, 
+			#{payMoney}, 
+			#{payTime}, 
+			#{recordStatus}, 
+			#{patientRowGuid}, 
+			#{payType}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.basic.javaframe.entity.Sechos_Rechargerecord">
+		update sechos_rechargerecord 
+		<set>
+			<if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+			<if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+			<if test="merchantNumber != null">`merchant_number` = #{merchantNumber}, </if>
+			<if test="payMoney != null">`pay_money` = #{payMoney}, </if>
+			<if test="payTime != null">`pay_time` = #{payTime}, </if>
+			<if test="recordStatus != null">`record_status` = #{recordStatus}, </if>
+			<if test="patientRowGuid != null">`patient_rowGuid` = #{patientRowGuid}, </if>
+			<if test="payType != null">`pay_type` = #{payType}</if>
+		</set>
+		where row_id = #{rowId}
+	</update>
+	
+	<delete id="deleteBatch">
+		update sechos_rechargerecord set `del_flag` = 1 where row_guid in 
+		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+			#{rowGuid}
+		</foreach>
+	</delete>
+
+</mapper>
