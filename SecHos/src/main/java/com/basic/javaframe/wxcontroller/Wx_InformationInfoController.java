@@ -254,4 +254,52 @@ public class Wx_InformationInfoController {
         InformationInfo informationInfo = informationInfoService.getHosIntroduction(infoGuid);
         return R.ok().put("data",informationInfo);
     }
+
+    /**
+     * 微信端获取出院引导信息
+     * @param categoryGuid
+     * @return
+     */
+    @PassToken
+    @ApiOperation(value = "微信端获取出院引导信息")
+    @ResponseBody
+    @RequestMapping(value = "/getOutHospitalGuide",produces = "application/json;charset=utf-8", method = RequestMethod.GET)
+    public R getOutHospitalGuide(String categoryGuid){
+        categoryGuid = "0b385514-a21f-4124-af84-6fda97baa342";
+        String infoGuid = infoCategoryService.getSingleInfoByCateGuid(categoryGuid);
+        InformationInfo informationInfo = informationInfoService.getHosIntroduction(infoGuid);
+        return R.ok().put("data",informationInfo);
+    }
+
+    /**
+     * 微信端获取复诊预约信息
+     * @param categoryGuid
+     * @return
+     */
+    @PassToken
+    @ApiOperation(value = "微信端获取复诊预约信息")
+    @ResponseBody
+    @RequestMapping(value = "/getFollowAppointment",produces = "application/json;charset=utf-8", method = RequestMethod.GET)
+    public R getFollowAppointment(String categoryGuid){
+        categoryGuid = "c769abe9-9990-44f6-bb65-adde3b920404";
+        String infoGuid = infoCategoryService.getSingleInfoByCateGuid(categoryGuid);
+        InformationInfo informationInfo = informationInfoService.getHosIntroduction(infoGuid);
+        return R.ok().put("data",informationInfo);
+    }
+
+    /**
+     * 微信端获取体检预约信息
+     * @param categoryGuid
+     * @return
+     */
+    @PassToken
+    @ApiOperation(value = "微信端获取体检预约信息")
+    @ResponseBody
+    @RequestMapping(value = "/getMedicalAppointment",produces = "application/json;charset=utf-8", method = RequestMethod.GET)
+    public R getMedicalAppointment(String categoryGuid){
+        categoryGuid = "eea0b2f9-ca27-4da6-82de-679957646e6a";
+        String infoGuid = infoCategoryService.getSingleInfoByCateGuid(categoryGuid);
+        InformationInfo informationInfo = informationInfoService.getHosIntroduction(infoGuid);
+        return R.ok().put("data",informationInfo);
+    }
 }
