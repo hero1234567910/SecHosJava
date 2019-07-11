@@ -1,12 +1,18 @@
 package com.basic.javaframe.controller.api;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -15,6 +21,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,24 +31,31 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.basic.javaframe.common.WebSocket.WebSocketServer;
 import com.basic.javaframe.common.customclass.PassToken;
 import com.basic.javaframe.common.enumresource.DelFlagEnum;
 import com.basic.javaframe.common.enumresource.PatientEnum;
 import com.basic.javaframe.common.enumresource.PatientStatusEnum;
+import com.basic.javaframe.common.enumresource.RecordStatusEnum;
 import com.basic.javaframe.common.enumresource.SexEnum;
 import com.basic.javaframe.common.exception.MyException;
+import com.basic.javaframe.common.utils.AmountUtils;
 import com.basic.javaframe.common.utils.DateUtil;
 import com.basic.javaframe.common.utils.R;
+import com.basic.javaframe.common.utils.XMLUtil;
 import com.basic.javaframe.controller.BaseController;
+import com.basic.javaframe.entity.Frame_Config;
 import com.basic.javaframe.entity.SecHos_Outpatient;
 import com.basic.javaframe.entity.SecHos_Patient;
 import com.basic.javaframe.entity.SecHos_hospitalized;
+import com.basic.javaframe.entity.Sechos_Rechargerecord;
 import com.basic.javaframe.service.Frame_ConfigService;
 import com.basic.javaframe.service.RedisService;
 import com.basic.javaframe.service.SecHos_OutpatientService;
 import com.basic.javaframe.service.SecHos_PatientService;
 import com.basic.javaframe.service.SecHos_hospitalizedService;
+import com.basic.javaframe.service.Sechos_RechargerecordService;
 import com.basic.javaframe.service.api.Wx_CommonServiceIApi;
 
 import io.swagger.annotations.ApiOperation;
@@ -75,6 +89,8 @@ public class Wx_CommonControllerApi extends BaseController{
 	
 	@Autowired
 	SecHos_OutpatientService outpatientService;
+	
+	Sechos_RechargerecordService rechargerecordService;
 	
 	/**
 	 * 获取网页授权token，openid
@@ -598,6 +614,200 @@ public class Wx_CommonControllerApi extends BaseController{
 			if (params.get(param) == null || "".equals(params.get(param))) {
 				throw new MyException("缺失参数"+param);
 			}
+		}
+		
+		/**
+		 * 统一下单接口
+		 * <p>Title: placeOrder</p>  
+		 * <p>Description: </p>
+		 * @author hero  
+		 * @return
+		 */
+		@Transactional
+		@PassToken
+		@ResponseBody
+		@RequestMapping(value="/placeOrder",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+		public R placeOrder(@RequestBody Map<String, String> params){
+			checkParams(params, "openid");
+			checkParams(params, "yjMoney");
+			checkParams(params, "patientGuid");
+			checkParams(params, "patid");
+			checkParams(params, "patientName");
+			//单位分
+			int money = Integer.valueOf(AmountUtils.changeY2F(params.get("yjMoney"))); 
+
+			//商户订单号
+	        String out_trade_no = System.currentTimeMillis()+wx_CommonServiceApi.getRandomStringByLength(7);
+			
+	        String xml = null;
+			try {
+				xml = wx_CommonServiceApi.placeOrder(money,out_trade_no,params.get("openid"));
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			if (xml == "") {
+				//如果返回结果为空，说明调用接口异常
+				return R.error("调用下单接口失败");
+			}
+			
+			//解析xml
+			Map<String, String> map = new HashMap<>();
+			map = XMLUtil.xml2Map(xml);
+			//对返回结果进行解析
+			String return_code = map.get("return_code");
+			if (return_code == null || return_code == "") {
+				return R.error("return_code为空");
+			}
+			if ("FAIL".equals(return_code)) {
+				return R.error(map.get("return_msg"));
+			}
+			if ("FAIL".equals(map.get("result_code"))) {
+				return R.error("错误代码："+map.get("err_code")+" 错误原因："+map.get("err_code_des"));
+			}
+			
+			
+			//数据库创建订单
+			Sechos_Rechargerecord order = new Sechos_Rechargerecord();
+			String orderGuid = UUID.randomUUID().toString();
+			order.setCreateTime(DateUtil.changeDate(new Date()));
+			order.setRowGuid(orderGuid);
+			order.setDelFlag(DelFlagEnum.NDELFLAG.getCode());
+			order.setMerchantNumber(out_trade_no);
+			order.setRecordStatus(RecordStatusEnum.READYHANDLE.getCode());
+			order.setPatientRowGuid(params.get("patientGuid"));
+			order.setPatid(params.get("patid"));
+			order.setPatientName(params.get("patientName"));
+			//转decimal
+			BigDecimal number = new BigDecimal(params.get("yjMoney"));
+			order.setPayMoney(number);
+			rechargerecordService.save(order);
+			
+			//准备数据返回
+			SortedMap<Object, Object> obj =
+	                new TreeMap<Object, Object>();
+			obj.put("appId",appid);
+			obj.put("timeStamp",System.currentTimeMillis()/1000);
+			obj.put("nonceStr",wx_CommonServiceApi.getRandomStringByLength(32));
+			obj.put("package","prepay_id="+map.get("prepay_id"));
+			obj.put("signType", "MD5");
+			obj.put("paySign",wx_CommonServiceApi.createSign(obj));
+			return R.ok("下单成功").put("data", obj);
+		}
+		
+		/**
+		 * 回调接口
+		 * <p>Title: wx_callback</p>  
+		 * <p>Description: </p>
+		 * @author hero
+		 */
+		@ResponseBody
+		@RequestMapping(value="/wx_callback",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+		public String wx_callback(HttpServletRequest request){
+			
+			//xml转map
+			Map<String, String> hashmap = new HashMap<>();
+			try {
+				hashmap = parseXml(request);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			logger.info("微信回调接口参数》》》"+JSONObject.toJSONString(hashmap));
+			
+			if ("FAIL".equals(hashmap.get("return_code"))) {
+				throw new MyException("微信回调异常，异常信息》》"+hashmap.get("return_msg"));
+			}
+			
+			SortedMap<Object, Object> sm =
+	                new TreeMap<Object, Object>(hashmap);
+			
+			System.out.println("sm>>>>"+JSONObject.toJSONString(sm));
+			//验签
+			String sign = wx_CommonServiceApi.createSign(sm);
+			if (!hashmap.get("sign").equals(sign)) {
+				throw new MyException("验签失败，sign比对不同");
+			}
+			//校验返回的订单金额是否与商户侧的订单金额一致
+			int orderMoney = Integer.valueOf(hashmap.get("total_fee"));//单位分
+			//根据商户订单号查询该订单金额
+			Sechos_Rechargerecord rechargerecord = rechargerecordService.queryByOrderNumber(hashmap.get("out_trade_no"));
+			if (rechargerecord == null) {
+				throw new MyException("未查询到对应记录");
+			}
+			if (rechargerecord.getRecordStatus() != RecordStatusEnum.READYHANDLE.getCode()) {
+				sm.clear();
+				sm.put("return_code", "SUCCESS");
+				sm.put("return_msg", "this infomation is already deal");
+				
+				String xmlWx = XMLUtil.mapToXml(sm, true);
+				logger.info("返回给微信的xml为"+xmlWx);
+			}
+			//int单位分转decimal并和回调金额比较
+			int money = Integer.valueOf(AmountUtils.changeY2F(rechargerecord.getPayMoney().toString()));
+			if (orderMoney != money) {
+				logger.info("回调金额为"+orderMoney+"  数据库已存入订单金额为"+money+"(实际已元为单位存储)");
+				//报错，提示金额不一致，做下一步处理...
+				sm.clear();
+				sm.put("return_code", "FAIL");
+				sm.put("return_msg", "金额不一致");
+				String xmlwx = XMLUtil.mapToXml(sm, true);
+				logger.info("返回给微信的xml为"+xmlwx);
+				return xmlwx;
+			}
+			//调用充值预交金接口
+			Map<String, String> yjParams = new HashMap<>();
+			yjParams.put("hzxm", rechargerecord.getPatientName());
+			yjParams.put("patid", rechargerecord.getPatid());
+			//预交金预充值
+			String result = wx_CommonServiceApi.beforehandPay(yjParams);
+			JSONObject json = JSONObject.parseObject(result);
+			if (json.getBoolean("success")) {
+				yjParams.put("hisddh", json.getString("hisddh"));
+				yjParams.put("yjlsh", json.getString("yjlsh"));
+//				yjParams.put("ptlsh", rechargerecord.getMerchantNumber());
+				yjParams.put("zfje", rechargerecord.getPayMoney().toString());
+				yjParams.put("zflsh",hashmap.get("hashmap"));
+				yjParams.put("zfsj", hashmap.get("time_end"));
+				
+				//预交金充值
+				String res = wx_CommonServiceApi.advancePay(yjParams);
+				JSONObject obj = JSONObject.parseObject(res);
+				if (obj.getBoolean("success")) {
+				}else{
+					logger.info(obj.getString("message"));
+					sm.clear();
+					sm.put("return_code", "FAIL");
+					sm.put("return_msg", "业务异常");
+					String xmlwx = XMLUtil.mapToXml(sm, true);
+					logger.info("返回给微信的xml为"+xmlwx);
+					return xmlwx;
+				}
+			}else{
+				logger.info(json.getString("message"));
+				sm.clear();
+				sm.put("return_code", "FAIL");
+				sm.put("return_msg", "业务异常");
+				String xmlwx = XMLUtil.mapToXml(sm, true);
+				logger.info("返回给微信的xml为"+xmlwx);
+				return xmlwx;
+			}
+			
+			
+			//若前面都通过，更新订单状态并返回正确信息给微信
+			Sechos_Rechargerecord hosOrder = new Sechos_Rechargerecord();
+			hosOrder.setRowGuid(rechargerecord.getRowGuid());
+			hosOrder.setRecordStatus(RecordStatusEnum.ALREADYHANDLE.getCode());
+			rechargerecordService.update(hosOrder);
+			
+			sm.clear();
+			sm.put("return_code", "SUCCESS");
+			sm.put("return_msg", "OK");
+			
+			String xmlWx = XMLUtil.mapToXml(sm, true);
+			logger.info("返回给微信的xml为"+xmlWx);
+			
+			return xmlWx;
 		}
 	
 }	

@@ -39,8 +39,24 @@ public class Sechos_Rechargerecord implements Serializable {
    private String patientRowGuid;
    /**充值类型**/
    private Integer payType;
-
-   /**
+   
+   private String patid;
+   
+   private String patientName;
+   
+   public String getPatid() {
+	return patid;
+	}
+	public void setPatid(String patid) {
+		this.patid = patid;
+	}
+	public String getPatientName() {
+		return patientName;
+	}
+	public void setPatientName(String patientName) {
+		this.patientName = patientName;
+	}
+/**
     * 设置：
     */
    public void setRowId(Integer rowId) {

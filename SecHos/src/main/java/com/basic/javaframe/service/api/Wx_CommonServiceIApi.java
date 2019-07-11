@@ -1,8 +1,13 @@
 package com.basic.javaframe.service.api;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.springframework.stereotype.Service;
 
@@ -10,23 +15,14 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.basic.javaframe.common.exception.MyException;
 import com.basic.javaframe.common.utils.HttpUtil;
+import com.basic.javaframe.common.utils.MD5Util;
 import com.basic.javaframe.common.utils.R;
+import com.basic.javaframe.common.utils.XMLUtil;
 
 import io.swagger.annotations.Info;
 
 @Service("wx_CommonServiceApi")
 public class Wx_CommonServiceIApi extends Api_BaseService{
-	
-	public static String getRandomStringByLength(int length) {
-        String base = "abcdefghijklmnopqrstuvwxyz0123456789";
-        Random random = new Random();
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < length; i++) {
-            int number = random.nextInt(base.length());
-            sb.append(base.charAt(number));
-        }
-        return sb.toString();
-    }
 
 	/**
 	 * 通过网页授权code获取token
@@ -196,11 +192,7 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		params.put("yydm", yydm);
 		params.put("accesskey", accesskey);
 		params.put("action","PUTZYYJJ");
-//		params.put("ptlsh", value);
-//		params.put("zffs", value);
-//		params.put("zfje", value);
-//		params.put("zflsh", value);
-//		params.put("zfsj", value);
+		params.put("zffs", "1");
 		
 		logger.info("预交金充值接口参数》》》"+JSONObject.toJSONString(params));
 		String res = HttpUtil.sendPost(wnUrl, params);
@@ -345,5 +337,86 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		logger.info("获取明细信息接口返回成功》》》"+JSONObject.toJSONString(res));
 		return res;
 	}
+	
+	/**
+	 * 准备参数调用微信接口
+	 * @throws UnsupportedEncodingException 
+	 */
+	public String placeOrder(int money,String out_trade_no,String openid) throws UnsupportedEncodingException {
+		
+		//随机数nonce_str
+		String nonce_str = getRandomStringByLength(32);
+		//标价金额（单位分）
+		int total_fee = money;
+		//交易类型
+		String trade_type = "JSAPI";
+		
+		SortedMap<Object, Object> sm =
+                new TreeMap<Object, Object>();
+		
+		sm.put("appid", appid);
+		sm.put("mch_id", mch_id);
+		sm.put("nonce_str", nonce_str);
+		sm.put("body",body);
+		sm.put("out_trade_no", out_trade_no);
+		sm.put("spbill_create_ip", spbill_create_ip);
+		sm.put("notify_url", notify_url);
+		sm.put("trade_type", trade_type);
+		sm.put("total_fee", total_fee);
+		sm.put("openid", openid);
+		sm.put("sign", createSign(sm));
+		
+		
+		
+		String xml = XMLUtil.mapToXml(sm, false);
+		logger.info("统一下单接口参数》》》》"+(xml));
+		String result = "";
+		try {
+			result = HttpUtil.sendXmlMsg(url, xml);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		logger.info("返回成功》》》"+JSONObject.toJSONString(result));
+		
+		return result;
+	}
+	
+	
+	/**
+	* 微信支付签名算法sign
+	* @param characterEncoding
+	* @param parameters
+	* @return
+	*/
+	public String createSign(SortedMap<Object,Object> parameters){
+		StringBuffer sb = new StringBuffer();
+		Set es = parameters.entrySet();//所有参与传参的参数按照accsii排序（升序）
+		Iterator it = es.iterator();
+		while(it.hasNext()) {
+			Map.Entry entry = (Map.Entry)it.next();
+			String k = (String)entry.getKey();
+			Object v = entry.getValue();
+			if(null != v && !"".equals(v) && !"sign".equals(k) && !"key".equals(k)) {
+			 sb.append(k + "=" + v + "&");
+			}
+		}
+		 
+		sb.append("key=" + key);
+		System.out.println(sb);
+		String sign = MD5Util.md5Password(sb.toString()).toUpperCase();
+		return sign;
+	}
+	
+	public static String getRandomStringByLength(int length) {
+        String base = "abcdefghijklmnopqrstuvwxyz0123456789";
+        Random random = new Random();
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < length; i++) {
+            int number = random.nextInt(base.length());
+            sb.append(base.charAt(number));
+        }
+        return sb.toString();
+    }
 	
 }

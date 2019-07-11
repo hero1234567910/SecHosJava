@@ -33,6 +33,10 @@
 		</if>
 	</select>
 	
+	<select id="queryByOrderNumber" resultType="com.basic.javaframe.entity.Sechos_Rechargerecord">
+	    select * from sechos_rechargerecord where merchant_number = #{value} and del_flag = 0
+	</select>
+	
  	<select id="getCount" resultType="int">
 		select count(*) from sechos_rechargerecord t  <include refid="where_clause" />
 	</select>
@@ -79,7 +83,9 @@
 			`pay_time`, 
 			`record_status`, 
 			`patient_rowGuid`, 
-			`pay_type`
+			`pay_type`,
+			`patid`,
+			`patient_name`
 		)
 		values
 		(
@@ -92,7 +98,9 @@
 			#{payTime}, 
 			#{recordStatus}, 
 			#{patientRowGuid}, 
-			#{payType}
+			#{payType},
+			#{patid},
+			#{patientName}
 		)
 	</insert>
 	 
@@ -108,7 +116,9 @@
 			<if test="payTime != null">`pay_time` = #{payTime}, </if>
 			<if test="recordStatus != null">`record_status` = #{recordStatus}, </if>
 			<if test="patientRowGuid != null">`patient_rowGuid` = #{patientRowGuid}, </if>
-			<if test="payType != null">`pay_type` = #{payType}</if>
+			<if test="payType != null">`pay_type` = #{payType},</if>
+			<if test="patid != null">`patid` = #{patid},</if>
+			<if test="patientName != null">`patient_name` = #{patientName}</if>
 		</set>
 		where row_id = #{rowId}
 	</update>

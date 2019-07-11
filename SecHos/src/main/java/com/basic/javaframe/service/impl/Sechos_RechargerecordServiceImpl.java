@@ -41,5 +41,11 @@ public class Sechos_RechargerecordServiceImpl implements Sechos_RechargerecordSe
 	public void deleteBatch(String[] rowGuids){
 		sechosRechargerecordDao.deleteBatch(rowGuids);
 	}
+
+	@Override
+	public Sechos_Rechargerecord queryByOrderNumber(String num) {
+		// TODO Auto-generated method stub
+		return sechosRechargerecordDao.queryByOrderNumber(num);
+	}
 	
 }
