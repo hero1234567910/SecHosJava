@@ -22,4 +22,6 @@ public interface Sechos_RechargerecordService {
 	void update(Sechos_Rechargerecord sechosRechargerecord);
 	
 	void deleteBatch(String[] rowGuids);
+
+	Sechos_Rechargerecord queryByOrderNumber(String num);
 }
