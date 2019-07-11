@@ -586,7 +586,61 @@ public class Wx_CommonControllerApi extends BaseController{
 				return R.error(json.getString("message"));
 			}
 		}
-		
+
+		/**
+		 * 获取预约出诊科室信息
+		 * <p>Title: getAppointRoomInfo</p>
+		 * <p>Description: </p>
+		 * @author wzl
+		 * @return
+		 */
+		@ApiOperation(value="获取预约出诊科室信息")
+		@ResponseBody
+		@RequestMapping(value="/getAppointRoomInfo",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+		public R getAppointRoomInfo(@RequestBody Map<String, String> params){
+			checkParams(params, "ksrq");
+			checkParams(params, "jsrq");
+			String result =  wx_CommonServiceApi.getAppointRoomInfo(params);
+			JSONObject json = JSONObject.parseObject(result);
+			if (json.getBoolean("success")) {
+				JSONArray arr = json.getJSONArray("czksxxs");
+				if (arr.size() == 0) {
+					return R.error("未查到相关记录");
+				}
+				return R.ok().put("data", arr.getJSONObject(0));
+			}else{
+				return R.error(json.getString("message"));
+			}
+		}
+
+	/**
+	 * 获取预约出诊医生信息
+	 * <p>Title: getAppointDoctorInfo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="获取预约出诊医生信息")
+	@ResponseBody
+	@RequestMapping(value="/getAppointDoctorInfo",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getAppointDoctorInfo(@RequestBody Map<String, String> params){
+		checkParams(params, "ksrq");
+		checkParams(params, "jsrq");
+		checkParams(params, "ksdm");
+		String result =  wx_CommonServiceApi.getAppointDoctorInfo(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			JSONArray arr = json.getJSONArray("czysxxs");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr.getJSONObject(0));
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
+
+
 		/**
 		 * 验证参数
 		 * <p>Title: checkParams</p>  

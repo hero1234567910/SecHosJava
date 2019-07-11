@@ -345,5 +345,41 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		logger.info("获取明细信息接口返回成功》》》"+JSONObject.toJSONString(res));
 		return res;
 	}
+
+	/**
+	 * 获取预约出诊科室信息
+	 * <p>Title: getAppointRoomInfo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getAppointRoomInfo(Map<String,String> params){
+		params.put("yydm",yydm);
+		params.put("accesskey",accesskey);
+		params.put("action","GETCZKSXX");
+		logger.info("获取预约出诊科室信息接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("获取预约出诊科室信息接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
+	/**
+	 * 获取预约出诊医生信息
+	 * <p>Title: getAppointDoctorInfo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getAppointDoctorInfo(Map<String,String> params){
+		params.put("yydm",yydm);
+		params.put("accesskey",accesskey);
+		params.put("action","GETCZYSXX");
+		logger.info("获取预约出诊医生信息接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("获取预约出诊医生信息接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
 	
 }
