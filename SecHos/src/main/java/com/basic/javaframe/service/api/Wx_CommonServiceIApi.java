@@ -688,4 +688,164 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		return res;
 	}
 
+	/**
+	 * 挂号预算
+	 * <p>Title: RegisteredBudget</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String RegisteredBudget(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","PUTGHYS");
+
+		logger.info("获取挂号预算信息查询接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("获取挂号预算信息查询接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
+	/**
+	 * 挂号结算
+	 * <p>Title: RegisteredSettlement</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String RegisteredSettlement(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","PUTGHJS");
+
+		logger.info("获取挂号结算信息查询接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("获取挂号结算信息查询接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
+	/**
+	 * 查询门诊候诊信息(patid)
+	 * <p>Title: getOutpatientWaitingInfo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getOutpatientWaitingInfo(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETMZPDPAT");
+
+		logger.info("查询门诊候诊信息(patid)接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("查询门诊候诊信息(patid)接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
+	/**
+	 * 查询门诊患者待缴费处方信息(PATID)
+	 * <p>Title: getOutpatientToPayPrescription</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getOutpatientToPayPrescription(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETMZSFCF");
+
+		logger.info("查询门诊患者待缴费处方信息(PATID)接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("查询门诊患者待缴费处方信息(PATID)接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
+	/**
+	 * 门诊收费预算
+	 * <p>Title: getOutpatientFeeBudget</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getOutpatientFeeBudget(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","PUTMZYS");
+
+		logger.info("查询门诊收费预算接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("查询门诊收费预算接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
+	/**
+	 * 门诊收费结算
+	 * <p>Title: getOutpatientFeeSettlement</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getOutpatientFeeSettlement(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","PUTMZJS");
+
+		logger.info("查询门诊收费结算接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("查询门诊收费结算接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
+	/**
+	 * 查询门诊患者收费结算信息(PATID)
+	 * <p>Title: getOutpatientFeeSettlementInfo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getOutpatientFeeSettlementInfo(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETMZSFJSPAT");
+
+		logger.info("查询门诊患者收费结算信息(PATID)接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("查询门诊患者收费结算信息(PATID)接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
+	/**
+	 * 查询门诊患者收费结算明细信息
+	 * <p>Title: getOutpatientFeeSettlementDetail</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getOutpatientFeeSettlementDetail(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETMZSFJSMX");
+
+		logger.info("查询门诊患者收费结算明细信息接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("查询门诊患者收费结算明细信息接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
 }

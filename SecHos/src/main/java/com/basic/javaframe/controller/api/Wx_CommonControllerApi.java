@@ -778,13 +778,9 @@ public class Wx_CommonControllerApi extends BaseController{
 		String result =  wx_CommonServiceApi.getOutpatientAppointmentReg(params);
 		JSONObject json = JSONObject.parseObject(result);
 		if (json.getBoolean("success")) {
-			JSONArray arr = JSON.parseArray(json.toString());
-			if (arr.size() == 0) {
-				return R.error("未查到相关记录");
-			}
-			return R.ok().put("data", arr.getJSONObject(0));
+			return R.ok().put("data",json);
 		}else{
-			return R.error(json.getString("message"));
+			return R.error();
 		}
 	}
 
@@ -804,7 +800,7 @@ public class Wx_CommonControllerApi extends BaseController{
 		String result =  wx_CommonServiceApi.getOutpatientAppointmentCancel(params);
 		JSONObject json = JSONObject.parseObject(result);
 		if (json.getBoolean("success")) {
-			return R.ok().put("data", "门诊预约取消成功");
+			return R.ok().put("data",json);
 		}else{
 			return R.error(json.getString("message"));
 		}
@@ -896,7 +892,7 @@ public class Wx_CommonControllerApi extends BaseController{
 	@RequestMapping(value="/getDoctorOnDutyYNo",produces="application/json;charset=utf-8",method=RequestMethod.POST)
 	public R getDoctorOnDutyYNo(@RequestBody Map<String, String> params){
 		checkParams(params, "ysdm");
-		String result =  wx_CommonServiceApi.getDoctorOnDuty(params);
+		String result =  wx_CommonServiceApi.getDoctorOnDutyYNo(params);
 		JSONObject json = JSONObject.parseObject(result);
 		if (json.getBoolean("success")) {
 			JSONArray arr = json.getJSONArray("dbyshys");
@@ -908,6 +904,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			return R.error(json.getString("message"));
 		}
 	}
+
+
+
 
 	/**
 	 * 获取体检列表
@@ -1171,5 +1170,220 @@ public class Wx_CommonControllerApi extends BaseController{
 			
 			return xmlWx;
 		}
-	
+
+
+	/**
+	 * 挂号预算
+	 * <p>Title: RegisteredBudget</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="挂号预算")
+	@ResponseBody
+	@RequestMapping(value="/RegisteredBudget",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R RegisteredBudget(@RequestBody Map<String, String> params){
+		checkParams(params, "patid");
+		checkParams(params, "bxh");
+		checkParams(params, "hzxm");
+		checkParams(params, "pbmxxh");
+		checkParams(params, "isynzh");
+		checkParams(params, "iszfjs");
+		String result =  wx_CommonServiceApi.RegisteredBudget(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			return R.ok().put("data",json);
+		}else{
+			return R.error();
+		}
+	}
+
+	/**
+	 * 挂号结算
+	 * <p>Title: RegisteredSettlement</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="挂号结算")
+	@ResponseBody
+	@RequestMapping(value="/RegisteredSettlement",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R RegisteredSettlement(@RequestBody Map<String, String> params){
+		checkParams(params, "patid");
+		checkParams(params, "ghxh");
+		checkParams(params, "sjh");
+		checkParams(params, "zje");
+		checkParams(params, "yfje");
+		checkParams(params, "zffs");
+		checkParams(params, "zfje");
+		checkParams(params, "zflsh");
+		checkParams(params, "isynzh");
+		String result =  wx_CommonServiceApi.RegisteredBudget(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			return R.ok().put("data",json);
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
+
+	/**
+	 * 查询门诊候诊信息(patid)
+	 * <p>Title: getOutpatientWaitingInfo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="查询门诊候诊信息(patid)")
+	@ResponseBody
+	@RequestMapping(value="/getOutpatientWaitingInfo",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getOutpatientWaitingInfo(@RequestBody Map<String, String> params){
+		checkParams(params, "hzxm");
+		checkParams(params, "patid");
+		String result =  wx_CommonServiceApi.getOutpatientWaitingInfo(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			JSONArray arr = json.getJSONArray("mzpds");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr.getJSONObject(0));
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
+
+	/**
+	 * 查询门诊患者待缴费处方信息(PATID)
+	 * <p>Title: getOutpatientToPayPrescription</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="查询门诊患者待缴费处方信息(PATID)")
+	@ResponseBody
+	@RequestMapping(value="/getOutpatientToPayPrescription",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getOutpatientToPayPrescription(@RequestBody Map<String, String> params){
+		checkParams(params, "hzxm");
+		checkParams(params, "patid");
+		checkParams(params, "ksrq");
+		checkParams(params, "jsrq");
+		String result =  wx_CommonServiceApi.getOutpatientToPayPrescription(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			JSONArray arr = json.getJSONArray("mzsfcfs");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr.getJSONObject(0));
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
+
+	/**
+	 * 门诊收费预算
+	 * <p>Title: getOutpatientFeeBudget</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="门诊收费预算")
+	@ResponseBody
+	@RequestMapping(value="/getOutpatientFeeBudget",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getOutpatientFeeBudget(@RequestBody Map<String, String> params){
+		checkParams(params, "patid");
+		checkParams(params, "cfxhhj");
+		checkParams(params, "isynzh");
+		String result =  wx_CommonServiceApi.getOutpatientFeeBudget(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			return R.ok().put("data",json);
+		}else{
+			return R.error();
+		}
+	}
+
+	/**
+	 * 门诊收费结算
+	 * <p>Title: getOutpatientFeeSettlement</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="门诊收费结算")
+	@ResponseBody
+	@RequestMapping(value="/getOutpatientFeeSettlement",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getOutpatientFeeSettlement(@RequestBody Map<String, String> params){
+		checkParams(params, "patid");
+		checkParams(params, "sjh");
+		checkParams(params, "zje");
+		checkParams(params, "yfje");
+		checkParams(params, "zffs");
+		checkParams(params, "zfje");
+		checkParams(params, "zflsh");
+		checkParams(params, "zfsj");
+		checkParams(params, "isynzh");
+		String result =  wx_CommonServiceApi.getOutpatientFeeSettlement(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			return R.ok().put("data",json);
+		}else{
+			return R.error();
+		}
+	}
+
+	/**
+	 * 查询门诊患者收费结算信息(PATID)
+	 * <p>Title: getOutpatientToPayPrescription</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="查询门诊患者收费结算信息(PATID)")
+	@ResponseBody
+	@RequestMapping(value="/getOutpatientFeeSettlementInfo",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getOutpatientFeeSettlementInfo(@RequestBody Map<String, String> params){
+		checkParams(params, "hzxm");
+		checkParams(params, "patid");
+		checkParams(params, "ksrq");
+		checkParams(params, "jsrq");
+		String result =  wx_CommonServiceApi.getOutpatientFeeSettlementInfo(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			JSONArray arr = json.getJSONArray("mzsfjsxxs");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr.getJSONObject(0));
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
+
+	/**
+	 * 查询门诊患者收费结算明细信息
+	 * <p>Title: getOutpatientFeeSettlementDetail</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="查询门诊患者收费结算明细信息")
+	@ResponseBody
+	@RequestMapping(value="/getOutpatientFeeSettlementDetail",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getOutpatientFeeSettlementDetail(@RequestBody Map<String, String> params){
+		checkParams(params, "hzxm");
+		checkParams(params, "jssjh");
+		String result =  wx_CommonServiceApi.getOutpatientFeeSettlementDetail(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			JSONArray arr = json.getJSONArray("mzsfjsmxs");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr.getJSONObject(0));
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
 }	
