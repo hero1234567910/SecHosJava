@@ -48,4 +48,7 @@ public class Api_BaseService {
 	
 	@Value(value="${wn.url}")
 	public String wnUrl;
+
+	@Value(value="${zwx.url}")
+	public String zwxUrl;
 }

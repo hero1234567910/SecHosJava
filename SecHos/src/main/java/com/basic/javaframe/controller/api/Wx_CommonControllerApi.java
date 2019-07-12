@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.alibaba.fastjson.JSON;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -656,6 +657,313 @@ public class Wx_CommonControllerApi extends BaseController{
 		}
 	}
 
+	/**
+	 * 获取预约医生号源信息
+	 * <p>Title: getAppointDoctorYNo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="获取预约医生号源信息")
+	@ResponseBody
+	@RequestMapping(value="/getAppointDoctorYNo",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getAppointDoctorYNo(@RequestBody Map<String, String> params){
+		checkParams(params, "ksrq");
+		checkParams(params, "jsrq");
+		checkParams(params, "ysdm");
+		String result =  wx_CommonServiceApi.getAppointDoctorYNo(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			JSONArray arr = json.getJSONArray("yyyshys");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr.getJSONObject(0));
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
+
+	/**
+	 * 获取预约医生号序信息
+	 * <p>Title: getAppointDoctorXNo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="获取预约医生号序信息")
+	@ResponseBody
+	@RequestMapping(value="/getAppointDoctorXNo",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getAppointDoctorXNo(@RequestBody Map<String, String> params){
+		checkParams(params, "pbxh");
+		String result =  wx_CommonServiceApi.getAppointDoctorXNo(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			JSONArray arr = json.getJSONArray("yyyshyhxs");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr.getJSONObject(0));
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
+
+	/**
+	 * 获取预约科室号源信息
+	 * <p>Title: getAppointDepartmentYNo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="获取预约科室号源息")
+	@ResponseBody
+	@RequestMapping(value="/getAppointDepartmentYNo",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getAppointDepartmentYNo(@RequestBody Map<String, String> params){
+		checkParams(params, "ksrq");
+		checkParams(params, "jsrq");
+		checkParams(params, "ksdm");
+		String result =  wx_CommonServiceApi.getAppointDepartmentYNo(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			JSONArray arr = json.getJSONArray("his_YYKSHYs");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr.getJSONObject(0));
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
+
+	/**
+	 * 获取预约科室号序信息
+	 * <p>Title: getAppointDepartmentXNo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="获取预约科室号序息")
+	@ResponseBody
+	@RequestMapping(value="/getAppointDepartmentXNo",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getAppointDepartmentXNo(@RequestBody Map<String, String> params){
+		checkParams(params, "pbxh");
+		String result =  wx_CommonServiceApi.getAppointDepartmentXNo(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			JSONArray arr = json.getJSONArray("yykshyhxs");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr.getJSONObject(0));
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
+
+	/**
+	 * 门诊预约登记
+	 * <p>Title: getOutpatientAppointmentReg</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="门诊预约登记")
+	@ResponseBody
+	@RequestMapping(value="/getOutpatientAppointmentReg",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getOutpatientAppointmentReg(@RequestBody Map<String, String> params){
+		checkParams(params, "patid");
+		checkParams(params, "pbxh");
+		checkParams(params, "yyxh");
+		String result =  wx_CommonServiceApi.getOutpatientAppointmentReg(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			JSONArray arr = JSON.parseArray(json.toString());
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr.getJSONObject(0));
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
+
+	/**
+	 * 门诊预约取消
+	 * <p>Title: getOutpatientAppointmentCancel</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="门诊预约取消")
+	@ResponseBody
+	@RequestMapping(value="/getOutpatientAppointmentCancel",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getOutpatientAppointmentCancel(@RequestBody Map<String, String> params){
+		checkParams(params, "patid");
+		checkParams(params, "yyxh");
+		String result =  wx_CommonServiceApi.getOutpatientAppointmentCancel(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			return R.ok().put("data", "门诊预约取消成功");
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
+
+	/**
+	 * 当班出诊科室查询
+	 * <p>Title: getDepartmentOnDuty</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="当班出诊科室查询")
+	@ResponseBody
+	@RequestMapping(value="/getDepartmentOnDuty",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getDepartmentOnDuty(@RequestBody Map<String, String> params){
+		String result =  wx_CommonServiceApi.getDepartmentOnDuty(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			JSONArray arr = json.getJSONArray("czdbksxxs");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr.getJSONObject(0));
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
+
+	/**
+	 * 当班科室号源信息查询
+	 * <p>Title: getDepartmentOnDutyYNo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="当班科室号源信息查询")
+	@ResponseBody
+	@RequestMapping(value="/getDepartmentOnDuty",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getDepartmentOnDutyYNo(@RequestBody Map<String, String> params){
+		checkParams(params, "ksdm");
+		String result =  wx_CommonServiceApi.getDepartmentOnDutyYNo(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			JSONArray arr = json.getJSONArray("dbkshy");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr.getJSONObject(0));
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
+
+	/**
+	 * 当班医生信息查询
+	 * <p>Title: getDoctorOnDuty</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="当班医生信息查询")
+	@ResponseBody
+	@RequestMapping(value="/getDoctorOnDuty",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getDoctorOnDuty(@RequestBody Map<String, String> params){
+		checkParams(params, "ksdm");
+		String result =  wx_CommonServiceApi.getDoctorOnDuty(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			JSONArray arr = json.getJSONArray("dbyss");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr.getJSONObject(0));
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
+
+	/**
+	 * 当班医生号源信息查询
+	 * <p>Title: getDoctorOnDutyYNo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="当班医生号源信息查询")
+	@ResponseBody
+	@RequestMapping(value="/getDoctorOnDutyYNo",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getDoctorOnDutyYNo(@RequestBody Map<String, String> params){
+		checkParams(params, "ysdm");
+		String result =  wx_CommonServiceApi.getDoctorOnDuty(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			JSONArray arr = json.getJSONArray("dbyshys");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr.getJSONObject(0));
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
+
+	/**
+	 * 获取体检列表
+	 * <p>Title: getMedicalReportList</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="获取体检列表")
+	@ResponseBody
+	@RequestMapping(value="/getMedicalReportList",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getMedicalReportList(@RequestBody Map<String, String> params){
+		checkParams(params, "username");
+		checkParams(params, "userpwd");
+		checkParams(params, "idc");
+		String result =  wx_CommonServiceApi.getMedicalReportList(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getInteger("code") == 1) {
+			JSONArray arr = json.getJSONArray("data");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr.getJSONObject(0));
+		}else{
+			return R.error(json.getString("msg"));
+		}
+	}
+
+
+
+	/**
+	 * 获取体检详细信息
+	 * <p>Title: getMedicalReportInfo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="获取体检详细信息")
+	@ResponseBody
+	@RequestMapping(value="/getMedicalReportInfo",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getMedicalReportInfo(@RequestBody Map<String, String> params){
+		checkParams(params, "username");
+		checkParams(params, "userpwd");
+		checkParams(params, "bhkcode");
+		String result =  wx_CommonServiceApi.getMedicalReportInfo(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getInteger("code") == 1) {
+			JSONArray arr = json.getJSONArray("data");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr.getJSONObject(0));
+		}else{
+			return R.error(json.getString("msg"));
+		}
+	}
 
 		/**
 		 * 验证参数

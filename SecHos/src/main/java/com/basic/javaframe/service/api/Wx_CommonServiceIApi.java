@@ -373,7 +373,39 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		logger.info("获取预约出诊医生信息接口返回成功》》》"+JSONObject.toJSONString(res));
 		return res;
 	}
-	
+
+	/**
+	 * 获取体检报告列表
+	 * <p>Title: getMedicalReportList</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getMedicalReportList(Map<String,String> params){
+		logger.info("获取体检报告列表接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl+"/getBhkList", params);
+		logger.info("获取体检报告列表接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
+	/**
+	 * 获取体检报告信息
+	 * <p>Title: getMedicalReportInfo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getMedicalReportInfo(Map<String,String> params){
+		logger.info("获取体检报告信息接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl+"/getBhkInfo", params);
+		logger.info("获取体检报告信息接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
+
+
 	/**
 	 * 准备参数调用微信接口
 	 * @throws UnsupportedEncodingException 
@@ -454,5 +486,206 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
         }
         return sb.toString();
     }
-	
+
+
+	/**
+	 * 获取预约医生号源
+	 * <p>Title: getAppointDoctorYNo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getAppointDoctorYNo(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETYYYSHY");
+
+		logger.info("获取预约医生号源接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("获取预约医生号源接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
+	/**
+	 * 获取预约医生号序
+	 * <p>Title: getAppointDoctorXNo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getAppointDoctorXNo(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETYYYSHX");
+
+		logger.info("获取预约医生号源接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("获取预约医生号源接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
+	/**
+	 * 获取预约科室号源
+	 * <p>Title: getAppointDepartmentYNo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getAppointDepartmentYNo(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETYYKSHY");
+
+		logger.info("获取预约科室号源接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("获取预约科室号源接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
+	/**
+	 * 获取预约科室号序
+	 * <p>Title: getAppointDepartmentXNo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getAppointDepartmentXNo(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETYYKSHX");
+
+		logger.info("获取预约科室号序接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("获取预约科室号序接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
+	/**
+	 * 门诊预约登记
+	 * <p>Title: getOutpatientAppointmentReg</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getOutpatientAppointmentReg(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","PUTMZYY");
+
+		logger.info("获取门诊预约登记接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("获取门诊预约登记接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
+	/**
+	 * 门诊预约取消
+	 * <p>Title: getOutpatientAppointmentCancel</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getOutpatientAppointmentCancel(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","PUTMZYYQX");
+
+		logger.info("获取门诊预约取消接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("获取门诊预约取消接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
+	/**
+	 * 当班出诊科室查询
+	 * <p>Title: getDepartmentOnDuty</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getDepartmentOnDuty(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETCZDBKSXX");
+
+		logger.info("获取当班出诊科室查询接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("获取当班出诊科室查询接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
+	/**
+	 * 当班出诊科室号源查询
+	 * <p>Title: getDepartmentOnDutyYNo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getDepartmentOnDutyYNo(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETDBKSHY");
+
+		logger.info("获取当班出诊科室号源查询接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("获取当班出诊科室号源查询接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
+	/**
+	 * 当班医生信息查询
+	 * <p>Title: getDoctorOnDuty</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getDoctorOnDuty(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETDBYS");
+
+		logger.info("获取当班医生信息查询接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("获取当班医生信息查询接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
+	/**
+	 * 当班医生号源信息查询
+	 * <p>Title: getDoctorOnDutyYNo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getDoctorOnDutyYNo(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETDBYSHY");
+
+		logger.info("获取当班医生号源信息查询接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("获取当班医生号源信息查询接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
 }
