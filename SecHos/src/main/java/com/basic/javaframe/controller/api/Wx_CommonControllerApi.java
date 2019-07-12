@@ -5,14 +5,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.UUID;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -624,7 +617,40 @@ public class Wx_CommonControllerApi extends BaseController{
 				if (arr.size() == 0) {
 					return R.error("未查到相关记录");
 				}
-				return R.ok().put("data", arr.getJSONObject(0));
+				JSONArray newArr = new JSONArray();
+				JSONArray children = new JSONArray();
+				for(int i=0;i<arr.size();i++){
+					for(int j=arr.size()-1;j>i;j--){
+						JSONObject ijs = newArr.getJSONObject(i);
+						JSONObject js = newArr.getJSONObject(j);
+						if(ijs.getString("yjksdm").equals(js.getString("yjksdm"))){
+							js
+						}
+					}
+					String yjksmc =arr.getJSONObject(i).getString("yjksmc");
+					String yjksdm =arr.getJSONObject(i).getString("yjksdm");
+					String ksmc = arr.getJSONObject(i).getString("ksmc");
+					String ksdm = arr.getJSONObject(i).getString("ksdm");
+					String ksjj = arr.getJSONObject(i).getString("ksjj");
+					String czlx = arr.getJSONObject(i).getString("czlx");
+					//父类集合
+					JSONObject farr1 = new JSONObject();
+					farr1.put("yjksdm",yjksdm);
+					farr1.put("yjksmc",yjksmc);
+
+
+					//子类集合
+					JSONObject carr = new JSONObject();
+					carr.put("ksmc",ksmc);
+					carr.put("ksdm",ksdm);
+					carr.put("ksjj",ksjj);
+					carr.put("czlx",czlx);
+					children.add(carr);
+					farr1.put("children",children);
+					newArr.add(farr1);
+				}
+
+				return R.ok().put("data", newArr.getJSONObject(0));
 			}else{
 				return R.error(json.getString("message"));
 			}
