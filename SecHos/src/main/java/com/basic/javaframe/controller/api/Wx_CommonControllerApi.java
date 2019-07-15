@@ -852,7 +852,36 @@ public class Wx_CommonControllerApi extends BaseController{
 			if (arr.size() == 0) {
 				return R.error("未查到相关记录");
 			}
-			return R.ok().put("data", arr.getJSONObject(0));
+			Map<String,String> m = new HashMap<>();
+			for(int i=0;i<arr.size();i++){
+				JSONObject arrItem = arr.getJSONObject(i);
+				m.put(arrItem.getString("yjksdm"),arrItem.getString("yjksdm"));
+			}
+			String[] starr = m.keySet().toArray(new String[0]);
+			if(starr.length == 0){
+				return R.error("未查找到相关记录");
+			}
+			JSONArray newArr = new JSONArray();
+
+			for(int i = 0;i<starr.length;i++){
+				JSONObject da = new JSONObject();
+				JSONArray children = new JSONArray();
+				for(int j= 0;j<arr.size();j++){
+					JSONObject arrItem = arr.getJSONObject(j);
+					if(starr[i].equals(arrItem.getString("yjksdm"))){
+						JSONObject ch = new JSONObject();
+						da.put("ksdm",arrItem.getString("yjksdm"));
+						da.put("ksmc", arrItem.getString("yjksmc"));
+						ch.put("ksmc", arrItem.getString("ksmc"));
+						ch.put("ksdm", arrItem.getString("ksdm"));
+						ch.put("czlx", arrItem.getString("czlx"));
+						children.add(ch);
+					}
+				}
+				da.put("children",children);
+				newArr.add(da);
+			}
+			return R.ok().put("data", newArr);
 		}else{
 			return R.error(json.getString("message"));
 		}
