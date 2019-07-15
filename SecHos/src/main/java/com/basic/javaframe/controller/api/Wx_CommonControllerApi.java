@@ -10,6 +10,8 @@ import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSON;
+
+import org.apache.commons.lang.ArrayUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
@@ -617,40 +619,39 @@ public class Wx_CommonControllerApi extends BaseController{
 				if (arr.size() == 0) {
 					return R.error("未查到相关记录");
 				}
-				JSONArray newArr = new JSONArray();
-				JSONArray children = new JSONArray();
+				Map<String, String> m = new HashMap<>();
 				for(int i=0;i<arr.size();i++){
-					for(int j=arr.size()-1;j>i;j--){
-						JSONObject ijs = newArr.getJSONObject(i);
-						JSONObject js = newArr.getJSONObject(j);
-						if(ijs.getString("yjksdm").equals(js.getString("yjksdm"))){
-							js
+					JSONObject arrItem = arr.getJSONObject(i);
+					m.put(arrItem.getString("yjksdm"), arrItem.getString("yjksdm"));
+				}
+				//去重
+				String[] starr = m.keySet().toArray(new String[0]);
+				
+				if (starr.length == 0) {
+					return R.error("未查到相关记录");
+				}
+				JSONArray newArr = new JSONArray();
+				
+				for (int i = 0; i < starr.length; i++) {
+					JSONObject da = new JSONObject();
+					JSONArray children = new JSONArray();
+					for (int j = 0; j < arr.size(); j++) {
+						JSONObject arrItem = arr.getJSONObject(j);
+						if (starr[i].equals(arrItem.getString("yjksdm"))) {
+							JSONObject ch = new JSONObject();
+							da.put("ksdm", arrItem.getString("yjksdm"));
+							da.put("ksmc", arrItem.getString("yjksmc"));
+							ch.put("ksmc", arrItem.getString("ksmc"));
+							ch.put("ksdm", arrItem.getString("ksdm"));
+							ch.put("czlx", arrItem.getString("czlx"));
+							children.add(ch);
 						}
 					}
-					String yjksmc =arr.getJSONObject(i).getString("yjksmc");
-					String yjksdm =arr.getJSONObject(i).getString("yjksdm");
-					String ksmc = arr.getJSONObject(i).getString("ksmc");
-					String ksdm = arr.getJSONObject(i).getString("ksdm");
-					String ksjj = arr.getJSONObject(i).getString("ksjj");
-					String czlx = arr.getJSONObject(i).getString("czlx");
-					//父类集合
-					JSONObject farr1 = new JSONObject();
-					farr1.put("yjksdm",yjksdm);
-					farr1.put("yjksmc",yjksmc);
-
-
-					//子类集合
-					JSONObject carr = new JSONObject();
-					carr.put("ksmc",ksmc);
-					carr.put("ksdm",ksdm);
-					carr.put("ksjj",ksjj);
-					carr.put("czlx",czlx);
-					children.add(carr);
-					farr1.put("children",children);
-					newArr.add(farr1);
+					da.put("children", children);
+					newArr.add(da);
 				}
-
-				return R.ok().put("data", newArr.getJSONObject(0));
+				
+				return R.ok().put("data", newArr);
 			}else{
 				return R.error(json.getString("message"));
 			}
@@ -865,7 +866,7 @@ public class Wx_CommonControllerApi extends BaseController{
 	 */
 	@ApiOperation(value="当班科室号源信息查询")
 	@ResponseBody
-	@RequestMapping(value="/getDepartmentOnDuty",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	@RequestMapping(value="/getDepartmentNumberSource",produces="application/json;charset=utf-8",method=RequestMethod.POST)
 	public R getDepartmentOnDutyYNo(@RequestBody Map<String, String> params){
 		checkParams(params, "ksdm");
 		String result =  wx_CommonServiceApi.getDepartmentOnDutyYNo(params);
