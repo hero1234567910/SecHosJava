@@ -648,6 +648,7 @@ public class Wx_CommonControllerApi extends BaseController{
 						}
 					}
 					da.put("children", children);
+					da.put("rowGuid", UUID.randomUUID().toString());
 					newArr.add(da);
 				}
 				
@@ -757,7 +758,7 @@ public class Wx_CommonControllerApi extends BaseController{
 			if (arr.size() == 0) {
 				return R.error("未查到相关记录");
 			}
-			return R.ok().put("data", arr.getJSONObject(0));
+			return R.ok().put("data", arr);
 		}else{
 			return R.error(json.getString("message"));
 		}
@@ -801,13 +802,13 @@ public class Wx_CommonControllerApi extends BaseController{
 	public R getOutpatientAppointmentReg(@RequestBody Map<String, String> params){
 		checkParams(params, "patid");
 		checkParams(params, "pbxh");
-		checkParams(params, "yyxh");
+		checkParams(params, "yyhx");
 		String result =  wx_CommonServiceApi.getOutpatientAppointmentReg(params);
 		JSONObject json = JSONObject.parseObject(result);
 		if (json.getBoolean("success")) {
 			return R.ok().put("data",json);
 		}else{
-			return R.error();
+			return R.error(json.getString("message"));
 		}
 	}
 
