@@ -679,7 +679,7 @@ public class Wx_CommonControllerApi extends BaseController{
 			if (arr.size() == 0) {
 				return R.error("未查到相关记录");
 			}
-			return R.ok().put("data", arr.getJSONObject(0));
+			return R.ok().put("data", arr);
 		}else{
 			return R.error(json.getString("message"));
 		}
