@@ -1443,4 +1443,58 @@ public class Wx_CommonControllerApi extends BaseController{
 			return R.error(json.getString("message"));
 		}
 	}
+
+	/**
+	 * 查询患者预约信息(PATID)
+	 * <p>Title: getPatientAppointInfo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="查询患者预约信息(PATID)")
+	@ResponseBody
+	@RequestMapping(value="/getPatientAppointInfo",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getPatientAppointInfo(@RequestBody Map<String, String> params){
+		checkParams(params, "hzxm");
+		checkParams(params, "patid");
+		checkParams(params, "ksrq");
+		checkParams(params, "jsrq");
+		String result =  wx_CommonServiceApi.getPatientAppointInfo(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			JSONArray arr = json.getJSONArray("mzyyxxs");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr);
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
+
+	/**
+	 * 查询患者预约信息(预约序号)
+	 * <p>Title: getPatientAppointInfoByNum</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="查询患者预约信息(预约序号)")
+	@ResponseBody
+	@RequestMapping(value="/getPatientAppointInfoByNum",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getPatientAppointInfoByNum(@RequestBody Map<String, String> params){
+		checkParams(params, "hzxm");
+		checkParams(params, "yyxh");
+		String result =  wx_CommonServiceApi.getPatientAppointInfoByNum(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			JSONArray arr = json.getJSONArray("mzyyxxs");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr);
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
 }	
