@@ -896,7 +896,7 @@ public class Wx_CommonControllerApi extends BaseController{
 	 */
 	@ApiOperation(value="当班科室号源信息查询")
 	@ResponseBody
-	@RequestMapping(value="/getDepartmentNumberSource",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	@RequestMapping(value="/getDepartmentOnDutyYNo",produces="application/json;charset=utf-8",method=RequestMethod.POST)
 	public R getDepartmentOnDutyYNo(@RequestBody Map<String, String> params){
 		checkParams(params, "ksdm");
 		String result =  wx_CommonServiceApi.getDepartmentOnDutyYNo(params);
@@ -906,7 +906,7 @@ public class Wx_CommonControllerApi extends BaseController{
 			if (arr.size() == 0) {
 				return R.error("未查到相关记录");
 			}
-			return R.ok().put("data", arr.getJSONObject(0));
+			return R.ok().put("data", arr);
 		}else{
 			return R.error(json.getString("message"));
 		}
@@ -931,7 +931,7 @@ public class Wx_CommonControllerApi extends BaseController{
 			if (arr.size() == 0) {
 				return R.error("未查到相关记录");
 			}
-			return R.ok().put("data", arr.getJSONObject(0));
+			return R.ok().put("data", arr);
 		}else{
 			return R.error(json.getString("message"));
 		}
@@ -956,7 +956,7 @@ public class Wx_CommonControllerApi extends BaseController{
 			if (arr.size() == 0) {
 				return R.error("未查到相关记录");
 			}
-			return R.ok().put("data", arr.getJSONObject(0));
+			return R.ok().put("data", arr);
 		}else{
 			return R.error(json.getString("message"));
 		}
