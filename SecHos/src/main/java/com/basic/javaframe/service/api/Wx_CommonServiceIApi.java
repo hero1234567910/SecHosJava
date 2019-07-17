@@ -890,4 +890,24 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
         return res;
     }
 
+	/**
+	 * 查询门诊患者挂号记录(PATID)
+	 * <p>Title: getPatientRegRecordByPatid</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getPatientRegRecordByPatid(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETMZJLPAT");
+
+		logger.info("查询门诊患者挂号记录(PATID)接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("查询门诊患者挂号记录(PATID)接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
 }

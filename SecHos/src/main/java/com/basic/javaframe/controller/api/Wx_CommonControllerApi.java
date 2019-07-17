@@ -1412,7 +1412,7 @@ public class Wx_CommonControllerApi extends BaseController{
 			if (arr.size() == 0) {
 				return R.error("未查到相关记录");
 			}
-			return R.ok().put("data", arr.getJSONObject(0));
+			return R.ok().put("data", arr);
 		}else{
 			return R.error(json.getString("message"));
 		}
@@ -1438,7 +1438,7 @@ public class Wx_CommonControllerApi extends BaseController{
 			if (arr.size() == 0) {
 				return R.error("未查到相关记录");
 			}
-			return R.ok().put("data", arr.getJSONObject(0));
+			return R.ok().put("data", arr);
 		}else{
 			return R.error(json.getString("message"));
 		}
@@ -1487,6 +1487,35 @@ public class Wx_CommonControllerApi extends BaseController{
 		JSONObject json = JSONObject.parseObject(result);
 		if (json.getBoolean("success")) {
 			JSONArray arr = json.getJSONArray("mzyyxxs");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr);
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
+
+	/**
+	 * 查询门诊患者挂号记录(PATID)
+	 * <p>Title: getPatientRegRecordByPatid</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="查询门诊患者挂号记录(PATID)")
+	@ResponseBody
+	@RequestMapping(value="/getPatientRegRecordByPatid",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getPatientRegRecordByPatid(@RequestBody Map<String, String> params){
+		checkParams(params, "hzxm");
+		checkParams(params, "patid");
+		checkParams(params, "ksrq");
+		checkParams(params, "jsrq");
+		checkParams(params, "czybz");
+		String result =  wx_CommonServiceApi.getPatientRegRecordByPatid(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			JSONArray arr = json.getJSONArray("mzjzjls");
 			if (arr.size() == 0) {
 				return R.error("未查到相关记录");
 			}
