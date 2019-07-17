@@ -858,6 +858,8 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 	 */
 	public String getPatientAppointInfo(Map<String, String> params) {
 		// TODO Auto-generated method stub
+		params.put("ksrq", "20190101");
+		params.put("jsrq","20950101");
 		params.put("yydm", yydm);
 		params.put("accesskey", accesskey);
 		params.put("action","GETHZYYXXPAT");
