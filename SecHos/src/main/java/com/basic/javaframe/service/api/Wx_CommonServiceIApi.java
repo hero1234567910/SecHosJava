@@ -908,4 +908,43 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		return res;
 	}
 
+	/**
+	 * 查询外部订单结果
+	 * <p>Title: getExternalOrders</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getExternalOrders(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETMZZFJG");
+
+		logger.info("查询外部订单结果接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("查询外部订单结果接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
+	/**
+	 * 门诊挂号取消
+	 * <p>Title: cancelOutPatientReg</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String cancelOutPatientReg(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","PUTGHQX");
+
+		logger.info("门诊挂号取消接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("门诊挂号取消接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
 }
