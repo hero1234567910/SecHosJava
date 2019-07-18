@@ -33,6 +33,7 @@ import com.basic.javaframe.common.customclass.PassToken;
 import com.basic.javaframe.common.enumresource.DelFlagEnum;
 import com.basic.javaframe.common.enumresource.PatientEnum;
 import com.basic.javaframe.common.enumresource.PatientStatusEnum;
+import com.basic.javaframe.common.enumresource.PayTypeEnum;
 import com.basic.javaframe.common.enumresource.RecordStatusEnum;
 import com.basic.javaframe.common.enumresource.SexEnum;
 import com.basic.javaframe.common.exception.MyException;
@@ -1099,6 +1100,7 @@ public class Wx_CommonControllerApi extends BaseController{
 				order.setPatientRowGuid(params.get("patientGuid"));
 				order.setPatid(params.get("patid"));
 				order.setPatientName(params.get("patientName"));
+				order.setPayType(PayTypeEnum.ADVANCEPAY.getCode());
 				//转decimal
 				BigDecimal number = new BigDecimal(params.get("yjMoney"));
 				order.setPayMoney(number);
@@ -1123,6 +1125,12 @@ public class Wx_CommonControllerApi extends BaseController{
 				checkParams(params, "patientGuid");
 				checkParams(params, "patid");
 				checkParams(params, "patientName");
+				
+				checkParams(params, "sjh");
+				checkParams(params, "zje");
+				checkParams(params, "yfje");
+				checkParams(params, "zfje");
+				
 				//单位分
 				int money = Integer.valueOf(AmountUtils.changeY2F(params.get("mzMoney"))); 
 
@@ -1167,6 +1175,14 @@ public class Wx_CommonControllerApi extends BaseController{
 				order.setPatientRowGuid(params.get("patientGuid"));
 				order.setPatid(params.get("patid"));
 				order.setPatientName(params.get("patientName"));
+				order.setPayType(PayTypeEnum.MZPAY.getCode());
+				
+				order.setSjh(params.get("sjh"));
+				order.setZje(params.get("zje"));
+				order.setYfje(params.get("yfje"));
+				order.setZfje(params.get("zfje"));
+				order.setZfsj(DateUtil.getYmdhmsFName());
+				
 				//转decimal
 				BigDecimal number = new BigDecimal(params.get("mzMoney"));
 				order.setPayMoney(number);
@@ -1191,6 +1207,12 @@ public class Wx_CommonControllerApi extends BaseController{
 				checkParams(params, "patientGuid");
 				checkParams(params, "patid");
 				checkParams(params, "patientName");
+				
+				checkParams(params, "ghxh");
+				checkParams(params, "sjh");
+				checkParams(params, "zje");
+				checkParams(params, "yfje");
+				checkParams(params, "zfje");
 				//单位分
 				int money = Integer.valueOf(AmountUtils.changeY2F(params.get("ghMoney"))); 
 
@@ -1235,6 +1257,14 @@ public class Wx_CommonControllerApi extends BaseController{
 				order.setPatientRowGuid(params.get("patientGuid"));
 				order.setPatid(params.get("patid"));
 				order.setPatientName(params.get("patientName"));
+				order.setPayType(PayTypeEnum.GHPAY.getCode());
+				
+				order.setGhxh(params.get("ghxh"));
+				order.setSjh(params.get("sjh"));
+				order.setZje(params.get("zje"));
+				order.setYfje(params.get("yfje"));
+				order.setZfje(params.get("zfje"));
+				
 				//转decimal
 				BigDecimal number = new BigDecimal(params.get("ghMoney"));
 				order.setPayMoney(number);
@@ -1303,6 +1333,7 @@ public class Wx_CommonControllerApi extends BaseController{
 				
 				String xmlWx = XMLUtil.mapToXml(sm, true);
 				logger.info("返回给微信的xml为"+xmlWx);
+				return xmlWx;
 			}
 			//int单位分转decimal并和回调金额比较
 			int money = Integer.valueOf(AmountUtils.changeY2F(rechargerecord.getPayMoney().toString()));
@@ -1316,27 +1347,37 @@ public class Wx_CommonControllerApi extends BaseController{
 				logger.info("返回给微信的xml为"+xmlwx);
 				return xmlwx;
 			}
-			//调用充值预交金接口
-			Map<String, String> yjParams = new HashMap<>();
-			yjParams.put("hzxm", rechargerecord.getPatientName());
-			yjParams.put("patid", rechargerecord.getPatid());
-			//预交金预充值
-			String result = wx_CommonServiceApi.beforehandPay(yjParams);
-			JSONObject json = JSONObject.parseObject(result);
-			if (json.getBoolean("success")) {
-				yjParams.put("hisddh", json.getString("hisddh"));
-				yjParams.put("yjlsh", json.getString("yjlsh"));
-//				yjParams.put("ptlsh", rechargerecord.getMerchantNumber());
-				yjParams.put("zfje", rechargerecord.getPayMoney().toString());
-				yjParams.put("zflsh",hashmap.get("hashmap"));
-				yjParams.put("zfsj", hashmap.get("time_end"));
-				
-				//预交金充值
-				String res = wx_CommonServiceApi.advancePay(yjParams);
-				JSONObject obj = JSONObject.parseObject(res);
-				if (obj.getBoolean("success")) {
+			
+			if (rechargerecord.getPayType() == PayTypeEnum.ADVANCEPAY.getCode()) {
+				//调用充值预交金接口
+				Map<String, String> yjParams = new HashMap<>();
+				yjParams.put("hzxm", rechargerecord.getPatientName());
+				yjParams.put("patid", rechargerecord.getPatid());
+				//预交金预充值
+				String result = wx_CommonServiceApi.beforehandPay(yjParams);
+				JSONObject json = JSONObject.parseObject(result);
+				if (json.getBoolean("success")) {
+					yjParams.put("hisddh", json.getString("hisddh"));
+					yjParams.put("yjlsh", json.getString("yjlsh"));
+					yjParams.put("zfje", rechargerecord.getPayMoney().toString());
+					yjParams.put("zflsh",rechargerecord.getMerchantNumber());
+					yjParams.put("zfsj", hashmap.get("time_end"));
+					
+					//预交金充值
+					String res = wx_CommonServiceApi.advancePay(yjParams);
+					JSONObject obj = JSONObject.parseObject(res);
+					if (obj.getBoolean("success")) {
+					}else{
+						logger.info(obj.getString("message"));
+						sm.clear();
+						sm.put("return_code", "FAIL");
+						sm.put("return_msg", "业务异常");
+						String xmlwx = XMLUtil.mapToXml(sm, true);
+						logger.info("返回给微信的xml为"+xmlwx);
+						return xmlwx;
+					}
 				}else{
-					logger.info(obj.getString("message"));
+					logger.info(json.getString("message"));
 					sm.clear();
 					sm.put("return_code", "FAIL");
 					sm.put("return_msg", "业务异常");
@@ -1344,15 +1385,65 @@ public class Wx_CommonControllerApi extends BaseController{
 					logger.info("返回给微信的xml为"+xmlwx);
 					return xmlwx;
 				}
-			}else{
-				logger.info(json.getString("message"));
-				sm.clear();
-				sm.put("return_code", "FAIL");
-				sm.put("return_msg", "业务异常");
-				String xmlwx = XMLUtil.mapToXml(sm, true);
-				logger.info("返回给微信的xml为"+xmlwx);
-				return xmlwx;
 			}
+			
+			if (rechargerecord.getPayType() == PayTypeEnum.GHPAY.getCode()) {
+				//挂号结算接口
+				Map<String, String> par = new HashMap<>();
+				par.put("patid",rechargerecord.getPatid());
+				par.put("ghxh", rechargerecord.getGhxh());
+				par.put("sjh", rechargerecord.getSjh());
+				par.put("zje", rechargerecord.getZfje());
+				par.put("yfje", rechargerecord.getYfje());
+				par.put("zffs", "1");
+				par.put("zfje", rechargerecord.getZfje());
+				par.put("zflsh", rechargerecord.getMerchantNumber());
+				par.put("isynzh", "1");
+				String result =  wx_CommonServiceApi.RegisteredBudget(par);
+				JSONObject json = JSONObject.parseObject(result);
+				if (json.getBoolean("success")) {
+				
+				}else{
+					logger.info(json.getString("message"));
+					sm.clear();
+					sm.put("return_code", "FAIL");
+					sm.put("return_msg", "业务异常");
+					String xmlwx = XMLUtil.mapToXml(sm, true);
+					logger.info("返回给微信的xml为"+xmlwx);
+					return xmlwx;
+				}
+				
+				
+			}
+			
+			if (rechargerecord.getPayType() == PayTypeEnum.MZPAY.getCode()) {
+				//门诊结算接口
+				Map<String, String> par = new HashMap<>();
+				par.put("patid",rechargerecord.getPatid());
+				par.put("sjh", rechargerecord.getSjh());
+				par.put("zje", rechargerecord.getZfje());
+				par.put("yfje", rechargerecord.getYfje());
+				par.put("zffs", "1");
+				par.put("zfje", rechargerecord.getZfje());
+				par.put("zflsh", rechargerecord.getMerchantNumber());
+				par.put("zfsj", rechargerecord.getZfsj());
+				par.put("isynzh", "1");
+				String result =  wx_CommonServiceApi.getOutpatientFeeSettlement(par);
+				JSONObject json = JSONObject.parseObject(result);
+				if (json.getBoolean("success")) {
+					
+				}else{
+					logger.info(json.getString("message"));
+					sm.clear();
+					sm.put("return_code", "FAIL");
+					sm.put("return_msg", "业务异常");
+					String xmlwx = XMLUtil.mapToXml(sm, true);
+					logger.info("返回给微信的xml为"+xmlwx);
+					return xmlwx;
+				}
+			}
+			
+			
 			
 			
 			//若前面都通过，更新订单状态并返回正确信息给微信

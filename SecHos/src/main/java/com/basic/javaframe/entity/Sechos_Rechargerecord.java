@@ -44,8 +44,56 @@ public class Sechos_Rechargerecord implements Serializable {
    
    private String patientName;
    
-   public String getPatid() {
-	return patid;
+   private String ghxh;
+   
+   private String sjh;
+   
+   private String zje;
+   
+   private String yfje;
+   
+   private String zfje;
+   
+   private String zfsj;
+   
+   public String getZfsj() {
+	return zfsj;
+}
+public void setZfsj(String zfsj) {
+	this.zfsj = zfsj;
+}
+public String getGhxh() {
+	return ghxh;
+	}
+	public void setGhxh(String ghxh) {
+		this.ghxh = ghxh;
+	}
+	public String getSjh() {
+		return sjh;
+	}
+	public void setSjh(String sjh) {
+		this.sjh = sjh;
+	}
+	public String getZje() {
+		return zje;
+	}
+	public void setZje(String zje) {
+		this.zje = zje;
+	}
+	public String getYfje() {
+		return yfje;
+	}
+	public void setYfje(String yfje) {
+		this.yfje = yfje;
+	}
+	public String getZfje() {
+		return zfje;
+	}
+	public void setZfje(String zfje) {
+		this.zfje = zfje;
+	}
+	public String getPatid() {
+		return patid;
 	}
 	public void setPatid(String patid) {
 		this.patid = patid;

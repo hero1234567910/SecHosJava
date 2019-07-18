@@ -85,7 +85,13 @@
 			`patient_rowGuid`, 
 			`pay_type`,
 			`patid`,
-			`patient_name`
+			`patient_name`,
+			`ghxh`,
+			`sjh`,
+			`zje`,
+			`yfje`,
+			`zfje`,
+			`zfsj`
 		)
 		values
 		(
@@ -100,7 +106,13 @@
 			#{patientRowGuid}, 
 			#{payType},
 			#{patid},
-			#{patientName}
+			#{patientName},
+			#{ghxh},
+			#{sjh},
+			#{zje},
+			#{yfje},
+			#{zfje},
+			#{zfsj}
 		)
 	</insert>
 	 
@@ -118,7 +130,13 @@
 			<if test="patientRowGuid != null">`patient_rowGuid` = #{patientRowGuid}, </if>
 			<if test="payType != null">`pay_type` = #{payType},</if>
 			<if test="patid != null">`patid` = #{patid},</if>
-			<if test="patientName != null">`patient_name` = #{patientName}</if>
+			<if test="patientName != null">`patient_name` = #{patientName},</if>
+			<if test="ghxh != null">`ghxh` = #{ghxh},</if>
+			<if test="sjh != null">`sjh` = #{sjh},</if>
+			<if test="zje != null">`zje` = #{zje},</if>
+			<if test="yfje != null">`yfje` = #{yfje},</if>
+			<if test="zfje != null">`zfje` = #{zfje},</if>
+			<if test="zfsj != null">`zfsj` = #{zfsj}</if>
 		</set>
 		where row_id = #{rowId}
 	</update>
