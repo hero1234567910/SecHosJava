@@ -711,7 +711,30 @@ public class Wx_CommonControllerApi extends BaseController{
 			return R.error(json.getString("message"));
 		}
 	}
-
+	
+	/**
+	 * 取消预约登记接口
+	 * <p>Title: getAppointDoctorXNo</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="取消预约登记接口")
+	@ResponseBody
+	@RequestMapping(value="/cancelSubmit",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R cancelSubmit(@RequestBody Map<String, String> params){
+		checkParams(params, "yyxh");
+		checkParams(params, "patid");
+		String result =  wx_CommonServiceApi.cancelSubmit(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			return R.ok("取消成功");
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
+	
+	
 	/**
 	 * 获取预约医生号序信息
 	 * <p>Title: getAppointDoctorXNo</p>
@@ -1024,70 +1047,212 @@ public class Wx_CommonControllerApi extends BaseController{
 		@ResponseBody
 		@RequestMapping(value="/placeOrder",produces="application/json;charset=utf-8",method=RequestMethod.POST)
 		public R placeOrder(@RequestBody Map<String, String> params){
-			checkParams(params, "openid");
-			checkParams(params, "yjMoney");
-			checkParams(params, "patientGuid");
-			checkParams(params, "patid");
-			checkParams(params, "patientName");
-			//单位分
-			int money = Integer.valueOf(AmountUtils.changeY2F(params.get("yjMoney"))); 
+			//yj gh mz区分接口
+			//预交金接口
+			if ("yj".equals(params.get("action"))) {
+				checkParams(params, "openid");
+				checkParams(params, "yjMoney");
+				checkParams(params, "patientGuid");
+				checkParams(params, "patid");
+				checkParams(params, "patientName");
+				//单位分
+				int money = Integer.valueOf(AmountUtils.changeY2F(params.get("yjMoney"))); 
 
-			//商户订单号
-	        String out_trade_no = System.currentTimeMillis()+wx_CommonServiceApi.getRandomStringByLength(7);
-			
-	        String xml = null;
-			try {
-				xml = wx_CommonServiceApi.placeOrder(money,out_trade_no,params.get("openid"));
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
+				//商户订单号
+		        String out_trade_no = System.currentTimeMillis()+wx_CommonServiceApi.getRandomStringByLength(7);
+				
+		        String xml = null;
+				try {
+					xml = wx_CommonServiceApi.placeOrder(money,out_trade_no,params.get("openid"));
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+				if (xml == "") {
+					//如果返回结果为空，说明调用接口异常
+					return R.error("调用下单接口失败");
+				}
+				
+				//解析xml
+				Map<String, String> map = new HashMap<>();
+				map = XMLUtil.xml2Map(xml);
+				//对返回结果进行解析
+				String return_code = map.get("return_code");
+				if (return_code == null || return_code == "") {
+					return R.error("return_code为空");
+				}
+				if ("FAIL".equals(return_code)) {
+					return R.error(map.get("return_msg"));
+				}
+				if ("FAIL".equals(map.get("result_code"))) {
+					return R.error("错误代码："+map.get("err_code")+" 错误原因："+map.get("err_code_des"));
+				}
+				
+				
+				//数据库创建订单
+				Sechos_Rechargerecord order = new Sechos_Rechargerecord();
+				String orderGuid = UUID.randomUUID().toString();
+				order.setCreateTime(DateUtil.changeDate(new Date()));
+				order.setRowGuid(orderGuid);
+				order.setDelFlag(DelFlagEnum.NDELFLAG.getCode());
+				order.setMerchantNumber(out_trade_no);
+				order.setRecordStatus(RecordStatusEnum.READYHANDLE.getCode());
+				order.setPatientRowGuid(params.get("patientGuid"));
+				order.setPatid(params.get("patid"));
+				order.setPatientName(params.get("patientName"));
+				//转decimal
+				BigDecimal number = new BigDecimal(params.get("yjMoney"));
+				order.setPayMoney(number);
+				rechargerecordService.save(order);
+				
+				//准备数据返回
+				SortedMap<Object, Object> obj =
+		                new TreeMap<Object, Object>();
+				obj.put("appId",appid);
+				obj.put("timeStamp",System.currentTimeMillis()/1000);
+				obj.put("nonceStr",wx_CommonServiceApi.getRandomStringByLength(32));
+				obj.put("package","prepay_id="+map.get("prepay_id"));
+				obj.put("signType", "MD5");
+				obj.put("paySign",wx_CommonServiceApi.createSign(obj));
+				return R.ok("下单成功").put("data", obj);
 			}
-			if (xml == "") {
-				//如果返回结果为空，说明调用接口异常
-				return R.error("调用下单接口失败");
+			
+			//门诊接口
+			if ("mz".equals(params.get("action"))) {
+				checkParams(params, "openid");
+				checkParams(params, "mzMoney");
+				checkParams(params, "patientGuid");
+				checkParams(params, "patid");
+				checkParams(params, "patientName");
+				//单位分
+				int money = Integer.valueOf(AmountUtils.changeY2F(params.get("mzMoney"))); 
+
+				//商户订单号
+		        String out_trade_no = System.currentTimeMillis()+wx_CommonServiceApi.getRandomStringByLength(7);
+				
+		        String xml = null;
+				try {
+					xml = wx_CommonServiceApi.placeOrder(money,out_trade_no,params.get("openid"));
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+				if (xml == "") {
+					//如果返回结果为空，说明调用接口异常
+					return R.error("调用下单接口失败");
+				}
+				
+				//解析xml
+				Map<String, String> map = new HashMap<>();
+				map = XMLUtil.xml2Map(xml);
+				//对返回结果进行解析
+				String return_code = map.get("return_code");
+				if (return_code == null || return_code == "") {
+					return R.error("return_code为空");
+				}
+				if ("FAIL".equals(return_code)) {
+					return R.error(map.get("return_msg"));
+				}
+				if ("FAIL".equals(map.get("result_code"))) {
+					return R.error("错误代码："+map.get("err_code")+" 错误原因："+map.get("err_code_des"));
+				}
+				
+				
+				//数据库创建订单
+				Sechos_Rechargerecord order = new Sechos_Rechargerecord();
+				String orderGuid = UUID.randomUUID().toString();
+				order.setCreateTime(DateUtil.changeDate(new Date()));
+				order.setRowGuid(orderGuid);
+				order.setDelFlag(DelFlagEnum.NDELFLAG.getCode());
+				order.setMerchantNumber(out_trade_no);
+				order.setRecordStatus(RecordStatusEnum.READYHANDLE.getCode());
+				order.setPatientRowGuid(params.get("patientGuid"));
+				order.setPatid(params.get("patid"));
+				order.setPatientName(params.get("patientName"));
+				//转decimal
+				BigDecimal number = new BigDecimal(params.get("mzMoney"));
+				order.setPayMoney(number);
+				rechargerecordService.save(order);
+				
+				//准备数据返回
+				SortedMap<Object, Object> obj =
+		                new TreeMap<Object, Object>();
+				obj.put("appId",appid);
+				obj.put("timeStamp",System.currentTimeMillis()/1000);
+				obj.put("nonceStr",wx_CommonServiceApi.getRandomStringByLength(32));
+				obj.put("package","prepay_id="+map.get("prepay_id"));
+				obj.put("signType", "MD5");
+				obj.put("paySign",wx_CommonServiceApi.createSign(obj));
+				return R.ok("下单成功").put("data", obj);
 			}
 			
-			//解析xml
-			Map<String, String> map = new HashMap<>();
-			map = XMLUtil.xml2Map(xml);
-			//对返回结果进行解析
-			String return_code = map.get("return_code");
-			if (return_code == null || return_code == "") {
-				return R.error("return_code为空");
-			}
-			if ("FAIL".equals(return_code)) {
-				return R.error(map.get("return_msg"));
-			}
-			if ("FAIL".equals(map.get("result_code"))) {
-				return R.error("错误代码："+map.get("err_code")+" 错误原因："+map.get("err_code_des"));
+			//挂号接口
+			if ("gh".equals(params.get("action"))) {
+				checkParams(params, "openid");
+				checkParams(params, "ghMoney");
+				checkParams(params, "patientGuid");
+				checkParams(params, "patid");
+				checkParams(params, "patientName");
+				//单位分
+				int money = Integer.valueOf(AmountUtils.changeY2F(params.get("ghMoney"))); 
+
+				//商户订单号
+		        String out_trade_no = System.currentTimeMillis()+wx_CommonServiceApi.getRandomStringByLength(7);
+				
+		        String xml = null;
+				try {
+					xml = wx_CommonServiceApi.placeOrder(money,out_trade_no,params.get("openid"));
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+				if (xml == "") {
+					//如果返回结果为空，说明调用接口异常
+					return R.error("调用下单接口失败");
+				}
+				
+				//解析xml
+				Map<String, String> map = new HashMap<>();
+				map = XMLUtil.xml2Map(xml);
+				//对返回结果进行解析
+				String return_code = map.get("return_code");
+				if (return_code == null || return_code == "") {
+					return R.error("return_code为空");
+				}
+				if ("FAIL".equals(return_code)) {
+					return R.error(map.get("return_msg"));
+				}
+				if ("FAIL".equals(map.get("result_code"))) {
+					return R.error("错误代码："+map.get("err_code")+" 错误原因："+map.get("err_code_des"));
+				}
+				
+				
+				//数据库创建订单
+				Sechos_Rechargerecord order = new Sechos_Rechargerecord();
+				String orderGuid = UUID.randomUUID().toString();
+				order.setCreateTime(DateUtil.changeDate(new Date()));
+				order.setRowGuid(orderGuid);
+				order.setDelFlag(DelFlagEnum.NDELFLAG.getCode());
+				order.setMerchantNumber(out_trade_no);
+				order.setRecordStatus(RecordStatusEnum.READYHANDLE.getCode());
+				order.setPatientRowGuid(params.get("patientGuid"));
+				order.setPatid(params.get("patid"));
+				order.setPatientName(params.get("patientName"));
+				//转decimal
+				BigDecimal number = new BigDecimal(params.get("ghMoney"));
+				order.setPayMoney(number);
+				rechargerecordService.save(order);
+				
+				//准备数据返回
+				SortedMap<Object, Object> obj =
+		                new TreeMap<Object, Object>();
+				obj.put("appId",appid);
+				obj.put("timeStamp",System.currentTimeMillis()/1000);
+				obj.put("nonceStr",wx_CommonServiceApi.getRandomStringByLength(32));
+				obj.put("package","prepay_id="+map.get("prepay_id"));
+				obj.put("signType", "MD5");
+				obj.put("paySign",wx_CommonServiceApi.createSign(obj));
+				return R.ok("下单成功").put("data", obj);
 			}
 			
-			
-			//数据库创建订单
-			Sechos_Rechargerecord order = new Sechos_Rechargerecord();
-			String orderGuid = UUID.randomUUID().toString();
-			order.setCreateTime(DateUtil.changeDate(new Date()));
-			order.setRowGuid(orderGuid);
-			order.setDelFlag(DelFlagEnum.NDELFLAG.getCode());
-			order.setMerchantNumber(out_trade_no);
-			order.setRecordStatus(RecordStatusEnum.READYHANDLE.getCode());
-			order.setPatientRowGuid(params.get("patientGuid"));
-			order.setPatid(params.get("patid"));
-			order.setPatientName(params.get("patientName"));
-			//转decimal
-			BigDecimal number = new BigDecimal(params.get("yjMoney"));
-			order.setPayMoney(number);
-			rechargerecordService.save(order);
-			
-			//准备数据返回
-			SortedMap<Object, Object> obj =
-	                new TreeMap<Object, Object>();
-			obj.put("appId",appid);
-			obj.put("timeStamp",System.currentTimeMillis()/1000);
-			obj.put("nonceStr",wx_CommonServiceApi.getRandomStringByLength(32));
-			obj.put("package","prepay_id="+map.get("prepay_id"));
-			obj.put("signType", "MD5");
-			obj.put("paySign",wx_CommonServiceApi.createSign(obj));
-			return R.ok("下单成功").put("data", obj);
+			return R.error("action参数异常");
 		}
 		
 		/**

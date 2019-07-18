@@ -889,6 +889,26 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		logger.info("查询门诊患者挂号记录(PATID)接口返回成功》》》"+JSONObject.toJSONString(res));
 		return res;
 	}
+	
+	/**
+	 * 预约取消登记
+	 * <p>Title: cancelSubmit</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @param params
+	 * @return
+	 */
+	public String cancelSubmit(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","PUTMZYYQX");
+
+		logger.info("预约取消登记接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("预约取消登记接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
 
 
 }
