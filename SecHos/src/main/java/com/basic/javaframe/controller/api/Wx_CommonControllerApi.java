@@ -1524,4 +1524,61 @@ public class Wx_CommonControllerApi extends BaseController{
 			return R.error(json.getString("message"));
 		}
 	}
+
+	/**
+	 * 门诊挂号取消
+	 * <p>Title: cancelOutPatientReg</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="门诊挂号取消")
+	@ResponseBody
+	@RequestMapping(value="/cancelOutPatientReg",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R cancelOutPatientReg(@RequestBody Map<String, String> params){
+		checkParams(params, "patid");
+		checkParams(params, "ghxh");
+		checkParams(params, "sjh");
+		checkParams(params, "tzffs");
+		checkParams(params, "tzfje");
+		checkParams(params, "yzflsh");
+		checkParams(params, "tlsh");
+		String result =  wx_CommonServiceApi.cancelOutPatientReg(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			JSONArray arr = json.getJSONArray("tsjh");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr);
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
+
+	/**
+	 * 查询外部订单结果
+	 * <p>Title: getExternalOrders</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="查询外部订单结果")
+	@ResponseBody
+	@RequestMapping(value="/getExternalOrders",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getExternalOrders(@RequestBody Map<String, String> params){
+		checkParams(params, "ptlsh");
+		checkParams(params, "sjhlx");
+		String result =  wx_CommonServiceApi.getExternalOrders(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			JSONArray arr = json.getJSONArray("hisdh");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr);
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
 }	
