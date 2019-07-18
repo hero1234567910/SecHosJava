@@ -1457,8 +1457,6 @@ public class Wx_CommonControllerApi extends BaseController{
 	public R getPatientAppointInfo(@RequestBody Map<String, String> params){
 		checkParams(params, "hzxm");
 		checkParams(params, "patid");
-		checkParams(params, "ksrq");
-		checkParams(params, "jsrq");
 		String result =  wx_CommonServiceApi.getPatientAppointInfo(params);
 		JSONObject json = JSONObject.parseObject(result);
 		if (json.getBoolean("success")) {
