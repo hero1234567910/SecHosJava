@@ -383,6 +383,8 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 	 * @return
 	 */
 	public String getMedicalReportList(Map<String,String> params){
+		params.put("username",username);
+		params.put("userpwd",userpwd);
 		logger.info("获取体检报告列表接口参数》》》"+JSONObject.toJSONString(params));
 		String res = HttpUtil.sendPost(wnUrl+"/getBhkList", params);
 		logger.info("获取体检报告列表接口返回成功》》》"+JSONObject.toJSONString(res));
@@ -398,6 +400,8 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 	 * @return
 	 */
 	public String getMedicalReportInfo(Map<String,String> params){
+		params.put("username",username);
+		params.put("userpwd",userpwd);
 		logger.info("获取体检报告信息接口参数》》》"+JSONObject.toJSONString(params));
 		String res = HttpUtil.sendPost(wnUrl+"/getBhkInfo", params);
 		logger.info("获取体检报告信息接口返回成功》》》"+JSONObject.toJSONString(res));
