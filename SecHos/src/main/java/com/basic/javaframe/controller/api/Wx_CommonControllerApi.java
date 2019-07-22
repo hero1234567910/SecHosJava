@@ -1022,8 +1022,6 @@ public class Wx_CommonControllerApi extends BaseController{
 	@ResponseBody
 	@RequestMapping(value="/getMedicalReportList",produces="application/json;charset=utf-8",method=RequestMethod.POST)
 	public R getMedicalReportList(@RequestBody Map<String, String> params){
-		checkParams(params, "username");
-		checkParams(params, "userpwd");
 		checkParams(params, "idc");
 		String result =  wx_CommonServiceApi.getMedicalReportList(params);
 		JSONObject json = JSONObject.parseObject(result);
@@ -1051,8 +1049,6 @@ public class Wx_CommonControllerApi extends BaseController{
 	@ResponseBody
 	@RequestMapping(value="/getMedicalReportInfo",produces="application/json;charset=utf-8",method=RequestMethod.POST)
 	public R getMedicalReportInfo(@RequestBody Map<String, String> params){
-		checkParams(params, "username");
-		checkParams(params, "userpwd");
 		checkParams(params, "bhkcode");
 		String result =  wx_CommonServiceApi.getMedicalReportInfo(params);
 		JSONObject json = JSONObject.parseObject(result);
