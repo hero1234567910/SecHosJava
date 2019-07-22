@@ -87,6 +87,7 @@ public class Wx_CommonControllerApi extends BaseController{
 	@Autowired
 	SecHos_OutpatientService outpatientService;
 	
+	@Autowired
 	Sechos_RechargerecordService rechargerecordService;
 	
 	/**
@@ -102,8 +103,50 @@ public class Wx_CommonControllerApi extends BaseController{
 	@ResponseBody
 	public R code2Token(@RequestBody String code){
 		System.out.println(code);
-		String result = wx_CommonServiceApi.code2Token(code);
+		JSONObject jsonobj = wx_CommonServiceApi.code2Token(code);
 		
+		JSONObject jsonObject = JSONObject.parseObject(jsonobj.getString("resultUser"));
+		if (jsonObject.containsKey("errcode")) {
+			String errcode = jsonObject.getString("errcode");
+			return R.error("获取网页授权用户信息异常,errcode为"+errcode);
+		}
+		//获取openid,微信昵称，头像
+		String openid = jsonObject.getString("openid");
+		String nickname = jsonObject.getString("nickname");
+		String headimgurl = jsonObject.getString("headimgurl");
+		
+		//根据openid查询是否有该用户,没有则生成一条新用户，有则返回该用户信息
+		SecHos_Patient pa = patientService.getPatientByOpenid(openid);
+		if (pa == null) {
+			pa = new SecHos_Patient();
+			pa.setDelFlag(DelFlagEnum.NDELFLAG.getCode());
+			pa.setCreateTime(DateUtil.changeDate(new Date()));
+			String uuid = java.util.UUID.randomUUID().toString();
+			pa.setRowGuid(uuid);
+			pa.setOpenid(openid);
+			pa.setHeadImgUrl(headimgurl);
+			patientService.save(pa);
+			return R.ok().put("data", pa);
+		}
+		pa.setAccessToken(jsonobj.getString("access_token"));
+		return R.ok().put("data", pa);	
+	}
+	
+	/**
+	 * 获取用户信息
+	 * <p>Title: getUserByToken</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @param params
+	 * @return
+	 */
+	@PassToken
+	@RequestMapping(value="/getUserByToken",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	@ResponseBody
+	public R getUserByToken(@RequestBody Map<String, String> params){
+		checkParams(params, "openid");
+		checkParams(params, "access_token");
+		String result = wx_CommonServiceApi.getWxUserByToken(params);
 		JSONObject jsonObject = JSONObject.parseObject(result);
 		if (jsonObject.containsKey("errcode")) {
 			String errcode = jsonObject.getString("errcode");
@@ -127,6 +170,7 @@ public class Wx_CommonControllerApi extends BaseController{
 			patientService.save(pa);
 			return R.ok().put("data", pa);
 		}
+		pa.setAccessToken(params.get("access_token"));
 		return R.ok().put("data", pa);	
 	}
 	

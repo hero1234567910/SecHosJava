@@ -32,7 +32,7 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 	 * @param code
 	 * @return
 	 */
-	public String code2Token(String code) {
+	public JSONObject code2Token(String code) {
 		//准备参数
 		String grant_type = "authorization_code";
 	    Map<String, String> parsms = new HashMap<String, String>();
@@ -66,7 +66,27 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 	    logger.info("获取网页授权用户信息接口参数》》》"+JSONObject.toJSONString(parsms));
 	    String resultUser = HttpUtil.sendGet("https://api.weixin.qq.com/sns/userinfo", parsms);
 	    logger.info("获取网页授权用户信息接口返回成功》》》"+JSONObject.toJSONString(resultUser));
-	    return resultUser;
+	    
+	    JSONObject obj = new JSONObject();
+	    obj.put("resultUser", resultUser);
+	    obj.put("access_token", access_token);
+	    return obj;
+	}
+	
+	/**
+	 * 微信获取用户信息
+	 * <p>Title: getWxUserByToken</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @return
+	 */
+	public String getWxUserByToken(Map<String, String> params){
+		
+		params.put("lang", "zh_CN");
+		logger.info("获取网页授权用户信息接口参数》》》"+JSONObject.toJSONString(params));
+	    String resultUser = HttpUtil.sendGet("https://api.weixin.qq.com/sns/userinfo", params);
+	    logger.info("获取网页授权用户信息接口返回成功》》》"+JSONObject.toJSONString(resultUser));
+		return resultUser;
 	}
 	
 	/**
