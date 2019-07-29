@@ -53,6 +53,7 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		String openid = json.getString("openid");
 		String access_token = json.getString("access_token");
 		String expireTime = json.getString("expires_in");
+		String refreshToken = json.getString("refresh_token");
 		
 //		//服务端存储code
 //		redisService.set("access_token", access_token,Long.valueOf(expireTime));
@@ -70,6 +71,7 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 	    JSONObject obj = new JSONObject();
 	    obj.put("resultUser", resultUser);
 	    obj.put("access_token", access_token);
+	    obj.put("refresh_token", refreshToken);
 	    return obj;
 	}
 	
@@ -405,9 +407,9 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 	public String getMedicalReportList(Map<String,String> params){
 		params.put("username",username);
 		params.put("userpwd",userpwd);
-		logger.info("获取体检报告列表接口参数》》》"+JSONObject.toJSONString(params));
-		String res = HttpUtil.sendPost(wnUrl+"/getBhkList", params);
-		logger.info("获取体检报告列表接口返回成功》》》"+JSONObject.toJSONString(res));
+		logger.info("获取体检报告列表服务参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wsUrl+"/getMedicalReportListService", params);
+		logger.info("获取体检报告列表服务返回成功》》》"+JSONObject.toJSONString(res));
 		return res;
 	}
 
@@ -422,9 +424,9 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 	public String getMedicalReportInfo(Map<String,String> params){
 		params.put("username",username);
 		params.put("userpwd",userpwd);
-		logger.info("获取体检报告信息接口参数》》》"+JSONObject.toJSONString(params));
-		String res = HttpUtil.sendPost(wnUrl+"/getBhkInfo", params);
-		logger.info("获取体检报告信息接口返回成功》》》"+JSONObject.toJSONString(res));
+		logger.info("获取体检报告信息服务参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wsUrl+"/getMedicalReportInfoService", params);
+		logger.info("获取体检报告信息服务返回成功》》》"+JSONObject.toJSONString(res));
 		return res;
 	}
 
@@ -456,6 +458,7 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		sm.put("trade_type", trade_type);
 		sm.put("total_fee", total_fee);
 		sm.put("openid", openid);
+		sm.put("sign_type", "MD5");
 		sm.put("sign", createSign(sm));
 		
 		
@@ -931,6 +934,25 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		logger.info("预约取消登记接口参数》》》"+JSONObject.toJSONString(params));
 		String res = HttpUtil.sendPost(wnUrl, params);
 		logger.info("预约取消登记接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+	
+	/**
+	 * 刷新token
+	 * <p>Title: refreshToken</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @param params
+	 * @return
+	 */
+	public String refreshToken(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("appid", appid);
+		params.put("grant_type","refresh_token");
+		
+		logger.info("刷新token接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendGet("https://api.weixin.qq.com/sns/oauth2/refresh_token", params);
+		logger.info("刷新token接口返回成功》》》"+JSONObject.toJSONString(res));
 		return res;
 	}
 

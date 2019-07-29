@@ -14,6 +14,15 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * @author 
  */
 public class SecHos_Patient implements Serializable {
+	@Override
+	public String toString() {
+		return "SecHos_Patient [rowId=" + rowId + ", rowGuid=" + rowGuid + ", createTime=" + createTime + ", delFlag="
+				+ delFlag + ", sortSq=" + sortSq + ", patientBirth=" + patientBirth + ", patientName=" + patientName
+				+ ", patientSex=" + patientSex + ", patientIdcard=" + patientIdcard + ", patientAddress="
+				+ patientAddress + ", patientMobile=" + patientMobile + ", openid=" + openid + ", patientStatus="
+				+ patientStatus + ", accessToken=" + accessToken + ", refreshToken=" + refreshToken + ", headImgUrl="
+				+ headImgUrl + ", hospitalizedList=" + hospitalizedList + ", outpatients=" + outpatients + "]";
+	}
 	private static final long serialVersionUID = 1L;
 	
 	/****/
@@ -47,6 +56,16 @@ public class SecHos_Patient implements Serializable {
 	
 	private String accessToken;
 	
+	private String refreshToken;
+	
+	public String getRefreshToken() {
+		return refreshToken;
+	}
+
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
+	}
+
 	public String getAccessToken() {
 		return accessToken;
 	}

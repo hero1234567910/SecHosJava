@@ -108,7 +108,7 @@ public class Wx_CommonControllerApi extends BaseController{
 		JSONObject jsonObject = JSONObject.parseObject(jsonobj.getString("resultUser"));
 		if (jsonObject.containsKey("errcode")) {
 			String errcode = jsonObject.getString("errcode");
-			return R.error("获取网页授权用户信息异常,errcode为"+errcode);
+			return R.error("获取网页授权用户信息异常,errcode为"+errcode).put("data", errcode);
 		}
 		//获取openid,微信昵称，头像
 		String openid = jsonObject.getString("openid");
@@ -125,10 +125,14 @@ public class Wx_CommonControllerApi extends BaseController{
 			pa.setRowGuid(uuid);
 			pa.setOpenid(openid);
 			pa.setHeadImgUrl(headimgurl);
+			pa.setAccessToken(jsonobj.getString("access_token"));
+			pa.setRefreshToken(jsonobj.getString("refresh_token"));
 			patientService.save(pa);
 			return R.ok().put("data", pa);
 		}
 		pa.setAccessToken(jsonobj.getString("access_token"));
+		pa.setRefreshToken(jsonobj.getString("refresh_token"));
+		logger.info(pa.toString());
 		return R.ok().put("data", pa);	
 	}
 	
@@ -146,11 +150,12 @@ public class Wx_CommonControllerApi extends BaseController{
 	public R getUserByToken(@RequestBody Map<String, String> params){
 		checkParams(params, "openid");
 		checkParams(params, "access_token");
+		checkParams(params, "refresh_token");
 		String result = wx_CommonServiceApi.getWxUserByToken(params);
 		JSONObject jsonObject = JSONObject.parseObject(result);
 		if (jsonObject.containsKey("errcode")) {
 			String errcode = jsonObject.getString("errcode");
-			return R.error("获取网页授权用户信息异常,errcode为"+errcode);
+			return R.error("获取网页授权用户信息异常,errcode为"+errcode).put("data", errcode);
 		}
 		//获取openid,微信昵称，头像
 		String openid = jsonObject.getString("openid");
@@ -167,11 +172,36 @@ public class Wx_CommonControllerApi extends BaseController{
 			pa.setRowGuid(uuid);
 			pa.setOpenid(openid);
 			pa.setHeadImgUrl(headimgurl);
+			pa.setAccessToken(params.get("access_token"));
+			pa.setRefreshToken(params.get("refresh_token"));
 			patientService.save(pa);
 			return R.ok().put("data", pa);
 		}
 		pa.setAccessToken(params.get("access_token"));
+		pa.setRefreshToken(params.get("refresh_token"));
 		return R.ok().put("data", pa);	
+	}
+	
+	/**
+	 * 刷新token
+	 * <p>Title: refreshToken</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @param params
+	 * @return
+	 */
+	@PassToken
+	@RequestMapping(value="/refreshToken",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	@ResponseBody
+	public R refreshToken(@RequestBody Map<String, String> params){
+		checkParams(params, "refresh_token");
+		String result = wx_CommonServiceApi.refreshToken(params);
+		JSONObject jsonObject = JSONObject.parseObject(result);
+		if (jsonObject.containsKey("errcode")) {
+			String errcode = jsonObject.getString("errcode");
+			return R.error("刷新token异常,errcode为"+errcode);
+		}
+		return R.ok().put("data",jsonObject);
 	}
 	
 		/**
@@ -1025,12 +1055,12 @@ public class Wx_CommonControllerApi extends BaseController{
 		checkParams(params, "idc");
 		String result =  wx_CommonServiceApi.getMedicalReportList(params);
 		JSONObject json = JSONObject.parseObject(result);
-		if (json.getInteger("code") == 1) {
+		if (json.getInteger("code") == 0) {
 			JSONArray arr = json.getJSONArray("data");
 			if (arr.size() == 0) {
 				return R.error("未查到相关记录");
 			}
-			return R.ok().put("data", arr.getJSONObject(0));
+			return R.ok().put("data", arr);
 		}else{
 			return R.error(json.getString("msg"));
 		}
@@ -1053,11 +1083,8 @@ public class Wx_CommonControllerApi extends BaseController{
 		String result =  wx_CommonServiceApi.getMedicalReportInfo(params);
 		JSONObject json = JSONObject.parseObject(result);
 		if (json.getInteger("code") == 1) {
-			JSONArray arr = json.getJSONArray("data");
-			if (arr.size() == 0) {
-				return R.error("未查到相关记录");
-			}
-			return R.ok().put("data", arr.getJSONObject(0));
+			JSONObject obj = json.getJSONObject("data");
+			return R.ok().put("data", obj);
 		}else{
 			return R.error(json.getString("msg"));
 		}
