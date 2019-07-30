@@ -89,5 +89,15 @@ public class SecHos_PatientController {
 		secHosPatientService.deleteBatch(rowGuids);
 		return R.ok();
 	}
-	
+
+	/**
+	 * 查找患者
+	 */
+	@ApiOperation(value="查找患者")
+	@ResponseBody
+	@RequestMapping(value="/getPatientByGuid/{rowGuid}",produces="application/json;charset=utf-8",method=RequestMethod.GET)
+	public R getPatientByGuid(@PathVariable("rowGuid") String rowGuid){
+		SecHos_Patient secHosPatient = secHosPatientService.getPatientByGuid(rowGuid);
+		return R.ok().put("data",secHosPatient);
+	}
 }

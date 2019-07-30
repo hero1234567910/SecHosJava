@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.Sechos_EvaluateDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.basic.javaframe.entity.Sechos_Evaluate" id="sechosEvaluateMap">
+        <result property="rowId" column="row_id"/>
+        <result property="rowGuid" column="row_guid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="sortSq" column="sort_sq"/>
+        <result property="evaluateNurse" column="evaluate_nurse"/>
+        <result property="evaluateDoc" column="evaluate_doc"/>
+        <result property="evaluateFacilities" column="evaluate_facilities"/>
+        <result property="evaluateOpinion" column="evaluate_opinion"/>
+        <result property="patientRowGuid" column="patient_rowGuid"/>
+    </resultMap>
+
+	<select id="getList" resultType="com.basic.javaframe.entity.Sechos_Evaluate">
+		select * from sechos_evaluate t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by sort_sq desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="getCount" resultType="int">
+		select count(*) from sechos_evaluate t  <include refid="where_clause" />
+	</select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+    		<if test="rowIdVague != null and rowIdVague != ''"> and t.row_id like concat('%',#{rowIdVague},'%') </if>
+            <if test="rowGuid != null and rowGuid != ''"> and t.row_guid = #{rowGuid} </if>
+    		<if test="rowGuidVague != null and rowGuidVague != ''"> and t.row_guid like concat('%',#{rowGuidVague},'%') </if>
+            <if test="createTime != null and createTime != ''"> and t.create_time = #{createTime} </if>
+    		<if test="createTimeVague != null and createTimeVague != ''"> and t.create_time like concat('%',#{createTimeVague},'%') </if>
+            <if test="delFlag != null and delFlag != ''"> and t.del_flag = #{delFlag} </if>
+    		<if test="delFlagVague != null and delFlagVague != ''"> and t.del_flag like concat('%',#{delFlagVague},'%') </if>
+            <if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
+    		<if test="sortSqVague != null and sortSqVague != ''"> and t.sort_sq like concat('%',#{sortSqVague},'%') </if>
+            <if test="evaluateNurse != null and evaluateNurse != ''"> and t.evaluate_nurse = #{evaluateNurse} </if>
+    		<if test="evaluateNurseVague != null and evaluateNurseVague != ''"> and t.evaluate_nurse like concat('%',#{evaluateNurseVague},'%') </if>
+            <if test="evaluateDoc != null and evaluateDoc != ''"> and t.evaluate_doc = #{evaluateDoc} </if>
+    		<if test="evaluateDocVague != null and evaluateDocVague != ''"> and t.evaluate_doc like concat('%',#{evaluateDocVague},'%') </if>
+            <if test="evaluateFacilities != null and evaluateFacilities != ''"> and t.evaluate_facilities = #{evaluateFacilities} </if>
+    		<if test="evaluateFacilitiesVague != null and evaluateFacilitiesVague != ''"> and t.evaluate_facilities like concat('%',#{evaluateFacilitiesVague},'%') </if>
+            <if test="evaluateOpinion != null and evaluateOpinion != ''"> and t.evaluate_opinion = #{evaluateOpinion} </if>
+    		<if test="evaluateOpinionVague != null and evaluateOpinionVague != ''"> and t.evaluate_opinion like concat('%',#{evaluateOpinionVague},'%') </if>
+            <if test="patientRowGuid != null and patientRowGuid != ''"> and t.patient_rowGuid = #{patientRowGuid} </if>
+    		<if test="patientRowGuidVague != null and patientRowGuidVague != ''"> and t.patient_rowGuid like concat('%',#{patientRowGuidVague},'%') </if>
+			and del_flag = 0
+        </where>
+    </sql>
+	 
+	<insert id="save" parameterType="com.basic.javaframe.entity.Sechos_Evaluate" useGeneratedKeys="true" keyProperty="rowId">
+		insert into sechos_evaluate
+		(
+			`row_guid`, 
+			`create_time`, 
+			`del_flag`, 
+			`sort_sq`, 
+			`evaluate_nurse`, 
+			`evaluate_doc`, 
+			`evaluate_facilities`, 
+			`evaluate_opinion`, 
+			`patient_rowGuid`
+		)
+		values
+		(
+			#{rowGuid}, 
+			#{createTime}, 
+			#{delFlag}, 
+			#{sortSq}, 
+			#{evaluateNurse}, 
+			#{evaluateDoc}, 
+			#{evaluateFacilities}, 
+			#{evaluateOpinion}, 
+			#{patientRowGuid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.basic.javaframe.entity.Sechos_Evaluate">
+		update sechos_evaluate 
+		<set>
+			<if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+			<if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+			<if test="evaluateNurse != null">`evaluate_nurse` = #{evaluateNurse}, </if>
+			<if test="evaluateDoc != null">`evaluate_doc` = #{evaluateDoc}, </if>
+			<if test="evaluateFacilities != null">`evaluate_facilities` = #{evaluateFacilities}, </if>
+			<if test="evaluateOpinion != null">`evaluate_opinion` = #{evaluateOpinion}, </if>
+			<if test="patientRowGuid != null">`patient_rowGuid` = #{patientRowGuid}</if>
+		</set>
+		where row_id = #{rowId}
+	</update>
+	
+	<delete id="deleteBatch">
+		update sechos_evaluate set `del_flag` = 1 where row_guid in
+		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+			#{rowGuid}
+		</foreach>
+	</delete>
+
+</mapper>

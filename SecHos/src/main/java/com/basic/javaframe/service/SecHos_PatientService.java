@@ -24,4 +24,6 @@ public interface SecHos_PatientService {
 	void deleteBatch(String[] rowGuids);
 
 	SecHos_Patient getPatientByOpenid(String openid);
+
+	SecHos_Patient getPatientByGuid(String rowGuid);
 }

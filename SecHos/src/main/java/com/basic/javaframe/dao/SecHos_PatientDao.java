@@ -16,5 +16,11 @@ public interface SecHos_PatientDao extends BaseDao<SecHos_Patient> {
      * @return
      */
     SecHos_Patient getPatientByOpenid(@Param("openid") String openid);
-	
+
+    /**
+     * 根据rowGuid查询就诊人
+     * @param rowGuid
+     * @return
+     */
+    SecHos_Patient getPatientByGuid(@Param("rowGuid") String rowGuid);
 }

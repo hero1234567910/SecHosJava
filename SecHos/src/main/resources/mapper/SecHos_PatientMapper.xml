@@ -161,4 +161,9 @@
 		on p.row_guid = o.patient_rowGuidMZ
 		where p.openid =#{openid} and p.del_flag=0
 	</select>
+
+	<!--根据guid获取患者信息-->
+	<select id="getPatientByGuid" resultType="com.basic.javaframe.entity.SecHos_Patient">
+		select * from sechos_patient where row_guid =#{rowGuid} and del_flag = 0;
+	</select>
 </mapper>

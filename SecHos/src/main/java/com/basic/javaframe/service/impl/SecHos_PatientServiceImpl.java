@@ -49,4 +49,9 @@ public class SecHos_PatientServiceImpl implements SecHos_PatientService {
 		return secHosPatientDao.getPatientByOpenid(openid);
 	}
 
+	@Override
+	public SecHos_Patient getPatientByGuid(String rowGuid) {
+		return secHosPatientDao.getPatientByGuid(rowGuid);
+	}
+
 }
