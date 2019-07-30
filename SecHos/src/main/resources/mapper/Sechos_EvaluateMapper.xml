@@ -60,6 +60,7 @@
     		<if test="evaluateOpinionVague != null and evaluateOpinionVague != ''"> and t.evaluate_opinion like concat('%',#{evaluateOpinionVague},'%') </if>
             <if test="patientRowGuid != null and patientRowGuid != ''"> and t.patient_rowGuid = #{patientRowGuid} </if>
     		<if test="patientRowGuidVague != null and patientRowGuidVague != ''"> and t.patient_rowGuid like concat('%',#{patientRowGuidVague},'%') </if>
+			and del_flag = 0
         </where>
     </sql>
 	 
@@ -107,7 +108,7 @@
 	</update>
 	
 	<delete id="deleteBatch">
-		update sechos_evaluate set `del_flag` = 1 where row_guid in 
+		update sechos_evaluate set `del_flag` = 1 where row_guid in
 		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
 			#{rowGuid}
 		</foreach>
