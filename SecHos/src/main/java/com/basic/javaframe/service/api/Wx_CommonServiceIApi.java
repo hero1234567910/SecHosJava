@@ -214,7 +214,7 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		params.put("yydm", yydm);
 		params.put("accesskey", accesskey);
 		params.put("action","PUTZYYJJ");
-		params.put("zffs", "1");
+		params.put("zffs", "2");
 		
 		logger.info("预交金充值接口参数》》》"+JSONObject.toJSONString(params));
 		String res = HttpUtil.sendPost(wnUrl, params);

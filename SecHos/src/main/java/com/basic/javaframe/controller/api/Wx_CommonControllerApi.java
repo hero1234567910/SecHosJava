@@ -1462,10 +1462,10 @@ public class Wx_CommonControllerApi extends BaseController{
 				par.put("sjh", rechargerecord.getSjh());
 				par.put("zje", rechargerecord.getZfje());
 				par.put("yfje", rechargerecord.getYfje());
-				par.put("zffs", "1");
+				par.put("zffs", "2");
 				par.put("zfje", rechargerecord.getZfje());
 				par.put("zflsh", rechargerecord.getMerchantNumber());
-				par.put("isynzh", "1");
+				par.put("isynzh", "0");
 				String result =  wx_CommonServiceApi.RegisteredBudget(par);
 				JSONObject json = JSONObject.parseObject(result);
 				if (json.getBoolean("success")) {
@@ -1490,11 +1490,11 @@ public class Wx_CommonControllerApi extends BaseController{
 				par.put("sjh", rechargerecord.getSjh());
 				par.put("zje", rechargerecord.getZfje());
 				par.put("yfje", rechargerecord.getYfje());
-				par.put("zffs", "1");
+				par.put("zffs", "2");
 				par.put("zfje", rechargerecord.getZfje());
 				par.put("zflsh", rechargerecord.getMerchantNumber());
 				par.put("zfsj", rechargerecord.getZfsj());
-				par.put("isynzh", "1");
+				par.put("isynzh", "0");
 				String result =  wx_CommonServiceApi.getOutpatientFeeSettlement(par);
 				JSONObject json = JSONObject.parseObject(result);
 				if (json.getBoolean("success")) {
