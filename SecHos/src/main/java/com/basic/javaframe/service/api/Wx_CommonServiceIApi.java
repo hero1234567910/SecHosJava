@@ -215,6 +215,7 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		params.put("accesskey", accesskey);
 		params.put("action","PUTZYYJJ");
 		params.put("zffs", "2");
+		params.put("port","2");
 		
 		logger.info("预交金充值接口参数》》》"+JSONObject.toJSONString(params));
 		String res = HttpUtil.sendPost(wnUrl, params);
@@ -728,6 +729,7 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		params.put("yydm", yydm);
 		params.put("accesskey", accesskey);
 		params.put("action","PUTGHJS");
+		params.put("port", "1");
 
 		logger.info("获取挂号结算信息查询接口参数》》》"+JSONObject.toJSONString(params));
 		String res = HttpUtil.sendPost(wnUrl, params);
@@ -808,6 +810,7 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		params.put("yydm", yydm);
 		params.put("accesskey", accesskey);
 		params.put("action","PUTMZJS");
+		params.put("port", "1");
 
 		logger.info("查询门诊收费结算接口参数》》》"+JSONObject.toJSONString(params));
 		String res = HttpUtil.sendPost(wnUrl, params);

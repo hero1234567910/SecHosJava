@@ -43,5 +43,11 @@ public class Sechos_EvaluateServiceImpl implements Sechos_EvaluateService {
 	public void deleteBatch(String[] rowGuids){
 		sechosEvaluateDao.deleteBatch(rowGuids);
 	}
+
+	@Override
+	public Sechos_Evaluate selectByGuid(String patientRowGuid) {
+		// TODO Auto-generated method stub
+		return sechosEvaluateDao.selectByGuid(patientRowGuid);
+	}
 	
 }

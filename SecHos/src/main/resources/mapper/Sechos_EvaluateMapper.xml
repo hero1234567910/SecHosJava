@@ -91,6 +91,10 @@
 		)
 	</insert>
 	 
+	<select id="selectByGuid" resultType="com.basic.javaframe.entity.Sechos_Evaluate">
+	    select * from sechos_evaluate where patient_rowGuid = #{value}
+	</select>
+	
 	<update id="update" parameterType="com.basic.javaframe.entity.Sechos_Evaluate">
 		update sechos_evaluate 
 		<set>
