@@ -128,7 +128,7 @@ public class Form_TableFieldController extends BaseController{
      */
     @ApiOperation(value = "修改字段")
     @ResponseBody
-    @RequestMapping(value = "/updateTableField/{id}",produces="application/json;charset=utf-8",method= RequestMethod.PUT)
+    @RequestMapping(value = "/updateTableField/{id}",produces="application/json;charset=utf-8",method= RequestMethod.POST)
     public R updateTableField(@PathVariable("id") Integer id,@RequestBody Map<String,Object> params) throws Exception{
         Form_TableField formTableField = JSON.parseObject(JSON.toJSONString(params.get("field")), Form_TableField.class);
         String tableName = params.get("tableName").toString();

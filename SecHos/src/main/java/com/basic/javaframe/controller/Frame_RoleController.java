@@ -104,7 +104,7 @@ public class Frame_RoleController {
      */
     @ApiOperation(value = "修改角色")
     @ResponseBody
-    @RequestMapping(value = "/updateRole/{id}",produces="application/json;charset=utf-8",method= RequestMethod.PUT)
+    @RequestMapping(value = "/updateRole/{id}",produces="application/json;charset=utf-8",method= RequestMethod.POST)
     public R updateRole(@PathVariable("id") Integer id,@RequestBody Frame_Role frameRole){
         frameRole.setRowId(id);
         roleService.updateFrameRole(frameRole);

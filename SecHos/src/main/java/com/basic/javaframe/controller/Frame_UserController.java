@@ -154,7 +154,7 @@ public class Frame_UserController {
      */
     @ApiOperation(value = "更新用户")
     @ResponseBody
-    @RequestMapping(value = "/update", produces = "application/json;charset=utf-8", method = RequestMethod.PUT)
+    @RequestMapping(value = "/update", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
     public R update(@RequestBody Map<String, Object> params) {
         List<String> roleGuidList = (List<String>) params.get("roleGuids");
         Frame_User user = JSON.parseObject(JSON.toJSONString(params.get("roleUser")), Frame_User.class);
@@ -467,7 +467,7 @@ public class Frame_UserController {
 
     @ApiOperation(value = "更新管理员")
     @ResponseBody
-    @RequestMapping(value = "/updateAdmin", produces = "application/json;charset=utf-8", method = RequestMethod.PUT)
+    @RequestMapping(value = "/updateAdmin", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
     public R updateAdmin(@RequestBody Frame_User user) {
         userService.updateAdmin(user);
         return R.ok();

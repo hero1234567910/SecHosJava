@@ -122,7 +122,7 @@ public class Frame_CodesController {
      */
     @ApiOperation(value="更新单个代码项参数")
     @ResponseBody
-    @RequestMapping(value="/updateCodes/{id}",produces="application/json;charset=utf-8",method= RequestMethod.PUT)
+    @RequestMapping(value="/updateCodes/{id}",produces="application/json;charset=utf-8",method= RequestMethod.POST)
     public R updateCodes(@PathVariable("id") Integer id,@RequestBody Frame_Codes frameCodes){
         frameCodes.setRowId(id);
         codesService.updateCodes(frameCodes);

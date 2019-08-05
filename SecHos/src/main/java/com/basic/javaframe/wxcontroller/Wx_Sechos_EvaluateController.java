@@ -78,7 +78,7 @@ public class Wx_Sechos_EvaluateController {
 	 */
 	@ApiOperation(value="病人修改评价")
     @ResponseBody
-	@RequestMapping(value="/update", produces = "application/json; charset=utf-8", method=RequestMethod.PUT)
+	@RequestMapping(value="/update", produces = "application/json; charset=utf-8", method=RequestMethod.POST)
 	public R update(@RequestBody Sechos_Evaluate sechosEvaluate){
 		sechosEvaluateService.update(sechosEvaluate);
 		return R.ok();

@@ -96,7 +96,7 @@ public class Frame_DeptController {
      */
     @ApiOperation(value = "修改部门")
     @ResponseBody
-    @RequestMapping(value = "/updateDept/{id}",produces="application/json;charset=utf-8",method= RequestMethod.PUT)
+    @RequestMapping(value = "/updateDept/{id}",produces="application/json;charset=utf-8",method= RequestMethod.POST)
     public R updateDept(@PathVariable("id") Integer id,@RequestBody Frame_Dept frameDept){
     	frameDept.setRowId(id);
         deptService.updateFrameDept(frameDept);
@@ -113,8 +113,8 @@ public class Frame_DeptController {
      */
     @ApiOperation(value="删除部门")
 	@ResponseBody
-	@RequestMapping(value="/deleteDept/{id}",produces="application/json;charset=utf-8",method=RequestMethod.POST)
-    public R deleteDept(@RequestBody Integer[] Ids){
+	@RequestMapping(value="/deleteDept/{ids}",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+    public R deleteDept(@PathVariable("ids") Integer[] Ids){
         deptService.deleteFrameDeptById(Ids);
         return R.ok();
     }

@@ -70,7 +70,7 @@ public class Sechos_RechargerecordController {
 	 */
 	@ApiOperation(value="修改充值记录")
     @ResponseBody
-	@RequestMapping(value="/update", produces = "application/json; charset=utf-8", method=RequestMethod.PUT)
+	@RequestMapping(value="/update", produces = "application/json; charset=utf-8", method=RequestMethod.POST)
 	public R update(@RequestBody Sechos_Rechargerecord sechosRechargerecord){
 		sechosRechargerecordService.update(sechosRechargerecord);
 		return R.ok();

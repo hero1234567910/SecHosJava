@@ -76,7 +76,7 @@ public class SecHos_hospitalizedController {
 	 */
 	@ApiOperation(value="")
     @ResponseBody
-	@RequestMapping(value="/update", produces = "application/json; charset=utf-8", method=RequestMethod.PUT)
+	@RequestMapping(value="/update", produces = "application/json; charset=utf-8", method=RequestMethod.POST)
 	public R update(@RequestBody SecHos_hospitalized sechosHospitalized){
 		sechosHospitalizedService.update(sechosHospitalized);
 		return R.ok();

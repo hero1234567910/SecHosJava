@@ -82,7 +82,7 @@ public class Frame_ConfigController {
      */
     @ApiOperation(value = "更新系统参数")
     @ResponseBody
-    @RequestMapping(value = "/updateConfig/{id}", produces = "application/json;charset=utf-8", method = RequestMethod.PUT)
+    @RequestMapping(value = "/updateConfig/{id}", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
     public R updateConfig(@PathVariable("id") Integer id, @RequestBody Frame_Config config) {
         config.setRowId(id);
         configService.updateConfig(config);

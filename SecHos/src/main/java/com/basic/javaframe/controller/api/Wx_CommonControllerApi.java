@@ -454,7 +454,7 @@ public class Wx_CommonControllerApi extends BaseController{
 		 * @author hero  
 		 * @return
 		 */
-		@RequestMapping(value="/bindInfo",produces="application/json;charset=utf-8",method=RequestMethod.PUT)
+		@RequestMapping(value="/bindInfo",produces="application/json;charset=utf-8",method=RequestMethod.POST)
 		public R bindIdcard(@RequestBody Map<String, String> params){
 			checkParams(params, "hzxm");
 			checkParams(params, "zjh");

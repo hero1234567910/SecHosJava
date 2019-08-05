@@ -77,7 +77,7 @@ public class Sechos_ConsultationController {
 	 */
 	@ApiOperation(value="修改咨询信息")
     @ResponseBody
-	@RequestMapping(value="/update", produces = "application/json; charset=utf-8", method=RequestMethod.PUT)
+	@RequestMapping(value="/update", produces = "application/json; charset=utf-8", method=RequestMethod.POST)
 	public R update(@RequestBody Sechos_Consultation sechosConsultation){
 		sechosConsultationService.update(sechosConsultation);
 		return R.ok();
@@ -99,7 +99,7 @@ public class Sechos_ConsultationController {
 	 */
 	@ApiOperation(value="回复咨询信息")
 	@ResponseBody
-	@RequestMapping(value="/reply", produces = "application/json; charset=utf-8", method=RequestMethod.PUT)
+	@RequestMapping(value="/reply", produces = "application/json; charset=utf-8", method=RequestMethod.POST)
 	public R reply(@RequestBody Sechos_Consultation sechosConsultation){
 		Date replyTime = DateUtil.changeDate(new Date());
 		sechosConsultation.setReplyTime(replyTime);

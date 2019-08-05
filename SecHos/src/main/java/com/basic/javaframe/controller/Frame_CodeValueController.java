@@ -116,7 +116,7 @@ public class Frame_CodeValueController {
     @PassToken
     @ApiOperation(value = "更新代码值参数")
     @ResponseBody
-    @RequestMapping(value = "/updateCodeValue/{id}", produces = "application/json;charset=utf-8", method = RequestMethod.PUT)
+    @RequestMapping(value = "/updateCodeValue/{id}", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
     public R updateCodeValueBatch(@PathVariable("id") Integer id, @RequestBody Frame_CodeValue frameCodeValue) {
         frameCodeValue.setRowId(id);
         codeValueService.updateCodeValue(frameCodeValue);

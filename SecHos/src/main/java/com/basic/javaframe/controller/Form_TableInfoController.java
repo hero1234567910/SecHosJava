@@ -128,7 +128,7 @@ public class Form_TableInfoController extends BaseController{
      */
     @ApiOperation(value = "修改表单")
     @ResponseBody
-    @RequestMapping(value = "/updateTableInfo/{id}",produces="application/json;charset=utf-8",method= RequestMethod.PUT)
+    @RequestMapping(value = "/updateTableInfo/{id}",produces="application/json;charset=utf-8",method= RequestMethod.POST)
     public R updateTableInfo(@PathVariable("id") Integer id,@RequestBody Form_TableInfo formTableInfo)throws Exception{
     	System.out.println(formTableInfo.getOriginName());
     	//连接数据库

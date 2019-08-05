@@ -102,7 +102,7 @@ public class Frame_ModuleController {
      */
     @ApiOperation(value = "修改模块")
     @ResponseBody
-    @RequestMapping(value = "/updateModule/{id}",produces="application/json;charset=utf-8",method= RequestMethod.PUT)
+    @RequestMapping(value = "/updateModule/{id}",produces="application/json;charset=utf-8",method= RequestMethod.POST)
     public R updateDept(@PathVariable("id") Integer id,@RequestBody Frame_Module module){
     	
     	

@@ -89,7 +89,7 @@ public class InformationCategoryController {
 	 */
 	@ApiOperation(value="栏目修改")
     @ResponseBody
-	@RequestMapping(value="/update", produces = "application/json; charset=utf-8", method=RequestMethod.PUT)
+	@RequestMapping(value="/update", produces = "application/json; charset=utf-8", method=RequestMethod.POST)
 	public R update(@RequestBody InformationCategory informationCategory){
 		informationCategoryService.update(informationCategory);
 		return R.ok();

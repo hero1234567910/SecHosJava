@@ -73,7 +73,7 @@ public class SecHos_PatientController {
 	 */
 	@ApiOperation(value="修改患者")
     @ResponseBody
-	@RequestMapping(value="/update", produces = "application/json; charset=utf-8", method=RequestMethod.PUT)
+	@RequestMapping(value="/update", produces = "application/json; charset=utf-8", method=RequestMethod.POST)
 	public R update(@RequestBody SecHos_Patient secHosPatient){
 		secHosPatientService.update(secHosPatient);
 		return R.ok();

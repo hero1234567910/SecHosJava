@@ -90,7 +90,7 @@ public class Frame_User_ExtraController {
      */
     @ApiOperation(value = "更新用户额外")
     @ResponseBody
-    @RequestMapping(value="/updateExtra/{id}",produces="application/json;charset=utf-8",method=RequestMethod.PUT)
+    @RequestMapping(value="/updateExtra/{id}",produces="application/json;charset=utf-8",method=RequestMethod.POST)
     public R updateExtra(@PathVariable("id") Integer id,@RequestBody Frame_User_Extra userExtra){
         userExtra.setRowId(id);
         userExtraService.updateExtra(userExtra);

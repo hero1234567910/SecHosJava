@@ -144,7 +144,7 @@ public class InformationInfoController {
      */
     @ApiOperation(value = "修改发布信息")
     @ResponseBody
-    @RequestMapping(value = "/update", produces = "application/json; charset=utf-8", method = RequestMethod.PUT)
+    @RequestMapping(value = "/update", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
     public R update(@RequestBody InformationInfo informationInfo) {
         informationInfoService.update(informationInfo);
         //更新完以后再去更新附件表

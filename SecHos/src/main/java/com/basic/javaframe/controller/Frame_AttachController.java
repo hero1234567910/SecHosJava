@@ -57,7 +57,7 @@ public class Frame_AttachController extends BaseController{
      */
     @ApiOperation(value="附件表修改")
     @ResponseBody
-    @RequestMapping(value="/update/{id}", produces = "application/json; charset=utf-8", method=RequestMethod.PUT)
+    @RequestMapping(value="/update/{id}", produces = "application/json; charset=utf-8", method=RequestMethod.POST)
     public R update(@PathVariable("id") Integer id,@RequestBody Frame_Attach frame_attach){
         frame_attach.setRowId(id);
         frameAttachService.updateFrameAttach(frame_attach);
