@@ -959,5 +959,4 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		return res;
 	}
 
-
 }

@@ -55,9 +55,9 @@ public class Api_BaseService {
 	@Value(value="${zwx.url}")
 	public String zwxUrl;
 
-	@Value(value ="${zwx.username}" )
+	@Value(value ="${zwx.username}")
 	public String username;
 
-	@Value(value ="${zwx.userpwd}" )
+	@Value(value ="${zwx.userpwd}")
 	public String userpwd;
 }

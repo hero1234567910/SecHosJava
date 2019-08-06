@@ -1055,11 +1055,8 @@ public class Wx_CommonControllerApi extends BaseController{
 		checkParams(params, "idc");
 		String result =  wx_CommonServiceApi.getMedicalReportList(params);
 		JSONObject json = JSONObject.parseObject(result);
-		if (json.getInteger("code") == 0) {
+		if (json.getInteger("code") == 1) {
 			JSONArray arr = json.getJSONArray("data");
-			if (arr.size() == 0) {
-				return R.error("未查到相关记录");
-			}
 			return R.ok().put("data", arr);
 		}else{
 			return R.error(json.getString("msg"));
@@ -1825,5 +1822,5 @@ public class Wx_CommonControllerApi extends BaseController{
 			return R.error(json.getString("message"));
 		}
 	}
-
+	
 }	
