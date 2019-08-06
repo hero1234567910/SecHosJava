@@ -100,9 +100,9 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 	 */
 	public String bingdingOutPatient(Map<String, String> params) {
 		// 准备参数
-		params.put("accesskey", accesskey);
-		params.put("yydm", yydm);
-		params.put("action", "PUTHZJD");
+		params.put("yydm",yydm);
+		params.put("accesskey",accesskey);
+		params.put("action","PUTHZJD");
 		logger.info("绑定门诊患者(患者建档)接口参数》》》"+JSONObject.toJSONString(params));
 	    String result = HttpUtil.sendPost(wnUrl,params);
 	    logger.info("绑定门诊患者(患者建档)接口返回成功》》》"+JSONObject.toJSONString(result));
