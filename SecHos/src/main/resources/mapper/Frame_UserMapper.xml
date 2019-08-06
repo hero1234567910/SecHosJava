@@ -229,6 +229,15 @@
         </foreach>
     </update>
 
+    <!--更新登录时间-->
+    <update id="updateLoginTime" parameterType="com.basic.javaframe.entity.Frame_User">
+        update frame_user
+        <set>
+            <if test="lastloginTime != null">`lastlogin_time` = #{lastloginTime}</if>
+        </set>
+        where row_guid =#{rowGuid}
+    </update>
+
     <sql id="where_clause">
         <where>
             1=1

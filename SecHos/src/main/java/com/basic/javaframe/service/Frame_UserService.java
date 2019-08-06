@@ -65,4 +65,7 @@ public interface Frame_UserService {
 
     //更新新密码
     void updateNewPassword(String rowGuid,String password);
+
+    //更新登录时间
+    void updateLoginTime(Frame_User frameUser);
 }

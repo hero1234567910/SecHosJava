@@ -149,6 +149,10 @@ public class Frame_UserServiceImpl implements Frame_UserService {
          frame_userDao.updateNewPassword(rowGuid,password);
     }
 
+    @Override
+    public void updateLoginTime(Frame_User frameUser) {
+        frame_userDao.updateLoginTime(frameUser);
+    }
 }
 
 

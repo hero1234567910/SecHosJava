@@ -140,4 +140,11 @@ public interface Frame_UserDao {
 	 * @return
 	 */
 	void updateNewPassword(@Param("rowGuid") String rowGuid,@Param("password")String password);
+
+	/**
+	 * 获取登录时间
+	 * @param frame_user
+	 * @return
+	 */
+	int updateLoginTime(Frame_User frame_user);
 }

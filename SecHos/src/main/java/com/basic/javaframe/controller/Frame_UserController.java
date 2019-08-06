@@ -472,5 +472,15 @@ public class Frame_UserController {
         userService.updateAdmin(user);
         return R.ok();
     }
+
+    @ApiOperation(value = "更新用户登录时间")
+    @ResponseBody
+    @RequestMapping(value = "/updateLoginTime", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
+    public R updateLoginTime(@RequestBody Frame_User frame_user){
+        Date loginTime = DateUtil.changeDate(new Date());
+        frame_user.setLastloginTime(loginTime);
+        userService.updateLoginTime(frame_user);
+        return R.ok();
+    }
 }
 
