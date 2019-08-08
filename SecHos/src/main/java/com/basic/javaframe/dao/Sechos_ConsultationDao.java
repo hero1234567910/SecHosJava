@@ -4,6 +4,9 @@ import org.apache.ibatis.annotations.Param;
 
 import com.basic.javaframe.entity.Sechos_Consultation;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 
  * 
@@ -26,4 +29,10 @@ public interface Sechos_ConsultationDao extends BaseDao<Sechos_Consultation> {
      * @return
      */
     int getReplyCount();
+
+    /**
+     * 数据概览
+     * @return
+     */
+    List<Map<String, Object>> selectQusStatisical();
 }

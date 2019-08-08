@@ -36,4 +36,6 @@ public interface Sechos_ConsultationService {
 	 * @return
 	 */
 	int getReplyCount();
+
+	List<Map<String, Object>> selectQusStatisical();
 }

@@ -116,4 +116,19 @@ public class Sechos_ConsultationController {
 		return R.ok().put("data",count);
 	}
 
+	/**
+	 * 统计半小时咨询数量
+	 * <p>Title: QusStatistical</p>
+	 * <p>Description: </p>
+	 * @author hero
+	 * @return
+	 */
+	@ApiOperation(value="每隔半小时统计咨询数量")
+	@ResponseBody
+	@RequestMapping(value="/qusStatistical",produces="application/json;charset=utf-8",method=RequestMethod.GET)
+	public R orderStatistical(){
+		List<Map<String, Object>>  maps = sechosConsultationService.selectQusStatisical();
+		return R.ok().put("data", maps);
+	}
+
 }
