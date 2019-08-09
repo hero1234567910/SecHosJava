@@ -959,4 +959,24 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		return res;
 	}
 
+	/**
+	 * 住院患者一日清查询
+	 * <p>Title: getInpatientOneDayLiquidation</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String getInpatientOneDayLiquidation(Map<String, String> params) {
+		// TODO Auto-generated method stub
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETZYYRQ");
+
+		logger.info("住院患者一日清查询接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl, params);
+		logger.info("住院患者一日清查询接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
 }
