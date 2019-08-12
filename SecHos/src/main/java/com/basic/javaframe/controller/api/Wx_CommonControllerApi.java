@@ -1850,5 +1850,32 @@ public class Wx_CommonControllerApi extends BaseController{
 			return R.error(json.getString("message"));
 		}
 	}
+
+	/**
+	 * 查询住院患者基本信息(PATID)
+	 * <p>Title: getInPatientInfoByPatid</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	@ApiOperation(value="查询住院患者基本信息(PATID)")
+	@ResponseBody
+	@RequestMapping(value="/getInPatientInfoByPatid",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getInPatientInfoByPatid(@RequestBody Map<String, String> params){
+		checkParams(params, "hzxm");
+		checkParams(params, "patid");
+		checkParams(params, "zyzt");
+		String result =  wx_CommonServiceApi.getInPatientInfoByPatid(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			JSONArray arr = json.getJSONArray("zyjls");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr);
+		}else{
+			return R.error(json.getString("message"));
+		}
+	}
 	
 }	

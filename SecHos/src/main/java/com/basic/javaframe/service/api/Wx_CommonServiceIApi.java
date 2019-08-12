@@ -979,4 +979,21 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		return res;
 	}
 
+    /**
+     * 查询住院患者基本信息(PATID)
+     * <p>Title: getInPatientInfoByPatid</p>
+     * <p>Description: </p>
+     * @author hero
+     * @return
+     */
+    public String getInPatientInfoByPatid(Map<String, String> params) {
+        // 准备参数
+        params.put("yydm", yydm);
+        params.put("accesskey", accesskey);
+        params.put("action","GETZYJLPAT");
+        logger.info("查询住院患者接口参数》》》"+JSONObject.toJSONString(params));
+        String res = HttpUtil.sendPost(wnUrl,params);
+        logger.info("查询住院患者接口返回成功》》》"+JSONObject.toJSONString(res));
+        return res;
+    }
 }
