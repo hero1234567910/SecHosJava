@@ -31,10 +31,11 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.alibaba.fastjson.JSONObject;
 import com.basic.javaframe.common.customclass.PassToken;
+import com.basic.javaframe.controller.BaseController;
 
 @RestController
 @RequestMapping(value="/sys")
-public class UtilsController {
+public class UtilsController extends BaseController{
 
     @Value("${uploadPrefix}")
     private String uploadPrefix;
@@ -152,7 +153,7 @@ public class UtilsController {
                 FileCopyUtils.copy(mf.getBytes(), uploadFile);
                 JSONObject obj = new JSONObject();
                 obj.put("error", 0);
-                obj.put("url", request.getContextPath() + "/file/attached/" + dirName + "/" + ymd + "/" + newFileName);
+                obj.put("url", fileUrl + "/file/attached/" + dirName + "/" + ymd + "/" + newFileName);
                 out.println(obj.toJSONString());
             } catch (IOException e) {
                 e.printStackTrace();

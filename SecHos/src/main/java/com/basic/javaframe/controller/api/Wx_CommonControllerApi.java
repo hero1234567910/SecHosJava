@@ -664,11 +664,11 @@ public class Wx_CommonControllerApi extends BaseController{
 			String result = wx_CommonServiceApi.getAdvanceDetail(params);
 			JSONObject json = JSONObject.parseObject(result);
 			if (json.getBoolean("success")) {
-				JSONArray arr = json.getJSONArray("zyyjjhzs");
+				JSONArray arr = json.getJSONArray("zyyjjmxs");
 				if (arr.size() == 0) {
 					return R.error("未查到相关记录");
 				}
-				return R.ok().put("data", arr.getJSONObject(0));
+				return R.ok().put("data", arr);
 			}else{
 				return R.error(json.getString("message"));
 			}
@@ -1079,9 +1079,10 @@ public class Wx_CommonControllerApi extends BaseController{
 		checkParams(params, "bhkcode");
 		String result =  wx_CommonServiceApi.getMedicalReportInfo(params);
 		JSONObject json = JSONObject.parseObject(result);
+		
 		if (json.getInteger("code") == 1) {
-			JSONObject obj = json.getJSONObject("data");
-			return R.ok().put("data", obj);
+			JSONArray arr = json.getJSONArray("data");
+			return R.ok().put("data", arr.getJSONObject(0));
 		}else{
 			return R.error(json.getString("msg"));
 		}

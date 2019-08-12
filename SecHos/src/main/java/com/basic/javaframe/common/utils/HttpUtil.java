@@ -281,7 +281,7 @@ public class HttpUtil {
             // 设置通用属性  
             httpConn.setRequestProperty("Accept", "*/*");  
             httpConn.setRequestProperty("Connection", "Keep-Alive");  
-            httpConn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
+//            httpConn.setRequestProperty("Content-Type", "application/json;charset=utf-8");
             httpConn.setRequestProperty("User-Agent",  
                     "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)");  
             // 设置POST方式  
