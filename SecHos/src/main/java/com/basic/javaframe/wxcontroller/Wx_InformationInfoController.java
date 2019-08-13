@@ -353,4 +353,20 @@ public class Wx_InformationInfoController {
         InformationInfo informationInfo = informationInfoService.getHosIntroduction(infoGuid);
         return R.ok().put("data",informationInfo);
     }
+
+    /**
+     * 微信端获取通知公告
+     * @param categoryGuid
+     * @return
+     */
+    @PassToken
+    @ApiOperation(value = "微信端获取通知公告")
+    @ResponseBody
+    @RequestMapping(value = "/getAnnouncements",produces = "application/json;charset=utf-8", method = RequestMethod.GET)
+    public R getAnnouncements(String categoryGuid){
+        categoryGuid = "2a05a798-cd06-46ed-ad06-9a6dfb3d7757";
+        String infoGuid = infoCategoryService.getSingleInfoByCateGuid(categoryGuid);
+        InformationInfo informationInfo = informationInfoService.getHosIntroduction(infoGuid);
+        return R.ok().put("data",informationInfo);
+    }
 }
