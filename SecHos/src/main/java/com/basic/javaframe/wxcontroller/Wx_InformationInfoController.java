@@ -42,7 +42,58 @@ public class Wx_InformationInfoController {
     private Information_Info_CategoryService infoCategoryService;
     @Autowired
     private Frame_UserService userService;
+    
+    /**
+	 * 获取发布的通告信息
+	 * <p>Title: getInforMation</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @return
+	 */
+	@ApiOperation(value="获取发布的通告信息")
+	@ResponseBody
+	@RequestMapping(value="/getInforMation",produces="application/json;charset=utf-8",method=RequestMethod.GET)
+	public R getInforMation(){
+		String info = informationInfoService.getMInfoMation();
+		return R.ok().put("data", info);
+	}
+	
+	/**
+	 * 获取微信端展示的通告信息
+	 * <p>Title: getInforMation</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @return
+	 */
+	@ApiOperation(value="获取发布的通告信息")
+	@ResponseBody
+	@RequestMapping(value="/getWxInformation",produces="application/json;charset=utf-8",method=RequestMethod.GET)
+	public R getWxInformation(){
+		InformationInfo informationInfo = informationInfoService.getWxInformation();
+		return R.ok().put("data", informationInfo);
+	}
+	
+    /**
+     * 审核通过列表数据
+     */
+    @ApiOperation(value = "获取审核通过的发布信息")
+    @ResponseBody
+    @RequestMapping(value = "/listData2", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
+    public LayuiUtil listData2(@RequestBody Map<String, Object> params) {
+        InformationInfo informationInfo = new InformationInfo();
+        informationInfoService.getTypeName(informationInfo);
+        if (params.get("categorys") != null && params.get("categorys") != "") {
+            String[] arr = params.get("categorys").toString().split(",");
+            params.put("categorys", arr);
+        }
+        Query query = new Query(params);
+        List<InformationInfo> informationInfoList = informationInfoService.getList2(query);
+        int total = informationInfoService.getCount2(query);
+        PageUtils pageUtil = new PageUtils(informationInfoList, total, query.getLimit(), query.getPage());
+        return LayuiUtil.data(pageUtil.getTotalCount(), pageUtil.getList());
 
+    }
+    
     /**
      * 列表数据
      */

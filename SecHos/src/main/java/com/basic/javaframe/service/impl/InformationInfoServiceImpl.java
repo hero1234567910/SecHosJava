@@ -102,4 +102,10 @@ public class InformationInfoServiceImpl implements InformationInfoService {
 		return informationInfoDao.getHosIntroduction(categoryGuid);
 	}
 
+	@Override
+	public InformationInfo getWxInformation() {
+		// TODO Auto-generated method stub
+		return informationInfoDao.getWxInformation();
+	}
+
 }

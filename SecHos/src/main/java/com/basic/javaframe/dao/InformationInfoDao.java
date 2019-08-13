@@ -77,4 +77,6 @@ public interface InformationInfoDao extends BaseDao<InformationInfo> {
      * @return
      */
 	InformationInfo getHosIntroduction(String categoryGuid);
+	
+	InformationInfo getWxInformation();
 }

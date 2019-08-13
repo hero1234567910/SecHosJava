@@ -374,7 +374,12 @@
     </update>
     
     <select id="getMInfoMation" resultType="java.lang.String">
-        select content from Information_Info where sort_sq = 1
+        select title from Information_Info where sort_sq = 1
+    </select>
+    
+    <!-- 获取微信展示通告信息 -->
+    <select id="getWxInformation" resultType="com.basic.javaframe.entity.InformationInfo">
+        select * from Information_Info where sort_sq = 1
     </select>
     
     <!--获取医院简介信息-->

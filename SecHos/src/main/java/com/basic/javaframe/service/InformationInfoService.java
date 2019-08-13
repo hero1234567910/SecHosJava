@@ -64,4 +64,6 @@ public interface InformationInfoService {
 	 * @return
 	 */
 	InformationInfo getHosIntroduction(String categoryGuid);
+
+	InformationInfo getWxInformation();
 }
