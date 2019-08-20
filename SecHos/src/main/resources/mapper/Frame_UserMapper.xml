@@ -178,7 +178,7 @@
             <if test="duty != null">`duty` = #{duty},</if>
             <if test="tel != null">`tel` = #{tel},</if>
             <if test="mobile != null">`mobile` = #{mobile},</if>
-            <if test="isForbid != null">`is_forbid` = #{isForbid},</if>
+<!--            <if test="isForbid != null">`is_forbid` = #{isForbid},</if>-->
             <if test="lastloginTime != null">`lastlogin_time` = #{lastloginTime},</if>
             <if test="sortSq != null">`sort_sq` = #{sortSq},</if>
             <if test="openid != null">`openid` = #{openid}</if>
