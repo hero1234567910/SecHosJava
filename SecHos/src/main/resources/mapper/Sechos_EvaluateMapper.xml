@@ -75,7 +75,8 @@
 			`evaluate_doc`, 
 			`evaluate_facilities`, 
 			`evaluate_opinion`, 
-			`patient_rowGuid`
+			`patient_rowGuid`,
+			`patid`
 		)
 		values
 		(
@@ -87,12 +88,17 @@
 			#{evaluateDoc}, 
 			#{evaluateFacilities}, 
 			#{evaluateOpinion}, 
-			#{patientRowGuid}
+			#{patientRowGuid},
+			#{patid}
 		)
 	</insert>
 	 
 	<select id="selectByGuid" resultType="com.basic.javaframe.entity.Sechos_Evaluate">
 	    select * from sechos_evaluate where patient_rowGuid = #{value}
+	</select>
+	
+	<select id="selectByPatid" resultType="com.basic.javaframe.entity.Sechos_Evaluate">
+	    select * from sechos_evaluate where patid = #{value}
 	</select>
 	
 	<update id="update" parameterType="com.basic.javaframe.entity.Sechos_Evaluate">
@@ -106,7 +112,8 @@
 			<if test="evaluateDoc != null">`evaluate_doc` = #{evaluateDoc}, </if>
 			<if test="evaluateFacilities != null">`evaluate_facilities` = #{evaluateFacilities}, </if>
 			<if test="evaluateOpinion != null">`evaluate_opinion` = #{evaluateOpinion}, </if>
-			<if test="patientRowGuid != null">`patient_rowGuid` = #{patientRowGuid}</if>
+			<if test="patientRowGuid != null">`patient_rowGuid` = #{patientRowGuid},</if>
+			<if test="patid != null">`patid` = #{patid}</if>
 		</set>
 		where row_id = #{rowId}
 	</update>

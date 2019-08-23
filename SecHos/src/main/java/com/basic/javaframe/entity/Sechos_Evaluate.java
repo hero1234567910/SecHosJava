@@ -36,7 +36,15 @@ public class Sechos_Evaluate implements Serializable {
 	private String evaluateOpinion;
 	/**病人guid**/
 	private String patientRowGuid;
+	
+	private String patid;
 
+	public String getPatid() {
+		return patid;
+	}
+	public void setPatid(String patid) {
+		this.patid = patid;
+	}
 	/**
 	 * 设置：
 	 */

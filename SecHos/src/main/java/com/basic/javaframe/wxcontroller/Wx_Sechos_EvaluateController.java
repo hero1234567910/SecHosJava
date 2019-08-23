@@ -54,11 +54,11 @@ public class Wx_Sechos_EvaluateController {
     	if(sechosEvaluate.getPatientRowGuid() == null || "".equals(sechosEvaluate.getPatientRowGuid())){
     		return R.error("缺失参数guid");
     	}
-//    	//根据guid去查询是否已经评价
-//    	Sechos_Evaluate s = sechosEvaluateService.selectByGuid(sechosEvaluate.getPatientRowGuid());
-//    	if (s != null) {
-//			return R.error("您已评价，请勿重复评价");
-//		}
+    	//根据patid去查询是否已经评价
+    	Sechos_Evaluate s = sechosEvaluateService.selectByPatid(sechosEvaluate.getPatid());
+    	if (s != null) {
+			return R.error("您已评价，请勿重复评价");
+		}
     	//如果排序号为空，则自动转为0
     	if (sechosEvaluate.getSortSq() == null) {
 			sechosEvaluate.setSortSq(0);

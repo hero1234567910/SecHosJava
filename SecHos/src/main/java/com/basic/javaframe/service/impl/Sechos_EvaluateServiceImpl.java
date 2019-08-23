@@ -49,5 +49,11 @@ public class Sechos_EvaluateServiceImpl implements Sechos_EvaluateService {
 		// TODO Auto-generated method stub
 		return sechosEvaluateDao.selectByGuid(patientRowGuid);
 	}
+
+	@Override
+	public Sechos_Evaluate selectByPatid(String patid) {
+		// TODO Auto-generated method stub
+		return sechosEvaluateDao.selectByPatid(patid);
+	}
 	
 }

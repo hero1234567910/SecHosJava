@@ -11,5 +11,7 @@ import com.basic.javaframe.entity.Sechos_Evaluate;
 public interface Sechos_EvaluateDao extends BaseDao<Sechos_Evaluate> {
 
 	Sechos_Evaluate selectByGuid(String patientRowGuid);
+
+	Sechos_Evaluate selectByPatid(String patid);
 	
 }

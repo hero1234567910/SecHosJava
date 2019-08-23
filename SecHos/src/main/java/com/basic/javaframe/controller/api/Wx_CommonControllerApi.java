@@ -66,6 +66,12 @@ public class Wx_CommonControllerApi extends BaseController{
 	@Value(value = "${wx.api.appid}")
 	public String appid;
 	
+	@Value(value = "${wn.ksrq}")
+	public String ksrq;
+	
+	@Value(value = "${wn.jsrq}")
+	public String jsrq;
+	
 	@Autowired
 	Wx_CommonServiceIApi wx_CommonServiceApi;
 	
@@ -542,8 +548,10 @@ public class Wx_CommonControllerApi extends BaseController{
 			checkParams(params, "hzxm");
 			checkParams(params, "patid");
 			checkParams(params, "jzlb");
-			checkParams(params, "ksrq");
-			checkParams(params, "jsrq");
+//			checkParams(params, "ksrq");
+//			checkParams(params, "jsrq");
+			params.put("ksrq", ksrq);
+			params.put("jsrq", jsrq);
 			String result = wx_CommonServiceApi.getReportListByPatid(params);
 			JSONObject json = JSONObject.parseObject(result);
 			if (json.getBoolean("success")) {
@@ -589,8 +597,10 @@ public class Wx_CommonControllerApi extends BaseController{
 			checkParams(params, "hzxm");
 			checkParams(params, "patid");
 			checkParams(params, "jzlb");
-			checkParams(params, "ksrq");
-			checkParams(params, "jsrq");
+//			checkParams(params, "ksrq");
+//			checkParams(params, "jsrq");
+			params.put("ksrq", ksrq);
+			params.put("jsrq", jsrq);
 			String result = wx_CommonServiceApi.getLabReportListByPatid(params);
 			JSONObject json = JSONObject.parseObject(result);
 			if (json.getBoolean("success")) {
@@ -1702,8 +1712,10 @@ public class Wx_CommonControllerApi extends BaseController{
 	public R getOutpatientFeeSettlementInfo(@RequestBody Map<String, String> params){
 		checkParams(params, "hzxm");
 		checkParams(params, "patid");
-		checkParams(params, "ksrq");
-		checkParams(params, "jsrq");
+//		checkParams(params, "ksrq");
+//		checkParams(params, "jsrq");
+		params.put("ksrq", ksrq);
+		params.put("jsrq", jsrq);
 		String result =  wx_CommonServiceApi.getOutpatientFeeSettlementInfo(params);
 		JSONObject json = JSONObject.parseObject(result);
 		if (json.getBoolean("success")) {

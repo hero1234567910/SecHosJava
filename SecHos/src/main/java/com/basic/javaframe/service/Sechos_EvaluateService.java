@@ -24,4 +24,6 @@ public interface Sechos_EvaluateService {
 	void deleteBatch(String[] rowGuids);
 
 	Sechos_Evaluate selectByGuid(String patientRowGuid);
+
+	Sechos_Evaluate selectByPatid(String patid);
 }
