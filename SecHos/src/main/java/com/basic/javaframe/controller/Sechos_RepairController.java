@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Map;
 import com.basic.javaframe.common.utils.DateUtil;
 import com.basic.javaframe.common.utils.LayuiUtil;
+import com.basic.javaframe.service.Frame_AttachService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
@@ -29,9 +32,13 @@ import com.basic.javaframe.common.utils.R;
 @CrossOrigin
 @RequestMapping("sys/sechosrepair")
 public class Sechos_RepairController {
+
+	private final static Logger logger = LoggerFactory.getLogger(Sechos_RepairController.class);
 	@Autowired
 	private Sechos_RepairService sechosRepairService;
-	
+
+	@Autowired
+	private Frame_AttachService attachService;
 	/**
 	 * 列表数据
 	 */
@@ -65,7 +72,12 @@ public class Sechos_RepairController {
 		sechosRepair.setDelFlag(0);
 		Date createTime = DateUtil.changeDate(new Date());
 		sechosRepair.setCreateTime(createTime);
+		String imgGuid = java.util.UUID.randomUUID().toString();
+		sechosRepair.setPicGuid(imgGuid);
 		sechosRepairService.save(sechosRepair);
+
+		String[] guids = {sechosRepair.getPicGuid()};
+		attachService.updateAttach(imgGuid,guids);
         return R.ok();  
     }
 
