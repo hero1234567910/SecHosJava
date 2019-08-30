@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.Sechos_RepairDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.basic.javaframe.entity.Sechos_Repair" id="sechosRepairMap">
+        <result property="rowId" column="row_id"/>
+        <result property="rowGuid" column="row_guid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="sortSq" column="sort_sq"/>
+        <result property="repairName" column="repair_name"/>
+        <result property="repairGuid" column="repair_guid"/>
+        <result property="repairPhone" column="repair_phone"/>
+        <result property="deviceName" column="device_name"/>
+        <result property="devicePlace" column="device_place"/>
+        <result property="damagedParts" column="damaged_parts"/>
+        <result property="reportContent" column="report_content"/>
+        <result property="repairStatus" column="repair_status"/>
+        <result property="picGuid" column="pic_guid"/>
+    </resultMap>
+
+	<select id="getList" resultType="com.basic.javaframe.entity.Sechos_Repair">
+		select * from sechos_repair t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by row_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="getCount" resultType="int">
+		select count(*) from sechos_repair t  <include refid="where_clause" />
+	</select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+    		<if test="rowIdVague != null and rowIdVague != ''"> and t.row_id like concat('%',#{rowIdVague},'%') </if>
+            <if test="rowGuid != null and rowGuid != ''"> and t.row_guid = #{rowGuid} </if>
+    		<if test="rowGuidVague != null and rowGuidVague != ''"> and t.row_guid like concat('%',#{rowGuidVague},'%') </if>
+            <if test="createTime != null and createTime != ''"> and t.create_time = #{createTime} </if>
+    		<if test="createTimeVague != null and createTimeVague != ''"> and t.create_time like concat('%',#{createTimeVague},'%') </if>
+            <if test="delFlag != null and delFlag != ''"> and t.del_flag = #{delFlag} </if>
+    		<if test="delFlagVague != null and delFlagVague != ''"> and t.del_flag like concat('%',#{delFlagVague},'%') </if>
+            <if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
+    		<if test="sortSqVague != null and sortSqVague != ''"> and t.sort_sq like concat('%',#{sortSqVague},'%') </if>
+            <if test="repairName != null and repairName != ''"> and t.repair_name = #{repairName} </if>
+    		<if test="repairNameVague != null and repairNameVague != ''"> and t.repair_name like concat('%',#{repairNameVague},'%') </if>
+            <if test="repairGuid != null and repairGuid != ''"> and t.repair_guid = #{repairGuid} </if>
+    		<if test="repairGuidVague != null and repairGuidVague != ''"> and t.repair_guid like concat('%',#{repairGuidVague},'%') </if>
+            <if test="repairPhone != null and repairPhone != ''"> and t.repair_phone = #{repairPhone} </if>
+    		<if test="repairPhoneVague != null and repairPhoneVague != ''"> and t.repair_phone like concat('%',#{repairPhoneVague},'%') </if>
+            <if test="deviceName != null and deviceName != ''"> and t.device_name = #{deviceName} </if>
+    		<if test="deviceNameVague != null and deviceNameVague != ''"> and t.device_name like concat('%',#{deviceNameVague},'%') </if>
+            <if test="devicePlace != null and devicePlace != ''"> and t.device_place = #{devicePlace} </if>
+    		<if test="devicePlaceVague != null and devicePlaceVague != ''"> and t.device_place like concat('%',#{devicePlaceVague},'%') </if>
+            <if test="damagedParts != null and damagedParts != ''"> and t.damaged_parts = #{damagedParts} </if>
+    		<if test="damagedPartsVague != null and damagedPartsVague != ''"> and t.damaged_parts like concat('%',#{damagedPartsVague},'%') </if>
+            <if test="reportContent != null and reportContent != ''"> and t.report_content = #{reportContent} </if>
+    		<if test="reportContentVague != null and reportContentVague != ''"> and t.report_content like concat('%',#{reportContentVague},'%') </if>
+            <if test="repairStatus != null and repairStatus != ''"> and t.repair_status = #{repairStatus} </if>
+    		<if test="repairStatusVague != null and repairStatusVague != ''"> and t.repair_status like concat('%',#{repairStatusVague},'%') </if>
+            <if test="picGuid != null and picGuid != ''"> and t.pic_guid = #{picGuid} </if>
+    		<if test="picGuidVague != null and picGuidVague != ''"> and t.pic_guid like concat('%',#{picGuidVague},'%') </if>
+			<if test=" startTime != null and startTime != '' and endTime != null and endTime != '' ">
+				AND DATE_FORMAT( t.create_time, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
+			</if>
+    		 and t.del_flag = 0
+        </where>
+    </sql>
+	 
+	<insert id="save" parameterType="com.basic.javaframe.entity.Sechos_Repair" useGeneratedKeys="true" keyProperty="rowId">
+		insert into sechos_repair
+		(
+			`row_guid`, 
+			`create_time`, 
+			`del_flag`, 
+			`sort_sq`, 
+			`repair_name`, 
+			`repair_guid`, 
+			`repair_phone`, 
+			`device_name`, 
+			`device_place`, 
+			`damaged_parts`, 
+			`report_content`, 
+			`repair_status`, 
+			`pic_guid`
+		)
+		values
+		(
+			#{rowGuid}, 
+			#{createTime}, 
+			#{delFlag}, 
+			#{sortSq}, 
+			#{repairName}, 
+			#{repairGuid}, 
+			#{repairPhone}, 
+			#{deviceName}, 
+			#{devicePlace}, 
+			#{damagedParts}, 
+			#{reportContent}, 
+			#{repairStatus}, 
+			#{picGuid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.basic.javaframe.entity.Sechos_Repair">
+		update sechos_repair 
+		<set>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+			<if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+			<if test="repairName != null">`repair_name` = #{repairName}, </if>
+			<if test="repairGuid != null">`repair_guid` = #{repairGuid}, </if>
+			<if test="repairPhone != null">`repair_phone` = #{repairPhone}, </if>
+			<if test="deviceName != null">`device_name` = #{deviceName}, </if>
+			<if test="devicePlace != null">`device_place` = #{devicePlace}, </if>
+			<if test="damagedParts != null">`damaged_parts` = #{damagedParts}, </if>
+			<if test="reportContent != null">`report_content` = #{reportContent}, </if>
+			<if test="repairStatus != null">`repair_status` = #{repairStatus}, </if>
+			<if test="picGuid != null">`pic_guid` = #{picGuid}</if>
+		</set>
+		where row_guid = #{rowGuid}
+	</update>
+	
+	<delete id="deleteBatch">
+		update sechos_repair set `del_flag` = 1 where row_guid in 
+		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+			#{rowGuid}
+		</foreach>
+	</delete>
+
+	<select id="getDetailByGuid" resultType="com.basic.javaframe.entity.Sechos_Repair">
+		select * from sechos_repair where row_guid =#{rowGuid} and del_flag = 0
+	</select>
+</mapper>
