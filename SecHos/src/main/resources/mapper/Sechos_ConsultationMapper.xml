@@ -60,11 +60,9 @@
 			<if test=" startTime != null and startTime != '' and endTime != null and endTime != '' ">
 				AND DATE_FORMAT( t.consultation_time, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
 			</if>
-            <if test="consultationTitle != null and consultationTitle != ''"> and t.consultation_title = #{consultationTitle} </if>
-    		<if test="consultationTitleVague != null and consultationTitleVague != ''"> and t.consultation_title like concat('%',#{consultationTitleVague},'%') </if>
-            <if test="consultationContent != null and consultationContent != ''"> and t.consultation_content = #{consultationContent} </if>
-    		<if test="consultationContentVague != null and consultationContentVague != ''"> and t.consultation_content like concat('%',#{consultationContentVague},'%') </if>
-            <if test="consultationName != null and consultationName != ''"> and t.consultation_name = #{consultationName} </if>
+            <if test="consultationName != null and consultationName != ''"> and (t.consultation_name = #{consultationName} </if>
+    		<if test="consultationTitleVague != null and consultationTitleVague != ''"> or t.consultation_title like concat('%',#{consultationTitleVague},'%') </if>
+    		<if test="consultationContentVague != null and consultationContentVague != ''"> or t.consultation_content like concat('%',#{consultationContentVague},'%')) </if>
     		<if test="consultationNameVague != null and consultationNameVague != ''"> and t.consultation_name like concat('%',#{consultationNameVague},'%') </if>
             <if test="consultationMobile != null and consultationMobile != ''"> and t.consultation_mobile = #{consultationMobile} </if>
     		<if test="consultationMobileVague != null and consultationMobileVague != ''"> and t.consultation_mobile like concat('%',#{consultationMobileVague},'%') </if>
