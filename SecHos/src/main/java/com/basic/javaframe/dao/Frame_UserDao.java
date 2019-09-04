@@ -147,4 +147,12 @@ public interface Frame_UserDao {
 	 * @return
 	 */
 	int updateLoginTime(Frame_User frame_user);
+
+	/**
+	 * 根据openid查询用户信息
+	 *
+	 * @param openid 用户openid
+	 * @return 用户信息
+	 */
+	Frame_User getUserByOpenid(@Param("openid")String openid);
 }

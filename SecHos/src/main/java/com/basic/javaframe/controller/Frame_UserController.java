@@ -13,7 +13,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.basic.javaframe.common.customclass.PassToken;
 import com.basic.javaframe.common.customclass.UserLoginToken;
 import com.basic.javaframe.common.utils.*;
-import com.basic.javaframe.entity.Frame_Config;
 import com.basic.javaframe.service.Frame_ConfigService;
 import io.swagger.models.auth.In;
 import org.apache.catalina.User;
@@ -481,6 +480,14 @@ public class Frame_UserController {
         frame_user.setLastloginTime(loginTime);
         userService.updateLoginTime(frame_user);
         return R.ok();
+    }
+
+    @ApiOperation(value="通过Openid获取用户信息")
+    @ResponseBody
+    @RequestMapping(value="/getUserByOpenid",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+    public R getUserByOpenid(@RequestBody String openid){
+        Frame_User frameUser = userService.getUserByOpenid(openid);
+        return R.ok().put("data",frameUser);
     }
 }
 

@@ -68,4 +68,6 @@ public interface Frame_UserService {
 
     //更新登录时间
     void updateLoginTime(Frame_User frameUser);
+
+    Frame_User getUserByOpenid(String openid);
 }

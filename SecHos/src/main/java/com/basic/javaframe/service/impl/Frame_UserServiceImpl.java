@@ -153,6 +153,11 @@ public class Frame_UserServiceImpl implements Frame_UserService {
     public void updateLoginTime(Frame_User frameUser) {
         frame_userDao.updateLoginTime(frameUser);
     }
+
+    @Override
+    public Frame_User getUserByOpenid(String openid) {
+        return frame_userDao.getUserByOpenid(openid);
+    }
 }
 
 

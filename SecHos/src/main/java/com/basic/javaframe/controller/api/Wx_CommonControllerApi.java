@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSON;
 
+import com.basic.javaframe.entity.*;
+import com.basic.javaframe.service.*;
 import org.apache.commons.lang.ArrayUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -42,17 +44,6 @@ import com.basic.javaframe.common.utils.DateUtil;
 import com.basic.javaframe.common.utils.R;
 import com.basic.javaframe.common.utils.XMLUtil;
 import com.basic.javaframe.controller.BaseController;
-import com.basic.javaframe.entity.Frame_Config;
-import com.basic.javaframe.entity.SecHos_Outpatient;
-import com.basic.javaframe.entity.SecHos_Patient;
-import com.basic.javaframe.entity.SecHos_hospitalized;
-import com.basic.javaframe.entity.Sechos_Rechargerecord;
-import com.basic.javaframe.service.Frame_ConfigService;
-import com.basic.javaframe.service.RedisService;
-import com.basic.javaframe.service.SecHos_OutpatientService;
-import com.basic.javaframe.service.SecHos_PatientService;
-import com.basic.javaframe.service.SecHos_hospitalizedService;
-import com.basic.javaframe.service.Sechos_RechargerecordService;
 import com.basic.javaframe.service.api.Wx_CommonServiceIApi;
 
 import io.swagger.annotations.ApiOperation;
@@ -95,6 +86,9 @@ public class Wx_CommonControllerApi extends BaseController{
 	
 	@Autowired
 	Sechos_RechargerecordService rechargerecordService;
+
+	@Autowired
+	Frame_UserService frameUserService;
 	
 	/**
 	 * 获取网页授权token，openid
@@ -141,19 +135,61 @@ public class Wx_CommonControllerApi extends BaseController{
 		logger.info(pa.toString());
 		return R.ok().put("data", pa);	
 	}
-	
+
+	/**
+	 * 获取网页授权token，openid
+	 * <p>Title: doctorCode2Token</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	@PassToken
+	@RequestMapping(value="/doctorCode2Token",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	@ResponseBody
+	public R doctorCode2Token(@RequestBody Map<String, String> params){
+		String code = params.get("code");
+		String rowGuid = params.get("rowGuid");
+		System.out.println(code+"||"+rowGuid);
+		JSONObject jsonobj = wx_CommonServiceApi.code2Token(code);
+
+		JSONObject jsonObject = JSONObject.parseObject(jsonobj.getString("resultUser"));
+		if (jsonObject.containsKey("errcode")) {
+			String errcode = jsonObject.getString("errcode");
+			return R.error("获取网页授权医生信息异常,errcode为"+errcode).put("data", errcode);
+		}
+		//获取openid,微信昵称，头像
+		String openid = jsonObject.getString("openid");
+		//根据openid查询是否有该用户,没有则更新医生信息，有则返回该医生信息
+		//SecHos_Patient pa = patientService.getPatientByOpenid(openid);
+		Frame_User pa = frameUserService.getUserByOpenid(openid);
+		if (pa == null) {
+			pa = new Frame_User();
+			pa.setRowGuid(rowGuid);
+			pa.setOpenid(openid);
+			pa.setAccessToken(jsonobj.getString("access_token"));
+			pa.setRefreshToken(jsonobj.getString("refresh_token"));
+			frameUserService.update(pa);
+			return R.ok().put("data", pa);
+		}
+		pa.setAccessToken(jsonobj.getString("access_token"));
+		pa.setRefreshToken(jsonobj.getString("refresh_token"));
+		logger.info(pa.toString());
+		return R.ok().put("data", pa);
+	}
+
 	/**
 	 * 获取用户信息
-	 * <p>Title: getUserByToken</p>  
+	 * <p>Title: getDocByToken</p>
 	 * <p>Description: </p>
 	 * @author hero  
 	 * @param params
 	 * @return
 	 */
 	@PassToken
-	@RequestMapping(value="/getUserByToken",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	@RequestMapping(value="/getDocByToken",produces="application/json;charset=utf-8",method=RequestMethod.POST)
 	@ResponseBody
-	public R getUserByToken(@RequestBody Map<String, String> params){
+	public R getDocByToken(@RequestBody Map<String, String> params){
 		checkParams(params, "openid");
 		checkParams(params, "access_token");
 		checkParams(params, "refresh_token");
@@ -165,22 +201,16 @@ public class Wx_CommonControllerApi extends BaseController{
 		}
 		//获取openid,微信昵称，头像
 		String openid = jsonObject.getString("openid");
-		String nickname = jsonObject.getString("nickname");
-		String headimgurl = jsonObject.getString("headimgurl");
-		
+		String rowGuid = jsonObject.getString("rowGuid");
 		//根据openid查询是否有该用户,没有则生成一条新用户，有则返回该用户信息
-		SecHos_Patient pa = patientService.getPatientByOpenid(openid);
+		Frame_User pa = frameUserService.getUserByOpenid(openid);
 		if (pa == null) {
-			pa = new SecHos_Patient();
-			pa.setDelFlag(DelFlagEnum.NDELFLAG.getCode());
-			pa.setCreateTime(DateUtil.changeDate(new Date()));
-			String uuid = java.util.UUID.randomUUID().toString();
-			pa.setRowGuid(uuid);
+			pa = new Frame_User();
+			pa.setRowGuid(rowGuid);
 			pa.setOpenid(openid);
-			pa.setHeadImgUrl(headimgurl);
 			pa.setAccessToken(params.get("access_token"));
 			pa.setRefreshToken(params.get("refresh_token"));
-			patientService.save(pa);
+			frameUserService.update(pa);
 			return R.ok().put("data", pa);
 		}
 		pa.setAccessToken(params.get("access_token"));
