@@ -59,6 +59,7 @@ public class Wx_Sechos_RepairController {
         String uuid = java.util.UUID.randomUUID().toString();
 		sechosRepair.setRowGuid(uuid);
 		sechosRepair.setDelFlag(0);
+		sechosRepair.setRepairStatus(0);
 		Date createTime = DateUtil.changeDate(new Date());
 		sechosRepair.setCreateTime(createTime);
 		sechosRepairService.save(sechosRepair);
@@ -93,5 +94,24 @@ public class Wx_Sechos_RepairController {
 	public R getDetailByGuid(@RequestBody String rowGuid){
 		Sechos_Repair sechosRepair = sechosRepairService.getDetailByGuid(rowGuid);
 		return R.ok().put("data",sechosRepair);
+	}
+
+	@ApiOperation(value="通过rowGuid获取个人报修记录")
+	@ResponseBody
+	@RequestMapping(value="/getListByGuid",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getListByGuid(@RequestBody String rowGuid){
+		List<Sechos_Repair> sechosRepairList = sechosRepairService.getListByGuid(rowGuid);
+		return R.ok().put("data",sechosRepairList);
+	}
+
+	/**
+	 * 取消设备报修
+	 */
+	@ApiOperation(value="取消设备报修")
+	@ResponseBody
+	@RequestMapping(value="/cancelRepair", produces = "application/json; charset=utf-8", method=RequestMethod.POST)
+	public R cancelRepair(@RequestBody String rowGuid){
+		sechosRepairService.cancelRepair(rowGuid);
+		return R.ok();
 	}
 }

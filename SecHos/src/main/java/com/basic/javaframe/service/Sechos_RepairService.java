@@ -24,4 +24,8 @@ public interface Sechos_RepairService {
 	void deleteBatch(String[] rowGuids);
 
 	Sechos_Repair getDetailByGuid(String rowGuid);
+
+	List<Sechos_Repair> getListByGuid(String rowGuid);
+
+	void cancelRepair(String rowGuid);
 }

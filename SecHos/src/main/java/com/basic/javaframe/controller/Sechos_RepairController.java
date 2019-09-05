@@ -72,6 +72,7 @@ public class Sechos_RepairController {
 		sechosRepair.setDelFlag(0);
 		Date createTime = DateUtil.changeDate(new Date());
 		sechosRepair.setCreateTime(createTime);
+		sechosRepair.setRepairStatus(0);
 		String imgGuid = java.util.UUID.randomUUID().toString();
 		sechosRepair.setPicGuid(imgGuid);
 		sechosRepairService.save(sechosRepair);
@@ -109,5 +110,13 @@ public class Sechos_RepairController {
 	public R getDetailByGuid(@RequestBody String rowGuid){
 		Sechos_Repair sechosRepair = sechosRepairService.getDetailByGuid(rowGuid);
 		return R.ok().put("data",sechosRepair);
+	}
+
+	@ApiOperation(value="通过rowGuid获取个人报修记录")
+	@ResponseBody
+	@RequestMapping(value="/getListByGuid",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getListByGuid(@RequestBody String rowGuid){
+		List<Sechos_Repair> sechosRepairList = sechosRepairService.getListByGuid(rowGuid);
+		return R.ok().put("data",sechosRepairList);
 	}
 }

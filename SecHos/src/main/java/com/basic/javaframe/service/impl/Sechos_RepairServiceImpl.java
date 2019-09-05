@@ -49,4 +49,14 @@ public class Sechos_RepairServiceImpl implements Sechos_RepairService {
 		return sechosRepairDao.getDetailByGuid(rowGuid);
 	}
 
+	@Override
+	public List<Sechos_Repair> getListByGuid(String rowGuid) {
+		return sechosRepairDao.getListByGuid(rowGuid);
+	}
+
+	@Override
+	public void cancelRepair(String rowGuid) {
+		sechosRepairDao.cancelRepair(rowGuid);
+	}
+
 }
