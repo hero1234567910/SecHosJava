@@ -49,6 +49,9 @@
 		<if test="maintainGuid != null and maintainGuid !=''">
 			and t.maintain_guid = #{maintainGuid}
 		</if>
+		<if test="evaluationStatus != null and evaluationStatus !=''">
+			and t.evaluation_status = #{evaluationStatus}
+		</if>
 		<choose>
 			<when test="sidx != null and sidx.trim() != ''">
 				order by ${sidx} ${order}
@@ -63,9 +66,12 @@
 	</select>
 
 	<select id="getMySatCount" resultType="int">
-		select count(*) from sechos_repair t  <include refid="where_clause" />
+		select count(*) from sechos_repairsatisfaction t  <include refid="where_clause" />
 		<if test="maintainGuid != null and maintainGuid !=''">
 			and t.maintain_guid = #{maintainGuid}
+		</if>
+		<if test="evaluationStatus != null and evaluationStatus !=''">
+			and t.evaluation_status = #{evaluationStatus}
 		</if>
 	</select>
 
