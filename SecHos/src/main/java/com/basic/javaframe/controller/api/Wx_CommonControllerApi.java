@@ -1474,7 +1474,7 @@ public class Wx_CommonControllerApi extends BaseController{
 				par.put("zfje", rechargerecord.getZfje());
 				par.put("zflsh", rechargerecord.getMerchantNumber());
 				par.put("isynzh", "0");
-				String result =  wx_CommonServiceApi.RegisteredBudget(par);
+				String result =  wx_CommonServiceApi.RegisteredSettlement(par);
 				JSONObject json = JSONObject.parseObject(result);
 				if (json.getBoolean("success")) {
 				
