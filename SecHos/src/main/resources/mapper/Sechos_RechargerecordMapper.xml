@@ -91,7 +91,8 @@
 			`zje`,
 			`yfje`,
 			`zfje`,
-			`zfsj`
+			`zfsj`,
+			`yyxh`
 		)
 		values
 		(
@@ -112,7 +113,8 @@
 			#{zje},
 			#{yfje},
 			#{zfje},
-			#{zfsj}
+			#{zfsj},
+			#{yyxh}
 		)
 	</insert>
 	 
@@ -136,7 +138,8 @@
 			<if test="zje != null">`zje` = #{zje},</if>
 			<if test="yfje != null">`yfje` = #{yfje},</if>
 			<if test="zfje != null">`zfje` = #{zfje},</if>
-			<if test="zfsj != null">`zfsj` = #{zfsj}</if>
+			<if test="zfsj != null">`zfsj` = #{zfsj},</if>
+			<if test="yyxh != null">`yyxh` = #{yyxh}</if>
 		</set>
 		where row_id = #{rowId}
 	</update>

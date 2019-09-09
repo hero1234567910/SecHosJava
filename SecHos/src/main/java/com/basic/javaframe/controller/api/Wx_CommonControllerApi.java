@@ -1230,6 +1230,7 @@ public class Wx_CommonControllerApi extends BaseController{
 				checkParams(params, "patientGuid");
 				checkParams(params, "patid");
 				checkParams(params, "patientName");
+				checkParams(params, "yyxh");
 				
 				checkParams(params, "sjh");
 				checkParams(params, "zje");
@@ -1267,6 +1268,8 @@ public class Wx_CommonControllerApi extends BaseController{
 				if ("FAIL".equals(map.get("result_code"))) {
 					return R.error("错误代码："+map.get("err_code")+" 错误原因："+map.get("err_code_des"));
 				}
+				
+				
 				
 				
 				//数据库创建订单
@@ -1369,6 +1372,7 @@ public class Wx_CommonControllerApi extends BaseController{
 				order.setZje(params.get("zje"));
 				order.setYfje(params.get("yfje"));
 				order.setZfje(params.get("zfje"));
+				order.setYyxh(params.get("yyxh"));
 				
 				//转decimal
 				BigDecimal number = new BigDecimal(params.get("ghMoney"));
@@ -1504,7 +1508,8 @@ public class Wx_CommonControllerApi extends BaseController{
 				par.put("zfje", rechargerecord.getZfje());
 				par.put("zflsh", rechargerecord.getMerchantNumber());
 				par.put("isynzh", "0");
-				String result =  wx_CommonServiceApi.RegisteredBudget(par);
+				par.put("yyxh", rechargerecord.getYyxh());
+				String result =  wx_CommonServiceApi.RegisteredSettlement(par);
 				JSONObject json = JSONObject.parseObject(result);
 				if (json.getBoolean("success")) {
 				
@@ -1585,8 +1590,32 @@ public class Wx_CommonControllerApi extends BaseController{
 		checkParams(params, "pbmxxh");
 		checkParams(params, "isynzh");
 		checkParams(params, "iszfjs");
+		
+		//获取yyxh
+		Map<String, String> par = new HashMap<>();
+		par.put("hzxm", params.get("patientName"));
+		par.put("patid", params.get("patid"));
+		String res =  wx_CommonServiceApi.getPatientAppointInfo(par);
+		JSONObject js = JSONObject.parseObject(res);
+		String yyxh = "";
+		if (js.getBoolean("success")) {
+			JSONArray arr = js.getJSONArray("mzyyxxs");
+			if (arr.size() == 0) {
+				return R.error("未查到相关记录");
+			}
+			for (int i = 0; i < arr.size(); i++) {
+				JSONObject j = arr.getJSONObject(i);
+				if (params.get("pbmxxh").equals(j.getString("pbxh"))) {
+					yyxh = j.getString("yyxh");
+				}
+			}
+		}else{
+			return R.error(js.getString("message"));
+		}
+		params.put("yyxh", yyxh);
 		String result =  wx_CommonServiceApi.RegisteredBudget(params);
 		JSONObject json = JSONObject.parseObject(result);
+		json.put("yyxh", yyxh);
 		if (json.getBoolean("success")) {
 			return R.ok().put("data",json);
 		}else{

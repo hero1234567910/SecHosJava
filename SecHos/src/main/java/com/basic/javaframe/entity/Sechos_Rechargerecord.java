@@ -56,7 +56,15 @@ public class Sechos_Rechargerecord implements Serializable {
    
    private String zfsj;
    
-   public String getZfsj() {
+   private String yyxh;
+   
+   public String getYyxh() {
+	return yyxh;
+}
+public void setYyxh(String yyxh) {
+	this.yyxh = yyxh;
+}
+public String getZfsj() {
 	return zfsj;
 }
 public void setZfsj(String zfsj) {
