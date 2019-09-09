@@ -2,8 +2,10 @@ package com.basic.javaframe.dao;
 
 import com.basic.javaframe.entity.Sechos_Repair;
 import org.apache.ibatis.annotations.Param;
+import org.apache.poi.ss.formula.functions.T;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -33,4 +35,29 @@ public interface Sechos_RepairDao extends BaseDao<Sechos_Repair> {
      * @return
      */
     int cancelRepair(@Param("rowGuid") String rowGuid);
+
+    /**
+     * 获取维修列表
+     * @param map
+     * @return
+     */
+    List<Sechos_Repair> getMaintainList(Map<String, Object> map);
+
+    int getMaintainCount(Map<String, Object> params);
+
+    /**
+     * 报修状态改变
+     * @param params
+     * @return
+     */
+    int successRepair(Map<String, Object> params);
+
+    /**
+     * 获取维修记录列表
+     * @param map
+     * @return
+     */
+    List<Sechos_Repair> getMyList(Map<String, Object> map);
+
+    int getMyCount(Map<String, Object> params);
 }

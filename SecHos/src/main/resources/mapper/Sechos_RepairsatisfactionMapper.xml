@@ -19,8 +19,9 @@
         <result property="evaluationStatus" column="evaluation_status"/>
         <result property="deviceName" column="device_name"/>
         <result property="recordGuid" column="record_guid"/>
-		<result property="maintain_name" column="maintainName"/>
-		<result property="maintain_guid" column="maintainGuid"/>
+		<result property="maintainName" column="maintain_name"/>
+		<result property="maintainGuid" column="maintain_guid"/>
+		<result property="evaluationTime" column="evaluation_time"/>
 
     </resultMap>
 
@@ -41,6 +42,31 @@
 	
  	<select id="getCount" resultType="int">
 		select count(*) from sechos_repairsatisfaction t  <include refid="where_clause" />
+	</select>
+
+	<select id="getMySatList" resultType="com.basic.javaframe.entity.Sechos_Repairsatisfaction">
+		select * from sechos_repairsatisfaction t <include refid="where_clause" />
+		<if test="maintainGuid != null and maintainGuid !=''">
+			and t.maintain_guid = #{maintainGuid}
+		</if>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by row_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="getMySatCount" resultType="int">
+		select count(*) from sechos_repair t  <include refid="where_clause" />
+		<if test="maintainGuid != null and maintainGuid !=''">
+			and t.maintain_guid = #{maintainGuid}
+		</if>
 	</select>
 
     <!-- 搜索数据区域 -->
@@ -79,8 +105,10 @@
 			<if test="maintainNameVague != null and maintainNameVague != ''"> and t.maintain_name like concat('%',#{maintainNameVague},'%') </if>
 			<if test="maintainGuid != null and maintainGuid != ''"> and t.maintain_guid = #{maintainGuid} </if>
 			<if test="maintainGuidVague != null and maintainGuidVague != ''"> and t.maintain_guid like concat('%',#{maintainGuidVague},'%') </if>
+			<if test="evaluationTime != null and evaluationTime != ''"> and t.evaluation_time = #{evaluationTime} </if>
+			<if test="evaluationTimeVague != null and evaluationTimeVague != ''"> and t.evaluation_time like concat('%',#{evaluationTimeVague},'%') </if>
 			<if test=" startTime != null and startTime != '' and endTime != null and endTime != '' ">
-				AND DATE_FORMAT( t.create_time, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
+				AND DATE_FORMAT( t.evaluation_time, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
 			</if>
     		and t.del_flag = 0
         </where>
@@ -103,7 +131,8 @@
 			`device_name`, 
 			`record_guid`,
 			`maintain_name`,
-			`maintain_guid`
+			`maintain_guid`,
+			`evaluation_time`
 		)
 		values
 		(
@@ -121,7 +150,8 @@
 			#{deviceName}, 
 			#{recordGuid},
 			#{maintainName},
-			#{maintainGuid}
+			#{maintainGuid},
+			#{evaluationTime}
 		)
 	</insert>
 	 
@@ -139,9 +169,10 @@
 			<if test="repairAdvice != null">`repair_advice` = #{repairAdvice}, </if>
 			<if test="evaluationStatus != null">`evaluation_status` = #{evaluationStatus}, </if>
 			<if test="deviceName != null">`device_name` = #{deviceName}, </if>
-			<if test="recordGuid != null">`record_guid` = #{recordGuid}</if>
-			<if test="maintainName != null">`maintain_name` = #{maintainName}</if>
-			<if test="maintainGuid != null">`maintain_guid` = #{maintainGuid}</if>
+			<if test="recordGuid != null">`record_guid` = #{recordGuid},</if>
+			<if test="maintainName != null">`maintain_name` = #{maintainName},</if>
+			<if test="maintainGuid != null">`maintain_guid` = #{maintainGuid},</if>
+			<if test="evaluationTime != null">`evaluation_time` = #{evaluationTime}</if>
 		</set>
 		where row_guid = #{rowGuid}
 	</update>

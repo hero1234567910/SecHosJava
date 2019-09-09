@@ -3,6 +3,9 @@ package com.basic.javaframe.dao;
 import com.basic.javaframe.entity.Sechos_Repairsatisfaction;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * 
  * 
@@ -17,4 +20,13 @@ public interface Sechos_RepairsatisfactionDao extends BaseDao<Sechos_Repairsatis
      * @return
      */
     Sechos_Repairsatisfaction getDetailByGuid(@Param("rowGuid") String rowGuid);
+
+    /**
+     * 获取我的评价列表
+     * @param map
+     * @return
+     */
+    List<Sechos_Repairsatisfaction> getMySatList(Map<String, Object> map);
+
+    int getMySatCount(Map<String, Object> params);
 }

@@ -44,8 +44,40 @@ public class Sechos_Repair implements Serializable {
 	private Integer repairStatus;
 	/**报修图片guid**/
 	private String picGuid;
+	/**维修人员Guid**/
+	private String maintainGuid;
 
-	/**
+	 public Date getMaintainTime() {
+		 return maintainTime;
+	 }
+
+	 public void setMaintainTime(Date maintainTime) {
+		 this.maintainTime = maintainTime;
+	 }
+
+	 /**维修人员姓名**/
+	private String maintainName;
+	/**维修完成时间**/
+	@JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+	private Date maintainTime;
+
+	 public String getMaintainGuid() {
+		 return maintainGuid;
+	 }
+
+	 public void setMaintainGuid(String maintainGuid) {
+		 this.maintainGuid = maintainGuid;
+	 }
+
+	 public String getMaintainName() {
+		 return maintainName;
+	 }
+
+	 public void setMaintainName(String maintainName) {
+		 this.maintainName = maintainName;
+	 }
+
+	 /**
 	 * 设置：
 	 */
 	public void setRowId(Integer rowId) {

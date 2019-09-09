@@ -49,4 +49,14 @@ public class Sechos_RepairsatisfactionServiceImpl implements Sechos_Repairsatisf
 		return sechosRepairsatisfactionDao.getDetailByGuid(rowGuid);
 	}
 
+	@Override
+	public List<Sechos_Repairsatisfaction> getMySatList(Map<String, Object> map) {
+		return sechosRepairsatisfactionDao.getMySatList(map);
+	}
+
+	@Override
+	public int getMySatCount(Map<String, Object> map) {
+		return sechosRepairsatisfactionDao.getMySatCount(map);
+	}
+
 }

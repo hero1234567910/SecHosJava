@@ -24,4 +24,8 @@ public interface Sechos_RepairsatisfactionService {
 	void deleteBatch(String[] rowGuids);
 
 	Sechos_Repairsatisfaction getDetailByGuid(String rowGuid);
+
+	List<Sechos_Repairsatisfaction> getMySatList(Map<String, Object> map);
+
+	int getMySatCount(Map<String, Object> map);
 }

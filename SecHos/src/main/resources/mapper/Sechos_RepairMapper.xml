@@ -19,6 +19,9 @@
         <result property="reportContent" column="report_content"/>
         <result property="repairStatus" column="repair_status"/>
         <result property="picGuid" column="pic_guid"/>
+		<result property="maintainGuid" column="maintain_guid"/>
+		<result property="maintainName" column="maintain_name"/>
+		<result property="maintainTime" column="maintain_time"/>
     </resultMap>
 
 	<select id="getList" resultType="com.basic.javaframe.entity.Sechos_Repair">
@@ -35,8 +38,64 @@
 			limit #{offset}, #{limit}
 		</if>
 	</select>
+
+	<select id="getMaintainList" resultType="com.basic.javaframe.entity.Sechos_Repair">
+		select * from sechos_repair t <include refid="where_clause" />
+		<if test="repairStatus != null and repairStatus !=''">
+			and t.repair_status = #{repairStatus}
+		</if>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by row_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="getMyList" resultType="com.basic.javaframe.entity.Sechos_Repair">
+		select * from sechos_repair t <include refid="where_clause" />
+		<if test="repairStatus != null and repairStatus !=''">
+			and t.repair_status = #{repairStatus}
+		</if>
+		<if test="maintainGuid != null and maintainGuid !=''">
+			and t.maintain_guid = #{maintainGuid}
+		</if>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by row_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
 	
- 	<select id="getCount" resultType="int">
+ 	<select id="getMaintainCount" resultType="int">
+		select count(*) from sechos_repair t  <include refid="where_clause" />
+		<if test="repairStatus != null and repairStatus !=''">
+			and t.repair_status = 0
+		</if>
+	</select>
+
+	<select id="getMyCount" resultType="int">
+		select count(*) from sechos_repair t  <include refid="where_clause" />
+		<if test="repairStatus != null and repairStatus !=''">
+			and t.repair_status = 2
+		</if>
+		<if test="maintainGuid != null and maintainGuid !=''">
+			and t.maintain_guid = #{maintainGuid}
+		</if>
+	</select>
+
+	<select id="getCount" resultType="int">
 		select count(*) from sechos_repair t  <include refid="where_clause" />
 	</select>
 
@@ -72,6 +131,13 @@
     		<if test="repairStatusVague != null and repairStatusVague != ''"> and t.repair_status like concat('%',#{repairStatusVague},'%') </if>
             <if test="picGuid != null and picGuid != ''"> and t.pic_guid = #{picGuid} </if>
     		<if test="picGuidVague != null and picGuidVague != ''"> and t.pic_guid like concat('%',#{picGuidVague},'%') </if>
+			<if test="maintainGuid != null and maintainGuid != ''"> and t.maintain_guid = #{maintainGuid} </if>
+			<if test="maintainGuidVague != null and maintainGuidVague != ''"> and t.maintain_guid like concat('%',#{maintainGuidVague},'%') </if>
+
+			<if test="maintainName != null and maintainName != ''"> and t.maintain_name = #{maintainName} </if>
+			<if test="maintainNameVague != null and maintainNameVague != ''"> and t.maintain_name like concat('%',#{maintainNameVague},'%') </if>
+			<if test="maintainTime != null and maintainTime != ''"> and t.maintain_time = #{maintainTime} </if>
+			<if test="maintainTimeVague != null and maintainTimeVague != ''"> and t.maintain_time like concat('%',#{maintainTimeVague},'%') </if>
 			<if test=" startTime != null and startTime != '' and endTime != null and endTime != '' ">
 				AND DATE_FORMAT( t.create_time, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
 			</if>
@@ -94,7 +160,10 @@
 			`damaged_parts`, 
 			`report_content`, 
 			`repair_status`, 
-			`pic_guid`
+			`pic_guid`,
+			`maintain_guid`,
+			`maintain_name`,
+			`maintain_time`
 		)
 		values
 		(
@@ -110,7 +179,10 @@
 			#{damagedParts}, 
 			#{reportContent}, 
 			#{repairStatus}, 
-			#{picGuid}
+			#{picGuid},
+			#{maintainGuid},
+			#{maintainName},
+			#{maintainTime}
 		)
 	</insert>
 	 
@@ -128,7 +200,10 @@
 			<if test="damagedParts != null">`damaged_parts` = #{damagedParts}, </if>
 			<if test="reportContent != null">`report_content` = #{reportContent}, </if>
 			<if test="repairStatus != null">`repair_status` = #{repairStatus}, </if>
-			<if test="picGuid != null">`pic_guid` = #{picGuid}</if>
+			<if test="picGuid != null">`pic_guid` = #{picGuid},</if>
+			<if test="maintainGuid != null">`maintain_guid` = #{maintainGuid},</if>
+			<if test="maintainName != null">`maintain_name` = #{maintainName}</if>
+			<if test="maintainTime != null">`maintain_time` = #{maintainTime}</if>
 		</set>
 		where row_guid = #{rowGuid}
 	</update>
@@ -152,5 +227,16 @@
 		update sechos_repair
 		set `repair_status` = 1
 		where row_guid = #{rowGuid}
+	</update>
+
+	<update id="successRepair" parameterType="com.basic.javaframe.entity.Sechos_Repair">
+		update sechos_repair
+		<set>
+			<if test="maintainGuid != null">`maintain_guid` = #{maintainGuid},</if>
+			<if test="maintainName != null">`maintain_name` = #{maintainName},</if>
+			<if test="maintainTime != null">`maintain_time` = #{maintainTime},</if>
+			<if test="repairStatus != null">`repair_status` = #{repairStatus} </if>
+		</set>
+			where row_guid = #{rowGuid}
 	</update>
 </mapper>

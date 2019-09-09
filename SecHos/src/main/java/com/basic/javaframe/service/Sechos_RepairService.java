@@ -28,4 +28,14 @@ public interface Sechos_RepairService {
 	List<Sechos_Repair> getListByGuid(String rowGuid);
 
 	void cancelRepair(String rowGuid);
+
+	List<Sechos_Repair> getMaintainList(Map<String, Object> map);
+
+	int getMaintainCount(Map<String, Object> map);
+
+	void successRepair(Map<String, Object> params);
+
+	List<Sechos_Repair> getMyList(Map<String, Object> map);
+
+	int getMyCount(Map<String, Object> map);
 }

@@ -59,4 +59,29 @@ public class Sechos_RepairServiceImpl implements Sechos_RepairService {
 		sechosRepairDao.cancelRepair(rowGuid);
 	}
 
+	@Override
+	public List<Sechos_Repair> getMaintainList(Map<String, Object> map) {
+		return sechosRepairDao.getMaintainList(map);
+	}
+
+	@Override
+	public int getMaintainCount(Map<String, Object> map) {
+		return sechosRepairDao.getMaintainCount(map);
+	}
+
+	@Override
+	public void successRepair(Map<String, Object> params) {
+		sechosRepairDao.successRepair(params);
+	}
+
+	@Override
+	public List<Sechos_Repair> getMyList(Map<String, Object> map) {
+		return sechosRepairDao.getMyList(map);
+	}
+
+	@Override
+	public int getMyCount(Map<String, Object> map) {
+		return sechosRepairDao.getMyCount(map);
+	}
+
 }

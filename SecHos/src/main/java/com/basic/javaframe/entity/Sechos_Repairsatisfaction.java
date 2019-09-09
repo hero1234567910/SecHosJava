@@ -46,8 +46,20 @@ public class Sechos_Repairsatisfaction implements Serializable {
 	private String recordGuid;
 	/**维修人姓名**/
 	private String maintainName;
-	/**维修人Guid**/
+
+	 public Date getEvaluationTime() {
+		 return evaluationTime;
+	 }
+
+	 public void setEvaluationTime(Date evaluationTime) {
+		 this.evaluationTime = evaluationTime;
+	 }
+
+	 /**维修人Guid**/
 	private String maintainGuid;
+	/**评价时间**/
+	@JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+	private Date evaluationTime;
 
 	 public String getRepairName() {
 		 return repairName;

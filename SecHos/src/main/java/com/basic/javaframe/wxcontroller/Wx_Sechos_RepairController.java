@@ -3,7 +3,9 @@ package com.basic.javaframe.wxcontroller;
 import com.basic.javaframe.common.customclass.PassToken;
 import com.basic.javaframe.common.utils.*;
 import com.basic.javaframe.entity.Sechos_Repair;
+import com.basic.javaframe.entity.Sechos_Repairsatisfaction;
 import com.basic.javaframe.service.Sechos_RepairService;
+import com.basic.javaframe.service.Sechos_RepairsatisfactionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,10 @@ import java.util.Map;
 public class Wx_Sechos_RepairController {
 	@Autowired
 	private Sechos_RepairService sechosRepairService;
-	
+
+	@Autowired
+	private Sechos_RepairsatisfactionService sechosRepairsatisfactionService;
+
 	/**
 	 * 列表数据
 	 */
@@ -113,5 +118,76 @@ public class Wx_Sechos_RepairController {
 	public R cancelRepair(@RequestBody String rowGuid){
 		sechosRepairService.cancelRepair(rowGuid);
 		return R.ok();
+	}
+
+	/**
+	 * 列表数据
+	 */
+	@PassToken
+	@ApiOperation(value="获取设备维修表")
+	@ResponseBody
+	@RequestMapping(value="/listMaintainData",produces="application/json;charset=utf-8",method=RequestMethod.GET)
+	public LayuiUtil listMaintainData(@RequestParam Map<String, Object> params){
+		//查询列表数据
+		//System.out.println(params);
+		Query query = new Query(params);
+		List<Sechos_Repair> sechosRepairList = sechosRepairService.getMaintainList(query);
+		int total = sechosRepairService.getMaintainCount(query);
+		PageUtils pageUtil = new PageUtils(sechosRepairList, total, query.getLimit(), query.getPage());
+		return LayuiUtil.data(pageUtil.getTotalCount(), pageUtil.getList());
+	}
+
+	/**
+	 * 完成设备报修
+	 */
+	@ApiOperation(value="完成设备报修")
+	@ResponseBody
+	@RequestMapping(value="/successRepair", produces = "application/json; charset=utf-8", method=RequestMethod.POST)
+	public R successRepair(@RequestParam Map<String, Object> params){
+		//System.out.println(params);
+		Date createTime = DateUtil.changeDate(new Date());
+		params.put("maintainTime",createTime);
+		sechosRepairService.successRepair(params);
+		String rowGuid = params.get("rowGuid").toString();
+		String maintainGuid = params.get("maintainGuid").toString();
+		String maintainName = params.get("maintainName").toString();
+		//每完成一次报修就生成一次评价
+		Sechos_Repair sechosRepair = sechosRepairService.getDetailByGuid(rowGuid);
+		Sechos_Repairsatisfaction sechosRepairsatisfaction = new Sechos_Repairsatisfaction();
+
+		if (sechosRepairsatisfaction.getSortSq() == null) {
+			sechosRepairsatisfaction.setSortSq(0);
+		}
+		//生成uuid作为rowguid
+		String uuid = java.util.UUID.randomUUID().toString();
+		sechosRepairsatisfaction.setRowGuid(uuid);
+		sechosRepairsatisfaction.setDelFlag(0);
+		sechosRepairsatisfaction.setCreateTime(createTime);
+		sechosRepairsatisfaction.setRepairGuid(sechosRepair.getRepairGuid());
+		sechosRepairsatisfaction.setRepairName(sechosRepair.getRepairName());
+		sechosRepairsatisfaction.setDeviceName(sechosRepair.getDeviceName());
+		sechosRepairsatisfaction.setRecordGuid(rowGuid);
+		sechosRepairsatisfaction.setMaintainGuid(maintainGuid);
+		sechosRepairsatisfaction.setMaintainName(maintainName);
+		sechosRepairsatisfaction.setEvaluationStatus(0);
+		sechosRepairsatisfactionService.save(sechosRepairsatisfaction);
+		return R.ok();
+	}
+
+	/**
+	 * 列表数据
+	 */
+	@PassToken
+	@ApiOperation(value="获取我的设备维修记录")
+	@ResponseBody
+	@RequestMapping(value="/listMyData",produces="application/json;charset=utf-8",method=RequestMethod.GET)
+	public LayuiUtil listMyData(@RequestParam Map<String, Object> params){
+		//查询列表数据
+		//System.out.println(params);
+		Query query = new Query(params);
+		List<Sechos_Repair> sechosRepairList = sechosRepairService.getMyList(query);
+		int total = sechosRepairService.getMyCount(query);
+		PageUtils pageUtil = new PageUtils(sechosRepairList, total, query.getLimit(), query.getPage());
+		return LayuiUtil.data(pageUtil.getTotalCount(), pageUtil.getList());
 	}
 }
