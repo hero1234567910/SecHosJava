@@ -95,6 +95,36 @@ public class Wx_UploadifyController extends BaseController{
 	}
 	
 	@PassToken
+	@ApiOperation(value="上传控件")
+	@RequestMapping(value="/upload") 
+	public void upload(  
+	    @RequestParam MultipartFile file,  
+	    HttpServletRequest request, HttpServletResponse response) throws IOException {  
+	    String fileName = file.getOriginalFilename();  
+	    System.out.println(fileName);
+	    Map<String, Object> dataMap = new HashMap<String, Object>();  
+	    //文件存放路径  
+	    String path = filePath;
+	    String uuid = UUID.randomUUID().toString();  
+	    String filePath = uuid + fileName.substring(fileName.lastIndexOf("."));  
+	    File targetFile = new File(path, filePath);  
+	    if (!targetFile.exists()) {  
+	    	 File dir = new File(targetFile.getParent());
+             dir.mkdirs();
+             targetFile.createNewFile();
+	    }  
+	    try {
+	        file.transferTo(targetFile);
+	        
+	        logger.info("文件上传成功"); 
+	    } catch (Exception e) {  
+	            logger.error(e.getMessage());
+	    }  
+	   
+	}
+	
+	
+	@PassToken
 	@RequestMapping(value="/downLoadFile",produces="application/json;charset=utf-8",method=RequestMethod.GET)  
     public R downLoadFile(HttpServletRequest req,HttpServletResponse resp,@RequestParam("guid") String guid) throws IOException{  
 //        logger.info("/file/downLoadFile");
