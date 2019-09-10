@@ -113,5 +113,15 @@ public class Wx_Sechos_RepairsatisfactionController {
 		Sechos_Repairsatisfaction sechosRepairsatisfaction = sechosRepairsatisfactionService.getDetailByGuid(rowGuid);
 		return R.ok().put("data",sechosRepairsatisfaction);
 	}
+
+	@ApiOperation(value="获取待评价数量")
+	@ResponseBody
+	@RequestMapping(value="/countSats",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R countSats(@RequestBody String repairGuid){
+		//System.out.println(repairGuid);
+		Integer counts = sechosRepairsatisfactionService.countSats(repairGuid);
+		//System.out.println(counts);
+		return R.ok().put("data",counts);
+	}
 	
 }

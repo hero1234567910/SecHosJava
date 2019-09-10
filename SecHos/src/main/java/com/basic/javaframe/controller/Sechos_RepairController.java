@@ -119,4 +119,12 @@ public class Sechos_RepairController {
 		List<Sechos_Repair> sechosRepairList = sechosRepairService.getListByGuid(rowGuid);
 		return R.ok().put("data",sechosRepairList);
 	}
+
+	@ApiOperation(value="获取待维修数据数量")
+	@ResponseBody
+	@RequestMapping(value="/countRepairs",produces="application/json;charset=utf-8",method=RequestMethod.GET)
+	public R countRepairs(){
+		Integer counts = sechosRepairService.countRepairs();
+		return R.ok().put("data",counts);
+	}
 }

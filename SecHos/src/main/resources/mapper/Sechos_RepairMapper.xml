@@ -78,7 +78,7 @@
 			limit #{offset}, #{limit}
 		</if>
 	</select>
-	
+
  	<select id="getMaintainCount" resultType="int">
 		select count(*) from sechos_repair t  <include refid="where_clause" />
 		<if test="repairStatus != null and repairStatus !=''">
@@ -244,4 +244,8 @@
 		</set>
 			where row_guid = #{rowGuid}
 	</update>
+
+	<select id="countRepairs" resultType="int">
+		select count(*) from sechos_repair where repair_status = 0 and del_flag = 0
+	</select>
 </mapper>

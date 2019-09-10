@@ -29,4 +29,11 @@ public interface Sechos_RepairsatisfactionDao extends BaseDao<Sechos_Repairsatis
     List<Sechos_Repairsatisfaction> getMySatList(Map<String, Object> map);
 
     int getMySatCount(Map<String, Object> params);
+
+    /**
+     * 获取需要评价的数量
+     * @param repairGuid
+     * @return
+     */
+    int countSats(@Param("repairGuid") String repairGuid);
 }

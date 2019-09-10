@@ -84,4 +84,9 @@ public class Sechos_RepairServiceImpl implements Sechos_RepairService {
 		return sechosRepairDao.getMyCount(map);
 	}
 
+	@Override
+	public int countRepairs() {
+		return sechosRepairDao.countRepairs();
+	}
+
 }

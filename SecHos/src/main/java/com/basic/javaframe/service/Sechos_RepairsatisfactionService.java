@@ -28,4 +28,6 @@ public interface Sechos_RepairsatisfactionService {
 	List<Sechos_Repairsatisfaction> getMySatList(Map<String, Object> map);
 
 	int getMySatCount(Map<String, Object> map);
+
+	int countSats(String repairGuid);
 }

@@ -167,7 +167,7 @@
 			<if test="createTime != null">`create_time` = #{createTime}, </if>
 			<if test="delFlag != null">`del_flag` = #{delFlag}, </if>
 			<if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
-			<if test="repairGuid != null">`repair_guid` = #{repairGuid}, </if>
+			<if test="repairGuid != null">`repairGuid` = #{repairGuid}, </if>
 			<if test="repairName != null">`repair_name` = #{repairName}, </if>
 			<if test="repairSpeed != null">`repair_speed` = #{repairSpeed}, </if>
 			<if test="repairAttitude != null">`repair_attitude` = #{repairAttitude}, </if>
@@ -194,4 +194,7 @@
 		select * from sechos_repairsatisfaction where row_guid =#{rowGuid} and del_flag = 0
 	</select>
 
+	<select id="countSats" resultType="int">
+		select count(*) from sechos_repairsatisfaction where repair_guid =#{repairGuid} and del_flag = 0 and evaluation_status = 0
+	</select>
 </mapper>

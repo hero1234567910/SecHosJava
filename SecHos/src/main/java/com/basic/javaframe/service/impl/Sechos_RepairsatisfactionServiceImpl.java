@@ -59,4 +59,9 @@ public class Sechos_RepairsatisfactionServiceImpl implements Sechos_Repairsatisf
 		return sechosRepairsatisfactionDao.getMySatCount(map);
 	}
 
+	@Override
+	public int countSats(String repairGuid) {
+		return sechosRepairsatisfactionDao.countSats(repairGuid);
+	}
+
 }

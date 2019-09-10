@@ -60,4 +60,10 @@ public interface Sechos_RepairDao extends BaseDao<Sechos_Repair> {
     List<Sechos_Repair> getMyList(Map<String, Object> map);
 
     int getMyCount(Map<String, Object> params);
+
+    /**
+     * 获取待维修数量
+     * @return
+     */
+    int countRepairs();
 }

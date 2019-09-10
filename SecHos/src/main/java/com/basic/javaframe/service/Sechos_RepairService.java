@@ -38,4 +38,6 @@ public interface Sechos_RepairService {
 	List<Sechos_Repair> getMyList(Map<String, Object> map);
 
 	int getMyCount(Map<String, Object> map);
+
+	int countRepairs();
 }
