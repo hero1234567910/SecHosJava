@@ -1563,10 +1563,11 @@ public class Wx_CommonControllerApi extends BaseController{
 		
 		//获取yyxh
 		Map<String, String> par = new HashMap<>();
-		par.put("hzxm", params.get("patientName"));
+		par.put("hzxm", params.get("hzxm"));
 		par.put("patid", params.get("patid"));
 		String res =  wx_CommonServiceApi.getPatientAppointInfo(par);
 		JSONObject js = JSONObject.parseObject(res);
+		
 		String yyxh = "";
 		if (js.getBoolean("success")) {
 			JSONArray arr = js.getJSONArray("mzyyxxs");
