@@ -77,7 +77,7 @@ public class Sechos_RepairController {
 		sechosRepair.setPicGuid(imgGuid);
 		sechosRepairService.save(sechosRepair);
 
-		String[] guids = {sechosRepair.getPicGuid()};
+		String[] guids = {sechosRepair.getUploadImgGuid()};
 		attachService.updateAttach(imgGuid,guids);
         return R.ok();  
     }

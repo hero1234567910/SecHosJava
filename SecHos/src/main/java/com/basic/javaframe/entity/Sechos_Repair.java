@@ -47,6 +47,16 @@ public class Sechos_Repair implements Serializable {
 	/**维修人员Guid**/
 	private String maintainGuid;
 
+	private String uploadImgGuid;
+
+	 public String getUploadImgGuid() {
+		 return uploadImgGuid;
+	 }
+
+	 public void setUploadImgGuid(String uploadImgGuid) {
+		 this.uploadImgGuid = uploadImgGuid;
+	 }
+
 	 public Date getMaintainTime() {
 		 return maintainTime;
 	 }
