@@ -54,4 +54,14 @@ public class Wx_Frame_AttachController extends BaseController{
     	return R.ok().put("data", attachList);
     }
 
+    /**
+     * 删除
+     */
+    @ApiOperation(value="附件表删除")
+    @ResponseBody
+    @RequestMapping(value="/delete",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+    public R delete(@RequestBody String[] guids){
+        frameAttachService.deleteFrameAttachByIds(guids);
+        return R.ok();
+    }
 }
