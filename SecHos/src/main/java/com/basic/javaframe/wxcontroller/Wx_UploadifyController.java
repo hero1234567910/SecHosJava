@@ -115,12 +115,30 @@ public class Wx_UploadifyController extends BaseController{
 	    }  
 	    try {
 	        file.transferTo(targetFile);
-	        
+			dataMap.put("fileName", fileName);
+			//往附件表中插入记录，返回唯一标识
+
+			Frame_Attach frame_Attach = new Frame_Attach();
+			String uuid1 = UUID.randomUUID().toString();
+			frame_Attach.setRowGuid(uuid1);
+			frame_Attach.setAttachName(fileName);
+			frame_Attach.setCreateTime(DateUtil.changeDate(new Date()));
+			frame_Attach.setContentType(fileName.substring(fileName.lastIndexOf(".")));
+			frame_Attach.setContentUrl(filePath);
+			frame_Attach.setContentLength((int) targetFile.length());
+			frame_AttachService.insertFrameAttach(frame_Attach);
+
+			dataMap.put("attachRowguid", frame_Attach.getRowGuid());
+			dataMap.put("url", fileUrl+"/file/"+frame_Attach.getContentUrl());
+			dataMap.put("type", frame_Attach.getContentType());
 	        logger.info("文件上传成功"); 
 	    } catch (Exception e) {  
 	            logger.error(e.getMessage());
-	    }  
-	   
+	    }
+		ObjectMapper mapper = new ObjectMapper();
+		String data =mapper.writeValueAsString(dataMap);
+		response.setContentType("text/html;charset=UTF-8");
+		response.getWriter().print(data);
 	}
 	
 	

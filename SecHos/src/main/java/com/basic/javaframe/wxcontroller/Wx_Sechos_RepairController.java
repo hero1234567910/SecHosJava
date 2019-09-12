@@ -4,6 +4,7 @@ import com.basic.javaframe.common.customclass.PassToken;
 import com.basic.javaframe.common.utils.*;
 import com.basic.javaframe.entity.Sechos_Repair;
 import com.basic.javaframe.entity.Sechos_Repairsatisfaction;
+import com.basic.javaframe.service.Frame_AttachService;
 import com.basic.javaframe.service.Sechos_RepairService;
 import com.basic.javaframe.service.Sechos_RepairsatisfactionService;
 import io.swagger.annotations.Api;
@@ -33,6 +34,8 @@ public class Wx_Sechos_RepairController {
 	@Autowired
 	private Sechos_RepairsatisfactionService sechosRepairsatisfactionService;
 
+	@Autowired
+	private Frame_AttachService attachService;
 	/**
 	 * 列表数据
 	 */
@@ -67,8 +70,13 @@ public class Wx_Sechos_RepairController {
 		sechosRepair.setRepairStatus(0);
 		Date createTime = DateUtil.changeDate(new Date());
 		sechosRepair.setCreateTime(createTime);
+		String imgGuid = java.util.UUID.randomUUID().toString();
+		sechosRepair.setPicGuid(imgGuid);
 		sechosRepairService.save(sechosRepair);
-        return R.ok();  
+
+		String[] guids = {sechosRepair.getUploadImgGuid()};
+		attachService.updateAttach(imgGuid,guids);
+		return R.ok();
     }
 
 	/**
