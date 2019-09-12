@@ -873,7 +873,7 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		params.put("yydm", yydm);
 		params.put("accesskey", accesskey);
 		params.put("action","GETHZYYXXPAT");
-
+		
 		logger.info("查询患者预约信息(PATID)接口参数》》》"+JSONObject.toJSONString(params));
 		String res = HttpUtil.sendPost(wnUrl, params);
 		logger.info("查询患者预约信息(PATID)接口返回成功》》》"+JSONObject.toJSONString(res));

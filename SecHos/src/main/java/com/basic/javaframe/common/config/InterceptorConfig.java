@@ -1,5 +1,8 @@
 package com.basic.javaframe.common.config;
 
+import javax.servlet.MultipartConfigElement;
+
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -36,5 +39,15 @@ public class InterceptorConfig extends BaseController implements WebMvcConfigure
     @Bean
     public AuthenticationInterceptor authenticationInterceptor() {
         return new AuthenticationInterceptor();
+    }
+    
+    @Bean 
+    public MultipartConfigElement multipartConfigElement() {  
+        MultipartConfigFactory factory = new MultipartConfigFactory();  
+        //允许上传的文件最大值
+        factory.setMaxFileSize("50MB"); //KB,MB  
+        /// 设置总上传数据总大小  
+        factory.setMaxRequestSize("50MB");  
+        return factory.createMultipartConfig();  
     }
 }
