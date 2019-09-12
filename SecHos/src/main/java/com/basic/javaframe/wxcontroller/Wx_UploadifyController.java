@@ -97,9 +97,9 @@ public class Wx_UploadifyController extends BaseController{
 	@PassToken
 	@ApiOperation(value="上传控件")
 	@RequestMapping(value="/upload") 
-	public void upload(  
-	    @RequestParam MultipartFile file,  
+	public void upload(@RequestParam MultipartFile file,  
 	    HttpServletRequest request, HttpServletResponse response) throws IOException {  
+		System.out.println(file);
 	    String fileName = file.getOriginalFilename();  
 	    System.out.println(fileName);
 	    Map<String, Object> dataMap = new HashMap<String, Object>();  
