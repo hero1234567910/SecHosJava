@@ -1230,7 +1230,7 @@ public class Wx_CommonControllerApi extends BaseController{
 				checkParams(params, "patientGuid");
 				checkParams(params, "patid");
 				checkParams(params, "patientName");
-				checkParams(params, "yyxh");
+//				checkParams(params, "yyxh");
 				
 				checkParams(params, "sjh");
 				checkParams(params, "zje");
