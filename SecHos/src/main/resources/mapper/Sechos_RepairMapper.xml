@@ -207,7 +207,7 @@
 			<if test="picGuid != null">`pic_guid` = #{picGuid},</if>
 			<if test="maintainGuid != null">`maintain_guid` = #{maintainGuid},</if>
 			<if test="maintainName != null">`maintain_name` = #{maintainName},</if>
-			<if test="maintainTime != null">`maintain_time` = #{maintainTime}</if>
+			<if test="maintainTime != null">`maintain_time` = #{maintainTime},</if>
 			<if test="uploadImgGuid != null">`upload_imgGuid` = #{uploadImgGuid}</if>
 		</set>
 		where row_guid = #{rowGuid}
