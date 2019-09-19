@@ -5,14 +5,13 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSON;
 
-import com.basic.javaframe.entity.*;
-import com.basic.javaframe.service.*;
 import org.apache.commons.lang.ArrayUtils;
 import org.dom4j.Document;
 import org.dom4j.Element;
@@ -44,6 +43,19 @@ import com.basic.javaframe.common.utils.DateUtil;
 import com.basic.javaframe.common.utils.R;
 import com.basic.javaframe.common.utils.XMLUtil;
 import com.basic.javaframe.controller.BaseController;
+import com.basic.javaframe.entity.Frame_Config;
+import com.basic.javaframe.entity.SecHos_Outpatient;
+import com.basic.javaframe.entity.SecHos_Patient;
+import com.basic.javaframe.entity.SecHos_hospitalized;
+import com.basic.javaframe.entity.SechosDrug;
+import com.basic.javaframe.entity.Sechos_Rechargerecord;
+import com.basic.javaframe.service.Frame_ConfigService;
+import com.basic.javaframe.service.RedisService;
+import com.basic.javaframe.service.SecHos_OutpatientService;
+import com.basic.javaframe.service.SecHos_PatientService;
+import com.basic.javaframe.service.SecHos_hospitalizedService;
+import com.basic.javaframe.service.SechosDrugService;
+import com.basic.javaframe.service.Sechos_RechargerecordService;
 import com.basic.javaframe.service.api.Wx_CommonServiceIApi;
 
 import io.swagger.annotations.ApiOperation;
@@ -86,9 +98,9 @@ public class Wx_CommonControllerApi extends BaseController{
 	
 	@Autowired
 	Sechos_RechargerecordService rechargerecordService;
-
+	
 	@Autowired
-	Frame_UserService frameUserService;
+	SechosDrugService sechosDrugService;
 	
 	/**
 	 * 获取网页授权token，openid
@@ -135,61 +147,19 @@ public class Wx_CommonControllerApi extends BaseController{
 		logger.info(pa.toString());
 		return R.ok().put("data", pa);	
 	}
-
-	/**
-	 * 获取网页授权token，openid
-	 * <p>Title: doctorCode2Token</p>
-	 * <p>Description: </p>
-	 * @author wzl
-	 * @param params
-	 * @return
-	 */
-	@PassToken
-	@RequestMapping(value="/doctorCode2Token",produces="application/json;charset=utf-8",method=RequestMethod.POST)
-	@ResponseBody
-	public R doctorCode2Token(@RequestBody Map<String, String> params){
-		String code = params.get("code");
-		String rowGuid = params.get("rowGuid");
-		System.out.println(code+"||"+rowGuid);
-		JSONObject jsonobj = wx_CommonServiceApi.code2Token(code);
-
-		JSONObject jsonObject = JSONObject.parseObject(jsonobj.getString("resultUser"));
-		if (jsonObject.containsKey("errcode")) {
-			String errcode = jsonObject.getString("errcode");
-			return R.error("获取网页授权医生信息异常,errcode为"+errcode).put("data", errcode);
-		}
-		//获取openid,微信昵称，头像
-		String openid = jsonObject.getString("openid");
-		//根据openid查询是否有该用户,没有则更新医生信息，有则返回该医生信息
-		//SecHos_Patient pa = patientService.getPatientByOpenid(openid);
-		Frame_User pa = frameUserService.getUserByOpenid(openid);
-		if (pa == null) {
-			pa = new Frame_User();
-			pa.setRowGuid(rowGuid);
-			pa.setOpenid(openid);
-			pa.setAccessToken(jsonobj.getString("access_token"));
-			pa.setRefreshToken(jsonobj.getString("refresh_token"));
-			frameUserService.update(pa);
-			return R.ok().put("data", pa);
-		}
-		pa.setAccessToken(jsonobj.getString("access_token"));
-		pa.setRefreshToken(jsonobj.getString("refresh_token"));
-		logger.info(pa.toString());
-		return R.ok().put("data", pa);
-	}
-
+	
 	/**
 	 * 获取用户信息
-	 * <p>Title: getDocByToken</p>
+	 * <p>Title: getUserByToken</p>  
 	 * <p>Description: </p>
 	 * @author hero  
 	 * @param params
 	 * @return
 	 */
 	@PassToken
-	@RequestMapping(value="/getDocByToken",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	@RequestMapping(value="/getUserByToken",produces="application/json;charset=utf-8",method=RequestMethod.POST)
 	@ResponseBody
-	public R getDocByToken(@RequestBody Map<String, String> params){
+	public R getUserByToken(@RequestBody Map<String, String> params){
 		checkParams(params, "openid");
 		checkParams(params, "access_token");
 		checkParams(params, "refresh_token");
@@ -201,16 +171,22 @@ public class Wx_CommonControllerApi extends BaseController{
 		}
 		//获取openid,微信昵称，头像
 		String openid = jsonObject.getString("openid");
-		String rowGuid = jsonObject.getString("rowGuid");
+		String nickname = jsonObject.getString("nickname");
+		String headimgurl = jsonObject.getString("headimgurl");
+		
 		//根据openid查询是否有该用户,没有则生成一条新用户，有则返回该用户信息
-		Frame_User pa = frameUserService.getUserByOpenid(openid);
+		SecHos_Patient pa = patientService.getPatientByOpenid(openid);
 		if (pa == null) {
-			pa = new Frame_User();
-			pa.setRowGuid(rowGuid);
+			pa = new SecHos_Patient();
+			pa.setDelFlag(DelFlagEnum.NDELFLAG.getCode());
+			pa.setCreateTime(DateUtil.changeDate(new Date()));
+			String uuid = java.util.UUID.randomUUID().toString();
+			pa.setRowGuid(uuid);
 			pa.setOpenid(openid);
+			pa.setHeadImgUrl(headimgurl);
 			pa.setAccessToken(params.get("access_token"));
 			pa.setRefreshToken(params.get("refresh_token"));
-			frameUserService.update(pa);
+			patientService.save(pa);
 			return R.ok().put("data", pa);
 		}
 		pa.setAccessToken(params.get("access_token"));
@@ -1230,7 +1206,7 @@ public class Wx_CommonControllerApi extends BaseController{
 				checkParams(params, "patientGuid");
 				checkParams(params, "patid");
 				checkParams(params, "patientName");
-				checkParams(params, "yyxh");
+//				checkParams(params, "yyxh");
 				
 				checkParams(params, "sjh");
 				checkParams(params, "zje");
@@ -1542,6 +1518,71 @@ public class Wx_CommonControllerApi extends BaseController{
 				JSONObject json = JSONObject.parseObject(result);
 				if (json.getBoolean("success")) {
 					
+//					//发药机接口
+//					//查询处方信息
+//					JSONObject PrescriptionList = new JSONObject();
+//					JSONArray Prescriptions = new JSONArray();
+//					List<SechosDrug> DrugsList = sechosDrugService.getByPationGuid(rechargerecord.getPatientRowGuid());
+//					if (DrugsList.size()!=0) {
+//						for (int i = 0; i < DrugsList.size(); i++) {
+//							SechosDrug dr = DrugsList.get(i);
+//							if ("2".equals(dr.getYpbz())) {
+//								//处方信息必须要药品时
+//								JSONObject Prescription = new JSONObject();
+//								Prescription.put("PrescriptionID", dr.getCfxh());
+//								SimpleDateFormat forma = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//								Date date = forma.parse(dr.getKfsj());
+//								Prescription.put("DateTimeOfPrescription", forma.format(date));
+//								Prescription.put("Flag", "Outpatient");
+//								Prescription.put("Category", "常规");
+//								
+//								JSONArray jsonArray = new JSONArray();
+//								JSONObject jsonObject = new JSONObject();
+//								jsonObject.put("MedCode", dr.getXmdm());
+//								jsonObject.put("MedName", dr.getXmmc());
+//								jsonObject.put("MedUnitDosage",dr.getYpgg());
+//								jsonObject.put("MedManufacturer", value);//药品厂商名称
+//								jsonObject.put("MedPackingUnits", dr.getYpdw());
+//								jsonObject.put("MedBasicUnits", dr.getJldw());
+//								jsonObject.put("MedOrdingUnits", dr.getJldw());
+//								jsonObject.put("MedPackingConverCoefficent", Integer.parseInt(dr.getYpjl()));//转换系数
+//								jsonObject.put("MedOrdingConverCoefficent", 1);
+//								jsonObject.put("Quantity", Integer.parseInt(dr.getXmsl()));
+//								jsonArray.add(jsonObject);
+//								Prescription.put("PrescriptionItems",jsonArray);
+//								Prescriptions.add(Prescription);
+//							}
+//						}
+//						
+//						
+//					}
+//					JSONObject PatientInfo = new JSONObject();
+//					//根据pation查询用户信息
+//					SecHos_Patient patient = patientService.getPatientByGuid(rechargerecord.getPatientRowGuid());
+//					PatientInfo.put("PatientID", rechargerecord.getPatid());
+//					PatientInfo.put("PatientName", rechargerecord.getPatientName());
+//					switch (patient.getPatientSex()) {
+//					case 0:
+//						PatientInfo.put("PatientAdministrativeSex", "M");
+//						break;
+//						
+//					case 1:
+//						PatientInfo.put("PatientAdministrativeSex", "F");
+//						break;
+//					}
+//					PatientInfo.put("PatientDateofBirth", patient.getPatientBirth()); 
+//					SimpleDateFormat format = new SimpleDateFormat("yyyy");
+//					int age = Integer.parseInt(format.format(new Date())) - Integer.parseInt(format.format(new Date()));
+//					PatientInfo.put("PatientAge", age);
+//					
+//					PrescriptionList.put("PatientInfo", PatientInfo);
+//					PrescriptionList.put("Prescriptions", Prescriptions);
+//					
+//					Map<String, String> par1 = new HashMap<>();
+//					par1.put("PrescriptionList", PrescriptionList.toJSONString());
+//					String res =  wx_CommonServiceApi.task(par1);
+//					JSONObject js = JSONObject.parseObject(result);
+					
 				}else{
 					logger.info(json.getString("message"));
 					sm.clear();
@@ -1551,6 +1592,9 @@ public class Wx_CommonControllerApi extends BaseController{
 					logger.info("返回给微信的xml为"+xmlwx);
 					return xmlwx;
 				}
+				
+				
+				
 			}
 			
 			
@@ -1701,6 +1745,15 @@ public class Wx_CommonControllerApi extends BaseController{
 			if (arr.size() == 0) {
 				return R.error("未查到相关记录");
 			}
+//			//存储
+//			for (int i = 0; i < arr.size(); i++) {
+//				JSONObject ob = arr.getJSONObject(i);
+//				SechosDrug sechosDrug = JSON.toJavaObject(ob,SechosDrug.class);
+//				sechosDrug.setPatientRowGuid(params.get("pationRowGuid"));
+//				sechosDrugService.save(sechosDrug);
+//			}
+			
+			
 			return R.ok().put("data", arr);
 		}else{
 			return R.error(json.getString("message"));
