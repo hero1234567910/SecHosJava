@@ -413,6 +413,21 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		logger.info("获取体检报告列表服务返回成功》》》"+JSONObject.toJSONString(res));
 		return res;
 	}
+	
+	/**
+	 * 发药机接口
+	 * <p>Title: getMedicalReportList</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @param params
+	 * @return
+	 */
+	public String task(Map<String,String> params){
+		logger.info("发药机接口服务参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wsUrl+"/TaskAdmit", params);
+		logger.info("发药机接口服务返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
 
 	/**
 	 * 获取体检报告信息
