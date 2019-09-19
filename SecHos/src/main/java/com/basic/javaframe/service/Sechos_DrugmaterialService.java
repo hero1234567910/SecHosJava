@@ -24,4 +24,8 @@ public interface Sechos_DrugmaterialService {
 	void deleteBatch(String[] rowGuids);
 
 	Sechos_Drugmaterial getDetailByGuid(String rowGuid);
+
+	List<String> getDrugCodes();
+
+	String getDrugName(String drugName);
 }

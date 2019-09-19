@@ -149,4 +149,11 @@
 		select * from sechos_drugmaterial where row_guid =#{rowGuid} and del_flag = 0
 	</select>
 
+	<select id="getDrugCodes" resultType="list">
+		select drug_code from sechos_drugmaterial and del_flag = 0
+	</select>
+
+	<select id="getDrugName" resultType="String">
+		select drug_name from sechos_drugmaterial where drug_code={drugCode} del_flag = 0
+	</select>
 </mapper>

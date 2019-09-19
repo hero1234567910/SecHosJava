@@ -3,6 +3,8 @@ package com.basic.javaframe.dao;
 import com.basic.javaframe.entity.Sechos_Drugmaterial;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 
  * 
@@ -12,5 +14,17 @@ import org.apache.ibatis.annotations.Param;
 public interface Sechos_DrugmaterialDao extends BaseDao<Sechos_Drugmaterial> {
 
     Sechos_Drugmaterial getDetailByGuid(@Param("rowGuid") String rowGuid);
-	
+
+    /**
+     * 获取所有药品代码
+     * @return
+     */
+    List<String> getDrugCodes();
+
+    /**
+     * 根据药品代码获取药品名称
+     * @param drugName
+     * @return
+     */
+    String getDrugName(@Param("drugName")String drugName);
 }

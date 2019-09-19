@@ -49,4 +49,14 @@ public class Sechos_DrugmaterialServiceImpl implements Sechos_DrugmaterialServic
 		return sechosDrugmaterialDao.getDetailByGuid(rowGuid);
 	}
 
+	@Override
+	public List<String> getDrugCodes() {
+		return sechosDrugmaterialDao.getDrugCodes();
+	}
+
+	@Override
+	public String getDrugName(String drugName) {
+		return sechosDrugmaterialDao.getDrugName(drugName);
+	}
+
 }

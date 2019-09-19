@@ -99,5 +99,20 @@ public class Sechos_DrugmaterialController {
 		Sechos_Drugmaterial sechosDrugMaterial = sechosDrugmaterialService.getDetailByGuid(rowGuid);
 		return R.ok().put("data",sechosDrugMaterial);
 	}
-	
+
+	@ApiOperation(value="获取所有药品代码")
+	@ResponseBody
+	@RequestMapping(value="/getDrugCodes",produces="application/json;charset=utf-8",method=RequestMethod.GET)
+	public R getDrugCodes(){
+		List<String> stringList = sechosDrugmaterialService.getDrugCodes();
+		return R.ok().put("data",stringList);
+	}
+
+	@ApiOperation(value="根据药品代码获取名称")
+	@ResponseBody
+	@RequestMapping(value="/getDrugName",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getDrugName(@RequestBody String drugCode){
+		String drugName = sechosDrugmaterialService.getDrugName(drugCode);
+		return R.ok().put("data",drugName);
+	}
 }
