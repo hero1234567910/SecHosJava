@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.SechosDrugDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.basic.javaframe.entity.SechosDrug" id="sechosDrugMap">
+        <result property="rowId" column="row_id"/>
+        <result property="rowGuid" column="row_guid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="sortSq" column="sort_sq"/>
+        <result property="cflx" column="cflx"/>
+        <result property="cfmxxh" column="cfmxxh"/>
+        <result property="cfxh" column="cfxh"/>
+        <result property="dxmmc" column="dxmmc"/>
+        <result property="je" column="je"/>
+        <result property="jldw" column="jldw"/>
+        <result property="jlzt" column="jlzt"/>
+        <result property="jxmc" column="jxmc"/>
+        <result property="jzlsh" column="jzlsh"/>
+        <result property="kfksdm" column="kfksdm"/>
+        <result property="kfksmc" column="kfksmc"/>
+        <result property="kfsj" column="kfsj"/>
+        <result property="kfysdm" column="kfysdm"/>
+        <result property="kfysmc" column="kfysmc"/>
+        <result property="lcxmmc" column="lcxmmc"/>
+        <result property="pcmc" column="pcmc"/>
+        <result property="pfyzt" column="pfyzt"/>
+        <result property="sfzt" column="sfzt"/>
+        <result property="shzt" column="shzt"/>
+        <result property="xmdj" column="xmdj"/>
+        <result property="xmdm" column="xmdm"/>
+        <result property="xmmc" column="xmmc"/>
+        <result property="xmsl" column="xmsl"/>
+        <result property="yfmc" column="yfmc"/>
+        <result property="ypbz" column="ypbz"/>
+        <result property="ypdw" column="ypdw"/>
+        <result property="ypgg" column="ypgg"/>
+        <result property="ypjl" column="ypjl"/>
+        <result property="yyts" column="yyts"/>
+        <result property="zyjf" column="zyjf"/>
+    </resultMap>
+
+	<select id="getList" resultType="com.basic.javaframe.entity.SechosDrug">
+		select * from sechos_drug t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by row_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="getCount" resultType="int">
+		select count(*) from sechos_drug t  <include refid="where_clause" />
+	</select>
+	
+ 	<select id="getByPationGuid" resultType="com.basic.javaframe.entity.SechosDrug">
+ 	    select * from sechos_drug where patient_rowGuid = #{value}
+ 	</select>
+ 	
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+    		<if test="rowIdVague != null and rowIdVague != ''"> and t.row_id like concat('%',#{rowIdVague},'%') </if>
+            <if test="rowGuid != null and rowGuid != ''"> and t.row_guid = #{rowGuid} </if>
+    		<if test="rowGuidVague != null and rowGuidVague != ''"> and t.row_guid like concat('%',#{rowGuidVague},'%') </if>
+            <if test="createTime != null and createTime != ''"> and t.create_time = #{createTime} </if>
+    		<if test="createTimeVague != null and createTimeVague != ''"> and t.create_time like concat('%',#{createTimeVague},'%') </if>
+            <if test="delFlag != null and delFlag != ''"> and t.del_flag = #{delFlag} </if>
+    		<if test="delFlagVague != null and delFlagVague != ''"> and t.del_flag like concat('%',#{delFlagVague},'%') </if>
+            <if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
+    		<if test="sortSqVague != null and sortSqVague != ''"> and t.sort_sq like concat('%',#{sortSqVague},'%') </if>
+            <if test="cflx != null and cflx != ''"> and t.cflx = #{cflx} </if>
+    		<if test="cflxVague != null and cflxVague != ''"> and t.cflx like concat('%',#{cflxVague},'%') </if>
+            <if test="cfmxxh != null and cfmxxh != ''"> and t.cfmxxh = #{cfmxxh} </if>
+    		<if test="cfmxxhVague != null and cfmxxhVague != ''"> and t.cfmxxh like concat('%',#{cfmxxhVague},'%') </if>
+            <if test="cfxh != null and cfxh != ''"> and t.cfxh = #{cfxh} </if>
+    		<if test="cfxhVague != null and cfxhVague != ''"> and t.cfxh like concat('%',#{cfxhVague},'%') </if>
+            <if test="dxmmc != null and dxmmc != ''"> and t.dxmmc = #{dxmmc} </if>
+    		<if test="dxmmcVague != null and dxmmcVague != ''"> and t.dxmmc like concat('%',#{dxmmcVague},'%') </if>
+            <if test="je != null and je != ''"> and t.je = #{je} </if>
+    		<if test="jeVague != null and jeVague != ''"> and t.je like concat('%',#{jeVague},'%') </if>
+            <if test="jldw != null and jldw != ''"> and t.jldw = #{jldw} </if>
+    		<if test="jldwVague != null and jldwVague != ''"> and t.jldw like concat('%',#{jldwVague},'%') </if>
+            <if test="jlzt != null and jlzt != ''"> and t.jlzt = #{jlzt} </if>
+    		<if test="jlztVague != null and jlztVague != ''"> and t.jlzt like concat('%',#{jlztVague},'%') </if>
+            <if test="jxmc != null and jxmc != ''"> and t.jxmc = #{jxmc} </if>
+    		<if test="jxmcVague != null and jxmcVague != ''"> and t.jxmc like concat('%',#{jxmcVague},'%') </if>
+            <if test="jzlsh != null and jzlsh != ''"> and t.jzlsh = #{jzlsh} </if>
+    		<if test="jzlshVague != null and jzlshVague != ''"> and t.jzlsh like concat('%',#{jzlshVague},'%') </if>
+            <if test="kfksdm != null and kfksdm != ''"> and t.kfksdm = #{kfksdm} </if>
+    		<if test="kfksdmVague != null and kfksdmVague != ''"> and t.kfksdm like concat('%',#{kfksdmVague},'%') </if>
+            <if test="kfksmc != null and kfksmc != ''"> and t.kfksmc = #{kfksmc} </if>
+    		<if test="kfksmcVague != null and kfksmcVague != ''"> and t.kfksmc like concat('%',#{kfksmcVague},'%') </if>
+            <if test="kfsj != null and kfsj != ''"> and t.kfsj = #{kfsj} </if>
+    		<if test="kfsjVague != null and kfsjVague != ''"> and t.kfsj like concat('%',#{kfsjVague},'%') </if>
+            <if test="kfysdm != null and kfysdm != ''"> and t.kfysdm = #{kfysdm} </if>
+    		<if test="kfysdmVague != null and kfysdmVague != ''"> and t.kfysdm like concat('%',#{kfysdmVague},'%') </if>
+            <if test="kfysmc != null and kfysmc != ''"> and t.kfysmc = #{kfysmc} </if>
+    		<if test="kfysmcVague != null and kfysmcVague != ''"> and t.kfysmc like concat('%',#{kfysmcVague},'%') </if>
+            <if test="lcxmmc != null and lcxmmc != ''"> and t.lcxmmc = #{lcxmmc} </if>
+    		<if test="lcxmmcVague != null and lcxmmcVague != ''"> and t.lcxmmc like concat('%',#{lcxmmcVague},'%') </if>
+            <if test="pcmc != null and pcmc != ''"> and t.pcmc = #{pcmc} </if>
+    		<if test="pcmcVague != null and pcmcVague != ''"> and t.pcmc like concat('%',#{pcmcVague},'%') </if>
+            <if test="pfyzt != null and pfyzt != ''"> and t.pfyzt = #{pfyzt} </if>
+    		<if test="pfyztVague != null and pfyztVague != ''"> and t.pfyzt like concat('%',#{pfyztVague},'%') </if>
+            <if test="sfzt != null and sfzt != ''"> and t.sfzt = #{sfzt} </if>
+    		<if test="sfztVague != null and sfztVague != ''"> and t.sfzt like concat('%',#{sfztVague},'%') </if>
+            <if test="shzt != null and shzt != ''"> and t.shzt = #{shzt} </if>
+    		<if test="shztVague != null and shztVague != ''"> and t.shzt like concat('%',#{shztVague},'%') </if>
+            <if test="xmdj != null and xmdj != ''"> and t.xmdj = #{xmdj} </if>
+    		<if test="xmdjVague != null and xmdjVague != ''"> and t.xmdj like concat('%',#{xmdjVague},'%') </if>
+            <if test="xmdm != null and xmdm != ''"> and t.xmdm = #{xmdm} </if>
+    		<if test="xmdmVague != null and xmdmVague != ''"> and t.xmdm like concat('%',#{xmdmVague},'%') </if>
+            <if test="xmmc != null and xmmc != ''"> and t.xmmc = #{xmmc} </if>
+    		<if test="xmmcVague != null and xmmcVague != ''"> and t.xmmc like concat('%',#{xmmcVague},'%') </if>
+            <if test="xmsl != null and xmsl != ''"> and t.xmsl = #{xmsl} </if>
+    		<if test="xmslVague != null and xmslVague != ''"> and t.xmsl like concat('%',#{xmslVague},'%') </if>
+            <if test="yfmc != null and yfmc != ''"> and t.yfmc = #{yfmc} </if>
+    		<if test="yfmcVague != null and yfmcVague != ''"> and t.yfmc like concat('%',#{yfmcVague},'%') </if>
+            <if test="ypbz != null and ypbz != ''"> and t.ypbz = #{ypbz} </if>
+    		<if test="ypbzVague != null and ypbzVague != ''"> and t.ypbz like concat('%',#{ypbzVague},'%') </if>
+            <if test="ypdw != null and ypdw != ''"> and t.ypdw = #{ypdw} </if>
+    		<if test="ypdwVague != null and ypdwVague != ''"> and t.ypdw like concat('%',#{ypdwVague},'%') </if>
+            <if test="ypgg != null and ypgg != ''"> and t.ypgg = #{ypgg} </if>
+    		<if test="ypggVague != null and ypggVague != ''"> and t.ypgg like concat('%',#{ypggVague},'%') </if>
+            <if test="ypjl != null and ypjl != ''"> and t.ypjl = #{ypjl} </if>
+    		<if test="ypjlVague != null and ypjlVague != ''"> and t.ypjl like concat('%',#{ypjlVague},'%') </if>
+            <if test="yyts != null and yyts != ''"> and t.yyts = #{yyts} </if>
+    		<if test="yytsVague != null and yytsVague != ''"> and t.yyts like concat('%',#{yytsVague},'%') </if>
+            <if test="zyjf != null and zyjf != ''"> and t.zyjf = #{zyjf} </if>
+    		<if test="zyjfVague != null and zyjfVague != ''"> and t.zyjf like concat('%',#{zyjfVague},'%') </if>
+        </where>
+    </sql>
+	 
+	<insert id="save" parameterType="com.basic.javaframe.entity.SechosDrug" useGeneratedKeys="true" keyProperty="rowId">
+		insert into sechos_drug
+		(
+			`row_guid`, 
+			`create_time`, 
+			`del_flag`, 
+			`sort_sq`, 
+			`cflx`, 
+			`cfmxxh`, 
+			`cfxh`, 
+			`dxmmc`, 
+			`je`, 
+			`jldw`, 
+			`jlzt`, 
+			`jxmc`, 
+			`jzlsh`, 
+			`kfksdm`, 
+			`kfksmc`, 
+			`kfsj`, 
+			`kfysdm`, 
+			`kfysmc`, 
+			`lcxmmc`, 
+			`pcmc`, 
+			`pfyzt`, 
+			`sfzt`, 
+			`shzt`, 
+			`xmdj`, 
+			`xmdm`, 
+			`xmmc`, 
+			`xmsl`, 
+			`yfmc`, 
+			`ypbz`, 
+			`ypdw`, 
+			`ypgg`, 
+			`ypjl`, 
+			`yyts`, 
+			`zyjf`,
+			`patient_rowGuid`
+		)
+		values
+		(
+			#{rowGuid}, 
+			#{createTime}, 
+			#{delFlag}, 
+			#{sortSq}, 
+			#{cflx}, 
+			#{cfmxxh}, 
+			#{cfxh}, 
+			#{dxmmc}, 
+			#{je}, 
+			#{jldw}, 
+			#{jlzt}, 
+			#{jxmc}, 
+			#{jzlsh}, 
+			#{kfksdm}, 
+			#{kfksmc}, 
+			#{kfsj}, 
+			#{kfysdm}, 
+			#{kfysmc}, 
+			#{lcxmmc}, 
+			#{pcmc}, 
+			#{pfyzt}, 
+			#{sfzt}, 
+			#{shzt}, 
+			#{xmdj}, 
+			#{xmdm}, 
+			#{xmmc}, 
+			#{xmsl}, 
+			#{yfmc}, 
+			#{ypbz}, 
+			#{ypdw}, 
+			#{ypgg}, 
+			#{ypjl}, 
+			#{yyts}, 
+			#{zyjf},
+			#{patientRowGuid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.basic.javaframe.entity.SechosDrug">
+		update sechos_drug 
+		<set>
+			<if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+			<if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+			<if test="cflx != null">`cflx` = #{cflx}, </if>
+			<if test="cfmxxh != null">`cfmxxh` = #{cfmxxh}, </if>
+			<if test="cfxh != null">`cfxh` = #{cfxh}, </if>
+			<if test="dxmmc != null">`dxmmc` = #{dxmmc}, </if>
+			<if test="je != null">`je` = #{je}, </if>
+			<if test="jldw != null">`jldw` = #{jldw}, </if>
+			<if test="jlzt != null">`jlzt` = #{jlzt}, </if>
+			<if test="jxmc != null">`jxmc` = #{jxmc}, </if>
+			<if test="jzlsh != null">`jzlsh` = #{jzlsh}, </if>
+			<if test="kfksdm != null">`kfksdm` = #{kfksdm}, </if>
+			<if test="kfksmc != null">`kfksmc` = #{kfksmc}, </if>
+			<if test="kfsj != null">`kfsj` = #{kfsj}, </if>
+			<if test="kfysdm != null">`kfysdm` = #{kfysdm}, </if>
+			<if test="kfysmc != null">`kfysmc` = #{kfysmc}, </if>
+			<if test="lcxmmc != null">`lcxmmc` = #{lcxmmc}, </if>
+			<if test="pcmc != null">`pcmc` = #{pcmc}, </if>
+			<if test="pfyzt != null">`pfyzt` = #{pfyzt}, </if>
+			<if test="sfzt != null">`sfzt` = #{sfzt}, </if>
+			<if test="shzt != null">`shzt` = #{shzt}, </if>
+			<if test="xmdj != null">`xmdj` = #{xmdj}, </if>
+			<if test="xmdm != null">`xmdm` = #{xmdm}, </if>
+			<if test="xmmc != null">`xmmc` = #{xmmc}, </if>
+			<if test="xmsl != null">`xmsl` = #{xmsl}, </if>
+			<if test="yfmc != null">`yfmc` = #{yfmc}, </if>
+			<if test="ypbz != null">`ypbz` = #{ypbz}, </if>
+			<if test="ypdw != null">`ypdw` = #{ypdw}, </if>
+			<if test="ypgg != null">`ypgg` = #{ypgg}, </if>
+			<if test="ypjl != null">`ypjl` = #{ypjl}, </if>
+			<if test="yyts != null">`yyts` = #{yyts}, </if>
+			<if test="zyjf != null">`zyjf` = #{zyjf},</if>
+			<if test="patientRowGuid != null">`patient_rowGuid` = #{patientRowGuid}</if>
+		</set>
+		where row_id = #{rowId}
+	</update>
+	
+	<delete id="deleteBatch">
+		update sechos_drug set `del_flag` = 1 where row_guid in 
+		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+			#{rowGuid}
+		</foreach>
+	</delete>
+
+</mapper>
