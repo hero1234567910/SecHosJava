@@ -27,7 +27,7 @@ public interface Sechos_DrugmaterialService {
 
 	List<String> getDrugCodes();
 
-	String getDrugName(String drugCode);
+	Sechos_Drugmaterial getDrugName(String drugCode);
 
 	<T> int checkDrugCode(T t);
 }

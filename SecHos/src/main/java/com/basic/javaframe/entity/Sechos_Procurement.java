@@ -29,7 +29,7 @@ public class Sechos_Procurement implements Serializable {
 	/**采购单号**/
 	private String purchaseOrderNum;
 	/**下单日期**/
-	@JsonFormat( pattern="yyyy-MM-dd",timezone = "GMT+8")
+	@JsonFormat( pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private Date purchaseDate;
 
 	 public Date getPurchaseDate() {
@@ -41,7 +41,7 @@ public class Sechos_Procurement implements Serializable {
 	 }
 
 	 /**入库日期**/
-	@JsonFormat( pattern="yyyy-MM-dd",timezone = "GMT+8")
+	@JsonFormat( pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private Date inboundDate;
 	/**采购状态**/
 	private Integer purchaseStatus;

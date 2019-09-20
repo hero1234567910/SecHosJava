@@ -55,7 +55,7 @@ public class Sechos_DrugmaterialServiceImpl implements Sechos_DrugmaterialServic
 	}
 
 	@Override
-	public String getDrugName(String drugCode) {
+	public Sechos_Drugmaterial getDrugName(String drugCode) {
 		return sechosDrugmaterialDao.getDrugName(drugCode);
 	}
 

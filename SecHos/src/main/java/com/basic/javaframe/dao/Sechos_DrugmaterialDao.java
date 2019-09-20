@@ -26,7 +26,7 @@ public interface Sechos_DrugmaterialDao extends BaseDao<Sechos_Drugmaterial> {
      * @param drugCode
      * @return
      */
-    String getDrugName(@Param("drugCode")String drugCode);
+    Sechos_Drugmaterial getDrugName(@Param("drugCode")String drugCode);
 
 
     <T> int checkDrugCode(T t);

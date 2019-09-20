@@ -112,8 +112,8 @@ public class Sechos_DrugmaterialController {
 	@ResponseBody
 	@RequestMapping(value="/getDrugName",produces="application/json;charset=utf-8",method=RequestMethod.POST)
 	public R getDrugName(@RequestBody String drugCode){
-		String drugName = sechosDrugmaterialService.getDrugName(drugCode);
-		return R.ok().put("data",drugName);
+		Sechos_Drugmaterial sechosDrugmaterial = sechosDrugmaterialService.getDrugName(drugCode);
+		return R.ok().put("data",sechosDrugmaterial);
 	}
 
 	/**
