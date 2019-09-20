@@ -102,7 +102,7 @@ public class Sechos_DrugmaterialController {
 
 	@ApiOperation(value="获取所有药品代码")
 	@ResponseBody
-	@RequestMapping(value="/getDrugCodes",produces="application/json;charset=utf-8",method=RequestMethod.GET)
+	@RequestMapping(value="/getDrugCodes",produces="application/json;charset=utf-8",method=RequestMethod.POST)
 	public R getDrugCodes(){
 		List<String> stringList = sechosDrugmaterialService.getDrugCodes();
 		return R.ok().put("data",stringList);
@@ -114,5 +114,25 @@ public class Sechos_DrugmaterialController {
 	public R getDrugName(@RequestBody String drugCode){
 		String drugName = sechosDrugmaterialService.getDrugName(drugCode);
 		return R.ok().put("data",drugName);
+	}
+
+	/**
+	 * 通过药品代码名检验重复
+	 * <p>Title: checkDrugCode</p>
+	 * <p>Description: 用户</p>
+	 *
+	 * @param
+	 * @return
+	 * @author wzl
+	 */
+	@ApiOperation(value = "通过药品代码名检验重复")
+	@ResponseBody
+	@RequestMapping(value = "/checkDrugCode", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
+	public <T> R checkDrugCode(@RequestBody T t){
+		int count = sechosDrugmaterialService.checkDrugCode(t);
+		if (count >= 1) {
+			return R.error("您输入的值已存在，请重新输入");
+		}
+		return R.ok();
 	}
 }

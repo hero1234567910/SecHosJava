@@ -149,11 +149,16 @@
 		select * from sechos_drugmaterial where row_guid =#{rowGuid} and del_flag = 0
 	</select>
 
-	<select id="getDrugCodes" resultType="list">
-		select drug_code from sechos_drugmaterial and del_flag = 0
+	<select id="getDrugCodes" resultType="com.basic.javaframe.entity.Sechos_Drugmaterial">
+		select drug_code,drug_name from sechos_drugmaterial where del_flag = 0 and drug_status = 0
 	</select>
 
 	<select id="getDrugName" resultType="String">
-		select drug_name from sechos_drugmaterial where drug_code={drugCode} del_flag = 0
+		select drug_name from sechos_drugmaterial where drug_code=#{drugCode} and del_flag = 0
+	</select>
+
+	<!-- 验证重复性 -->
+	<select id="checkDrugCode" resultType="int">
+		select count(*) from sechos_drugmaterial t<include refid="where_clause" />
 	</select>
 </mapper>
