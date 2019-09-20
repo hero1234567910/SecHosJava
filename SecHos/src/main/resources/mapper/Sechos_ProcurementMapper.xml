@@ -61,7 +61,7 @@
             <if test="purchaseNote != null and purchaseNote != ''"> and t.purchase_note = #{purchaseNote} </if>
     		<if test="purchaseNoteVague != null and purchaseNoteVague != ''"> and t.purchase_note like concat('%',#{purchaseNoteVague},'%') </if>
 			<if test=" startTime != null and startTime != '' and endTime != null and endTime != '' ">
-				AND DATE_FORMAT( t.purchaseDate, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
+				AND DATE_FORMAT( t.purchase_date, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
 			</if>
 			and t.del_flag = 0
         </where>
