@@ -119,10 +119,13 @@
 	</update>
 	
 	<delete id="deleteBatch">
-		update sechos_purchasingm2m set `del_flag` = 1 where row_guid in 
+		update sechos_purchasingm2m set `del_flag` = 1 where row_guid in
 		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
 			#{rowGuid}
 		</foreach>
 	</delete>
 
+	<select id="getListByPGuid" resultType="com.basic.javaframe.entity.Sechos_Purchasingm2m">
+		select drug_name,drug_amount,drug_price,drug_totalPrice ,DATE_FORMAT(drug_overdue, '%Y-%m-%d')as drug_overdue from sechos_purchasingm2m where purchase_guid=#{purchaseGuid} and del_flag = 0 order by row_id desc;
+	</select>
 </mapper>

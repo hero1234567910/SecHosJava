@@ -22,4 +22,6 @@ public interface Sechos_Purchasingm2mService {
 	void update(Sechos_Purchasingm2m sechosPurchasingm2m);
 	
 	void deleteBatch(String[] rowGuids);
+
+	List<Sechos_Purchasingm2m> getListByPGuid(String purchaseGuid);
 }

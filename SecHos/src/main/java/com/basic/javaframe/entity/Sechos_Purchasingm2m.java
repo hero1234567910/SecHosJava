@@ -180,4 +180,22 @@ public class Sechos_Purchasingm2m implements Serializable {
 	 public void setDrugPrice(BigDecimal drugPrice) {
 		 this.drugPrice = drugPrice;
 	 }
+
+	 @Override
+	 public String toString() {
+		 return "Sechos_Purchasingm2m{" +
+				 "rowId=" + rowId +
+				 ", rowGuid='" + rowGuid + '\'' +
+				 ", createTime=" + createTime +
+				 ", delFlag=" + delFlag +
+				 ", sortSq=" + sortSq +
+				 ", drugGuid='" + drugGuid + '\'' +
+				 ", drugName='" + drugName + '\'' +
+				 ", drugAmount=" + drugAmount +
+				 ", drugPrice=" + drugPrice +
+				 ", drugTotalPrice=" + drugTotalPrice +
+				 ", purchaseGuid='" + purchaseGuid + '\'' +
+				 ", drugOverdue=" + drugOverdue +
+				 '}';
+	 }
  }

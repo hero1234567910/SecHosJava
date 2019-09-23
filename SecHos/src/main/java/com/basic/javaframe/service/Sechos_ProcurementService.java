@@ -22,4 +22,10 @@ public interface Sechos_ProcurementService {
 	void update(Sechos_Procurement sechosProcurement);
 	
 	void deleteBatch(String[] rowGuids);
+
+	List<Sechos_Procurement> getList2(Map<String, Object> map);
+
+	int getCount2(Map<String, Object> map);
+
+	Sechos_Procurement getDetailByGuid(String rowGuid);
 }

@@ -43,5 +43,10 @@ public class Sechos_Purchasingm2mServiceImpl implements Sechos_Purchasingm2mServ
 	public void deleteBatch(String[] rowGuids){
 		sechosPurchasingm2mDao.deleteBatch(rowGuids);
 	}
-	
+
+	@Override
+	public List<Sechos_Purchasingm2m> getListByPGuid(String purchaseGuid) {
+		return sechosPurchasingm2mDao.getListByPGuid(purchaseGuid);
+	}
+
 }

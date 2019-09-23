@@ -43,5 +43,20 @@ public class Sechos_ProcurementServiceImpl implements Sechos_ProcurementService 
 	public void deleteBatch(String[] rowGuids){
 		sechosProcurementDao.deleteBatch(rowGuids);
 	}
-	
+
+	@Override
+	public List<Sechos_Procurement> getList2(Map<String, Object> map) {
+		return sechosProcurementDao.getList2(map);
+	}
+
+	@Override
+	public int getCount2(Map<String, Object> map) {
+		return sechosProcurementDao.getCount2(map);
+	}
+
+	@Override
+	public Sechos_Procurement getDetailByGuid(String rowGuid) {
+		return sechosProcurementDao.getDetailByGuid(rowGuid);
+	}
+
 }

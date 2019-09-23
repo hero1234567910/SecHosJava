@@ -15,6 +15,7 @@
         <result property="inboundDate" column="inbound_date"/>
         <result property="purchaseStatus" column="purchase_status"/>
         <result property="purchaseNote" column="purchase_note"/>
+		<result property="purchasePrice" column="purchase_price"/>
     </resultMap>
 
 	<select id="getList" resultType="com.basic.javaframe.entity.Sechos_Procurement">
@@ -31,9 +32,28 @@
 			limit #{offset}, #{limit}
 		</if>
 	</select>
+
+	<select id="getList2" resultType="com.basic.javaframe.entity.Sechos_Procurement">
+		select * from sechos_procurement t <include refid="where_clause2" />
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by row_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
 	
  	<select id="getCount" resultType="int">
 		select count(*) from sechos_procurement t  <include refid="where_clause" />
+	</select>
+
+	<select id="getCount2" resultType="int">
+		select count(*) from sechos_procurement t  <include refid="where_clause2" />
 	</select>
 
     <!-- 搜索数据区域 -->
@@ -60,13 +80,47 @@
     		<if test="purchaseStatusVague != null and purchaseStatusVague != ''"> and t.purchase_status like concat('%',#{purchaseStatusVague},'%') </if>
             <if test="purchaseNote != null and purchaseNote != ''"> and t.purchase_note = #{purchaseNote} </if>
     		<if test="purchaseNoteVague != null and purchaseNoteVague != ''"> and t.purchase_note like concat('%',#{purchaseNoteVague},'%') </if>
+			<if test="purchasePrice != null and purchasePrice != ''"> and t.purchase_price = #{purchasePrice} </if>
+			<if test="purchasePriceVague != null and purchasePriceVague != ''"> and t.purchase_price like concat('%',#{purchasePriceVague},'%') </if>
 			<if test=" startTime != null and startTime != '' and endTime != null and endTime != '' ">
 				AND DATE_FORMAT( t.purchase_date, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
 			</if>
 			and t.del_flag = 0
         </where>
     </sql>
-	 
+
+	<sql id="where_clause2">
+		<where>
+			1=1
+			<if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+			<if test="rowIdVague != null and rowIdVague != ''"> and t.row_id like concat('%',#{rowIdVague},'%') </if>
+			<if test="rowGuid != null and rowGuid != ''"> and t.row_guid = #{rowGuid} </if>
+			<if test="rowGuidVague != null and rowGuidVague != ''"> and t.row_guid like concat('%',#{rowGuidVague},'%') </if>
+			<if test="createTime != null and createTime != ''"> and t.create_time = #{createTime} </if>
+			<if test="createTimeVague != null and createTimeVague != ''"> and t.create_time like concat('%',#{createTimeVague},'%') </if>
+			<if test="delFlag != null and delFlag != ''"> and t.del_flag = #{delFlag} </if>
+			<if test="delFlagVague != null and delFlagVague != ''"> and t.del_flag like concat('%',#{delFlagVague},'%') </if>
+			<if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
+			<if test="sortSqVague != null and sortSqVague != ''"> and t.sort_sq like concat('%',#{sortSqVague},'%') </if>
+			<if test="purchaseOrderNum != null and purchaseOrderNum != ''"> and t.purchase_orderNum = #{purchaseOrderNum} </if>
+			<if test="purchaseOrderNumVague != null and purchaseOrderNumVague != ''"> and t.purchase_orderNum like concat('%',#{purchaseOrderNumVague},'%') </if>
+			<if test="purchaseDate != null and purchaseDate != ''"> and t.purchaseDate = #{purchaseDate} </if>
+			<if test="purchaseDateVague != null and purchaseDateVague != ''"> and t.purchase_date like concat('%',#{purchaseDateVague},'%') </if>
+			<if test="inboundDate != null and inboundDate != ''"> and t.inbound_date = #{inboundDate} </if>
+			<if test="inboundDateVague != null and inboundDateVague != ''"> and t.inbound_date like concat('%',#{inboundDateVague},'%') </if>
+			<if test="purchaseStatus != null and purchaseStatus != ''"> and t.purchase_status = #{purchaseStatus} </if>
+			<if test="purchaseStatusVague != null and purchaseStatusVague != ''"> and t.purchase_status like concat('%',#{purchaseStatusVague},'%') </if>
+			<if test="purchaseNote != null and purchaseNote != ''"> and t.purchase_note = #{purchaseNote} </if>
+			<if test="purchaseNoteVague != null and purchaseNoteVague != ''"> and t.purchase_note like concat('%',#{purchaseNoteVague},'%') </if>
+			<if test="purchasePrice != null and purchasePrice != ''"> and t.purchase_price = #{purchasePrice} </if>
+			<if test="purchasePriceVague != null and purchasePriceVague != ''"> and t.purchase_price like concat('%',#{purchasePriceVague},'%') </if>
+			<if test=" startTime != null and startTime != '' and endTime != null and endTime != '' ">
+				AND DATE_FORMAT( t.purchase_date, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
+			</if>
+			and t.del_flag = 0 and t.purchase_status between 2 and 3
+		</where>
+	</sql>
+
 	<insert id="save" parameterType="com.basic.javaframe.entity.Sechos_Procurement" useGeneratedKeys="true" keyProperty="rowId">
 		insert into sechos_procurement
 		(
@@ -78,7 +132,8 @@
 			`purchase_date`, 
 			`inbound_date`, 
 			`purchase_status`, 
-			`purchase_note`
+			`purchase_note`,
+			`purchase_price`
 		)
 		values
 		(
@@ -90,7 +145,8 @@
 			#{purchaseDate}, 
 			#{inboundDate}, 
 			#{purchaseStatus}, 
-			#{purchaseNote}
+			#{purchaseNote},
+			#{purchasePrice}
 		)
 	</insert>
 	 
@@ -105,7 +161,8 @@
 			<if test="purchaseDate != null">`purchase_date` = #{purchaseDate}, </if>
 			<if test="inboundDate != null">`inbound_date` = #{inboundDate}, </if>
 			<if test="purchaseStatus != null">`purchase_status` = #{purchaseStatus}, </if>
-			<if test="purchaseNote != null">`purchase_note` = #{purchaseNote}</if>
+			<if test="purchaseNote != null">`purchase_note` = #{purchaseNote},</if>
+			<if test="purchasePrice != null">`purchase_price` = #{purchasePrice}</if>
 		</set>
 		where row_guid = #{rowGuid}
 	</update>
@@ -116,5 +173,9 @@
 			#{rowGuid}
 		</foreach>
 	</delete>
+
+	<select id="getDetailByGuid" resultType="com.basic.javaframe.entity.Sechos_Procurement">
+		select * from sechos_procurement where row_guid =#{rowGuid} and del_flag = 0
+	</select>
 
 </mapper>
