@@ -16,6 +16,7 @@
         <result property="purchaseStatus" column="purchase_status"/>
         <result property="purchaseNote" column="purchase_note"/>
 		<result property="purchasePrice" column="purchase_price"/>
+		<result property="personGuid" column="person_guid"/>
     </resultMap>
 
 	<select id="getList" resultType="com.basic.javaframe.entity.Sechos_Procurement">
@@ -82,6 +83,8 @@
     		<if test="purchaseNoteVague != null and purchaseNoteVague != ''"> and t.purchase_note like concat('%',#{purchaseNoteVague},'%') </if>
 			<if test="purchasePrice != null and purchasePrice != ''"> and t.purchase_price = #{purchasePrice} </if>
 			<if test="purchasePriceVague != null and purchasePriceVague != ''"> and t.purchase_price like concat('%',#{purchasePriceVague},'%') </if>
+			<if test="personGuid != null and personGuid != ''"> and t.person_guid = #{personGuid} </if>
+			<if test="personGuidVague != null and personGuidVague != ''"> and t.person_guid like concat('%',#{personGuidVague},'%') </if>
 			<if test=" startTime != null and startTime != '' and endTime != null and endTime != '' ">
 				AND DATE_FORMAT( t.purchase_date, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
 			</if>
@@ -114,6 +117,8 @@
 			<if test="purchaseNoteVague != null and purchaseNoteVague != ''"> and t.purchase_note like concat('%',#{purchaseNoteVague},'%') </if>
 			<if test="purchasePrice != null and purchasePrice != ''"> and t.purchase_price = #{purchasePrice} </if>
 			<if test="purchasePriceVague != null and purchasePriceVague != ''"> and t.purchase_price like concat('%',#{purchasePriceVague},'%') </if>
+			<if test="personGuid != null and personGuid != ''"> and t.person_guid = #{personGuid} </if>
+			<if test="personGuidVague != null and personGuidVague != ''"> and t.person_guid like concat('%',#{personGuidVague},'%') </if>
 			<if test=" startTime != null and startTime != '' and endTime != null and endTime != '' ">
 				AND DATE_FORMAT( t.purchase_date, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
 			</if>
@@ -133,7 +138,8 @@
 			`inbound_date`, 
 			`purchase_status`, 
 			`purchase_note`,
-			`purchase_price`
+			`purchase_price`,
+			`person_guid`
 		)
 		values
 		(
@@ -146,7 +152,8 @@
 			#{inboundDate}, 
 			#{purchaseStatus}, 
 			#{purchaseNote},
-			#{purchasePrice}
+			#{purchasePrice},
+			#{personGuid}
 		)
 	</insert>
 	 
@@ -162,7 +169,8 @@
 			<if test="inboundDate != null">`inbound_date` = #{inboundDate}, </if>
 			<if test="purchaseStatus != null">`purchase_status` = #{purchaseStatus}, </if>
 			<if test="purchaseNote != null">`purchase_note` = #{purchaseNote},</if>
-			<if test="purchasePrice != null">`purchase_price` = #{purchasePrice}</if>
+			<if test="purchasePrice != null">`purchase_price` = #{purchasePrice},</if>
+			<if test="personGuid != null">`person_guid` = #{personGuid}</if>
 		</set>
 		where row_guid = #{rowGuid}
 	</update>

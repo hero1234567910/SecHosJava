@@ -39,6 +39,8 @@ public class Sechos_Purchasingm2m implements Serializable {
 	private BigDecimal drugTotalPrice;
 	/**采购表Guid**/
 	private String purchaseGuid;
+	/**材料代码**/
+	private String drugCode;
 
 	/**材料过期日期**/
 	@JsonFormat( pattern="yyyy-MM-dd",timezone = "GMT+8")
@@ -179,6 +181,14 @@ public class Sechos_Purchasingm2m implements Serializable {
 
 	 public void setDrugPrice(BigDecimal drugPrice) {
 		 this.drugPrice = drugPrice;
+	 }
+
+	 public String getDrugCode() {
+		 return drugCode;
+	 }
+
+	 public void setDrugCode(String drugCode) {
+		 this.drugCode = drugCode;
 	 }
 
 	 @Override

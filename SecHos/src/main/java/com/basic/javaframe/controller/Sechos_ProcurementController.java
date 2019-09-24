@@ -55,8 +55,8 @@ public class Sechos_ProcurementController {
      **/
     @ApiOperation(value="新增采购单")
     @ResponseBody
-    @RequestMapping(value="/add",produces="application/json;charset=utf-8",method=RequestMethod.POST)
-    public R add(){
+    @RequestMapping(value="/add/{personGuid}",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+    public R add(@PathVariable("personGuid") String personGuid){
 		Sechos_Procurement sechosProcurement =new Sechos_Procurement();
     	//如果排序号为空，则自动转为0
     	if (sechosProcurement.getSortSq() == null) {
@@ -72,6 +72,7 @@ public class Sechos_ProcurementController {
 		sechosProcurement.setPurchaseOrderNum(purchaseNumber);
 		sechosProcurement.setDelFlag(0);
 		sechosProcurement.setPurchaseStatus(0);
+		sechosProcurement.setPersonGuid(personGuid);
 		sechosProcurementService.save(sechosProcurement);
         return R.ok();  
     }
@@ -110,7 +111,7 @@ public class Sechos_ProcurementController {
 			Sechos_Purchasingm2m sechosPurchasingm2m = sechosPurchasingm2mList.get(i);
 			money = money.add(sechosPurchasingm2m.getDrugTotalPrice());
 		}
-		System.out.println(money);
+		//System.out.println(money);
 		sechosProcurement.setPurchasePrice(money);
 		sechosProcurementService.update(sechosProcurement);
 		return R.ok();

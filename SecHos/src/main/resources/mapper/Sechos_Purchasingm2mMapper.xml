@@ -17,6 +17,7 @@
         <result property="drugTotalPrice" column="drug_totalPrice"/>
         <result property="purchaseGuid" column="purchase_guid"/>
 		<result property="drugOverdue" column="drug_overdue"/>
+		<result property="drugCode" column="drug_code"/>
     </resultMap>
 
 	<select id="getList" resultType="com.basic.javaframe.entity.Sechos_Purchasingm2m">
@@ -66,6 +67,8 @@
 			<if test="drugOverdueVague != null and drugOverdueVague != ''"> and t.drug_overdue like concat('%',#{drugOverdueVague},'%') </if>
 			<if test="drugPrice != null and drugPrice != ''"> and t.drug_price = #{druglPrice} </if>
 			<if test="drugPriceVague != null and drugPriceVague != ''"> and t.drug_price like concat('%',#{drugPriceVague},'%') </if>
+			<if test="drugCode != null and drugCode != ''"> and t.drug_code = #{drugCode} </if>
+			<if test="drugCodeVague != null and drugCodeVague != ''"> and t.drug_code like concat('%',#{drugCodeVague},'%') </if>
         	and t.del_flag = 0
         </where>
     </sql>
@@ -83,7 +86,8 @@
 			`drug_price`,
 			`drug_totalPrice`, 
 			`purchase_guid`,
-			`drug_overdue`
+			`drug_overdue`,
+			`drug_code`
 		)
 		values
 		(
@@ -97,7 +101,8 @@
 			#{drugPrice},
 			#{drugTotalPrice}, 
 			#{purchaseGuid},
-			#{drugOverdue}
+			#{drugOverdue},
+			#{drugCode}
 		)
 	</insert>
 	 
@@ -113,7 +118,8 @@
 			<if test="drugPrice != null">`drug_price` = #{drugPrice}, </if>
 			<if test="drugTotalPrice != null">`drug_totalPrice` = #{drugTotalPrice}, </if>
 			<if test="purchaseGuid != null">`purchase_guid` = #{purchaseGuid},</if>
-			<if test="drugOverdue != null">`drug_overdue` = #{drugOverdue}</if>
+			<if test="drugOverdue != null">`drug_overdue` = #{drugOverdue},</if>
+			<if test="drugCode != null">`drug_code` = #{drugCode}</if>
 		</set>
 		where row_guid = #{rowGuid}
 	</update>

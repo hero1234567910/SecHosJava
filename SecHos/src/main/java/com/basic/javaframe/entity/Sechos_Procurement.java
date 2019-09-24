@@ -63,6 +63,17 @@ public class Sechos_Procurement implements Serializable {
      **/
     private BigDecimal purchasePrice;
 
+    /**采购人Guid**/
+    private String personGuid;
+
+    public String getPersonGuid() {
+        return personGuid;
+    }
+
+    public void setPersonGuid(String personGuid) {
+        this.personGuid = personGuid;
+    }
+
     public void setPurchaseDate(Date purchaseDate) {
         this.purchaseDate = purchaseDate;
     }
