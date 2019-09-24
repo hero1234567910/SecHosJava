@@ -92,7 +92,10 @@
 			`yfje`,
 			`zfje`,
 			`zfsj`,
-			`yyxh`
+			`yyxh`,
+			`blh`,
+			`yjlsh`,
+			`hisddh`
 		)
 		values
 		(
@@ -114,7 +117,10 @@
 			#{yfje},
 			#{zfje},
 			#{zfsj},
-			#{yyxh}
+			#{yyxh},
+			#{blh},
+			#{yjlsh},
+			#{hisddh}
 		)
 	</insert>
 	 
@@ -139,7 +145,10 @@
 			<if test="yfje != null">`yfje` = #{yfje},</if>
 			<if test="zfje != null">`zfje` = #{zfje},</if>
 			<if test="zfsj != null">`zfsj` = #{zfsj},</if>
-			<if test="yyxh != null">`yyxh` = #{yyxh}</if>
+			<if test="yyxh != null">`yyxh` = #{yyxh},</if>
+			<if test="blh != null">`blh` = #{blh},</if>
+			<if test="yjlsh != null">`yjlsh` = #{yjlsh},</if>
+			<if test="hisddh != null">`hisddh` = #{hisddh}</if>
 		</set>
 		where row_id = #{rowId}
 	</update>

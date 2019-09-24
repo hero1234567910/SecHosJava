@@ -13,5 +13,9 @@ import com.basic.javaframe.entity.SechosDrug;
 public interface SechosDrugDao extends BaseDao<SechosDrug> {
 
 	List<SechosDrug> getByPationGuid(String patientRowGuid);
+
+	void deleteByJzlsh(String string);
+
+	List<SechosDrug> getByJzlsh(String ghxh);
 	
 }

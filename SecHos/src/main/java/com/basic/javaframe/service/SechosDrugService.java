@@ -24,4 +24,8 @@ public interface SechosDrugService {
 	void deleteBatch(String[] rowGuids);
 
 	List<SechosDrug> getByPationGuid(String patientRowGuid);
+
+	void deleteByJzlsh(String string);
+
+	List<SechosDrug> getByJzlsh(String ghxh);
 }

@@ -41,4 +41,7 @@ public class BaseController {
    	@Value(value = "${upload.file.url}")
    	public String fileUrl;
    	
+   	@Value(value="${wx.api.mch_id}")
+	public String mch_id;
+   	
 }

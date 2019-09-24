@@ -60,4 +60,7 @@ public class Api_BaseService {
 
 	@Value(value ="${zwx.userpwd}")
 	public String userpwd;
+	
+	@Value(value="${wnzf.url}")
+	public String wnzfUrl;
 }
