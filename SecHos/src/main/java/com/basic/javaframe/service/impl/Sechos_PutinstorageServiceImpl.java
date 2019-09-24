@@ -61,4 +61,9 @@ public class Sechos_PutinstorageServiceImpl implements Sechos_PutinstorageServic
 		return sechosPutinstorageDao.getStorageOverdue();
 	}
 
+	@Override
+	public List<Sechos_Putinstorage> getListByPurchaseGuid(String purchaseGuid) {
+		return sechosPutinstorageDao.getListByPurchaseGuid(purchaseGuid);
+	}
+
 }

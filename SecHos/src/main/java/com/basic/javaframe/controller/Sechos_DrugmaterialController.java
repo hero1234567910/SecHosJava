@@ -7,6 +7,8 @@ import com.basic.javaframe.common.utils.DateUtil;
 import com.basic.javaframe.common.utils.LayuiUtil;
 import com.basic.javaframe.entity.Sechos_Drugmaterial;
 import com.basic.javaframe.entity.Sechos_Repair;
+import com.basic.javaframe.entity.Sechos_Storageamount;
+import com.basic.javaframe.service.Sechos_StorageamountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
@@ -32,12 +34,14 @@ import com.basic.javaframe.common.utils.R;
 public class Sechos_DrugmaterialController {
 	@Autowired
 	private Sechos_DrugmaterialService sechosDrugmaterialService;
-	
+
+	@Autowired
+	private Sechos_StorageamountService sechosStorageamountService;
 	/**
 	 * 列表数据
 	 */
 	@PassToken
-	@ApiOperation(value="")
+	@ApiOperation(value="材料列表数据")
     @ResponseBody
 	@RequestMapping(value="/listData",produces="application/json;charset=utf-8",method=RequestMethod.GET)
 	public LayuiUtil listData(@RequestParam Map<String, Object> params){
@@ -52,7 +56,7 @@ public class Sechos_DrugmaterialController {
     /**
      * 新增
      **/
-    @ApiOperation(value="")
+    @ApiOperation(value="新增材料")
     @ResponseBody
     @RequestMapping(value="/add",produces="application/json;charset=utf-8",method=RequestMethod.POST)
     public R add(@RequestBody Sechos_Drugmaterial sechosDrugmaterial){
@@ -67,6 +71,22 @@ public class Sechos_DrugmaterialController {
 		sechosDrugmaterial.setCreateTime(createTime);
 		sechosDrugmaterial.setDelFlag(0);
 		sechosDrugmaterialService.save(sechosDrugmaterial);
+		//新增数量类别
+		Sechos_Storageamount sechosStorageamount = new Sechos_Storageamount();
+		if (sechosStorageamount.getSortSq() == null) {
+			sechosStorageamount.setSortSq(0);
+		}
+		//生成uuid作为rowguid
+		String uuid2 = java.util.UUID.randomUUID().toString();
+		sechosStorageamount.setRowGuid(uuid2);
+		Date createTime2 = DateUtil.changeDate(new Date());
+		sechosStorageamount.setCreateTime(createTime2);
+		sechosStorageamount.setDelFlag(0);
+		sechosStorageamount.setDrugName(sechosDrugmaterial.getDrugName());
+		sechosStorageamount.setDrugCode(sechosDrugmaterial.getDrugCode());
+		sechosStorageamount.setDrugGuid(sechosDrugmaterial.getRowGuid());
+		sechosStorageamount.setDrugSum(0);
+		sechosStorageamountService.save(sechosStorageamount);
         return R.ok();  
     }
 

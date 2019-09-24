@@ -8,6 +8,7 @@ import com.basic.javaframe.common.utils.LayuiUtil;
 import com.basic.javaframe.entity.Sechos_Procurement;
 import com.basic.javaframe.entity.Sechos_Putinstorage;
 import com.basic.javaframe.service.Sechos_ProcurementService;
+import com.basic.javaframe.service.Sechos_StorageamountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
@@ -36,6 +37,9 @@ public class Sechos_PutinstorageController {
 
 	@Autowired
 	private Sechos_ProcurementService sechosProcurementService;
+
+	@Autowired
+	private Sechos_StorageamountService sechosStorageamountService;
 	/**
 	 * 列表数据
 	 */
@@ -74,6 +78,13 @@ public class Sechos_PutinstorageController {
 		sechosProcurement.setPurchaseStatus(4);
 		sechosProcurement.setInboundDate(createTime);
 		sechosProcurementService.update(sechosProcurement);
+
+		List<Sechos_Putinstorage> sechosPutinstorageList = sechosPutinstorageService.getListByPurchaseGuid(purchaseGuid);
+		for (int i=0;i<sechosPutinstorageList.size();i++){
+			String drugCode= sechosPutinstorageList.get(i).getDrugCode();
+			Integer Num = sechosPutinstorageList.get(i).getDrugAmount();
+			sechosStorageamountService.updateNum(Num,drugCode);
+		}
         return R.ok();  
     }
 

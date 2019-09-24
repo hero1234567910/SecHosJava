@@ -184,4 +184,7 @@
         select purchase_guid from sechos_putinstorage where NOW() between date_sub(drug_overdue,interval 1 month) and  drug_overdue;
     </select>
 
+    <select id="getListByPurchaseGuid" resultType="com.basic.javaframe.entity.Sechos_Putinstorage">
+        select * from sechos_putinstorage where purchase_guid =#{purchaseGuid} and del_flag =0
+    </select>
 </mapper>

@@ -31,4 +31,11 @@ public interface Sechos_PutinstorageDao extends BaseDao<Sechos_Putinstorage> {
      * @return
      */
     List<String> getStorageOverdue();
+
+    /**
+     * 根据单号获取入库材料列表
+     * @param purchaseGuid
+     * @return
+     */
+    List<Sechos_Putinstorage> getListByPurchaseGuid(@Param("purchaseGuid") String purchaseGuid);
 }
