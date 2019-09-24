@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.Sechos_PutinstorageDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.basic.javaframe.entity.Sechos_Putinstorage" id="sechosPutinstorageMap">
+        <result property="rowId" column="row_id"/>
+        <result property="rowGuid" column="row_guid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="sortSq" column="sort_sq"/>
+        <result property="drugGuid" column="drug_guid"/>
+        <result property="drugName" column="drug_name"/>
+        <result property="drugCode" column="drug_code"/>
+        <result property="drugAmount" column="drug_amount"/>
+        <result property="drugTotalPrice" column="drug_totalPrice"/>
+        <result property="purchaseGuid" column="purchase_guid"/>
+        <result property="drugOverdue" column="drug_overdue"/>
+        <result property="drugInDate" column="drug_inDate"/>
+        <result property="personGuid" column="person_guid"/>
+    </resultMap>
+
+    <select id="getList" resultType="com.basic.javaframe.entity.Sechos_Putinstorage">
+        select * from sechos_putinstorage t
+        <include refid="where_clause"/>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by row_id desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="getCount" resultType="int">
+        select count(*) from sechos_putinstorage t
+        <include refid="where_clause"/>
+    </select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''">and t.row_id = #{rowId}</if>
+            <if test="rowIdVague != null and rowIdVague != ''">and t.row_id like concat('%',#{rowIdVague},'%')</if>
+            <if test="rowGuid != null and rowGuid != ''">and t.row_guid = #{rowGuid}</if>
+            <if test="rowGuidVague != null and rowGuidVague != ''">and t.row_guid like concat('%',#{rowGuidVague},'%')
+            </if>
+            <if test="createTime != null and createTime != ''">and t.create_time = #{createTime}</if>
+            <if test="createTimeVague != null and createTimeVague != ''">and t.create_time like
+                concat('%',#{createTimeVague},'%')
+            </if>
+            <if test="delFlag != null and delFlag != ''">and t.del_flag = #{delFlag}</if>
+            <if test="delFlagVague != null and delFlagVague != ''">and t.del_flag like concat('%',#{delFlagVague},'%')
+            </if>
+            <if test="sortSq != null and sortSq != ''">and t.sort_sq = #{sortSq}</if>
+            <if test="sortSqVague != null and sortSqVague != ''">and t.sort_sq like concat('%',#{sortSqVague},'%')</if>
+            <if test="drugGuid != null and drugGuid != ''">and t.drug_guid = #{drugGuid}</if>
+            <if test="drugGuidVague != null and drugGuidVague != ''">and t.drug_guid like
+                concat('%',#{drugGuidVague},'%')
+            </if>
+            <if test="drugName != null and drugName != ''">and t.drug_name = #{drugName}</if>
+            <if test="drugNameVague != null and drugNameVague != ''">and t.drug_name like
+                concat('%',#{drugNameVague},'%')
+            </if>
+            <if test="drugCode != null and drugCode != ''">and t.drug_code = #{drugCode}</if>
+            <if test="drugCodeVague != null and drugCodeVague != ''">and t.drug_code like
+                concat('%',#{drugCodeVague},'%')
+            </if>
+            <if test="drugAmount != null and drugAmount != ''">and t.drug_amount = #{drugAmount}</if>
+            <if test="drugAmountVague != null and drugAmountVague != ''">and t.drug_amount like
+                concat('%',#{drugAmountVague},'%')
+            </if>
+            <if test="drugTotalPrice != null and drugTotalPrice != ''">and t.drug_totalPrice = #{drugTotalPrice}</if>
+            <if test="drugTotalPriceVague != null and drugTotalPriceVague != ''">and t.drug_totalPrice like
+                concat('%',#{drugTotalPriceVague},'%')
+            </if>
+            <if test="purchaseGuid != null and purchaseGuid != ''">and t.purchase_guid = #{purchaseGuid}</if>
+            <if test="purchaseGuidVague != null and purchaseGuidVague != ''">and t.purchase_guid like
+                concat('%',#{purchaseGuidVague},'%')
+            </if>
+            <if test="drugOverdue != null and drugOverdue != ''">and t.drug_overdue = #{drugOverdue}</if>
+            <if test="drugOverdueVague != null and drugOverdueVague != ''">and t.drug_overdue like
+                concat('%',#{drugOverdueVague},'%')
+            </if>
+            <if test="drugInDate != null and drugInDate != ''">and t.drug_inDate = #{drugInDate}</if>
+            <if test="drugInDateVague != null and drugInDateVague != ''">and t.drug_inDate like
+                concat('%',#{drugInDateVague},'%')
+            </if>
+            <if test="personGuid != null and personGuid != ''">and t.person_guid = #{personGuid}</if>
+            <if test="personGuidVague != null and personGuidVague != ''">and t.person_guid like
+                concat('%',#{personGuidVague},'%')
+            </if>
+            and t.del_flag =0
+        </where>
+    </sql>
+
+    <insert id="save" parameterType="com.basic.javaframe.entity.Sechos_Putinstorage" useGeneratedKeys="true"
+            keyProperty="rowId">
+		insert into sechos_putinstorage
+		(
+			`row_guid`, 
+			`create_time`, 
+			`del_flag`, 
+			`sort_sq`, 
+			`drug_guid`, 
+			`drug_name`, 
+			`drug_code`, 
+			`drug_amount`, 
+			`drug_totalPrice`, 
+			`purchase_guid`, 
+			`drug_overdue`, 
+			`drug_inDate`, 
+			`person_guid`
+		)
+		values
+		(
+			#{rowGuid}, 
+			#{createTime}, 
+			#{delFlag}, 
+			#{sortSq}, 
+			#{drugGuid}, 
+			#{drugName}, 
+			#{drugCode}, 
+			#{drugAmount}, 
+			#{drugTotalPrice}, 
+			#{purchaseGuid}, 
+			#{drugOverdue}, 
+			#{drugInDate}, 
+			#{personGuid}
+		)
+	</insert>
+
+    <update id="update" parameterType="com.basic.javaframe.entity.Sechos_Putinstorage">
+        update sechos_putinstorage
+        <set>
+            <if test="rowGuid != null">`row_guid` = #{rowGuid},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="delFlag != null">`del_flag` = #{delFlag},</if>
+            <if test="sortSq != null">`sort_sq` = #{sortSq},</if>
+            <if test="drugGuid != null">`drug_guid` = #{drugGuid},</if>
+            <if test="drugName != null">`drug_name` = #{drugName},</if>
+            <if test="drugCode != null">`drug_code` = #{drugCode},</if>
+            <if test="drugAmount != null">`drug_amount` = #{drugAmount},</if>
+            <if test="drugTotalPrice != null">`drug_totalPrice` = #{drugTotalPrice},</if>
+            <if test="purchaseGuid != null">`purchase_guid` = #{purchaseGuid},</if>
+            <if test="drugOverdue != null">`drug_overdue` = #{drugOverdue},</if>
+            <if test="drugInDate != null">`drug_inDate` = #{drugInDate},</if>
+            <if test="personGuid != null">`person_guid` = #{personGuid}</if>
+        </set>
+        where row_guid = #{rowGuid}
+    </update>
+
+    <delete id="deleteBatch">
+        update sechos_putinstorage set `del_flag` = 1 where row_guid in
+        <foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+            #{rowGuid}
+        </foreach>
+    </delete>
+
+    <insert id="insertStorage" parameterType="com.basic.javaframe.entity.Sechos_Putinstorage">
+		insert into sechos_putinstorage (row_id,row_guid,create_time,del_flag,sort_sq,drug_guid,drug_name,drug_code,drug_amount,
+		drug_totalPrice,purchase_guid,drug_overdue) select row_id,row_guid,create_time,del_flag,sort_sq,drug_guid,drug_name,drug_code,drug_amount,
+		drug_totalPrice,purchase_guid,drug_overdue from sechos_purchasingm2m t2 where t2.purchase_guid =#{purchaseGuid}
+		and t2.del_flag = 0;
+	</insert>
+
+    <update id="insertInDate" parameterType="com.basic.javaframe.entity.Sechos_Putinstorage">
+        update sechos_putinstorage
+        <set>
+            <if test="drugInDate != null">`drug_inDate` = #{drugInDate},</if>
+            <if test="personGuid != null">`person_guid` = #{personGuid}</if>
+        </set>
+		where purchase_guid =#{purchaseGuid}
+	</update>
+</mapper>
