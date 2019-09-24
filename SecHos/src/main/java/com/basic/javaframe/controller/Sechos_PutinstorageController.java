@@ -66,7 +66,7 @@ public class Sechos_PutinstorageController {
 		Date createTime = DateUtil.changeDate(new Date());
 		sechosPutinstorage.setPersonGuid(personGuid);
 		sechosPutinstorage.setPurchaseGuid(purchaseGuid);
-		sechosPutinstorage.setCreateTime(createTime);
+		sechosPutinstorage.setDrugInDate(createTime);
 
 		sechosPutinstorageService.insertStorage(purchaseGuid);
 		sechosPutinstorageService.insertInDate(sechosPutinstorage);
@@ -98,5 +98,15 @@ public class Sechos_PutinstorageController {
 		sechosPutinstorageService.deleteBatch(rowGuids);
 		return R.ok();
 	}
-	
+
+	/**
+	 * 获取有将近过期材料的单号
+	 */
+	@ApiOperation(value="获取有将近过期材料的单号")
+	@ResponseBody
+	@RequestMapping(value="/getStorageOverdue",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getStorageOverdue(){
+		List<String> stringList = sechosPutinstorageService.getStorageOverdue();
+		return R.ok().put("data",stringList);
+	}
 }

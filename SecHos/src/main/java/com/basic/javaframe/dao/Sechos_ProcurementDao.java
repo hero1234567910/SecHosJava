@@ -21,4 +21,6 @@ public interface Sechos_ProcurementDao extends BaseDao<Sechos_Procurement> {
 
     Sechos_Procurement getDetailByGuid(String rowGuid);
 
+    int changeOverDueMark(String[] strings);
+
 }

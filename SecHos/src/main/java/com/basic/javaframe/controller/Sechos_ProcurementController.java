@@ -143,4 +143,15 @@ public class Sechos_ProcurementController {
 		PageUtils pageUtil = new PageUtils(sechosProcurementList, total, query.getLimit(), query.getPage());
 		return LayuiUtil.data(pageUtil.getTotalCount(), pageUtil.getList());
 	}
+
+	/**
+	 * 修改近效期状态
+	 */
+	@ApiOperation(value="修改近效期状态")
+	@ResponseBody
+	@RequestMapping(value="/changeOverDueMark",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R changeOverDueMark(@RequestBody String[] rowGuids){
+		sechosProcurementService.changeOverDueMark(rowGuids);
+		return R.ok();
+	}
 }

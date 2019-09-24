@@ -28,4 +28,6 @@ public interface Sechos_PutinstorageService {
 	void insertStorage(String purchaseGuid);
 
 	void insertInDate(Sechos_Putinstorage sechosPutinstorage);
+
+	List<String> getStorageOverdue();
 }

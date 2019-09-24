@@ -4,6 +4,7 @@ import com.basic.javaframe.entity.Sechos_Putinstorage;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author
@@ -25,5 +26,9 @@ public interface Sechos_PutinstorageDao extends BaseDao<Sechos_Putinstorage> {
      */
     int insertInDate(Sechos_Putinstorage sechosPutinstorage);
 
-
+    /**
+     * 获取有将近过期材料的单号
+     * @return
+     */
+    List<String> getStorageOverdue();
 }

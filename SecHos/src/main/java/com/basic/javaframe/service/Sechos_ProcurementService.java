@@ -28,4 +28,6 @@ public interface Sechos_ProcurementService {
 	int getCount2(Map<String, Object> map);
 
 	Sechos_Procurement getDetailByGuid(String rowGuid);
+
+	int changeOverDueMark(String[] strings);
 }

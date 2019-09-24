@@ -17,6 +17,7 @@
         <result property="purchaseNote" column="purchase_note"/>
 		<result property="purchasePrice" column="purchase_price"/>
 		<result property="personGuid" column="person_guid"/>
+		<result property="overdueMark" column="overdue_mark"/>
     </resultMap>
 
 	<select id="getList" resultType="com.basic.javaframe.entity.Sechos_Procurement">
@@ -85,8 +86,12 @@
 			<if test="purchasePriceVague != null and purchasePriceVague != ''"> and t.purchase_price like concat('%',#{purchasePriceVague},'%') </if>
 			<if test="personGuid != null and personGuid != ''"> and t.person_guid = #{personGuid} </if>
 			<if test="personGuidVague != null and personGuidVague != ''"> and t.person_guid like concat('%',#{personGuidVague},'%') </if>
+			<if test="overdueMark != null and overdueMark != ''"> and t.overdue_mark = #{overdueMark} </if>
 			<if test=" startTime != null and startTime != '' and endTime != null and endTime != '' ">
 				AND DATE_FORMAT( t.purchase_date, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
+			</if>
+			<if test=" startInTime != null and startInTime != '' and endInTime != null and endInTime != '' ">
+				AND DATE_FORMAT( t.inbound_date, '%Y-%m-%d') BETWEEN #{startInTime} AND #{endInTime}
 			</if>
 			and t.del_flag = 0
         </where>
@@ -119,10 +124,11 @@
 			<if test="purchasePriceVague != null and purchasePriceVague != ''"> and t.purchase_price like concat('%',#{purchasePriceVague},'%') </if>
 			<if test="personGuid != null and personGuid != ''"> and t.person_guid = #{personGuid} </if>
 			<if test="personGuidVague != null and personGuidVague != ''"> and t.person_guid like concat('%',#{personGuidVague},'%') </if>
+			<if test="overdueMark != null and overdueMark != ''"> and t.overdue_mark = #{overdueMark} </if>
 			<if test=" startTime != null and startTime != '' and endTime != null and endTime != '' ">
 				AND DATE_FORMAT( t.purchase_date, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
 			</if>
-			and t.del_flag = 0 and t.purchase_status between 2 and 4
+			and t.del_flag = 0 and t.purchase_status between 2 and 3
 		</where>
 	</sql>
 
@@ -139,7 +145,8 @@
 			`purchase_status`, 
 			`purchase_note`,
 			`purchase_price`,
-			`person_guid`
+			`person_guid`,
+			`overdue_mark`
 		)
 		values
 		(
@@ -153,7 +160,8 @@
 			#{purchaseStatus}, 
 			#{purchaseNote},
 			#{purchasePrice},
-			#{personGuid}
+			#{personGuid},
+			#{overdueMark}
 		)
 	</insert>
 	 
@@ -170,7 +178,8 @@
 			<if test="purchaseStatus != null">`purchase_status` = #{purchaseStatus}, </if>
 			<if test="purchaseNote != null">`purchase_note` = #{purchaseNote},</if>
 			<if test="purchasePrice != null">`purchase_price` = #{purchasePrice},</if>
-			<if test="personGuid != null">`person_guid` = #{personGuid}</if>
+			<if test="personGuid != null">`person_guid` = #{personGuid},</if>
+			<if test="overdueMark != null">`overdue_mark` = #{overdueMark}</if>
 		</set>
 		where row_guid = #{rowGuid}
 	</update>
@@ -186,4 +195,10 @@
 		select * from sechos_procurement where row_guid =#{rowGuid} and del_flag = 0
 	</select>
 
+	<update id="changeOverDueMark">
+		update sechos_procurement set `overdue_mark` = 1 where row_guid in
+		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+			#{rowGuid}
+		</foreach>
+	</update>
 </mapper>

@@ -63,8 +63,23 @@ public class Sechos_Procurement implements Serializable {
      **/
     private BigDecimal purchasePrice;
 
-    /**采购人Guid**/
+    /**
+     * 采购人Guid
+     **/
     private String personGuid;
+
+    /**
+     * 过期标识
+     **/
+    private Integer overdueMark;
+
+    public Integer getOverdueMark() {
+        return overdueMark;
+    }
+
+    public void setOverdueMark(Integer overdueMark) {
+        this.overdueMark = overdueMark;
+    }
 
     public String getPersonGuid() {
         return personGuid;

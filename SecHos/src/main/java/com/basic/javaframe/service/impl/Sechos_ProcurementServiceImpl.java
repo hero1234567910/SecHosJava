@@ -59,4 +59,9 @@ public class Sechos_ProcurementServiceImpl implements Sechos_ProcurementService 
 		return sechosProcurementDao.getDetailByGuid(rowGuid);
 	}
 
+	@Override
+	public int changeOverDueMark(String[] strings) {
+		return sechosProcurementDao.changeOverDueMark(strings);
+	}
+
 }

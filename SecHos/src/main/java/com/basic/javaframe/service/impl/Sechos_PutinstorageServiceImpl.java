@@ -56,4 +56,9 @@ public class Sechos_PutinstorageServiceImpl implements Sechos_PutinstorageServic
 	sechosPutinstorageDao.insertInDate(sechosPutinstorage);
 	}
 
+	@Override
+	public List<String> getStorageOverdue() {
+		return sechosPutinstorageDao.getStorageOverdue();
+	}
+
 }

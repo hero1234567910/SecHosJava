@@ -178,4 +178,10 @@
         </set>
 		where purchase_guid =#{purchaseGuid}
 	</update>
+
+    <!--查询入库材料近效期=>采购单号-->
+    <select id="getStorageOverdue" resultType="String">
+        select purchase_guid from sechos_putinstorage where NOW() between date_sub(drug_overdue,interval 1 month) and  drug_overdue;
+    </select>
+
 </mapper>
