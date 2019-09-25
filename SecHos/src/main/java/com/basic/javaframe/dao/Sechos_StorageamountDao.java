@@ -25,5 +25,7 @@ public interface Sechos_StorageamountDao extends BaseDao<Sechos_Storageamount> {
      * @return
      */
     int getSumByGuid(@Param("drugGuid")String drugGuid);
+
+    int subtractNum(@Param("Num")Integer Num,@Param("drugCode")String drugCode);
 	
 }

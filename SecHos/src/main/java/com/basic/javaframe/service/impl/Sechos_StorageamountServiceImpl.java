@@ -54,4 +54,9 @@ public class Sechos_StorageamountServiceImpl implements Sechos_StorageamountServ
 		return sechosStorageamountDao.getSumByGuid(drugGuid);
 	}
 
+	@Override
+	public void subtractNum(Integer Num, String drugCode) {
+		sechosStorageamountDao.subtractNum(Num,drugCode);
+	}
+
 }

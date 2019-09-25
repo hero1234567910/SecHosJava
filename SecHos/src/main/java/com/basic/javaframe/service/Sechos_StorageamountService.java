@@ -1,6 +1,7 @@
 package com.basic.javaframe.service;
 
 import com.basic.javaframe.entity.Sechos_Storageamount;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -26,4 +27,6 @@ public interface Sechos_StorageamountService {
 	void updateNum(Integer Num,String drugCode);
 
 	int getSumByGuid(String drugGuid);
+
+	void subtractNum(Integer Num,String drugCode);
 }

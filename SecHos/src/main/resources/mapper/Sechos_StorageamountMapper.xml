@@ -116,4 +116,9 @@
 	<select id="getSumByGuid" resultType="int">
 		select drug_sum from sechos_storageamount where drug_guid=#{drugGuid} and del_flag = 0
 	</select>
+
+	<update id="subtractNum" >
+		update sechos_storageamount set `drug_sum` = `drug_sum` - #{Num} where
+			drug_code=#{drugCode}
+	</update>
 </mapper>
