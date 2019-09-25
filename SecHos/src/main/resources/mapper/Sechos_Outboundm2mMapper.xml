@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.basic.javaframe.dao.Sechos_StorageamountDao">
+<mapper namespace="com.basic.javaframe.dao.Sechos_Outboundm2mDao">
 
 	<!-- 可根据自己的需求，是否要使用 -->
-    <resultMap type="com.basic.javaframe.entity.Sechos_Storageamount" id="sechosStorageamountMap">
+    <resultMap type="com.basic.javaframe.entity.Sechos_Outboundm2m" id="sechosOutboundm2mMap">
         <result property="rowId" column="row_id"/>
         <result property="rowGuid" column="row_guid"/>
         <result property="createTime" column="create_time"/>
@@ -12,12 +12,15 @@
         <result property="sortSq" column="sort_sq"/>
         <result property="drugGuid" column="drug_guid"/>
         <result property="drugName" column="drug_name"/>
-        <result property="drugCode" column="drug_code"/>
-        <result property="drugSum" column="drug_sum"/>
-    </resultMap>
+        <result property="drugAmount" column="drug_amount"/>
+        <result property="drugTotalPrice" column="drug_totalPrice"/>
+        <result property="outboundGuid" column="outbound_guid"/>
+		<result property="drugCode" column="drug_code"/>
+		<result property="drugPrice" column="drug_price"/>
+	</resultMap>
 
-	<select id="getList" resultType="com.basic.javaframe.entity.Sechos_Storageamount">
-		select * from sechos_storageamount t <include refid="where_clause" />
+	<select id="getList" resultType="com.basic.javaframe.entity.Sechos_Outboundm2m">
+		select * from sechos_outboundm2m t <include refid="where_clause" />
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -32,7 +35,7 @@
 	</select>
 	
  	<select id="getCount" resultType="int">
-		select count(*) from sechos_storageamount t  <include refid="where_clause" />
+		select count(*) from sechos_outboundm2m t  <include refid="where_clause" />
 	</select>
 
     <!-- 搜索数据区域 -->
@@ -53,16 +56,22 @@
     		<if test="drugGuidVague != null and drugGuidVague != ''"> and t.drug_guid like concat('%',#{drugGuidVague},'%') </if>
             <if test="drugName != null and drugName != ''"> and t.drug_name = #{drugName} </if>
     		<if test="drugNameVague != null and drugNameVague != ''"> and t.drug_name like concat('%',#{drugNameVague},'%') </if>
-            <if test="drugCode != null and drugCode != ''"> and t.drug_code = #{drugCode} </if>
-    		<if test="drugCodeVague != null and drugCodeVague != ''"> and t.drug_code like concat('%',#{drugCodeVague},'%') </if>
-            <if test="drugSum != null and drugSum != ''"> and t.drug_sum = #{drugSum} </if>
-    		<if test="drugSumVague != null and drugSumVague != ''"> and t.drug_sum like concat('%',#{drugSumVague},'%') </if>
-        	and t.del_flag = 0
+            <if test="drugAmount != null and drugAmount != ''"> and t.drug_amount = #{drugAmount} </if>
+    		<if test="drugAmountVague != null and drugAmountVague != ''"> and t.drug_amount like concat('%',#{drugAmountVague},'%') </if>
+            <if test="drugTotalPrice != null and drugTotalPrice != ''"> and t.drug_totalPrice = #{drugTotalPrice} </if>
+    		<if test="drugTotalPriceVague != null and drugTotalPriceVague != ''"> and t.drug_totalPrice like concat('%',#{drugTotalPriceVague},'%') </if>
+            <if test="outboundGuid != null and outboundGuid != ''"> and t.outbound_guid = #{outboundGuid} </if>
+    		<if test="outboundGuidVague != null and outboundGuidVague != ''"> and t.outbound_guid like concat('%',#{outboundGuidVague},'%') </if>
+			<if test="drugCode != null and drugCode != ''"> and t.drug_code = #{drugCode} </if>
+			<if test="drugCodeVague != null and drugCodeVague != ''"> and t.drug_code like concat('%',#{drugCodeVague},'%') </if>
+			<if test="drugPrice != null and drugPrice != ''"> and t.drug_price = #{druglPrice} </if>
+			<if test="drugPriceVague != null and drugPriceVague != ''"> and t.drug_price like concat('%',#{drugPriceVague},'%') </if>
+			and t.del_flag = 0
         </where>
     </sql>
 	 
-	<insert id="save" parameterType="com.basic.javaframe.entity.Sechos_Storageamount" useGeneratedKeys="true" keyProperty="rowId">
-		insert into sechos_storageamount
+	<insert id="save" parameterType="com.basic.javaframe.entity.Sechos_Outboundm2m" useGeneratedKeys="true" keyProperty="rowId">
+		insert into sechos_outboundm2m
 		(
 			`row_guid`, 
 			`create_time`, 
@@ -70,8 +79,11 @@
 			`sort_sq`, 
 			`drug_guid`, 
 			`drug_name`, 
-			`drug_code`, 
-			`drug_sum`
+			`drug_amount`, 
+			`drug_totalPrice`, 
+			`outbound_guid`,
+			`drug_code`,
+			`drug_price`
 		)
 		values
 		(
@@ -81,13 +93,16 @@
 			#{sortSq}, 
 			#{drugGuid}, 
 			#{drugName}, 
-			#{drugCode}, 
-			#{drugSum}
+			#{drugAmount}, 
+			#{drugTotalPrice}, 
+			#{outboundGuid},
+			#{drugCode},
+			#{drugPrice}
 		)
 	</insert>
 	 
-	<update id="update" parameterType="com.basic.javaframe.entity.Sechos_Storageamount">
-		update sechos_storageamount 
+	<update id="update" parameterType="com.basic.javaframe.entity.Sechos_Outboundm2m">
+		update sechos_outboundm2m 
 		<set>
 			<if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
 			<if test="createTime != null">`create_time` = #{createTime}, </if>
@@ -95,25 +110,24 @@
 			<if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
 			<if test="drugGuid != null">`drug_guid` = #{drugGuid}, </if>
 			<if test="drugName != null">`drug_name` = #{drugName}, </if>
-			<if test="drugCode != null">`drug_code` = #{drugCode}, </if>
-			<if test="drugSum != null">`drug_sum` = #{drugSum}</if>
+			<if test="drugAmount != null">`drug_amount` = #{drugAmount}, </if>
+			<if test="drugTotalPrice != null">`drug_totalPrice` = #{drugTotalPrice}, </if>
+			<if test="outboundGuid != null">`outbound_guid` = #{outboundGuid},</if>
+			<if test="drugPrice != null">`drug_price` = #{drugPrice}, </if>
+			<if test="drugCode != null">`drug_code` = #{drugCode}</if>
 		</set>
 		where row_guid = #{rowGuid}
 	</update>
 	
 	<delete id="deleteBatch">
-		update sechos_storageamount set `del_flag` = 1 where row_guid in 
+		update sechos_outboundm2m set `del_flag` = 1 where row_guid in 
 		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
 			#{rowGuid}
 		</foreach>
 	</delete>
 
-	<update id="updateNum" >
-		update sechos_storageamount set `drug_sum` = #{Num}+`drug_sum` where
-			drug_code=#{drugCode}
-	</update>
-
-	<select id="getSumByGuid" resultType="int">
-		select drug_sum from sechos_storageamount where drug_guid=#{drugGuid} and del_flag = 0
+	<select id="getListByPGuid" resultType="com.basic.javaframe.entity.Sechos_Outboundm2m">
+		select drug_name,drug_amount,drug_price,drug_totalPrice from sechos_outboundm2m where outbound_guid=#{outboundGuid} and del_flag = 0 order by row_id desc;
 	</select>
+
 </mapper>

@@ -24,4 +24,6 @@ public interface Sechos_StorageamountService {
 	void deleteBatch(String[] rowGuids);
 
 	void updateNum(Integer Num,String drugCode);
+
+	int getSumByGuid(String drugGuid);
 }

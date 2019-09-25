@@ -49,4 +49,9 @@ public class Sechos_StorageamountServiceImpl implements Sechos_StorageamountServ
 		sechosStorageamountDao.updateNum(Num,drugCode);
 	}
 
+	@Override
+	public int getSumByGuid(String drugGuid) {
+		return sechosStorageamountDao.getSumByGuid(drugGuid);
+	}
+
 }

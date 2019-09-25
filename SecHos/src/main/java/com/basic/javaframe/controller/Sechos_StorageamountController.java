@@ -89,5 +89,16 @@ public class Sechos_StorageamountController {
 		sechosStorageamountService.deleteBatch(rowGuids);
 		return R.ok();
 	}
+
+	/**
+	 * 根据Guid获取总数
+	 */
+	@ApiOperation(value="根据Guid获取总数")
+	@ResponseBody
+	@RequestMapping(value="/getSumByGuid",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getSumByGuid(@RequestBody String drugGuid){
+		Integer num = sechosStorageamountService.getSumByGuid(drugGuid);
+		return R.ok().put("data",num);
+	}
 	
 }

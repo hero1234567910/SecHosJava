@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.Sechos_OutboundDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.basic.javaframe.entity.Sechos_Outbound" id="sechosOutboundMap">
+        <result property="rowId" column="row_id"/>
+        <result property="rowGuid" column="row_guid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="sortSq" column="sort_sq"/>
+        <result property="outboundOrderNum" column="outbound_orderNum"/>
+        <result property="orderDate" column="order_date"/>
+        <result property="outboundDate" column="outbound_date"/>
+        <result property="outboundStatus" column="outbound_status"/>
+        <result property="outboundNote" column="outbound_note"/>
+        <result property="outboundPrice" column="outbound_price"/>
+        <result property="personGuid" column="person_guid"/>
+    </resultMap>
+
+	<select id="getList" resultType="com.basic.javaframe.entity.Sechos_Outbound">
+		select * from sechos_outbound t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by row_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="getList2" resultType="com.basic.javaframe.entity.Sechos_Outbound">
+		select * from sechos_outbound t <include refid="where_clause2" />
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by row_id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="getCount" resultType="int">
+		select count(*) from sechos_outbound t  <include refid="where_clause" />
+	</select>
+
+	<select id="getCount2" resultType="int">
+		select count(*) from sechos_outbound t  <include refid="where_clause2" />
+	</select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+    		<if test="rowIdVague != null and rowIdVague != ''"> and t.row_id like concat('%',#{rowIdVague},'%') </if>
+            <if test="rowGuid != null and rowGuid != ''"> and t.row_guid = #{rowGuid} </if>
+    		<if test="rowGuidVague != null and rowGuidVague != ''"> and t.row_guid like concat('%',#{rowGuidVague},'%') </if>
+            <if test="createTime != null and createTime != ''"> and t.create_time = #{createTime} </if>
+    		<if test="createTimeVague != null and createTimeVague != ''"> and t.create_time like concat('%',#{createTimeVague},'%') </if>
+            <if test="delFlag != null and delFlag != ''"> and t.del_flag = #{delFlag} </if>
+    		<if test="delFlagVague != null and delFlagVague != ''"> and t.del_flag like concat('%',#{delFlagVague},'%') </if>
+            <if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
+    		<if test="sortSqVague != null and sortSqVague != ''"> and t.sort_sq like concat('%',#{sortSqVague},'%') </if>
+            <if test="outboundOrderNum != null and outboundOrderNum != ''"> and t.outbound_orderNum = #{outboundOrderNum} </if>
+    		<if test="outboundOrderNumVague != null and outboundOrderNumVague != ''"> and t.outbound_orderNum like concat('%',#{outboundOrderNumVague},'%') </if>
+            <if test="orderDate != null and orderDate != ''"> and t.order_date = #{orderDate} </if>
+    		<if test="orderDateVague != null and orderDateVague != ''"> and t.order_date like concat('%',#{orderDateVague},'%') </if>
+            <if test="outboundDate != null and outboundDate != ''"> and t.outbound_date = #{outboundDate} </if>
+    		<if test="outboundDateVague != null and outboundDateVague != ''"> and t.outbound_date like concat('%',#{outboundDateVague},'%') </if>
+            <if test="outboundStatus != null and outboundStatus != ''"> and t.outbound_status = #{outboundStatus} </if>
+    		<if test="outboundStatusVague != null and outboundStatusVague != ''"> and t.outbound_status like concat('%',#{outboundStatusVague},'%') </if>
+            <if test="outboundNote != null and outboundNote != ''"> and t.outbound_note = #{outboundNote} </if>
+    		<if test="outboundNoteVague != null and outboundNoteVague != ''"> and t.outbound_note like concat('%',#{outboundNoteVague},'%') </if>
+            <if test="outboundPrice != null and outboundPrice != ''"> and t.outbound_price = #{outboundPrice} </if>
+    		<if test="outboundPriceVague != null and outboundPriceVague != ''"> and t.outbound_price like concat('%',#{outboundPriceVague},'%') </if>
+            <if test="personGuid != null and personGuid != ''"> and t.person_guid = #{personGuid} </if>
+    		<if test="personGuidVague != null and personGuidVague != ''"> and t.person_guid like concat('%',#{personGuidVague},'%') </if>
+			<if test=" startTime != null and startTime != '' and endTime != null and endTime != '' ">
+				AND DATE_FORMAT( t.order_date, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
+			</if>
+			<if test=" startInTime != null and startInTime != '' and endInTime != null and endInTime != '' ">
+				AND DATE_FORMAT( t.outbound_date, '%Y-%m-%d') BETWEEN #{startInTime} AND #{endInTime}
+			</if>
+			and t.del_flag = 0
+        </where>
+    </sql>
+
+	<sql id="where_clause2">
+		<where>
+			1=1
+			<if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+			<if test="rowIdVague != null and rowIdVague != ''"> and t.row_id like concat('%',#{rowIdVague},'%') </if>
+			<if test="rowGuid != null and rowGuid != ''"> and t.row_guid = #{rowGuid} </if>
+			<if test="rowGuidVague != null and rowGuidVague != ''"> and t.row_guid like concat('%',#{rowGuidVague},'%') </if>
+			<if test="createTime != null and createTime != ''"> and t.create_time = #{createTime} </if>
+			<if test="createTimeVague != null and createTimeVague != ''"> and t.create_time like concat('%',#{createTimeVague},'%') </if>
+			<if test="delFlag != null and delFlag != ''"> and t.del_flag = #{delFlag} </if>
+			<if test="delFlagVague != null and delFlagVague != ''"> and t.del_flag like concat('%',#{delFlagVague},'%') </if>
+			<if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
+			<if test="sortSqVague != null and sortSqVague != ''"> and t.sort_sq like concat('%',#{sortSqVague},'%') </if>
+			<if test="outboundOrderNum != null and outboundOrderNum != ''"> and t.outbound_orderNum = #{outboundOrderNum} </if>
+			<if test="outboundOrderNumVague != null and outboundOrderNumVague != ''"> and t.outbound_orderNum like concat('%',#{outboundOrderNumVague},'%') </if>
+			<if test="orderDate != null and orderDate != ''"> and t.order_date = #{orderDate} </if>
+			<if test="orderDateVague != null and orderDateVague != ''"> and t.order_date like concat('%',#{orderDateVague},'%') </if>
+			<if test="outboundDate != null and outboundDate != ''"> and t.outbound_date = #{outboundDate} </if>
+			<if test="outboundDateVague != null and outboundDateVague != ''"> and t.outbound_date like concat('%',#{outboundDateVague},'%') </if>
+			<if test="outboundStatus != null and outboundStatus != ''"> and t.outbound_status = #{outboundStatus} </if>
+			<if test="outboundStatusVague != null and outboundStatusVague != ''"> and t.outbound_status like concat('%',#{outboundStatusVague},'%') </if>
+			<if test="outboundNote != null and outboundNote != ''"> and t.outbound_note = #{outboundNote} </if>
+			<if test="outboundNoteVague != null and outboundNoteVague != ''"> and t.outbound_note like concat('%',#{outboundNoteVague},'%') </if>
+			<if test="outboundPrice != null and outboundPrice != ''"> and t.outbound_price = #{outboundPrice} </if>
+			<if test="outboundPriceVague != null and outboundPriceVague != ''"> and t.outbound_price like concat('%',#{outboundPriceVague},'%') </if>
+			<if test="personGuid != null and personGuid != ''"> and t.person_guid = #{personGuid} </if>
+			<if test="personGuidVague != null and personGuidVague != ''"> and t.person_guid like concat('%',#{personGuidVague},'%') </if>
+			<if test=" startTime != null and startTime != '' and endTime != null and endTime != '' ">
+				AND DATE_FORMAT( t.order_date, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
+			</if>
+
+			and t.del_flag = 0 and t.outbound_status between 2 and 3
+		</where>
+	</sql>
+	 
+	<insert id="save" parameterType="com.basic.javaframe.entity.Sechos_Outbound" useGeneratedKeys="true" keyProperty="rowId">
+		insert into sechos_outbound
+		(
+			`row_guid`, 
+			`create_time`, 
+			`del_flag`, 
+			`sort_sq`, 
+			`outbound_orderNum`, 
+			`order_date`, 
+			`outbound_date`, 
+			`outbound_status`, 
+			`outbound_note`, 
+			`outbound_price`, 
+			`person_guid`
+		)
+		values
+		(
+			#{rowGuid}, 
+			#{createTime}, 
+			#{delFlag}, 
+			#{sortSq}, 
+			#{outboundOrderNum}, 
+			#{orderDate}, 
+			#{outboundDate}, 
+			#{outboundStatus}, 
+			#{outboundNote}, 
+			#{outboundPrice}, 
+			#{personGuid}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.basic.javaframe.entity.Sechos_Outbound">
+		update sechos_outbound 
+		<set>
+			<if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+			<if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+			<if test="outboundOrderNum != null">`outbound_orderNum` = #{outboundOrderNum}, </if>
+			<if test="orderDate != null">`order_date` = #{orderDate}, </if>
+			<if test="outboundDate != null">`outbound_date` = #{outboundDate}, </if>
+			<if test="outboundStatus != null">`outbound_status` = #{outboundStatus}, </if>
+			<if test="outboundNote != null">`outbound_note` = #{outboundNote}, </if>
+			<if test="outboundPrice != null">`outbound_price` = #{outboundPrice}, </if>
+			<if test="personGuid != null">`person_guid` = #{personGuid}</if>
+		</set>
+		where row_guid = #{rowGuid}
+	</update>
+	
+	<delete id="deleteBatch">
+		update sechos_outbound set `del_flag` = 1 where row_guid in 
+		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+			#{rowGuid}
+		</foreach>
+	</delete>
+
+	<select id="getDetailByGuid" resultType="com.basic.javaframe.entity.Sechos_Outbound">
+		select * from sechos_outbound where row_guid =#{rowGuid} and del_flag = 0
+	</select>
+
+</mapper>
