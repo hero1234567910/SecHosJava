@@ -80,9 +80,17 @@ public class Sechos_Outboundm2mController {
 		Date createTime = DateUtil.changeDate(new Date());
 		sechosOutboundm2m.setCreateTime(createTime);
 		sechosOutboundm2m.setDelFlag(0);
+		String guid = sechosOutboundm2m.getOutboundGuid();
+		Sechos_Outboundm2m sechosOutboundm2m1 = new Sechos_Outboundm2m();
+		sechosOutboundm2m1.setOutboundGuid(guid);
+		sechosOutboundm2m1.setDrugCode(sechosOutboundm2m.getDrugCode());
+		int count = sechosOutboundm2mService.getCountByGuid(sechosOutboundm2m1);
+		if(count>=1){
+			return R.error("请勿重复添加相同类别的出库项！");
+		}
 		sechosOutboundm2mService.save(sechosOutboundm2m);
 
-		String guid = sechosOutboundm2m.getOutboundGuid();
+
 		Sechos_Outbound sechosOutbound = new Sechos_Outbound();
 		sechosOutbound.setRowGuid(guid);
 		sechosOutbound.setOutboundStatus(1);

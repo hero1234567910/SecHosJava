@@ -49,4 +49,9 @@ public class Sechos_Outboundm2mServiceImpl implements Sechos_Outboundm2mService 
 		return sechosOutboundm2mDao.getListByPGuid(outboundGuid);
 	}
 
+	@Override
+	public <T> int getCountByGuid(T t) {
+		return sechosOutboundm2mDao.getCountByGuid(t);
+	}
+
 }

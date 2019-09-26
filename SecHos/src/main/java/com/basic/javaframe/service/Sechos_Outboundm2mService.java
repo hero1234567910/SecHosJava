@@ -25,4 +25,6 @@ public interface Sechos_Outboundm2mService {
 	void deleteBatch(String[] rowGuids);
 
 	List<Sechos_Outboundm2m> getListByPGuid(String outboundGuid);
+
+	<T> int getCountByGuid(T t);
 }

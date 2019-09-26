@@ -130,4 +130,27 @@
 		select drug_name,drug_amount,drug_price,drug_totalPrice from sechos_outboundm2m where outbound_guid=#{outboundGuid} and del_flag = 0 order by row_id desc;
 	</select>
 
+	<select id="getCountByGuid" resultType="int">
+		select count(*) from sechos_outboundm2m t<include refid="where_clause2" />
+	</select>
+
+	<sql id="where_clause2">
+		<where>
+			1=1
+			<if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+			<if test="rowGuid != null and rowGuid != ''"> and t.row_guid = #{rowGuid} </if>
+			<if test="createTime != null and createTime != ''"> and t.create_time = #{createTime} </if>
+			<if test="delFlag != null and delFlag != ''"> and t.del_flag = #{delFlag} </if>
+			<if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
+			<if test="drugGuid != null and drugGuid != ''"> and t.drug_guid = #{drugGuid} </if>
+			<if test="drugName != null and drugName != ''"> and t.drug_name = #{drugName} </if>
+			<if test="drugAmount != null and drugAmount != ''"> and t.drug_amount = #{drugAmount} </if>
+			<if test="drugTotalPrice != null and drugTotalPrice != ''"> and t.drug_totalPrice = #{drugTotalPrice} </if>
+			<if test="outboundGuid != null and outboundGuid != ''"> and t.outbound_guid = #{outboundGuid} </if>
+			<if test="drugCode != null and drugCode != ''"> and t.drug_code = #{drugCode} </if>
+			<if test="drugPrice != null and drugPrice != ''"> and t.drug_price = #{druglPrice} </if>
+			and t.del_flag = 0
+		</where>
+	</sql>
+
 </mapper>

@@ -16,8 +16,16 @@ public interface Sechos_Outboundm2mDao extends BaseDao<Sechos_Outboundm2m> {
 
     /**
      * 根据订单Guid获取采购详细数据
-     * @param purchaseGuid
+     * @param outboundGuid
      * @return
      */
     List<Sechos_Outboundm2m> getListByPGuid(@Param("outboundGuid") String outboundGuid);
+
+    /**
+     * 重复出库检测
+     * @param t
+     * @param <T>
+     * @return
+     */
+    <T> int getCountByGuid(T t);
 }
