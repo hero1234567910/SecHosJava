@@ -1,6 +1,8 @@
 package com.basic.javaframe.service.api;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -8,6 +10,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -174,8 +177,6 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		params.put("accesskey", accesskey);
 		params.put("action", "GETZYJLPAT");
 		params.put("zyzt","0");
-		params.put("hzxm",params.get("hzxm"));
-		params.put("patid",params.get("patid"));
 		logger.info("查询住院患者就诊记录接口参数》》》"+JSONObject.toJSONString(params));
 		String result = HttpUtil.sendPost(wnUrl, params);
 		logger.info("查询住院患者就诊记录接口返回成功》》》"+JSONObject.toJSONString(result));
@@ -446,7 +447,40 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		return res;
 	}
 
-
+	/**
+	 * 准备参数调用卫宁支付接口
+	 * @throws UnsupportedEncodingException 
+	 */
+	public String placeOrderByWN(int money,String out_trade_no,String openid,Map<String, String> params) throws UnsupportedEncodingException {
+		
+		//随机数nonce_str
+		String nonce_str = getRandomStringByLength(32);
+		//标价金额（单位分）
+		int total_fee = money;
+		//交易类型
+		String trade_type = "JSAPI";
+		
+		SortedMap<Object, Object> sm =
+                new TreeMap<Object, Object>();
+		
+		sm.putAll(params);
+		String sign = createSign(sm);
+		
+		params.put("sign", sign);
+		
+		logger.info("卫宁下单接口参数》》》》"+JSONObject.toJSONString(params));
+		String result = "";
+		try {
+			System.out.println(wnzfUrl);
+			result = HttpUtil.sendPost(wnzfUrl+"/winningpay!execWinningPayTradePayPrecreate.do",params);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		logger.info("返回成功》》》"+JSONObject.toJSONString(result));
+		
+		return result;
+	}
 
 	/**
 	 * 准备参数调用微信接口
@@ -730,7 +764,43 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		logger.info("获取挂号预算信息查询接口返回成功》》》"+JSONObject.toJSONString(res));
 		return res;
 	}
-
+	
+	/**
+	 * 撤单
+	 * <p>Title: backPay</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @return
+	 */
+	public String backPay(Map<String, String> params){
+		//商户编码
+		params.put("merchantId", mch_id);
+		//操作员编号
+		params.put("czyh", "weixin");
+		//收费点编号
+		params.put("storeId", "weixin");
+		//请求唯一码
+		params.put("requestId",UUID.randomUUID().toString());
+		//请求时间戳
+		SimpleDateFormat si = new SimpleDateFormat("yyyyMMddhhmmss");
+		params.put("timestamp",si.format(new Date()));
+		//医院代码
+		params.put("yydm", "055159");
+		
+		params.put("cdly", "1");
+		params.put("paytype", "7");
+		SortedMap<Object, Object> sm =
+                new TreeMap<Object, Object>();
+		sm.putAll(params);
+		String sign = createSign(sm);
+		params.put("sign",sign);
+		
+		logger.info("撤单接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnzfUrl+"/winningpay!execWinningPayCancel.do", params);
+		logger.info("撤单接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+	
 	/**
 	 * 挂号结算
 	 * <p>Title: RegisteredSettlement</p>
@@ -746,9 +816,9 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		params.put("action","PUTGHJS");
 		params.put("port", "1");
 
-		logger.info("获取挂号结算信息查询接口参数》》》"+JSONObject.toJSONString(params));
+		logger.info("获取挂号结算接口参数》》》"+JSONObject.toJSONString(params));
 		String res = HttpUtil.sendPost(wnUrl, params);
-		logger.info("获取挂号结算信息查询接口返回成功》》》"+JSONObject.toJSONString(res));
+		logger.info("获取挂号结算接口返回成功》》》"+JSONObject.toJSONString(res));
 		return res;
 	}
 

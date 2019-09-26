@@ -49,5 +49,17 @@ public class SechosDrugServiceImpl implements SechosDrugService {
 		// TODO Auto-generated method stub
 		return sechosDrugDao.getByPationGuid(patientRowGuid);
 	}
+
+	@Override
+	public void deleteByJzlsh(String string) {
+		// TODO Auto-generated method stub
+		sechosDrugDao.deleteByJzlsh(string);
+	}
+
+	@Override
+	public List<SechosDrug> getByJzlsh(String ghxh) {
+		// TODO Auto-generated method stub
+		return sechosDrugDao.getByJzlsh(ghxh);
+	}
 	
 }

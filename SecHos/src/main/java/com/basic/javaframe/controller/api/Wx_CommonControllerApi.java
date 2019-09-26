@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -28,7 +29,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.basic.javaframe.common.WebSocket.WebSocketServer;
 import com.basic.javaframe.common.customclass.PassToken;
 import com.basic.javaframe.common.enumresource.DelFlagEnum;
@@ -58,9 +58,10 @@ import com.basic.javaframe.service.SechosDrugService;
 import com.basic.javaframe.service.Sechos_RechargerecordService;
 import com.basic.javaframe.service.api.Wx_CommonServiceIApi;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
-
+@Api(value="微信通用接口")
 @RestController
 @CrossOrigin
 @RequestMapping(value="wx/common")
@@ -339,7 +340,7 @@ public class Wx_CommonControllerApi extends BaseController{
 					if (resu) {
 						//查询成功
 						JSONArray array = jsonObject.getJSONArray("patinfos");
-						if (array.size() == 0) {
+						if (array.size() == 0 ||array.getJSONObject(0).isEmpty()) {
 							return R.error("未查询到相应住院患者信息");
 						}
 						//默认取第一个
@@ -1118,6 +1119,311 @@ public class Wx_CommonControllerApi extends BaseController{
 		}
 		
 		/**
+		 * 住院预交金接口
+		 * <p>Title: beforePay</p>  
+		 * <p>Description: </p>
+		 * @author hero  
+		 * @param params
+		 * @return
+		 */
+		@ResponseBody
+		@RequestMapping(value="/beforePay",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+		public R beforePay(@RequestBody Map<String, String> params){
+			//调用充值预交金接口
+			checkParams(params,"hzxm");
+			checkParams(params, "patid");
+			//预交金预充值
+			String result = wx_CommonServiceApi.beforehandPay(params);
+			JSONObject json = JSONObject.parseObject(result);
+			if (json.getBoolean("success")) {
+//				yjParams.put("hisddh", json.getString("hisddh"));
+//				yjParams.put("yjlsh", json.getString("yjlsh"));
+//				yjParams.put("zfje", rechargerecord.getPayMoney().toString());
+//				yjParams.put("zflsh",hashmap.get("transaction_id"));
+//				yjParams.put("zfsj", hashmap.get("time_end"));
+//				
+//				//预交金充值
+//				String res = wx_CommonServiceApi.advancePay(yjParams);
+//				JSONObject obj = JSONObject.parseObject(res);
+//				if (obj.getBoolean("success")) {
+//				}else{
+//					logger.info(obj.getString("message"));
+//					sm.clear();
+//					sm.put("return_code", "FAIL");
+//					sm.put("return_msg", "业务异常");
+//					String xmlwx = XMLUtil.mapToXml(sm, true);
+//					logger.info("返回给微信的xml为"+xmlwx);
+//					return xmlwx;
+//				}
+				return R.ok().put("data",json);
+			}else{
+				return R.error(json.getString("msg"));
+			}
+		}
+		
+		/**
+		 * 卫宁统一下单接口
+		 * <p>Title: placeOrderByWN</p>  
+		 * <p>Description: </p>
+		 * @author hero  
+		 * @param params
+		 * @return
+		 */
+		@Transactional
+		@PassToken
+		@ResponseBody
+		@RequestMapping(value="/placeOrderByWN",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+		public R placeOrderByWN(@RequestBody Map<String, String> params){
+			//商户编码
+			params.put("merchantId", mch_id);
+			//操作员编号
+			params.put("czyh", "weixin");
+			//收费点编号
+			params.put("storeId", "weixin");
+			//请求唯一码
+			params.put("requestId",UUID.randomUUID().toString());
+			//请求时间戳
+			SimpleDateFormat si = new SimpleDateFormat("yyyyMMddhhmmss");
+			params.put("timestamp",si.format(new Date()));
+			//医院代码
+			params.put("yydm", "055159");
+			
+			
+	        //支付渠道限制
+	        params.put("limitPay", "0");
+			params.put("hzxm", params.get("patientName"));
+			params.put("paytype", "998");
+			params.put("outerOrderNo", params.get("sjh"));
+			params.put("subject", "pay");
+			params.put("timeout_express", "3");
+			params.put("callBackUrl", "https://p.zjgwsjk.com/2ysechos/pay.html#/noticeSuccess");
+			params.put("notifyUrl", "https://p.zjgwsjk.com/2ysechos/wx/common/wn_callback");
+			
+			//预交金接口
+			if ("yj".equals(params.get("action"))) {
+				checkParams(params, "openid");
+				checkParams(params, "yjMoney");
+				checkParams(params, "patientGuid");
+				checkParams(params, "patid");
+				checkParams(params, "patientName");
+				params.put("ysje", params.get("yjMoney"));
+				 //订单类型
+		        params.put("ddlx", "4");
+		        //订单来源
+		        params.put("ddly", "2");
+		        
+				//单位分
+				int money = Integer.valueOf(AmountUtils.changeY2F(params.get("yjMoney"))); 
+
+				//商户订单号
+		        String out_trade_no = System.currentTimeMillis()+wx_CommonServiceApi.getRandomStringByLength(7);
+				
+				String result = "";
+				try {
+					result = wx_CommonServiceApi.placeOrderByWN(money,out_trade_no,params.get("openid"),params);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+				if (result == "") {
+					//如果返回结果为空，说明调用接口异常
+					return R.error("调用下单接口失败");
+				}
+				
+				JSONObject js = JSONObject.parseObject(result);
+				//对返回结果进行解析
+				if (js.getBoolean("success")) {
+					
+				}else{
+					return R.error("下单失败");
+				}
+				
+				
+				//数据库创建订单
+				Sechos_Rechargerecord order = new Sechos_Rechargerecord();
+				String orderGuid = UUID.randomUUID().toString();
+				order.setCreateTime(DateUtil.changeDate(new Date()));
+				order.setRowGuid(orderGuid);
+				order.setDelFlag(DelFlagEnum.NDELFLAG.getCode());
+//				order.setMerchantNumber(out_trade_no);
+				order.setMerchantNumber(params.get("outerOrderNo"));
+				order.setRecordStatus(RecordStatusEnum.READYHANDLE.getCode());
+				order.setPatientRowGuid(params.get("patientGuid"));
+				order.setPatid(params.get("patid"));
+				order.setPatientName(params.get("patientName"));
+				order.setPayType(PayTypeEnum.ADVANCEPAY.getCode());
+				order.setYjlsh(params.get("yjlsh"));
+				order.setHisddh(params.get("sjh"));
+				SimpleDateFormat sFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+				order.setZfsj(sFormat.format(new Date()));
+				order.setBlh(params.get("blh"));
+				order.setZfje(params.get("yjMoney"));
+				//转decimal
+				BigDecimal number = new BigDecimal(params.get("yjMoney"));
+				order.setPayMoney(number);
+				order.setJzlsh(params.get("jzlsh"));
+				rechargerecordService.save(order);
+				
+//				//准备数据返回
+//				SortedMap<Object, Object> obj =
+//		                new TreeMap<Object, Object>();
+//				obj.put("appId",appid);
+//				obj.put("timeStamp",System.currentTimeMillis()/1000);
+//				obj.put("nonceStr",wx_CommonServiceApi.getRandomStringByLength(32));
+//				obj.put("package","prepay_id="+map.get("prepay_id"));
+//				obj.put("signType", "MD5");
+//				obj.put("paySign",wx_CommonServiceApi.createSign(obj));
+				return R.ok("下单成功").put("data", js);
+			}
+			
+			//门诊接口
+			if ("mz".equals(params.get("action"))) {
+				checkParams(params, "openid");
+				checkParams(params, "mzMoney");
+				checkParams(params, "patientGuid");
+				checkParams(params, "patid");
+				checkParams(params, "patientName");
+//				checkParams(params, "yyxh");
+				
+				checkParams(params, "sjh");
+				checkParams(params, "zje");
+				checkParams(params, "yfje");
+				checkParams(params, "zfje");
+				
+				params.put("ysje", params.get("zfje"));
+				 //订单类型
+		        params.put("ddlx", "2");
+		        //订单来源
+		        params.put("ddly", "1");
+				//单位分
+				int money = Integer.valueOf(AmountUtils.changeY2F(params.get("mzMoney"))); 
+
+				//商户订单号
+		        String out_trade_no = System.currentTimeMillis()+wx_CommonServiceApi.getRandomStringByLength(7);
+				
+		        String result = "";
+				try {
+					result = wx_CommonServiceApi.placeOrderByWN(money,out_trade_no,params.get("openid"),params);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+				if (result == "") {
+					//如果返回结果为空，说明调用接口异常
+					return R.error("调用下单接口失败");
+				}
+				
+				JSONObject js = JSONObject.parseObject(result);
+				//对返回结果进行解析
+				if (js.getBoolean("success")) {
+				}else{
+					return R.error("下单失败");
+				}
+				
+				//数据库创建订单
+				Sechos_Rechargerecord order = new Sechos_Rechargerecord();
+				String orderGuid = UUID.randomUUID().toString();
+				order.setCreateTime(DateUtil.changeDate(new Date()));
+				order.setRowGuid(orderGuid);
+				order.setDelFlag(DelFlagEnum.NDELFLAG.getCode());
+//				order.setMerchantNumber(out_trade_no);
+				order.setMerchantNumber(params.get("outerOrderNo"));
+				order.setRecordStatus(RecordStatusEnum.READYHANDLE.getCode());
+				order.setPatientRowGuid(params.get("patientGuid"));
+				order.setPatid(params.get("patid"));
+				order.setPatientName(params.get("patientName"));
+				order.setPayType(PayTypeEnum.MZPAY.getCode());
+				
+				order.setGhxh(params.get("ghxh"));
+				order.setSjh(params.get("sjh"));
+				order.setZje(params.get("zje"));
+				order.setYfje(params.get("yfje"));
+				order.setZfje(params.get("zfje"));
+				order.setZfsj(DateUtil.getYmdhmsFName());
+				
+				//转decimal
+				BigDecimal number = new BigDecimal(params.get("mzMoney"));
+				order.setPayMoney(number);
+				rechargerecordService.save(order);
+				
+				return R.ok("下单成功").put("data", js);
+			}
+			
+			//挂号接口
+			if ("gh".equals(params.get("action"))) {
+				checkParams(params, "openid");
+				checkParams(params, "ghMoney");
+				checkParams(params, "patientGuid");
+				checkParams(params, "patid");
+				checkParams(params, "patientName");
+				
+				checkParams(params, "ghxh");
+				checkParams(params, "sjh");
+				checkParams(params, "zje");
+				checkParams(params, "yfje");
+				checkParams(params, "zfje");
+				
+				params.put("ysje", params.get("zfje"));
+				 //订单类型
+		        params.put("ddlx", "1");
+		        //订单来源
+		        params.put("ddly", "1");
+				//单位分
+				int money = Integer.valueOf(AmountUtils.changeY2F(params.get("ghMoney"))); 
+
+				//商户订单号
+		        String out_trade_no = System.currentTimeMillis()+wx_CommonServiceApi.getRandomStringByLength(7);
+				
+		        String result = "";
+				try {
+					result = wx_CommonServiceApi.placeOrderByWN(money,out_trade_no,params.get("openid"),params);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+				if (result == "") {
+					//如果返回结果为空，说明调用接口异常
+					return R.error("调用下单接口失败");
+				}
+				
+				JSONObject js = JSONObject.parseObject(result);
+				//对返回结果进行解析
+				if (js.getBoolean("success")) {
+				}else{
+					return R.error("下单失败");
+				}
+				
+				//数据库创建订单
+				Sechos_Rechargerecord order = new Sechos_Rechargerecord();
+				String orderGuid = UUID.randomUUID().toString();
+				order.setCreateTime(DateUtil.changeDate(new Date()));
+				order.setRowGuid(orderGuid);
+				order.setDelFlag(DelFlagEnum.NDELFLAG.getCode());
+//				order.setMerchantNumber(out_trade_no);
+				order.setMerchantNumber(params.get("outerOrderNo"));
+				order.setRecordStatus(RecordStatusEnum.READYHANDLE.getCode());
+				order.setPatientRowGuid(params.get("patientGuid"));
+				order.setPatid(params.get("patid"));
+				order.setPatientName(params.get("patientName"));
+				order.setPayType(PayTypeEnum.GHPAY.getCode());
+				
+				order.setGhxh(params.get("ghxh"));
+				order.setSjh(params.get("sjh"));
+				order.setZje(params.get("zje"));
+				order.setYfje(params.get("yfje"));
+				order.setZfje(params.get("zfje"));
+				order.setYyxh(params.get("yyxh"));
+				
+				//转decimal
+				BigDecimal number = new BigDecimal(params.get("ghMoney"));
+				order.setPayMoney(number);
+				rechargerecordService.save(order);
+				
+				//准备数据返回
+				return R.ok("下单成功").put("data", js);
+			}
+			return R.error("action参数异常");
+		}
+		
+		
+		/**
 		 * 统一下单接口
 		 * <p>Title: placeOrder</p>  
 		 * <p>Description: </p>
@@ -1261,6 +1567,7 @@ public class Wx_CommonControllerApi extends BaseController{
 				order.setPatientName(params.get("patientName"));
 				order.setPayType(PayTypeEnum.MZPAY.getCode());
 				
+				order.setGhxh(params.get("ghxh"));
 				order.setSjh(params.get("sjh"));
 				order.setZje(params.get("zje"));
 				order.setYfje(params.get("yfje"));
@@ -1377,6 +1684,295 @@ public class Wx_CommonControllerApi extends BaseController{
 		 * @author hero
 		 */
 		@ResponseBody
+		@RequestMapping(value="/wn_callback",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+		public JSONObject wn_callback(HttpServletRequest request){
+			
+			//xml转map
+			Map hashmap = new HashMap();
+			hashmap = request.getParameterMap();
+			logger.info("微信回调接口参数》》》"+JSONObject.toJSONString(hashmap));
+			
+			if ("false".equals(request.getParameter("success"))) {
+				logger.info("错误代码"+request.getParameter("errcode"));
+				throw new MyException("卫宁回调异常，异常信息》》"+request.getParameter("err"));
+			}
+//			//验签
+//			String sign = wx_CommonServiceApi.createSign(sm);
+//			if (!hashmap.get("sign").equals(sign)) {
+//				throw new MyException("验签失败，sign比对不同");
+//			}
+//			//校验返回的订单金额是否与商户侧的订单金额一致
+//			int orderMoney = Integer.valueOf(hashmap.get("total_fee"));//单位分
+			//根据商户订单号查询该订单金额
+			Sechos_Rechargerecord rechargerecord = rechargerecordService.queryByOrderNumber(request.getParameter("outerOrderNo"));
+			if (rechargerecord == null) {
+				throw new MyException("未查询到对应记录");
+			}
+			//根据患者guid查询患者基本信息
+			SecHos_Patient patient = patientService.getPatientByGuid(rechargerecord.getPatientRowGuid());
+			if (rechargerecord.getRecordStatus() != RecordStatusEnum.READYHANDLE.getCode()) {
+				JSONObject resobj = new JSONObject();
+				resobj.put("success",false);
+				resobj.put("errcode", "500");
+				resobj.put("err", "this deal is already pay");
+				return resobj;
+			}
+			
+			if (rechargerecord.getPayType() == PayTypeEnum.ADVANCEPAY.getCode()) {
+				//调用充值预交金接口
+				Map<String, String> yjParams = new HashMap<>();
+				yjParams.put("hzxm", rechargerecord.getPatientName());
+				yjParams.put("patid", rechargerecord.getPatid());
+				yjParams.put("hisddh", rechargerecord.getHisddh());
+				yjParams.put("yjlsh", rechargerecord.getYjlsh());
+				yjParams.put("zfje", rechargerecord.getPayMoney().toString());
+				yjParams.put("zflsh",request.getParameter("tradeNo"));
+				yjParams.put("zfsj", rechargerecord.getZfsj());
+				yjParams.put("jzlsh", rechargerecord.getJzlsh());
+				
+				//预交金充值
+				String res = wx_CommonServiceApi.advancePay(yjParams);
+				JSONObject obj = JSONObject.parseObject(res);
+				if (obj.getBoolean("success")) {
+					
+				}else{
+					logger.info(obj.getString("message"));
+					//调用撤单接口
+					Map<String, String> par = new HashMap<String, String>();
+					par.put("outerOrderNo", rechargerecord.getMerchantNumber());
+					par.put("ysje", rechargerecord.getZfje());
+					par.put("hzxm", rechargerecord.getPatientName());
+					par.put("patid", rechargerecord.getPatid());
+					par.put("blh", rechargerecord.getBlh());
+					par.put("cardno", patient.getPatientIdcard());
+					par.put("sex",(patient.getPatientSex()==SexEnum.MALE.getCode())?SexEnum.MALE.getValue():SexEnum.FEMALE.getValue());
+					par.put("lxdh", patient.getPatientMobile());
+					par.put("zjhm", patient.getPatientIdcard());
+					String reString = wx_CommonServiceApi.backPay(par);
+					JSONObject jsonObject = JSONObject.parseObject(reString);
+					if (jsonObject.getBoolean("success")) {
+						
+					}else{
+						throw new MyException(jsonObject.toJSONString());
+					}
+					JSONObject resobj = new JSONObject();
+					resobj.put("success",false);
+					resobj.put("errcode", "500");
+					resobj.put("err", "");
+					return resobj;
+				}
+			}
+			
+			if (rechargerecord.getPayType() == PayTypeEnum.GHPAY.getCode()) {
+				//挂号结算接口
+				Map<String, String> par = new HashMap<>();
+				par.put("patid",rechargerecord.getPatid());
+				par.put("ghxh", rechargerecord.getGhxh());
+				par.put("sjh", rechargerecord.getSjh());
+				par.put("zje", rechargerecord.getZfje());
+				par.put("yfje", rechargerecord.getYfje());
+				par.put("zffs", "2");
+				par.put("zfje", rechargerecord.getZfje());
+				par.put("zflsh", request.getParameter("tradeNo"));
+				par.put("isynzh", "0");
+				par.put("yyxh", rechargerecord.getYyxh());
+				String result =  wx_CommonServiceApi.RegisteredSettlement(par);
+				JSONObject json = JSONObject.parseObject(result);
+				if (json.getBoolean("success")) {
+					
+				}else{
+					logger.info(json.getString("message"));
+					//调用撤单接口
+					Map<String, String> par1 = new HashMap<String, String>();
+					par1.put("outerOrderNo", rechargerecord.getSjh());
+					par1.put("ysje", rechargerecord.getZfje());
+					par1.put("hzxm", rechargerecord.getPatientName());
+					par1.put("patid", rechargerecord.getPatid());
+//					par1.put("blh", rechargerecord.getBlh());
+					par1.put("cardno", patient.getPatientIdcard());
+					par1.put("sex",(patient.getPatientSex()==SexEnum.MALE.getCode())?SexEnum.MALE.getValue():SexEnum.FEMALE.getValue());
+					par1.put("lxdh", patient.getPatientMobile());
+					par1.put("zjhm", patient.getPatientIdcard());
+					String reString = wx_CommonServiceApi.backPay(par1);
+					JSONObject jsonObject = JSONObject.parseObject(reString);
+					if (jsonObject.getBoolean("success")) {
+						
+					}else{
+						throw new MyException(jsonObject.toJSONString());
+					}
+					JSONObject resobj = new JSONObject();
+					resobj.put("success",false);
+					resobj.put("errcode", "500");
+					resobj.put("err", "");
+					return resobj;
+				}
+				
+				
+			}
+			
+			if (rechargerecord.getPayType() == PayTypeEnum.MZPAY.getCode()) {
+				//门诊结算接口
+				Map<String, String> par = new HashMap<>();
+				par.put("patid",rechargerecord.getPatid());
+				par.put("sjh", rechargerecord.getSjh());
+				par.put("zje", rechargerecord.getZfje());
+				par.put("yfje", rechargerecord.getYfje());
+				par.put("zffs", "2");
+				par.put("zfje", rechargerecord.getZfje());
+				par.put("zflsh", request.getParameter("tradeNo"));
+				par.put("zfsj", rechargerecord.getZfsj());
+				par.put("isynzh", "0");
+				String result =  wx_CommonServiceApi.getOutpatientFeeSettlement(par);
+				JSONObject json = JSONObject.parseObject(result);
+				if (json.getBoolean("success")) {
+//					try {
+//						//发药机接口
+//						//查询处方信息
+//						JSONObject PrescriptionList = new JSONObject();
+//						JSONArray Prescriptions = new JSONArray();
+//						//获取挂号预结算的ghxh
+//						
+//						List<SechosDrug> DrugsList = sechosDrugService.getByJzlsh(rechargerecord.getGhxh());
+//						if (DrugsList.size()!=0) {
+//							for (int i = 0; i < DrugsList.size(); i++) {
+//								SechosDrug dr = DrugsList.get(i);
+//								if ("1".equals(dr.getYpbz())) {
+//									//处方信息必须要药品时
+//									JSONObject Prescription = new JSONObject();
+//									Prescription.put("PrescriptionID", dr.getCfxh());
+//									SimpleDateFormat forma = new SimpleDateFormat("yyyyMMddhhmmss");
+//									Date date = null;
+//									try {
+//										date = forma.parse(dr.getKfsj());
+//									} catch (ParseException e) {
+//										// TODO Auto-generated catch block
+//										e.printStackTrace();
+//									}
+//									forma = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//									Prescription.put("DateTimeOfPrescription", forma.format(date));
+//									Prescription.put("Flag", "Outpatient");
+//									Prescription.put("Category", "常规");
+//									
+//									JSONArray jsonArray = new JSONArray();
+//									JSONObject jsonObject = new JSONObject();
+//									jsonObject.put("MedCode", dr.getXmdm());
+//									jsonObject.put("MedName", dr.getXmmc());
+//									jsonObject.put("MedUnitDosage",dr.getYpgg());
+//									jsonObject.put("MedManufacturer", "厂商");//药品厂商名称
+//									jsonObject.put("MedPackingUnits", dr.getYpdw());
+//									jsonObject.put("MedBasicUnits", dr.getJldw());
+//									jsonObject.put("MedOrdingUnits", dr.getJldw());
+//									int ypjl = (int) Double.parseDouble(dr.getYpjl());
+//									jsonObject.put("MedPackingConverCoefficent", ypjl);//转换系数
+//									jsonObject.put("MedOrdingConverCoefficent", 1);
+//									int Xmsl = (int) Double.parseDouble(dr.getXmsl());
+//									jsonObject.put("Quantity", Xmsl);
+//									jsonArray.add(jsonObject);
+//									Prescription.put("PrescriptionItems",jsonArray);
+//									Prescriptions.add(Prescription);
+//								}
+//							}
+//							
+//							
+//						}
+//						JSONObject PatientInfo = new JSONObject();
+//						//根据pation查询用户信息
+//						SecHos_Patient patient = patientService.getPatientByGuid(rechargerecord.getPatientRowGuid());
+//						PatientInfo.put("PatientID", rechargerecord.getPatid());
+//						PatientInfo.put("PatientName", rechargerecord.getPatientName());
+//						switch (patient.getPatientSex()) {
+//						case 0:
+//							PatientInfo.put("PatientAdministrativeSex", "M");
+//							break;
+//							
+//						case 1:
+//							PatientInfo.put("PatientAdministrativeSex", "F");
+//							break;
+//						}
+//						SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+//						PatientInfo.put("PatientDateofBirth", format1.format(patient.getPatientBirth())); 
+//						SimpleDateFormat format = new SimpleDateFormat("yyyy");
+//						int age = Integer.parseInt(format.format(new Date())) - Integer.parseInt(format.format(patient.getPatientBirth()));
+//						PatientInfo.put("PatientAge", age);
+//						
+//						PrescriptionList.put("PatientInfo", PatientInfo);
+//						PrescriptionList.put("Prescriptions", Prescriptions);
+//						
+//						Map<String, String> par1 = new HashMap<>();
+//						par1.put("PrescriptionList", PrescriptionList.toJSONString());
+//						String res =  wx_CommonServiceApi.task(par1);
+//						JSONObject js = JSONObject.parseObject(res);
+//						logger.info("发药机返回信息："+js.toJSONString());
+//						
+//						//发药机回调判断
+//						if ("true".equals(js.getJSONObject("Result").getJSONObject("Header").getString("ExecuteResult"))) {
+//							logger.info("发药成功");
+//						}else {
+//							logger.info("错误code为:"+js.getJSONObject("Result").getJSONObject("Header").getJSONObject("Error").getString("Code"));
+//							logger.info("错误描述为:"+js.getJSONObject("Result").getJSONObject("Header").getJSONObject("Error").getString("Message"));
+//						}
+//					} catch (Exception e) {
+//						logger.info("错误信息为:"+e.getMessage());
+//						throw new MyException("处理回调异常");
+//					}
+					
+					
+				}else{
+					logger.info(json.getString("message"));
+					if ("已经结算成功，无法重复结算".equals(json.getString("message"))) {
+						
+					}
+					//调用撤单接口
+					Map<String, String> par1 = new HashMap<String, String>();
+					par1.put("outerOrderNo", rechargerecord.getSjh());
+					par1.put("ysje", rechargerecord.getZfje());
+					par1.put("hzxm", rechargerecord.getPatientName());
+					par1.put("patid", rechargerecord.getPatid());
+//					par1.put("blh", rechargerecord.getBlh());
+					par1.put("cardno", patient.getPatientIdcard());
+					par1.put("sex",(patient.getPatientSex()==SexEnum.MALE.getCode())?SexEnum.MALE.getValue():SexEnum.FEMALE.getValue());
+					par1.put("lxdh", patient.getPatientMobile());
+					par1.put("zjhm", patient.getPatientIdcard());
+					String reString = wx_CommonServiceApi.backPay(par1);
+					JSONObject jsonObject = JSONObject.parseObject(reString);
+					if (jsonObject.getBoolean("success")) {
+						
+					}else{
+						throw new MyException(jsonObject.toJSONString());
+					}
+					JSONObject resobj = new JSONObject();
+					resobj.put("success",false);
+					resobj.put("errcode", "500");
+					resobj.put("err", "");
+					return resobj;
+				
+				}
+				
+			}
+			
+			
+			
+			
+			//若前面都通过，更新订单状态并返回正确信息给微信
+			Sechos_Rechargerecord hosOrder = new Sechos_Rechargerecord();
+			hosOrder.setRowGuid(rechargerecord.getRowGuid());
+			hosOrder.setRecordStatus(RecordStatusEnum.ALREADYHANDLE.getCode());
+			rechargerecordService.update(hosOrder);
+			
+			JSONObject resobj = new JSONObject();
+			resobj.put("success",true);
+			resobj.put("errcode", "200");
+			return resobj;
+		}
+		
+		
+		/**
+		 * 回调接口
+		 * <p>Title: wx_callback</p>  
+		 * <p>Description: </p>
+		 * @author hero
+		 */
+		@ResponseBody
 		@RequestMapping(value="/wx_callback",produces="application/json;charset=utf-8",method=RequestMethod.POST)
 		public String wx_callback(HttpServletRequest request){
 			
@@ -1445,7 +2041,7 @@ public class Wx_CommonControllerApi extends BaseController{
 					yjParams.put("hisddh", json.getString("hisddh"));
 					yjParams.put("yjlsh", json.getString("yjlsh"));
 					yjParams.put("zfje", rechargerecord.getPayMoney().toString());
-					yjParams.put("zflsh",rechargerecord.getMerchantNumber());
+					yjParams.put("zflsh",hashmap.get("transaction_id"));
 					yjParams.put("zfsj", hashmap.get("time_end"));
 					
 					//预交金充值
@@ -1482,7 +2078,7 @@ public class Wx_CommonControllerApi extends BaseController{
 				par.put("yfje", rechargerecord.getYfje());
 				par.put("zffs", "2");
 				par.put("zfje", rechargerecord.getZfje());
-				par.put("zflsh", rechargerecord.getMerchantNumber());
+				par.put("zflsh", hashmap.get("transaction_id"));
 				par.put("isynzh", "0");
 				par.put("yyxh", rechargerecord.getYyxh());
 				String result =  wx_CommonServiceApi.RegisteredSettlement(par);
@@ -1490,7 +2086,6 @@ public class Wx_CommonControllerApi extends BaseController{
 				if (json.getBoolean("success")) {
 				
 				}else{
-					logger.info(json.getString("message"));
 					sm.clear();
 					sm.put("return_code", "FAIL");
 					sm.put("return_msg", "业务异常");
@@ -1511,80 +2106,115 @@ public class Wx_CommonControllerApi extends BaseController{
 				par.put("yfje", rechargerecord.getYfje());
 				par.put("zffs", "2");
 				par.put("zfje", rechargerecord.getZfje());
-				par.put("zflsh", rechargerecord.getMerchantNumber());
+				par.put("zflsh", hashmap.get("transaction_id"));
 				par.put("zfsj", rechargerecord.getZfsj());
 				par.put("isynzh", "0");
 				String result =  wx_CommonServiceApi.getOutpatientFeeSettlement(par);
 				JSONObject json = JSONObject.parseObject(result);
 				if (json.getBoolean("success")) {
+					try {
+						//发药机接口
+						//查询处方信息
+						JSONObject PrescriptionList = new JSONObject();
+						JSONArray Prescriptions = new JSONArray();
+						//获取挂号预结算的ghxh
+						
+						List<SechosDrug> DrugsList = sechosDrugService.getByJzlsh(rechargerecord.getGhxh());
+						if (DrugsList.size()!=0) {
+							for (int i = 0; i < DrugsList.size(); i++) {
+								SechosDrug dr = DrugsList.get(i);
+								if ("1".equals(dr.getYpbz())) {
+									//处方信息必须要药品时
+									JSONObject Prescription = new JSONObject();
+									Prescription.put("PrescriptionID", dr.getCfxh());
+									SimpleDateFormat forma = new SimpleDateFormat("yyyyMMddhhmmss");
+									Date date = null;
+									try {
+										date = forma.parse(dr.getKfsj());
+									} catch (ParseException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+									forma = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+									Prescription.put("DateTimeOfPrescription", forma.format(date));
+									Prescription.put("Flag", "Outpatient");
+									Prescription.put("Category", "常规");
+									
+									JSONArray jsonArray = new JSONArray();
+									JSONObject jsonObject = new JSONObject();
+									jsonObject.put("MedCode", dr.getXmdm());
+									jsonObject.put("MedName", dr.getXmmc());
+									jsonObject.put("MedUnitDosage",dr.getYpgg());
+									jsonObject.put("MedManufacturer", "厂商");//药品厂商名称
+									jsonObject.put("MedPackingUnits", dr.getYpdw());
+									jsonObject.put("MedBasicUnits", dr.getJldw());
+									jsonObject.put("MedOrdingUnits", dr.getJldw());
+									int ypjl = (int) Double.parseDouble(dr.getYpjl());
+									jsonObject.put("MedPackingConverCoefficent", ypjl);//转换系数
+									jsonObject.put("MedOrdingConverCoefficent", 1);
+									int Xmsl = (int) Double.parseDouble(dr.getXmsl());
+									jsonObject.put("Quantity", Xmsl);
+									jsonArray.add(jsonObject);
+									Prescription.put("PrescriptionItems",jsonArray);
+									Prescriptions.add(Prescription);
+								}
+							}
+							
+							
+						}
+						JSONObject PatientInfo = new JSONObject();
+						//根据pation查询用户信息
+						SecHos_Patient patient = patientService.getPatientByGuid(rechargerecord.getPatientRowGuid());
+						PatientInfo.put("PatientID", rechargerecord.getPatid());
+						PatientInfo.put("PatientName", rechargerecord.getPatientName());
+						switch (patient.getPatientSex()) {
+						case 0:
+							PatientInfo.put("PatientAdministrativeSex", "M");
+							break;
+							
+						case 1:
+							PatientInfo.put("PatientAdministrativeSex", "F");
+							break;
+						}
+						SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+						PatientInfo.put("PatientDateofBirth", format1.format(patient.getPatientBirth())); 
+						SimpleDateFormat format = new SimpleDateFormat("yyyy");
+						int age = Integer.parseInt(format.format(new Date())) - Integer.parseInt(format.format(patient.getPatientBirth()));
+						PatientInfo.put("PatientAge", age);
+						
+						PrescriptionList.put("PatientInfo", PatientInfo);
+						PrescriptionList.put("Prescriptions", Prescriptions);
+						
+						Map<String, String> par1 = new HashMap<>();
+						par1.put("PrescriptionList", PrescriptionList.toJSONString());
+						String res =  wx_CommonServiceApi.task(par1);
+						JSONObject js = JSONObject.parseObject(res);
+						logger.info("发药机返回信息："+js.toJSONString());
+						
+						//发药机回调判断
+						if ("true".equals(js.getJSONObject("Result").getJSONObject("Header").getString("ExecuteResult"))) {
+							logger.info("发药成功");
+						}else {
+							logger.info("错误code为:"+js.getJSONObject("Result").getJSONObject("Header").getJSONObject("Error").getString("Code"));
+							logger.info("错误描述为:"+js.getJSONObject("Result").getJSONObject("Header").getJSONObject("Error").getString("Message"));
+						}
+					} catch (Exception e) {
+						logger.info("错误信息为:"+e.getMessage());
+						throw new MyException("处理回调异常");
+					}
 					
-//					//发药机接口
-//					//查询处方信息
-//					JSONObject PrescriptionList = new JSONObject();
-//					JSONArray Prescriptions = new JSONArray();
-//					List<SechosDrug> DrugsList = sechosDrugService.getByPationGuid(rechargerecord.getPatientRowGuid());
-//					if (DrugsList.size()!=0) {
-//						for (int i = 0; i < DrugsList.size(); i++) {
-//							SechosDrug dr = DrugsList.get(i);
-//							if ("2".equals(dr.getYpbz())) {
-//								//处方信息必须要药品时
-//								JSONObject Prescription = new JSONObject();
-//								Prescription.put("PrescriptionID", dr.getCfxh());
-//								SimpleDateFormat forma = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-//								Date date = forma.parse(dr.getKfsj());
-//								Prescription.put("DateTimeOfPrescription", forma.format(date));
-//								Prescription.put("Flag", "Outpatient");
-//								Prescription.put("Category", "常规");
-//								
-//								JSONArray jsonArray = new JSONArray();
-//								JSONObject jsonObject = new JSONObject();
-//								jsonObject.put("MedCode", dr.getXmdm());
-//								jsonObject.put("MedName", dr.getXmmc());
-//								jsonObject.put("MedUnitDosage",dr.getYpgg());
-//								jsonObject.put("MedManufacturer", value);//药品厂商名称
-//								jsonObject.put("MedPackingUnits", dr.getYpdw());
-//								jsonObject.put("MedBasicUnits", dr.getJldw());
-//								jsonObject.put("MedOrdingUnits", dr.getJldw());
-//								jsonObject.put("MedPackingConverCoefficent", Integer.parseInt(dr.getYpjl()));//转换系数
-//								jsonObject.put("MedOrdingConverCoefficent", 1);
-//								jsonObject.put("Quantity", Integer.parseInt(dr.getXmsl()));
-//								jsonArray.add(jsonObject);
-//								Prescription.put("PrescriptionItems",jsonArray);
-//								Prescriptions.add(Prescription);
-//							}
-//						}
-//						
-//						
-//					}
-//					JSONObject PatientInfo = new JSONObject();
-//					//根据pation查询用户信息
-//					SecHos_Patient patient = patientService.getPatientByGuid(rechargerecord.getPatientRowGuid());
-//					PatientInfo.put("PatientID", rechargerecord.getPatid());
-//					PatientInfo.put("PatientName", rechargerecord.getPatientName());
-//					switch (patient.getPatientSex()) {
-//					case 0:
-//						PatientInfo.put("PatientAdministrativeSex", "M");
-//						break;
-//						
-//					case 1:
-//						PatientInfo.put("PatientAdministrativeSex", "F");
-//						break;
-//					}
-//					PatientInfo.put("PatientDateofBirth", patient.getPatientBirth()); 
-//					SimpleDateFormat format = new SimpleDateFormat("yyyy");
-//					int age = Integer.parseInt(format.format(new Date())) - Integer.parseInt(format.format(new Date()));
-//					PatientInfo.put("PatientAge", age);
-//					
-//					PrescriptionList.put("PatientInfo", PatientInfo);
-//					PrescriptionList.put("Prescriptions", Prescriptions);
-//					
-//					Map<String, String> par1 = new HashMap<>();
-//					par1.put("PrescriptionList", PrescriptionList.toJSONString());
-//					String res =  wx_CommonServiceApi.task(par1);
-//					JSONObject js = JSONObject.parseObject(result);
+					
 					
 				}else{
 					logger.info(json.getString("message"));
+					if ("已经结算成功，无法重复结算".equals(json.getString("message"))) {
+						sm.clear();
+						sm.put("return_code", "SUCCESS");
+						sm.put("return_msg", "OK");
+						String xmlWx = XMLUtil.mapToXml(sm, true);
+						logger.info("返回给微信的xml为"+xmlWx);
+						return xmlWx;
+					}
 					sm.clear();
 					sm.put("return_code", "FAIL");
 					sm.put("return_msg", "业务异常");
@@ -1615,8 +2245,103 @@ public class Wx_CommonControllerApi extends BaseController{
 			
 			return xmlWx;
 		}
-
-
+	
+	@PassToken
+	@ApiOperation(value="发送发药机")
+	@ResponseBody
+	@RequestMapping(value="/sendFYJ",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R sendFYJ(@RequestBody Map<String, String> par){
+		Sechos_Rechargerecord rechargerecord = rechargerecordService.queryByOrderNumber(par.get("out_trade_no"));
+		//发药机接口
+		//查询处方信息
+		JSONObject PrescriptionList = new JSONObject();
+		JSONArray Prescriptions = new JSONArray();
+		List<SechosDrug> DrugsList = sechosDrugService.getByJzlsh(rechargerecord.getGhxh());
+		if (DrugsList.size()!=0) {
+			for (int i = 0; i < DrugsList.size(); i++) {
+				SechosDrug dr = DrugsList.get(i);
+				if ("1".equals(dr.getYpbz())) {
+					//处方信息必须要药品时
+					JSONObject Prescription = new JSONObject();
+					Prescription.put("PrescriptionID", dr.getCfxh());
+					SimpleDateFormat forma = new SimpleDateFormat("yyyyMMddhhmmss");
+					Date date = null;
+					try {
+						date = forma.parse(dr.getKfsj());
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					forma = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+					Prescription.put("DateTimeOfPrescription", forma.format(date));
+					Prescription.put("Flag", "Outpatient");
+					Prescription.put("Category", "常规");
+					
+					JSONArray jsonArray = new JSONArray();
+					JSONObject jsonObject = new JSONObject();
+					jsonObject.put("MedCode", dr.getXmdm());
+					jsonObject.put("MedName", dr.getXmmc());
+					jsonObject.put("MedUnitDosage",dr.getYpgg());
+					jsonObject.put("MedManufacturer", "厂商");//药品厂商名称
+					jsonObject.put("MedPackingUnits", dr.getYpdw());
+					jsonObject.put("MedBasicUnits", dr.getJldw());
+					jsonObject.put("MedOrdingUnits", dr.getJldw());
+					
+					int ypjl = (int) Double.parseDouble(dr.getYpjl());
+					jsonObject.put("MedPackingConverCoefficent", ypjl);//转换系数
+					jsonObject.put("MedOrdingConverCoefficent", 1);
+					int Xmsl = (int) Double.parseDouble(dr.getXmsl());
+					jsonObject.put("Quantity", Xmsl);
+					jsonArray.add(jsonObject);
+					Prescription.put("PrescriptionItems",jsonArray);
+					Prescriptions.add(Prescription);
+				}
+			}
+			
+		}
+		JSONObject PatientInfo = new JSONObject();
+		//根据pation查询用户信息
+		SecHos_Patient patient = patientService.getPatientByGuid(rechargerecord.getPatientRowGuid());
+		PatientInfo.put("PatientID", rechargerecord.getPatid());
+		PatientInfo.put("PatientName", rechargerecord.getPatientName());
+		switch (patient.getPatientSex()) {
+		case 0:
+			PatientInfo.put("PatientAdministrativeSex", "M");
+			break;
+			
+		case 1:
+			PatientInfo.put("PatientAdministrativeSex", "F");
+			break;
+		}
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+		PatientInfo.put("PatientDateofBirth", format1.format(patient.getPatientBirth())); 
+		SimpleDateFormat format = new SimpleDateFormat("yyyy");
+		int age = Integer.parseInt(format.format(new Date())) - Integer.parseInt(format.format(patient.getPatientBirth()));
+		PatientInfo.put("PatientAge", age);
+		
+		PrescriptionList.put("PatientInfo", PatientInfo);
+		PrescriptionList.put("Prescriptions", Prescriptions);
+		
+		Map<String, String> par1 = new HashMap<>();
+		par1.put("PrescriptionList", PrescriptionList.toJSONString());
+		String res =  wx_CommonServiceApi.task(par1);
+		JSONObject js = JSONObject.parseObject(res);
+		logger.info("发药机返回信息："+js.toJSONString());
+		
+		//发药机回调判断
+		if ("true".equals(js.getJSONObject("Result").getJSONObject("Header").getString("ExecuteResult"))) {
+			logger.info("发药成功");
+		}else {
+			logger.info("错误code为:"+js.getJSONObject("Result").getJSONObject("Header").getJSONObject("Error").getString("Code"));
+			logger.info("错误描述为:"+js.getJSONObject("Result").getJSONObject("Header").getJSONObject("Error").getString("Message"));
+		}
+	
+		
+		
+		return R.ok();
+	}
+		
+		
 	/**
 	 * 挂号预算
 	 * <p>Title: RegisteredBudget</p>
@@ -1745,13 +2470,24 @@ public class Wx_CommonControllerApi extends BaseController{
 			if (arr.size() == 0) {
 				return R.error("未查到相关记录");
 			}
-//			//存储
-//			for (int i = 0; i < arr.size(); i++) {
-//				JSONObject ob = arr.getJSONObject(i);
-//				SechosDrug sechosDrug = JSON.toJavaObject(ob,SechosDrug.class);
-//				sechosDrug.setPatientRowGuid(params.get("pationRowGuid"));
-//				sechosDrugService.save(sechosDrug);
-//			}
+			//根据XX存储药品信息
+			for (int i = 0; i < arr.size(); i++) {
+				JSONObject ob = arr.getJSONObject(i);
+				//先删后增
+				sechosDrugService.deleteByJzlsh(ob.getString("jzlsh"));
+				SechosDrug sechosDrug = JSON.toJavaObject(ob,SechosDrug.class);
+				//如果排序号为空，则自动转为0
+		    	if (sechosDrug.getSortSq() == null) {
+					sechosDrug.setSortSq(0);
+				}
+		    	//生成uuid作为rowguid
+		        String uuid = java.util.UUID.randomUUID().toString();
+				sechosDrug.setRowGuid(uuid);
+				Date createTime = DateUtil.changeDate(new Date());
+				sechosDrug.setCreateTime(createTime);
+				sechosDrug.setPatientRowGuid(params.get("pationRowGuid"));
+				sechosDrugService.save(sechosDrug);
+			}
 			
 			
 			return R.ok().put("data", arr);
@@ -1962,7 +2698,9 @@ public class Wx_CommonControllerApi extends BaseController{
 	public R getInpatientADayOf(@RequestBody Map<String, String> params){
 		checkParams(params, "hzxm");
 		checkParams(params, "jzlsh");
-		checkParams(params, "cxrq");
+		if (params.get("cxrq") == null || "".equals(params.get("cxrq"))) {
+			return R.error("清先选择您要查询的日期");
+		}
 		checkParams(params, "aslhz");
 		String result =  wx_CommonServiceApi.getInpatientOneDayLiquidation(params);
 		JSONObject json = JSONObject.parseObject(result);

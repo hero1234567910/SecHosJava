@@ -92,7 +92,11 @@
 			`yfje`,
 			`zfje`,
 			`zfsj`,
-			`yyxh`
+			`yyxh`,
+			`blh`,
+			`yjlsh`,
+			`hisddh`,
+			`jzlsh`
 		)
 		values
 		(
@@ -114,7 +118,11 @@
 			#{yfje},
 			#{zfje},
 			#{zfsj},
-			#{yyxh}
+			#{yyxh},
+			#{blh},
+			#{yjlsh},
+			#{hisddh},
+			#{jzlsh}
 		)
 	</insert>
 	 
@@ -139,9 +147,13 @@
 			<if test="yfje != null">`yfje` = #{yfje},</if>
 			<if test="zfje != null">`zfje` = #{zfje},</if>
 			<if test="zfsj != null">`zfsj` = #{zfsj},</if>
-			<if test="yyxh != null">`yyxh` = #{yyxh}</if>
+			<if test="yyxh != null">`yyxh` = #{yyxh},</if>
+			<if test="blh != null">`blh` = #{blh},</if>
+			<if test="yjlsh != null">`yjlsh` = #{yjlsh},</if>
+			<if test="hisddh != null">`hisddh` = #{hisddh},</if>
+			<if test="jzlsh != null">`jzlsh` = #{jzlsh}</if>
 		</set>
-		where row_id = #{rowId}
+		where row_guid = #{rowGuid}
 	</update>
 	
 	<delete id="deleteBatch">

@@ -65,6 +65,10 @@
  	    select * from sechos_drug where patient_rowGuid = #{value}
  	</select>
  	
+ 	<select id="getByJzlsh" resultType="com.basic.javaframe.entity.SechosDrug">
+ 	    select * from sechos_drug where jzlsh = #{value}
+ 	</select>
+ 	
     <!-- 搜索数据区域 -->
     <sql id="where_clause">
         <where>
@@ -268,6 +272,10 @@
 		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
 			#{rowGuid}
 		</foreach>
+	</delete>
+	
+	<delete id="deleteByJzlsh">
+		delete from sechos_drug where jzlsh = #{value}
 	</delete>
 
 </mapper>
