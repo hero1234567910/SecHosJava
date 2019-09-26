@@ -340,7 +340,7 @@ public class Wx_CommonControllerApi extends BaseController{
 					if (resu) {
 						//查询成功
 						JSONArray array = jsonObject.getJSONArray("patinfos");
-						if (array.size() == 0) {
+						if (array.size() == 0 ||array.getJSONObject(0).isEmpty()) {
 							return R.error("未查询到相应住院患者信息");
 						}
 						//默认取第一个
@@ -1169,6 +1169,10 @@ public class Wx_CommonControllerApi extends BaseController{
 		 * @param params
 		 * @return
 		 */
+		@Transactional
+		@PassToken
+		@ResponseBody
+		@RequestMapping(value="/placeOrderByWN",produces="application/json;charset=utf-8",method=RequestMethod.POST)
 		public R placeOrderByWN(@RequestBody Map<String, String> params){
 			//商户编码
 			params.put("merchantId", mch_id);
@@ -1214,17 +1218,6 @@ public class Wx_CommonControllerApi extends BaseController{
 				//商户订单号
 		        String out_trade_no = System.currentTimeMillis()+wx_CommonServiceApi.getRandomStringByLength(7);
 				
-		        String xml = null;
-				try {
-					xml = wx_CommonServiceApi.placeOrderByWN(money,out_trade_no,params.get("openid"),params);
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				}
-				if (xml == "") {
-					//如果返回结果为空，说明调用接口异常
-					return R.error("调用下单接口失败");
-				}
-				
 				String result = "";
 				try {
 					result = wx_CommonServiceApi.placeOrderByWN(money,out_trade_no,params.get("openid"),params);
@@ -1259,12 +1252,15 @@ public class Wx_CommonControllerApi extends BaseController{
 				order.setPatientName(params.get("patientName"));
 				order.setPayType(PayTypeEnum.ADVANCEPAY.getCode());
 				order.setYjlsh(params.get("yjlsh"));
-				order.setHisddh(params.get("hisddh"));
+				order.setHisddh(params.get("sjh"));
 				SimpleDateFormat sFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 				order.setZfsj(sFormat.format(new Date()));
+				order.setBlh(params.get("blh"));
+				order.setZfje(params.get("yjMoney"));
 				//转decimal
 				BigDecimal number = new BigDecimal(params.get("yjMoney"));
 				order.setPayMoney(number);
+				order.setJzlsh(params.get("jzlsh"));
 				rechargerecordService.save(order);
 				
 //				//准备数据返回
@@ -1689,16 +1685,16 @@ public class Wx_CommonControllerApi extends BaseController{
 		 */
 		@ResponseBody
 		@RequestMapping(value="/wn_callback",produces="application/json;charset=utf-8",method=RequestMethod.POST)
-		public void wn_callback(HttpServletRequest request){
+		public JSONObject wn_callback(HttpServletRequest request){
 			
 			//xml转map
 			Map hashmap = new HashMap();
 			hashmap = request.getParameterMap();
 			logger.info("微信回调接口参数》》》"+JSONObject.toJSONString(hashmap));
 			
-			if ("false".equals(hashmap.get("success"))) {
-				logger.info("错误代码"+hashmap.get("errcode"));
-				throw new MyException("卫宁回调异常，异常信息》》"+hashmap.get("err"));
+			if ("false".equals(request.getParameter("success"))) {
+				logger.info("错误代码"+request.getParameter("errcode"));
+				throw new MyException("卫宁回调异常，异常信息》》"+request.getParameter("err"));
 			}
 //			//验签
 //			String sign = wx_CommonServiceApi.createSign(sm);
@@ -1708,20 +1704,19 @@ public class Wx_CommonControllerApi extends BaseController{
 //			//校验返回的订单金额是否与商户侧的订单金额一致
 //			int orderMoney = Integer.valueOf(hashmap.get("total_fee"));//单位分
 			//根据商户订单号查询该订单金额
-			Sechos_Rechargerecord rechargerecord = rechargerecordService.queryByOrderNumber(hashmap.get("outerOrderNo").toString());
+			Sechos_Rechargerecord rechargerecord = rechargerecordService.queryByOrderNumber(request.getParameter("outerOrderNo"));
 			if (rechargerecord == null) {
 				throw new MyException("未查询到对应记录");
 			}
 			//根据患者guid查询患者基本信息
 			SecHos_Patient patient = patientService.getPatientByGuid(rechargerecord.getPatientRowGuid());
-//			if (rechargerecord.getRecordStatus() != RecordStatusEnum.READYHANDLE.getCode()) {
-//				sm.clear();
-//				sm.put("return_code", "SUCCESS");
-//				sm.put("return_msg", "this infomation is already deal");
-//				
-//				logger.info("返回给微信的xml为"+xmlWx);
-//				return xmlWx;
-//			}
+			if (rechargerecord.getRecordStatus() != RecordStatusEnum.READYHANDLE.getCode()) {
+				JSONObject resobj = new JSONObject();
+				resobj.put("success",false);
+				resobj.put("errcode", "500");
+				resobj.put("err", "this deal is already pay");
+				return resobj;
+			}
 			
 			if (rechargerecord.getPayType() == PayTypeEnum.ADVANCEPAY.getCode()) {
 				//调用充值预交金接口
@@ -1731,18 +1726,20 @@ public class Wx_CommonControllerApi extends BaseController{
 				yjParams.put("hisddh", rechargerecord.getHisddh());
 				yjParams.put("yjlsh", rechargerecord.getYjlsh());
 				yjParams.put("zfje", rechargerecord.getPayMoney().toString());
-				yjParams.put("zflsh",hashmap.get("tradeNo").toString());
+				yjParams.put("zflsh",request.getParameter("tradeNo"));
 				yjParams.put("zfsj", rechargerecord.getZfsj());
+				yjParams.put("jzlsh", rechargerecord.getJzlsh());
 				
 				//预交金充值
 				String res = wx_CommonServiceApi.advancePay(yjParams);
 				JSONObject obj = JSONObject.parseObject(res);
 				if (obj.getBoolean("success")) {
+					
 				}else{
 					logger.info(obj.getString("message"));
 					//调用撤单接口
 					Map<String, String> par = new HashMap<String, String>();
-					par.put("outerOrderNo", rechargerecord.getSjh());
+					par.put("outerOrderNo", rechargerecord.getMerchantNumber());
 					par.put("ysje", rechargerecord.getZfje());
 					par.put("hzxm", rechargerecord.getPatientName());
 					par.put("patid", rechargerecord.getPatid());
@@ -1758,6 +1755,11 @@ public class Wx_CommonControllerApi extends BaseController{
 					}else{
 						throw new MyException(jsonObject.toJSONString());
 					}
+					JSONObject resobj = new JSONObject();
+					resobj.put("success",false);
+					resobj.put("errcode", "500");
+					resobj.put("err", "");
+					return resobj;
 				}
 			}
 			
@@ -1771,13 +1773,13 @@ public class Wx_CommonControllerApi extends BaseController{
 				par.put("yfje", rechargerecord.getYfje());
 				par.put("zffs", "2");
 				par.put("zfje", rechargerecord.getZfje());
-				par.put("zflsh", hashmap.get("tradeNo").toString());
+				par.put("zflsh", request.getParameter("tradeNo"));
 				par.put("isynzh", "0");
 				par.put("yyxh", rechargerecord.getYyxh());
 				String result =  wx_CommonServiceApi.RegisteredSettlement(par);
 				JSONObject json = JSONObject.parseObject(result);
 				if (json.getBoolean("success")) {
-				
+					
 				}else{
 					logger.info(json.getString("message"));
 					//调用撤单接口
@@ -1798,6 +1800,11 @@ public class Wx_CommonControllerApi extends BaseController{
 					}else{
 						throw new MyException(jsonObject.toJSONString());
 					}
+					JSONObject resobj = new JSONObject();
+					resobj.put("success",false);
+					resobj.put("errcode", "500");
+					resobj.put("err", "");
+					return resobj;
 				}
 				
 				
@@ -1812,7 +1819,7 @@ public class Wx_CommonControllerApi extends BaseController{
 				par.put("yfje", rechargerecord.getYfje());
 				par.put("zffs", "2");
 				par.put("zfje", rechargerecord.getZfje());
-				par.put("zflsh", hashmap.get("tradeNo").toString());
+				par.put("zflsh", request.getParameter("tradeNo"));
 				par.put("zfsj", rechargerecord.getZfsj());
 				par.put("isynzh", "0");
 				String result =  wx_CommonServiceApi.getOutpatientFeeSettlement(par);
@@ -1908,6 +1915,8 @@ public class Wx_CommonControllerApi extends BaseController{
 //						logger.info("错误信息为:"+e.getMessage());
 //						throw new MyException("处理回调异常");
 //					}
+					
+					
 				}else{
 					logger.info(json.getString("message"));
 					if ("已经结算成功，无法重复结算".equals(json.getString("message"))) {
@@ -1931,6 +1940,11 @@ public class Wx_CommonControllerApi extends BaseController{
 					}else{
 						throw new MyException(jsonObject.toJSONString());
 					}
+					JSONObject resobj = new JSONObject();
+					resobj.put("success",false);
+					resobj.put("errcode", "500");
+					resobj.put("err", "");
+					return resobj;
 				
 				}
 				
@@ -1944,6 +1958,11 @@ public class Wx_CommonControllerApi extends BaseController{
 			hosOrder.setRowGuid(rechargerecord.getRowGuid());
 			hosOrder.setRecordStatus(RecordStatusEnum.ALREADYHANDLE.getCode());
 			rechargerecordService.update(hosOrder);
+			
+			JSONObject resobj = new JSONObject();
+			resobj.put("success",true);
+			resobj.put("errcode", "200");
+			return resobj;
 		}
 		
 		
@@ -2278,7 +2297,6 @@ public class Wx_CommonControllerApi extends BaseController{
 					Prescriptions.add(Prescription);
 				}
 			}
-			
 			
 		}
 		JSONObject PatientInfo = new JSONObject();
@@ -2680,7 +2698,9 @@ public class Wx_CommonControllerApi extends BaseController{
 	public R getInpatientADayOf(@RequestBody Map<String, String> params){
 		checkParams(params, "hzxm");
 		checkParams(params, "jzlsh");
-		checkParams(params, "cxrq");
+		if (params.get("cxrq") == null || "".equals(params.get("cxrq"))) {
+			return R.error("清先选择您要查询的日期");
+		}
 		checkParams(params, "aslhz");
 		String result =  wx_CommonServiceApi.getInpatientOneDayLiquidation(params);
 		JSONObject json = JSONObject.parseObject(result);

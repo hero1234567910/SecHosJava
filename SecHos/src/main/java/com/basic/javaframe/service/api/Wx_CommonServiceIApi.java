@@ -465,11 +465,13 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		
 		sm.putAll(params);
 		String sign = createSign(sm);
+		
 		params.put("sign", sign);
 		
 		logger.info("卫宁下单接口参数》》》》"+JSONObject.toJSONString(params));
 		String result = "";
 		try {
+			System.out.println(wnzfUrl);
 			result = HttpUtil.sendPost(wnzfUrl+"/winningpay!execWinningPayTradePayPrecreate.do",params);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -787,7 +789,11 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		
 		params.put("cdly", "1");
 		params.put("paytype", "7");
-		
+		SortedMap<Object, Object> sm =
+                new TreeMap<Object, Object>();
+		sm.putAll(params);
+		String sign = createSign(sm);
+		params.put("sign",sign);
 		
 		logger.info("撤单接口参数》》》"+JSONObject.toJSONString(params));
 		String res = HttpUtil.sendPost(wnzfUrl+"/winningpay!execWinningPayCancel.do", params);
@@ -810,9 +816,9 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		params.put("action","PUTGHJS");
 		params.put("port", "1");
 
-		logger.info("获取挂号结算信息查询接口参数》》》"+JSONObject.toJSONString(params));
+		logger.info("获取挂号结算接口参数》》》"+JSONObject.toJSONString(params));
 		String res = HttpUtil.sendPost(wnUrl, params);
-		logger.info("获取挂号结算信息查询接口返回成功》》》"+JSONObject.toJSONString(res));
+		logger.info("获取挂号结算接口返回成功》》》"+JSONObject.toJSONString(res));
 		return res;
 	}
 

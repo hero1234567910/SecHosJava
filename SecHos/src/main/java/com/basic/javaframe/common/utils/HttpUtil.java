@@ -250,6 +250,7 @@ public class HttpUtil {
      * @return 远程响应结果 
      */  
     public static String sendPost(String url, Map<String, String> parameters) {  
+    	System.out.println(JSONObject.toJSONString(parameters));
         String result = "";// 返回的结果  
         BufferedReader in = null;// 读取响应输入流  
         PrintWriter out = null;  
@@ -266,6 +267,7 @@ public class HttpUtil {
                 params = sb.toString();  
             } else {  
                 for (String name : parameters.keySet()) {  
+                	System.out.println(name);
                     sb.append(name).append("=").append(  
                             java.net.URLEncoder.encode(parameters.get(name),  
                                     "UTF-8")).append("&");  

@@ -64,7 +64,15 @@ public class Sechos_Rechargerecord implements Serializable {
    
    private String blh;
    
-   public String getBlh() {
+   private String jzlsh;
+   
+   public String getJzlsh() {
+	return jzlsh;
+}
+public void setJzlsh(String jzlsh) {
+	this.jzlsh = jzlsh;
+}
+public String getBlh() {
 	return blh;
 }
 public void setBlh(String blh) {
