@@ -17,6 +17,7 @@
         <result property="outboundNote" column="outbound_note"/>
         <result property="outboundPrice" column="outbound_price"/>
         <result property="personGuid" column="person_guid"/>
+		<result property="outboundMark" column="outbound_mark"/>
     </resultMap>
 
 	<select id="getList" resultType="com.basic.javaframe.entity.Sechos_Outbound">
@@ -85,6 +86,7 @@
     		<if test="outboundPriceVague != null and outboundPriceVague != ''"> and t.outbound_price like concat('%',#{outboundPriceVague},'%') </if>
             <if test="personGuid != null and personGuid != ''"> and t.person_guid = #{personGuid} </if>
     		<if test="personGuidVague != null and personGuidVague != ''"> and t.person_guid like concat('%',#{personGuidVague},'%') </if>
+			<if test="outboundMark != null and outboundMark != ''"> and t.outbound_mark = #{outboundMark} </if>
 			<if test=" startTime != null and startTime != '' and endTime != null and endTime != '' ">
 				AND DATE_FORMAT( t.order_date, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
 			</if>
@@ -122,6 +124,7 @@
 			<if test="outboundPriceVague != null and outboundPriceVague != ''"> and t.outbound_price like concat('%',#{outboundPriceVague},'%') </if>
 			<if test="personGuid != null and personGuid != ''"> and t.person_guid = #{personGuid} </if>
 			<if test="personGuidVague != null and personGuidVague != ''"> and t.person_guid like concat('%',#{personGuidVague},'%') </if>
+			<if test="outboundMark != null and outboundMark != ''"> and t.outbound_mark = #{outboundMark} </if>
 			<if test=" startTime != null and startTime != '' and endTime != null and endTime != '' ">
 				AND DATE_FORMAT( t.order_date, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
 			</if>
@@ -143,7 +146,8 @@
 			`outbound_status`, 
 			`outbound_note`, 
 			`outbound_price`, 
-			`person_guid`
+			`person_guid`,
+			`outbound_mark`
 		)
 		values
 		(
@@ -157,7 +161,8 @@
 			#{outboundStatus}, 
 			#{outboundNote}, 
 			#{outboundPrice}, 
-			#{personGuid}
+			#{personGuid},
+			#{outboundMark}
 		)
 	</insert>
 	 
@@ -174,7 +179,8 @@
 			<if test="outboundStatus != null">`outbound_status` = #{outboundStatus}, </if>
 			<if test="outboundNote != null">`outbound_note` = #{outboundNote}, </if>
 			<if test="outboundPrice != null">`outbound_price` = #{outboundPrice}, </if>
-			<if test="personGuid != null">`person_guid` = #{personGuid}</if>
+			<if test="personGuid != null">`person_guid` = #{personGuid},</if>
+			<if test="outboundMark != null">`outbound_mark` = #{outboundMark}</if>
 		</set>
 		where row_guid = #{rowGuid}
 	</update>

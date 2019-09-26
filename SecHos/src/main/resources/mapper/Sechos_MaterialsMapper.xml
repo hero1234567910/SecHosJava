@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.Sechos_MaterialsDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.basic.javaframe.entity.Sechos_Materials" id="sechosMaterialsMap">
+        <result property="rowId" column="row_id"/>
+        <result property="rowGuid" column="row_guid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="sortSq" column="sort_sq"/>
+        <result property="materialName" column="material_name"/>
+        <result property="materialCode" column="material_code"/>
+        <result property="materialPrice" column="material_price"/>
+        <result property="materialCategory" column="material_category"/>
+        <result property="materialManufacturer" column="material_manufacturer"/>
+        <result property="materialStatus" column="material_status"/>
+		<result property="materialNote" column="material_note"/>
+    </resultMap>
+
+	<select id="getList" resultType="com.basic.javaframe.entity.Sechos_Materials">
+		select * from sechos_materials t <include refid="where_clause" />
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by row_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="getCount" resultType="int">
+		select count(*) from sechos_materials t  <include refid="where_clause" />
+	</select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+    		<if test="rowIdVague != null and rowIdVague != ''"> and t.row_id like concat('%',#{rowIdVague},'%') </if>
+            <if test="rowGuid != null and rowGuid != ''"> and t.row_guid = #{rowGuid} </if>
+    		<if test="rowGuidVague != null and rowGuidVague != ''"> and t.row_guid like concat('%',#{rowGuidVague},'%') </if>
+            <if test="createTime != null and createTime != ''"> and t.create_time = #{createTime} </if>
+    		<if test="createTimeVague != null and createTimeVague != ''"> and t.create_time like concat('%',#{createTimeVague},'%') </if>
+            <if test="delFlag != null and delFlag != ''"> and t.del_flag = #{delFlag} </if>
+    		<if test="delFlagVague != null and delFlagVague != ''"> and t.del_flag like concat('%',#{delFlagVague},'%') </if>
+            <if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
+    		<if test="sortSqVague != null and sortSqVague != ''"> and t.sort_sq like concat('%',#{sortSqVague},'%') </if>
+            <if test="materialName != null and materialName != ''"> and t.material_name = #{materialName} </if>
+    		<if test="materialNameVague != null and materialNameVague != ''"> and t.material_name like concat('%',#{materialNameVague},'%') </if>
+            <if test="materialCode != null and materialCode != ''"> and t.material_code = #{materialCode} </if>
+    		<if test="materialCodeVague != null and materialCodeVague != ''"> and t.material_code like concat('%',#{materialCodeVague},'%') </if>
+            <if test="materialPrice != null and materialPrice != ''"> and t.material_price = #{materialPrice} </if>
+    		<if test="materialPriceVague != null and materialPriceVague != ''"> and t.material_price like concat('%',#{materialPriceVague},'%') </if>
+            <if test="materialCategory != null and materialCategory != ''"> and t.material_category = #{materialCategory} </if>
+    		<if test="materialCategoryVague != null and materialCategoryVague != ''"> and t.material_category like concat('%',#{materialCategoryVague},'%') </if>
+            <if test="materialManufacturer != null and materialManufacturer != ''"> and t.material_manufacturer = #{materialManufacturer} </if>
+    		<if test="materialManufacturerVague != null and materialManufacturerVague != ''"> and t.material_manufacturer like concat('%',#{materialManufacturerVague},'%') </if>
+            <if test="materialStatus != null and materialStatus != ''"> and t.material_status = #{materialStatus} </if>
+    		<if test="materialStatusVague != null and materialStatusVague != ''"> and t.material_status like concat('%',#{materialStatusVague},'%') </if>
+			<if test="materialNote != null and materialNote != ''"> and t.material_note = #{materialNote} </if>
+			<if test="materialNoteVague != null and materialNoteVague != ''"> and t.material_note like concat('%',#{materialNoteVague},'%') </if>
+        	and t.del_flag = 0
+        </where>
+    </sql>
+	 
+	<insert id="save" parameterType="com.basic.javaframe.entity.Sechos_Materials" useGeneratedKeys="true" keyProperty="rowId">
+		insert into sechos_materials
+		(
+			`row_guid`, 
+			`create_time`, 
+			`del_flag`, 
+			`sort_sq`, 
+			`material_name`, 
+			`material_code`, 
+			`material_price`, 
+			`material_category`, 
+			`material_manufacturer`, 
+			`material_status`,
+			`material_note`
+		)
+		values
+		(
+			#{rowGuid}, 
+			#{createTime}, 
+			#{delFlag}, 
+			#{sortSq}, 
+			#{materialName}, 
+			#{materialCode}, 
+			#{materialPrice}, 
+			#{materialCategory}, 
+			#{materialManufacturer}, 
+			#{materialStatus},
+			#{materialNote}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.basic.javaframe.entity.Sechos_Materials">
+		update sechos_materials 
+		<set>
+			<if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+			<if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+			<if test="materialName != null">`material_name` = #{materialName}, </if>
+			<if test="materialCode != null">`material_code` = #{materialCode}, </if>
+			<if test="materialPrice != null">`material_price` = #{materialPrice}, </if>
+			<if test="materialCategory != null">`material_category` = #{materialCategory}, </if>
+			<if test="materialManufacturer != null">`material_manufacturer` = #{materialManufacturer}, </if>
+			<if test="materialStatus != null">`material_status` = #{materialStatus},</if>
+			<if test="materialNote != null">`material_note` = #{materialNote}</if>
+		</set>
+		where row_guid = #{rowGuid}
+	</update>
+	
+	<delete id="deleteBatch">
+		update sechos_materials set `del_flag` = 1 where row_guid in 
+		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+			#{rowGuid}
+		</foreach>
+	</delete>
+
+	<select id="getDetailByGuid" resultType="com.basic.javaframe.entity.Sechos_Materials">
+		select * from sechos_materials where row_guid =#{rowGuid} and del_flag = 0
+	</select>
+
+	<select id="getMaterialCodes" resultType="com.basic.javaframe.entity.Sechos_Materials">
+		select material_code,material_name from sechos_materials where del_flag = 0 and material_status = 0
+	</select>
+
+	<select id="getMaterialName" resultType="com.basic.javaframe.entity.Sechos_Materials">
+		select material_name,row_guid,material_price from sechos_materials where material_code=#{materialCode} and del_flag = 0
+	</select>
+
+	<!-- 验证重复性 -->
+	<select id="checkMaterialCode" resultType="int">
+		select count(*) from sechos_material t<include refid="where_clause" />
+	</select>
+
+</mapper>

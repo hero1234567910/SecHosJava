@@ -130,5 +130,107 @@ public class RandomNumber {
         }
         return Newnumber;//返回的值
     }
+
+    public static String GetMRandom(){
+        String Newnumber=null;
+        String dateStr=getNowDateStr();
+        lock.lock();//加锁
+        //判断是时间是否相同
+        if (dateStr.equals(now)) {
+            try {
+                if (count >= 10000)
+                {
+                    count = 1;
+                }
+                if (count<10) {
+                    Newnumber = "M" + getNowDateStr()+"000"+count;
+                }else if (count<100) {
+                    Newnumber = "M" + getNowDateStr()+"00"+count;
+                }else if(count<1000){
+                    Newnumber = "M" + getNowDateStr()+"0"+count;
+                }else  {
+                    Newnumber = "M" + getNowDateStr()+count;
+                }
+                count++;
+            } catch (Exception e) {
+            }finally{
+                lock.unlock();
+            }
+        }else{
+            count=1;
+            now =getNowDateStr();
+            try {
+                if (count >= 10000)
+                {
+                    count = 1;
+                }
+                if (count<10) {
+                    Newnumber = "M" + getNowDateStr()+"000"+count;
+                }else if (count<100) {
+                    Newnumber = "M" + getNowDateStr()+"00"+count;
+                }else if(count<1000){
+                    Newnumber = "M" + getNowDateStr()+"0"+count;
+                }else  {
+                    Newnumber = "M" + getNowDateStr()+count;
+                }
+                count++;
+            } catch (Exception e) {
+            }finally{
+                lock.unlock();
+            }
+        }
+        return Newnumber;//返回的值
+    }
+
+    public static String GetMeOutRandom(){
+        String Newnumber=null;
+        String dateStr=getNowDateStr();
+        lock.lock();//加锁
+        //判断是时间是否相同
+        if (dateStr.equals(now)) {
+            try {
+                if (count >= 10000)
+                {
+                    count = 1;
+                }
+                if (count<10) {
+                    Newnumber = "MOUT" + getNowDateStr()+"000"+count;
+                }else if (count<100) {
+                    Newnumber = "MOUT" + getNowDateStr()+"00"+count;
+                }else if(count<1000){
+                    Newnumber = "MOUT" + getNowDateStr()+"0"+count;
+                }else  {
+                    Newnumber = "MOUT" + getNowDateStr()+count;
+                }
+                count++;
+            } catch (Exception e) {
+            }finally{
+                lock.unlock();
+            }
+        }else{
+            count=1;
+            now =getNowDateStr();
+            try {
+                if (count >= 10000)
+                {
+                    count = 1;
+                }
+                if (count<10) {
+                    Newnumber = "MOUT" + getNowDateStr()+"000"+count;
+                }else if (count<100) {
+                    Newnumber = "MOUT" + getNowDateStr()+"00"+count;
+                }else if(count<1000){
+                    Newnumber = "MOUT" + getNowDateStr()+"0"+count;
+                }else  {
+                    Newnumber = "MOUT" + getNowDateStr()+count;
+                }
+                count++;
+            } catch (Exception e) {
+            }finally{
+                lock.unlock();
+            }
+        }
+        return Newnumber;//返回的值
+    }
 }
 

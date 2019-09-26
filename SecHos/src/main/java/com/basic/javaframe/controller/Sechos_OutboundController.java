@@ -72,10 +72,37 @@ public class Sechos_OutboundController {
 		sechosOutbound.setDelFlag(0);
 		sechosOutbound.setOutboundStatus(0);
 		sechosOutbound.setPersonGuid(personGuid);
+		sechosOutbound.setOutboundMark(0);
 		sechosOutboundService.save(sechosOutbound);
         return R.ok();  
     }
 
+	/**
+	 * 新增
+	 **/
+	@ApiOperation(value="新增出库单")
+	@ResponseBody
+	@RequestMapping(value="/add2/{personGuid}",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R add2(@PathVariable("personGuid") String personGuid){
+		Sechos_Outbound sechosOutbound = new Sechos_Outbound();
+		//如果排序号为空，则自动转为0
+		if (sechosOutbound.getSortSq() == null) {
+			sechosOutbound.setSortSq(0);
+		}
+		//生成uuid作为rowguid
+		String uuid = java.util.UUID.randomUUID().toString();
+		sechosOutbound.setRowGuid(uuid);
+		Date createTime = DateUtil.changeDate(new Date());
+		sechosOutbound.setCreateTime(createTime);
+		String outboundNumber = RandomNumber.GetMeOutRandom();
+		sechosOutbound.setOutboundOrderNum(outboundNumber);
+		sechosOutbound.setDelFlag(0);
+		sechosOutbound.setOutboundStatus(0);
+		sechosOutbound.setPersonGuid(personGuid);
+		sechosOutbound.setOutboundMark(1);
+		sechosOutboundService.save(sechosOutbound);
+		return R.ok();
+	}
 	/**
 	 * 修改
 	 */
