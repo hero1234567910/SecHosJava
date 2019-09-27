@@ -97,4 +97,11 @@ public interface Frame_DeptDao {
      * 通过guid 获取部门名
      */
     String getDeptNameByGuid(String rowGuid);
+
+    /**
+     * 通过名称获取GUID
+     * @param deptName
+     * @return
+     */
+    String getDeptGuidByName(String deptName);
 }

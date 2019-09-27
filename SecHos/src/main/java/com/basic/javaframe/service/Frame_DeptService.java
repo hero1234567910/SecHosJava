@@ -80,4 +80,6 @@ public interface Frame_DeptService {
 
 	//通过部门行号获取名称
 	void getDeptNameByGuid(String rowGuid);
+
+    String getDeptGuidByName(String deptName);
 }

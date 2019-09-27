@@ -169,4 +169,12 @@ public class Frame_DeptController {
 		}
     	return R.ok();
     }
+
+    @ApiOperation(value="getDeptGuidByName")
+    @ResponseBody
+    @RequestMapping(value="/getDeptGuidByName",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+    public R getDeptGuidByName(@RequestBody String deptName){
+        String rowGuid = deptService.getDeptGuidByName(deptName);
+        return R.ok().put("data", rowGuid);
+    }
 }

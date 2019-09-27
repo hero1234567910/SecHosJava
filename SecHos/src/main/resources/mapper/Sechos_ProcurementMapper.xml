@@ -18,6 +18,7 @@
 		<result property="purchasePrice" column="purchase_price"/>
 		<result property="personGuid" column="person_guid"/>
 		<result property="overdueMark" column="overdue_mark"/>
+		<result property="purchaseMark" column="purchase_mark"/>
     </resultMap>
 
 	<select id="getList" resultType="com.basic.javaframe.entity.Sechos_Procurement">
@@ -87,6 +88,7 @@
 			<if test="personGuid != null and personGuid != ''"> and t.person_guid = #{personGuid} </if>
 			<if test="personGuidVague != null and personGuidVague != ''"> and t.person_guid like concat('%',#{personGuidVague},'%') </if>
 			<if test="overdueMark != null and overdueMark != ''"> and t.overdue_mark = #{overdueMark} </if>
+			<if test="purchaseMark != null and purchaseMark != ''"> and t.purchase_mark = #{purchaseMark} </if>
 			<if test=" startTime != null and startTime != '' and endTime != null and endTime != '' ">
 				AND DATE_FORMAT( t.purchase_date, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
 			</if>
@@ -125,6 +127,7 @@
 			<if test="personGuid != null and personGuid != ''"> and t.person_guid = #{personGuid} </if>
 			<if test="personGuidVague != null and personGuidVague != ''"> and t.person_guid like concat('%',#{personGuidVague},'%') </if>
 			<if test="overdueMark != null and overdueMark != ''"> and t.overdue_mark = #{overdueMark} </if>
+			<if test="purchaseMark != null and purchaseMark != ''"> and t.purchase_mark = #{purchaseMark} </if>
 			<if test=" startTime != null and startTime != '' and endTime != null and endTime != '' ">
 				AND DATE_FORMAT( t.purchase_date, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
 			</if>
@@ -146,7 +149,8 @@
 			`purchase_note`,
 			`purchase_price`,
 			`person_guid`,
-			`overdue_mark`
+			`overdue_mark`,
+			`purchase_mark`
 		)
 		values
 		(
@@ -161,7 +165,8 @@
 			#{purchaseNote},
 			#{purchasePrice},
 			#{personGuid},
-			#{overdueMark}
+			#{overdueMark},
+			#{purchaseMark}
 		)
 	</insert>
 	 
@@ -179,7 +184,8 @@
 			<if test="purchaseNote != null">`purchase_note` = #{purchaseNote},</if>
 			<if test="purchasePrice != null">`purchase_price` = #{purchasePrice},</if>
 			<if test="personGuid != null">`person_guid` = #{personGuid},</if>
-			<if test="overdueMark != null">`overdue_mark` = #{overdueMark}</if>
+			<if test="overdueMark != null">`overdue_mark` = #{overdueMark},</if>
+			<if test="purchaseMark != null">`purchase_mark` = #{purchaseMark}</if>
 		</set>
 		where row_guid = #{rowGuid}
 	</update>

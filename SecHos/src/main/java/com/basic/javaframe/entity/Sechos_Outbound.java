@@ -44,6 +44,9 @@ public class Sechos_Outbound implements Serializable {
 	/**出库人Guid**/
 	private String personGuid;
 
+	/**出库材料类型**/
+	private Integer outboundMark;
+
 	/**
 	 * 设置：
 	 */
@@ -188,4 +191,12 @@ public class Sechos_Outbound implements Serializable {
 	public String getPersonGuid() {
 		return personGuid;
 	}
-}
+
+	 public Integer getOutboundMark() {
+		 return outboundMark;
+	 }
+
+	 public void setOutboundMark(Integer outboundMark) {
+		 this.outboundMark = outboundMark;
+	 }
+ }

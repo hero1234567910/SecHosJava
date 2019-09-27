@@ -53,7 +53,7 @@ public class Sechos_ProcurementController {
     /**
      * 新增
      **/
-    @ApiOperation(value="新增采购单")
+    @ApiOperation(value="新增药品采购单")
     @ResponseBody
     @RequestMapping(value="/add/{personGuid}",produces="application/json;charset=utf-8",method=RequestMethod.POST)
     public R add(@PathVariable("personGuid") String personGuid){
@@ -73,9 +73,38 @@ public class Sechos_ProcurementController {
 		sechosProcurement.setDelFlag(0);
 		sechosProcurement.setPurchaseStatus(0);
 		sechosProcurement.setPersonGuid(personGuid);
+		sechosProcurement.setPurchaseMark(0);
 		sechosProcurementService.save(sechosProcurement);
         return R.ok();  
     }
+
+	/**
+	 * 新增
+	 **/
+	@ApiOperation(value="新增普通材料采购单")
+	@ResponseBody
+	@RequestMapping(value="/add2/{personGuid}",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R add2(@PathVariable("personGuid") String personGuid){
+		Sechos_Procurement sechosProcurement =new Sechos_Procurement();
+		//如果排序号为空，则自动转为0
+		if (sechosProcurement.getSortSq() == null) {
+			sechosProcurement.setSortSq(0);
+		}
+		//生成uuid作为rowguid
+		String uuid = java.util.UUID.randomUUID().toString();
+		sechosProcurement.setRowGuid(uuid);
+		Date createTime = DateUtil.changeDate(new Date());
+		sechosProcurement.setCreateTime(createTime);
+		String purchaseNumber = RandomNumber.GetMRandom();
+		//System.out.println(purchaseNumber);
+		sechosProcurement.setPurchaseOrderNum(purchaseNumber);
+		sechosProcurement.setDelFlag(0);
+		sechosProcurement.setPurchaseStatus(0);
+		sechosProcurement.setPersonGuid(personGuid);
+		sechosProcurement.setPurchaseMark(1);
+		sechosProcurementService.save(sechosProcurement);
+		return R.ok();
+	}
 
 	/**
 	 * 修改

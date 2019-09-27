@@ -201,9 +201,9 @@ public class Wx_Sechos_RepairController {
 
 	@ApiOperation(value="获取待维修数据数量")
 	@ResponseBody
-	@RequestMapping(value="/countRepairs",produces="application/json;charset=utf-8",method=RequestMethod.GET)
-	public R countRepairs(){
-		Integer counts = sechosRepairService.countRepairs();
+	@RequestMapping(value="/countRepairs",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R countRepairs(@RequestBody String maintainGuid){
+		Integer counts = sechosRepairService.countRepairs(maintainGuid);
 		return R.ok().put("data",counts);
 	}
 }

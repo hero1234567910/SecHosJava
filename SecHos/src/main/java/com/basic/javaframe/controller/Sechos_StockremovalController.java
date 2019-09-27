@@ -11,6 +11,7 @@ import com.basic.javaframe.entity.Sechos_Storageamount;
 import com.basic.javaframe.service.Sechos_OutboundService;
 import com.basic.javaframe.service.Sechos_StorageamountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -64,6 +65,7 @@ public class Sechos_StockremovalController {
      **/
     @ApiOperation(value="新增材料出库")
     @ResponseBody
+	@Transactional
     @RequestMapping(value="/add",produces="application/json;charset=utf-8",method=RequestMethod.POST)
     public R add(@RequestBody Map<String,Object> params){
     	Sechos_Outbound sechosOutbound = new Sechos_Outbound();
@@ -77,8 +79,6 @@ public class Sechos_StockremovalController {
 
 		sechosStockremovalService.insertRemove(outboundGuid);
 		sechosStockremovalService.insertOutDate(sechosStockremoval);
-
-
 
 		List<Sechos_Stockremoval> sechosStockremovals = sechosStockremovalService.getListByOutboundGuid(outboundGuid);
 		for(int i =0 ;i<sechosStockremovals.size();i++){

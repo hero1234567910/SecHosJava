@@ -85,8 +85,13 @@ public class Sechos_RepairServiceImpl implements Sechos_RepairService {
 	}
 
 	@Override
-	public int countRepairs() {
-		return sechosRepairDao.countRepairs();
+	public int countRepairs(String maintainGuid) {
+		return sechosRepairDao.countRepairs(maintainGuid);
+	}
+
+	@Override
+	public void assignBatch(String maintainGuid, String maintainName,String[] rowGuids) {
+		sechosRepairDao.assignBatch(maintainGuid,maintainName,rowGuids);
 	}
 
 }

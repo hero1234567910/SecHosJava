@@ -13,7 +13,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.basic.javaframe.common.customclass.PassToken;
 import com.basic.javaframe.common.customclass.UserLoginToken;
 import com.basic.javaframe.common.utils.*;
-import com.basic.javaframe.service.Frame_ConfigService;
+import com.basic.javaframe.service.*;
 import io.swagger.models.auth.In;
 import org.apache.catalina.User;
 import org.slf4j.Logger;
@@ -30,9 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.basic.javaframe.entity.Frame_Role_User;
 import com.basic.javaframe.entity.Frame_User;
-import com.basic.javaframe.service.Frame_ModuleRightService;
-import com.basic.javaframe.service.Frame_Role_UserService;
-import com.basic.javaframe.service.Frame_UserService;
 import com.mysql.jdbc.authentication.Sha256PasswordPlugin;
 
 import java.util.UUID;
@@ -71,6 +68,8 @@ public class Frame_UserController {
     @Autowired
     private Frame_ConfigService configService;
 
+    @Autowired
+    private Frame_DeptService frameDeptService;
     /**
      * 获取所有正常用户
      * <p>Title: getUser</p>
@@ -489,5 +488,6 @@ public class Frame_UserController {
         Frame_User frameUser = userService.getUserByOpenid(openid);
         return R.ok().put("data",frameUser);
     }
+
 }
 

@@ -174,4 +174,9 @@ public class Frame_DeptServiceImpl implements Frame_DeptService {
     public void getDeptNameByGuid(String rowGuid) {
         frame_deptDao.getDeptNameByGuid(rowGuid);
     }
+
+    @Override
+    public String getDeptGuidByName(String deptName) {
+        return frame_deptDao.getDeptGuidByName(deptName);
+    }
 }

@@ -73,6 +73,19 @@ public class Sechos_Procurement implements Serializable {
      **/
     private Integer overdueMark;
 
+    /**
+     * 材料种类标识
+     */
+    private Integer purchaseMark;
+
+    public Integer getPurchaseMark() {
+        return purchaseMark;
+    }
+
+    public void setPurchaseMark(Integer purchaseMark) {
+        this.purchaseMark = purchaseMark;
+    }
+
     public Integer getOverdueMark() {
         return overdueMark;
     }
