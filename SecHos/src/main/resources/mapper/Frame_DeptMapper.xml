@@ -183,4 +183,8 @@
 			and t.del_flag = 0
 		</where>
 	</sql>
+
+	<select id="getDeptGuidByName" resultType="java.lang.String">
+		select row_guid from frame_dept where dept_name=#{deptName} and del_flag = 0
+	</select>
 </mapper> 

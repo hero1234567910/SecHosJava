@@ -155,4 +155,6 @@ public interface Frame_UserDao {
 	 * @return 用户信息
 	 */
 	Frame_User getUserByOpenid(@Param("openid")String openid);
+
+	List<Frame_User> getUserByDeptGuid(String deptGuid);
 }

@@ -3,6 +3,7 @@ package com.basic.javaframe.dao;
 import com.basic.javaframe.entity.Sechos_Repair;
 import org.apache.ibatis.annotations.Param;
 import org.apache.poi.ss.formula.functions.T;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Map;
@@ -66,4 +67,6 @@ public interface Sechos_RepairDao extends BaseDao<Sechos_Repair> {
      * @return
      */
     int countRepairs();
+
+    int assignBatch(@Param("maintainGuid") String maintainGuid,@Param("maintainName")String maintainName, @Param("rowGuid") String[] rowGuids);
 }

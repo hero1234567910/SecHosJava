@@ -127,4 +127,15 @@ public class Sechos_RepairController {
 		Integer counts = sechosRepairService.countRepairs();
 		return R.ok().put("data",counts);
 	}
+
+	/**
+	 * 指派报修
+	 */
+	@ApiOperation(value="指派报修")
+	@ResponseBody
+	@RequestMapping(value="/assignBatch/{maintainGuid}/{maintainName}",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R assignBatch(@PathVariable("maintainGuid") String maintainGuid,@PathVariable("maintainName")String maintainName,@RequestBody String[] rowGuids){
+		sechosRepairService.assignBatch(maintainGuid,maintainName,rowGuids);
+		return R.ok();
+	}
 }

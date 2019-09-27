@@ -248,4 +248,11 @@
 	<select id="countRepairs" resultType="int">
 		select count(*) from sechos_repair where repair_status = 0 and del_flag = 0
 	</select>
+
+	<update id="assignBatch">
+		update sechos_repair set `maintain_guid` = #{maintainGuid} , `maintain_name`=#{maintainName},`repair_status` = 3 where row_guid in
+		<foreach item="rowGuid" collection="rowGuid" open="(" separator="," close=")">
+			#{rowGuid}
+		</foreach>
+	</update>
 </mapper>

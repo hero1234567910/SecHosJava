@@ -70,4 +70,8 @@ public interface Frame_UserService {
     void updateLoginTime(Frame_User frameUser);
 
     Frame_User getUserByOpenid(String openid);
+
+    List<Frame_User> getUserByDeptGuid(String deptGuid);
+
+
 }

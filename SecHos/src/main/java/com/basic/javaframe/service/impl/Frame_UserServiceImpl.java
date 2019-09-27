@@ -158,6 +158,11 @@ public class Frame_UserServiceImpl implements Frame_UserService {
     public Frame_User getUserByOpenid(String openid) {
         return frame_userDao.getUserByOpenid(openid);
     }
+
+    @Override
+    public List<Frame_User> getUserByDeptGuid(String deptGuid) {
+        return frame_userDao.getUserByDeptGuid(deptGuid);
+    }
 }
 
 

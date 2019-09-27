@@ -40,4 +40,6 @@ public interface Sechos_RepairService {
 	int getMyCount(Map<String, Object> map);
 
 	int countRepairs();
+
+	void assignBatch(String maintainGuid,String maintainName,String[] rowGuids);
 }
