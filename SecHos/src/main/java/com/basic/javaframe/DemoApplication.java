@@ -8,10 +8,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.servlet.MultipartConfigElement;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @MapperScan("com.basic.javaframe.dao")
 @SpringBootApplication
 @EnableTransactionManagement
+@EnableScheduling
 public class DemoApplication {
 
 	public static void main(String[] args) {

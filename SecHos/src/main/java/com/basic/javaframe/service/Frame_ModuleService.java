@@ -3,6 +3,8 @@ package com.basic.javaframe.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
 import com.alibaba.fastjson.JSONArray;
 import com.basic.javaframe.entity.Frame_Dept;
 import com.basic.javaframe.entity.Frame_Module;
