@@ -66,7 +66,7 @@ public interface Sechos_RepairDao extends BaseDao<Sechos_Repair> {
      * 获取待维修数量
      * @return
      */
-    int countRepairs();
+    int countRepairs(@Param("maintainGuid")String maintainGuid);
 
     int assignBatch(@Param("maintainGuid") String maintainGuid,@Param("maintainName")String maintainName, @Param("rowGuid") String[] rowGuids);
 }
