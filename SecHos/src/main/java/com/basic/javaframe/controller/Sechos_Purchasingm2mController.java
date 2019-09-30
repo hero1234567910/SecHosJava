@@ -196,6 +196,14 @@ public class Sechos_Purchasingm2mController {
 
 			List<Sechos_Purchasingm2m> sechosPurchasingm2mList = sechosPurchasingm2mService.getListByPGuid(purchaseGuid);
 			//System.out.println(sechosPurchasingm2mList.toString());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			for(int i = 0;i<sechosPurchasingm2mList.size();i++){
+				Date time = sechosPurchasingm2mList.get(i).getDrugOverdue();
+				String fTime = sdf.format(time);
+				Date newDate =sdf.parse(fTime);
+				java.sql.Date resultDate = new java.sql.Date(newDate.getTime());
+				sechosPurchasingm2mList.get(i).setDrugOverdue(resultDate);
+			}
 			HSSFWorkbook workbook1 = ExcelUtil.exportExcelData(workbook,sechosPurchasingm2mList,beanProperty);
 
 			String fileName = "采购表_"+procurement.getPurchaseOrderNum()+".xls";
@@ -207,6 +215,8 @@ public class Sechos_Purchasingm2mController {
 			outputStream.close();
 
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 	}
