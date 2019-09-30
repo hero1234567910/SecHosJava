@@ -214,9 +214,7 @@ public class Sechos_Purchasingm2mController {
 			outputStream.flush();
 			outputStream.close();
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
+		} catch (IOException | ParseException e) {
 			e.printStackTrace();
 		}
 	}
