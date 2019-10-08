@@ -71,7 +71,7 @@ public class Wx_Frame_AttachController extends BaseController{
                 String name = file.getName();
                 //查询文件名称
                 String contentUrl =  frameAttachService.getByFormGuid(guid).getContentUrl();
-                if (name == contentUrl){
+                if (name.equals(contentUrl)) {
                     file.delete();
                 }
             }
