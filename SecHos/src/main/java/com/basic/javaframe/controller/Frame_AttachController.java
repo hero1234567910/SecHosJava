@@ -79,12 +79,14 @@ public class Frame_AttachController extends BaseController{
         for(File file: fileArray != null ? fileArray : new File[0]){
             for (String guid : guids) {
                 String name = file.getName();
-                System.out.println(name);
+                //System.out.println(name);
                 int dot = name.lastIndexOf('.');
                 if(dot==-1){
                     continue;
                 }
                 if (name.substring(0, dot) == guid) {
+                    System.out.println(name.substring(0, dot));
+                    System.out.println(guid);
                     file.delete();
                 }
             }
