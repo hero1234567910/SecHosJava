@@ -70,6 +70,9 @@ public class Wx_Frame_AttachController extends BaseController{
             for (String guid : guids) {
                 String name = file.getName();
                 int dot = name.lastIndexOf('.');
+                if(dot==-1){
+                    break;
+                }
                 if (name.substring(0, dot) == guid) {
                     file.delete();
                 }

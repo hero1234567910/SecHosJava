@@ -81,6 +81,9 @@ public class Frame_AttachController extends BaseController{
                 String name = file.getName();
                 System.out.println(name);
                 int dot = name.lastIndexOf('.');
+                if(dot==-1){
+                    break;
+                }
                 if (name.substring(0, dot) == guid) {
                     file.delete();
                 }
