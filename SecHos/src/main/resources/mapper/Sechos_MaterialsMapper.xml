@@ -135,7 +135,7 @@
 	</select>
 
 	<select id="getMaterialName" resultType="com.basic.javaframe.entity.Sechos_Materials">
-		select material_name,row_guid,material_price from sechos_materials where material_code=#{materialCode} and del_flag = 0
+		select row_guid,material_price from sechos_materials where material_code=#{materialCode} and del_flag = 0
 	</select>
 
 	<!-- 验证重复性 -->

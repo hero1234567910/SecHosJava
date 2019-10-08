@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -72,6 +73,19 @@ public class Frame_AttachController extends BaseController{
     @RequestMapping(value="/delete",produces="application/json;charset=utf-8",method=RequestMethod.POST)
     public R delete(@RequestBody String[] guids){
         frameAttachService.deleteFrameAttachByIds(guids);
+        File srcFolder = new File(filePath);
+        // 获取该目录下所有的文件或者文件夹的File数组
+        File[] fileArray = srcFolder.listFiles();
+        for(File file: fileArray != null ? fileArray : new File[0]){
+            for (String guid : guids) {
+                String name = file.getName();
+                System.out.println(name);
+                int dot = name.lastIndexOf('.');
+                if (name.substring(0, dot) == guid) {
+                    file.delete();
+                }
+            }
+        }
         return R.ok();
     }
     

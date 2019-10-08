@@ -154,7 +154,7 @@
 	</select>
 
 	<select id="getDrugName" resultType="com.basic.javaframe.entity.Sechos_Drugmaterial">
-		select drug_name,row_guid,drug_price from sechos_drugmaterial where drug_code=#{drugCode} and del_flag = 0
+		select row_guid,drug_price from sechos_drugmaterial where drug_code=#{drugCode} and del_flag = 0
 	</select>
 
 	<!-- 验证重复性 -->
