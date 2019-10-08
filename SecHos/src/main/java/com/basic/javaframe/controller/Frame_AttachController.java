@@ -80,13 +80,10 @@ public class Frame_AttachController extends BaseController{
             for (String guid : guids) {
                 String name = file.getName();
                 //System.out.println(name);
-                int dot = name.lastIndexOf('.');
-                if(dot==-1){
-                    continue;
-                }
-                if (name.substring(0, dot) == guid) {
-                    System.out.println(name.substring(0, dot));
-                    System.out.println(guid);
+                String contentUrl =  frameAttachService.getByFormGuid(guid).getContentUrl();
+                if (name == contentUrl) {
+                    System.out.println(name);
+                    System.out.println(contentUrl);
                     file.delete();
                 }
             }
