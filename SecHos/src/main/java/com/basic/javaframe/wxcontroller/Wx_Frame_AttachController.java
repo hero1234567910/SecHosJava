@@ -62,7 +62,7 @@ public class Wx_Frame_AttachController extends BaseController{
     @ResponseBody
     @RequestMapping(value="/delete",produces="application/json;charset=utf-8",method=RequestMethod.POST)
     public R delete(@RequestBody String[] guids){
-        frameAttachService.deleteFrameAttachByIds(guids);
+
         File srcFolder = new File(filePath);
         // 获取该目录下所有的文件或者文件夹的File数组
         File[] fileArray = srcFolder.listFiles();
@@ -77,6 +77,7 @@ public class Wx_Frame_AttachController extends BaseController{
             }
 
         }
+        frameAttachService.deleteFrameAttachByIds(guids);
         return R.ok();
     }
 }
