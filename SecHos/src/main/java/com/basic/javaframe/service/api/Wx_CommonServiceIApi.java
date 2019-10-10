@@ -1081,4 +1081,23 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
         logger.info("查询住院患者接口返回成功》》》"+JSONObject.toJSONString(res));
         return res;
     }
+
+	/**
+	 * 查询住院患者基本信息(病历号)
+	 * <p>Title: getInPatientInfoByBlh</p>
+	 * <p>Description: </p>
+	 * @author wzl
+	 * @return
+	 */
+	public String getInPatientInfoByBlh(Map<String, String> params) {
+		// 准备参数
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETZYHZBLH");
+		logger.info("查询住院患者接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl,params);
+		logger.info("查询住院患者接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+
 }
