@@ -452,7 +452,9 @@ public class Wx_CommonControllerApi extends BaseController{
 					return R.ok("绑定成功");
 				}else{
 					//建档失败
-					return R.error(jsonObject.getString("message"));
+					String str = jsonObject.getString("message");
+					String str2=str.substring(str.lastIndexOf("|")+1);
+					return R.error(str2);
 				}
 			}else{
 				return R.error("门诊建档接口异常");
@@ -507,10 +509,14 @@ public class Wx_CommonControllerApi extends BaseController{
 				if (obj.getBoolean("success")) {
 					return R.ok();
 				}else{
-					return R.error(obj.getString("message"));
+					String str = obj.getString("message");
+					String str2=str.substring(str.lastIndexOf("|")+1);
+					return R.error(str2);
 				}
 			}else{
-				return R.error(json.getString("message"));
+				String str = json.getString("message");
+				String str2=str.substring(str.lastIndexOf("|")+1);
+				return R.error(str2);
 			}
 		}
 		
@@ -536,7 +542,9 @@ public class Wx_CommonControllerApi extends BaseController{
 				}
 				return R.ok().put("data", arr.getJSONObject(0));
 			}else{
-				return R.error(json.getString("message"));
+				String str = json.getString("message");
+				String str2=str.substring(str.lastIndexOf("|")+1);
+				return R.error(str2);
 			}
 		}
 		
@@ -564,7 +572,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			if (json.getBoolean("success")) {
 				return R.ok().put("data", json.getJSONArray("risReports"));
 			}else{
-				return R.error(json.getString("message"));
+				String str = json.getString("message");
+				String str2=str.substring(str.lastIndexOf("|")+1);
+				return R.error(str2);
 			}
 		}
 		
@@ -586,7 +596,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			if (json.getBoolean("success")) {
 				return R.ok().put("data", json.getJSONArray("risResults"));
 			}else{
-				return R.error(json.getString("message"));
+				String str = json.getString("message");
+				String str2=str.substring(str.lastIndexOf("|")+1);
+				return R.error(str2);
 			}
 		}
 		
@@ -613,7 +625,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			if (json.getBoolean("success")) {
 				return R.ok().put("data", json.getJSONArray("lisReports"));
 			}else{
-				return R.error(json.getString("message"));
+				String str = json.getString("message");
+				String str2=str.substring(str.lastIndexOf("|")+1);
+				return R.error(str2);
 			}
 		}
 		
@@ -635,7 +649,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			if (json.getBoolean("success")) {
 				return R.ok().put("data", json.getJSONArray("lisResults"));
 			}else{
-				return R.error(json.getString("message"));
+				String str = json.getString("message");
+				String str2=str.substring(str.lastIndexOf("|")+1);
+				return R.error(str2);
 			}
 		}
 		
@@ -661,7 +677,9 @@ public class Wx_CommonControllerApi extends BaseController{
 				}
 				return R.ok().put("data", arr.getJSONObject(0));
 			}else{
-				return R.error(json.getString("message"));
+				String str = json.getString("message");
+				String str2=str.substring(str.lastIndexOf("|")+1);
+				return R.error(str2);
 			}
 		}
 		
@@ -687,7 +705,9 @@ public class Wx_CommonControllerApi extends BaseController{
 				}
 				return R.ok().put("data", arr);
 			}else{
-				return R.error(json.getString("message"));
+				String str = json.getString("message");
+				String str2=str.substring(str.lastIndexOf("|")+1);
+				return R.error(str2);
 			}
 		}
 
@@ -746,7 +766,9 @@ public class Wx_CommonControllerApi extends BaseController{
 				
 				return R.ok().put("data", newArr);
 			}else{
-				return R.error(json.getString("message"));
+				String str = json.getString("message");
+				String str2=str.substring(str.lastIndexOf("|")+1);
+				return R.error(str2);
 			}
 		}
 
@@ -773,7 +795,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			}
 			return R.ok().put("data", arr);
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 
@@ -800,7 +824,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			}
 			return R.ok().put("data", arr);
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 	
@@ -822,7 +848,9 @@ public class Wx_CommonControllerApi extends BaseController{
 		if (json.getBoolean("success")) {
 			return R.ok("取消成功");
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 	
@@ -848,7 +876,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			}
 			return R.ok().put("data", arr.getJSONObject(0));
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 
@@ -875,7 +905,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			}
 			return R.ok().put("data", arr);
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 
@@ -900,7 +932,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			}
 			return R.ok().put("data", arr.getJSONObject(0));
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 
@@ -923,7 +957,9 @@ public class Wx_CommonControllerApi extends BaseController{
 		if (json.getBoolean("success")) {
 			return R.ok().put("data",json);
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 
@@ -976,7 +1012,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			}
 			return R.ok().put("data", newArr);
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 
@@ -1001,7 +1039,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			}
 			return R.ok().put("data", arr);
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 
@@ -1026,7 +1066,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			}
 			return R.ok().put("data", arr);
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 
@@ -1051,7 +1093,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			}
 			return R.ok().put("data", arr);
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 
@@ -1157,7 +1201,9 @@ public class Wx_CommonControllerApi extends BaseController{
 //				}
 				return R.ok().put("data",json);
 			}else{
-				return R.error(json.getString("msg"));
+				String str = json.getString("message");
+				String str2=str.substring(str.lastIndexOf("|")+1);
+				return R.error(str2);
 			}
 		}
 		
@@ -2380,7 +2426,9 @@ public class Wx_CommonControllerApi extends BaseController{
 				}
 			}
 		}else{
-			return R.error(js.getString("message"));
+			String str = js.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 		params.put("yyxh", yyxh);
 		String result =  wx_CommonServiceApi.RegisteredBudget(params);
@@ -2418,7 +2466,9 @@ public class Wx_CommonControllerApi extends BaseController{
 		if (json.getBoolean("success")) {
 			return R.ok().put("data",json);
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 
@@ -2444,7 +2494,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			}
 			return R.ok().put("data", arr.getJSONObject(0));
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 
@@ -2492,7 +2544,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			
 			return R.ok().put("data", arr);
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 
@@ -2574,7 +2628,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			}
 			return R.ok().put("data", arr);
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 
@@ -2600,7 +2656,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			}
 			return R.ok().put("data", arr);
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 
@@ -2626,7 +2684,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			}
 			return R.ok().put("data", arr);
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 
@@ -2652,7 +2712,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			}
 			return R.ok().put("data", arr);
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 
@@ -2681,7 +2743,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			}
 			return R.ok().put("data", arr);
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 
@@ -2711,7 +2775,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			}
 			return R.ok().put("data", arr);
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 
@@ -2738,7 +2804,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			}
 			return R.ok().put("data", arr);
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 
@@ -2764,7 +2832,9 @@ public class Wx_CommonControllerApi extends BaseController{
 			}
 			return R.ok().put("data", arr);
 		}else{
-			return R.error(json.getString("message"));
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
 		}
 	}
 }	
