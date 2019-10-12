@@ -2763,7 +2763,7 @@ public class Wx_CommonControllerApi extends BaseController{
 		checkParams(params, "hzxm");
 		checkParams(params, "jzlsh");
 		if (params.get("cxrq") == null || "".equals(params.get("cxrq"))) {
-			return R.error("清先选择您要查询的日期");
+			return R.error("请先选择您要查询的日期");
 		}
 		checkParams(params, "aslhz");
 		String result =  wx_CommonServiceApi.getInpatientOneDayLiquidation(params);
