@@ -1871,97 +1871,96 @@ public class Wx_CommonControllerApi extends BaseController{
 				String result =  wx_CommonServiceApi.getOutpatientFeeSettlement(par);
 				JSONObject json = JSONObject.parseObject(result);
 				if (json.getBoolean("success")) {
-//					try {
-//						//发药机接口
-//						//查询处方信息
-//						JSONObject PrescriptionList = new JSONObject();
-//						JSONArray Prescriptions = new JSONArray();
-//						//获取挂号预结算的ghxh
-//						
-//						List<SechosDrug> DrugsList = sechosDrugService.getByJzlsh(rechargerecord.getGhxh());
-//						if (DrugsList.size()!=0) {
-//							for (int i = 0; i < DrugsList.size(); i++) {
-//								SechosDrug dr = DrugsList.get(i);
-//								if ("1".equals(dr.getYpbz())) {
-//									//处方信息必须要药品时
-//									JSONObject Prescription = new JSONObject();
-//									Prescription.put("PrescriptionID", dr.getCfxh());
-//									SimpleDateFormat forma = new SimpleDateFormat("yyyyMMddhhmmss");
-//									Date date = null;
-//									try {
-//										date = forma.parse(dr.getKfsj());
-//									} catch (ParseException e) {
-//										// TODO Auto-generated catch block
-//										e.printStackTrace();
-//									}
-//									forma = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-//									Prescription.put("DateTimeOfPrescription", forma.format(date));
-//									Prescription.put("Flag", "Outpatient");
-//									Prescription.put("Category", "常规");
-//									
-//									JSONArray jsonArray = new JSONArray();
-//									JSONObject jsonObject = new JSONObject();
-//									jsonObject.put("MedCode", dr.getXmdm());
-//									jsonObject.put("MedName", dr.getXmmc());
-//									jsonObject.put("MedUnitDosage",dr.getYpgg());
-//									jsonObject.put("MedManufacturer", "厂商");//药品厂商名称
-//									jsonObject.put("MedPackingUnits", dr.getYpdw());
-//									jsonObject.put("MedBasicUnits", dr.getJldw());
-//									jsonObject.put("MedOrdingUnits", dr.getJldw());
-//									int ypjl = (int) Double.parseDouble(dr.getYpjl());
-//									jsonObject.put("MedPackingConverCoefficent", ypjl);//转换系数
-//									jsonObject.put("MedOrdingConverCoefficent", 1);
-//									int Xmsl = (int) Double.parseDouble(dr.getXmsl());
-//									jsonObject.put("Quantity", Xmsl);
-//									jsonArray.add(jsonObject);
-//									Prescription.put("PrescriptionItems",jsonArray);
-//									Prescriptions.add(Prescription);
-//								}
-//							}
-//							
-//							
-//						}
-//						JSONObject PatientInfo = new JSONObject();
-//						//根据pation查询用户信息
-//						SecHos_Patient patient = patientService.getPatientByGuid(rechargerecord.getPatientRowGuid());
-//						PatientInfo.put("PatientID", rechargerecord.getPatid());
-//						PatientInfo.put("PatientName", rechargerecord.getPatientName());
-//						switch (patient.getPatientSex()) {
-//						case 0:
-//							PatientInfo.put("PatientAdministrativeSex", "M");
-//							break;
-//							
-//						case 1:
-//							PatientInfo.put("PatientAdministrativeSex", "F");
-//							break;
-//						}
-//						SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-//						PatientInfo.put("PatientDateofBirth", format1.format(patient.getPatientBirth())); 
-//						SimpleDateFormat format = new SimpleDateFormat("yyyy");
-//						int age = Integer.parseInt(format.format(new Date())) - Integer.parseInt(format.format(patient.getPatientBirth()));
-//						PatientInfo.put("PatientAge", age);
-//						
-//						PrescriptionList.put("PatientInfo", PatientInfo);
-//						PrescriptionList.put("Prescriptions", Prescriptions);
-//						
-//						Map<String, String> par1 = new HashMap<>();
-//						par1.put("PrescriptionList", PrescriptionList.toJSONString());
-//						String res =  wx_CommonServiceApi.task(par1);
-//						JSONObject js = JSONObject.parseObject(res);
-//						logger.info("发药机返回信息："+js.toJSONString());
-//						
-//						//发药机回调判断
-//						if ("true".equals(js.getJSONObject("Result").getJSONObject("Header").getString("ExecuteResult"))) {
-//							logger.info("发药成功");
-//						}else {
-//							logger.info("错误code为:"+js.getJSONObject("Result").getJSONObject("Header").getJSONObject("Error").getString("Code"));
-//							logger.info("错误描述为:"+js.getJSONObject("Result").getJSONObject("Header").getJSONObject("Error").getString("Message"));
-//						}
-//					} catch (Exception e) {
-//						logger.info("错误信息为:"+e.getMessage());
-//						throw new MyException("处理回调异常");
-//					}
-					
+					try {
+						//发药机接口
+						//查询处方信息
+						JSONObject PrescriptionList = new JSONObject();
+						JSONArray Prescriptions = new JSONArray();
+						//获取挂号预结算的ghxh
+						
+						List<SechosDrug> DrugsList = sechosDrugService.getByJzlsh(rechargerecord.getGhxh());
+						if (DrugsList.size()!=0) {
+							for (int i = 0; i < DrugsList.size(); i++) {
+								SechosDrug dr = DrugsList.get(i);
+								if ("1".equals(dr.getYpbz())) {
+									//处方信息必须要药品时
+									JSONObject Prescription = new JSONObject();
+									Prescription.put("PrescriptionID", dr.getCfxh());
+									SimpleDateFormat forma = new SimpleDateFormat("yyyyMMddhhmmss");
+									Date date = null;
+									try {
+										date = forma.parse(dr.getKfsj());
+									} catch (ParseException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+									forma = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+									Prescription.put("DateTimeOfPrescription", forma.format(date));
+									Prescription.put("Flag", "Outpatient");
+									Prescription.put("Category", "常规");
+									
+									JSONArray jsonArray = new JSONArray();
+									JSONObject jsonObject = new JSONObject();
+									jsonObject.put("MedCode", dr.getXmdm());
+									jsonObject.put("MedName", dr.getXmmc());
+									jsonObject.put("MedUnitDosage",dr.getYpgg());
+									jsonObject.put("MedManufacturer", "厂商");//药品厂商名称
+									jsonObject.put("MedPackingUnits", dr.getYpdw());
+									jsonObject.put("MedBasicUnits", dr.getJldw());
+									jsonObject.put("MedOrdingUnits", dr.getJldw());
+									int ypjl = (int) Double.parseDouble(dr.getYpjl());
+									jsonObject.put("MedPackingConverCoefficent", ypjl);//转换系数
+									jsonObject.put("MedOrdingConverCoefficent", 1);
+									int Xmsl = (int) Double.parseDouble(dr.getXmsl());
+									jsonObject.put("Quantity", Xmsl);
+									jsonArray.add(jsonObject);
+									Prescription.put("PrescriptionItems",jsonArray);
+									Prescriptions.add(Prescription);
+								}
+							}
+							
+							
+						}
+						JSONObject PatientInfo = new JSONObject();
+						//根据pation查询用户信息
+						SecHos_Patient patient2 = patientService.getPatientByGuid(rechargerecord.getPatientRowGuid());
+						PatientInfo.put("PatientID", rechargerecord.getPatid());
+						PatientInfo.put("PatientName", rechargerecord.getPatientName());
+						switch (patient2.getPatientSex()) {
+						case 0:
+							PatientInfo.put("PatientAdministrativeSex", "M");
+							break;
+							
+						case 1:
+							PatientInfo.put("PatientAdministrativeSex", "F");
+							break;
+						}
+						SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+						PatientInfo.put("PatientDateofBirth", format1.format(patient2.getPatientBirth())); 
+						SimpleDateFormat format = new SimpleDateFormat("yyyy");
+						int age = Integer.parseInt(format.format(new Date())) - Integer.parseInt(format.format(patient.getPatientBirth()));
+						PatientInfo.put("PatientAge", age);
+						
+						PrescriptionList.put("PatientInfo", PatientInfo);
+						PrescriptionList.put("Prescriptions", Prescriptions);
+						
+						Map<String, String> par1 = new HashMap<>();
+						par1.put("PrescriptionList", PrescriptionList.toJSONString());
+						String res =  wx_CommonServiceApi.task(par1);
+						JSONObject js = JSONObject.parseObject(res);
+						logger.info("发药机返回信息："+js.toJSONString());
+						
+						//发药机回调判断
+						if ("true".equals(js.getJSONObject("Result").getJSONObject("Header").getString("ExecuteResult"))) {
+							logger.info("发药成功");
+						}else {
+							logger.info("错误code为:"+js.getJSONObject("Result").getJSONObject("Header").getJSONObject("Error").getString("Code"));
+							logger.info("错误描述为:"+js.getJSONObject("Result").getJSONObject("Header").getJSONObject("Error").getString("Message"));
+						}
+					} catch (Exception e) {
+						logger.info("错误信息为:"+e.getMessage());
+						throw new MyException("处理回调异常");
+					}
 					
 				}else{
 					logger.info(json.getString("message"));
