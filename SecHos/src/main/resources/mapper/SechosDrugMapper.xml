@@ -183,7 +183,8 @@
 			`ypjl`, 
 			`yyts`, 
 			`zyjf`,
-			`patient_rowGuid`
+			`patient_rowGuid`,
+			`sccj`
 		)
 		values
 		(
@@ -221,7 +222,8 @@
 			#{ypjl}, 
 			#{yyts}, 
 			#{zyjf},
-			#{patientRowGuid}
+			#{patientRowGuid},
+			#{sccj}
 		)
 	</insert>
 	 
@@ -262,7 +264,8 @@
 			<if test="ypjl != null">`ypjl` = #{ypjl}, </if>
 			<if test="yyts != null">`yyts` = #{yyts}, </if>
 			<if test="zyjf != null">`zyjf` = #{zyjf},</if>
-			<if test="patientRowGuid != null">`patient_rowGuid` = #{patientRowGuid}</if>
+			<if test="patientRowGuid != null">`patient_rowGuid` = #{patientRowGuid},</if>
+			<if test="sccj != null">`sccj` = #{sccj}</if>
 		</set>
 		where row_id = #{rowId}
 	</update>

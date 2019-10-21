@@ -1335,7 +1335,7 @@ public class Wx_CommonControllerApi extends BaseController{
 				checkParams(params, "yfje");
 				checkParams(params, "zfje");
 				
-				params.put("ysje", params.get("zfje"));
+				params.put("ysje", params.get("yfje"));
 				 //订单类型
 		        params.put("ddlx", "2");
 		        //订单来源
@@ -1407,7 +1407,7 @@ public class Wx_CommonControllerApi extends BaseController{
 				checkParams(params, "yfje");
 				checkParams(params, "zfje");
 				
-				params.put("ysje", params.get("zfje"));
+				params.put("ysje", params.get("yfje"));
 				 //订单类型
 		        params.put("ddlx", "1");
 		        //订单来源
@@ -1731,7 +1731,7 @@ public class Wx_CommonControllerApi extends BaseController{
 		 */
 		@ResponseBody
 		@RequestMapping(value="/wn_callback",produces="application/json;charset=utf-8",method=RequestMethod.POST)
-		public JSONObject wn_callback(HttpServletRequest request){
+		public synchronized JSONObject wn_callback(HttpServletRequest request){
 			
 			//xml转map
 			Map hashmap = new HashMap();
@@ -1815,7 +1815,7 @@ public class Wx_CommonControllerApi extends BaseController{
 				par.put("patid",rechargerecord.getPatid());
 				par.put("ghxh", rechargerecord.getGhxh());
 				par.put("sjh", rechargerecord.getSjh());
-				par.put("zje", rechargerecord.getZfje());
+				par.put("zje", rechargerecord.getZje());
 				par.put("yfje", rechargerecord.getYfje());
 				par.put("zffs", "2");
 				par.put("zfje", rechargerecord.getZfje());
@@ -1852,8 +1852,6 @@ public class Wx_CommonControllerApi extends BaseController{
 					resobj.put("err", "");
 					return resobj;
 				}
-				
-				
 			}
 			
 			if (rechargerecord.getPayType() == PayTypeEnum.MZPAY.getCode()) {
@@ -1861,7 +1859,7 @@ public class Wx_CommonControllerApi extends BaseController{
 				Map<String, String> par = new HashMap<>();
 				par.put("patid",rechargerecord.getPatid());
 				par.put("sjh", rechargerecord.getSjh());
-				par.put("zje", rechargerecord.getZfje());
+				par.put("zje", rechargerecord.getZje());
 				par.put("yfje", rechargerecord.getYfje());
 				par.put("zffs", "2");
 				par.put("zfje", rechargerecord.getZfje());
@@ -1875,7 +1873,8 @@ public class Wx_CommonControllerApi extends BaseController{
 						//发药机接口
 						//查询处方信息
 						JSONObject PrescriptionList = new JSONObject();
-						JSONArray Prescriptions = new JSONArray();
+						JSONObject Prescriptions = new JSONObject();
+						JSONArray Prescription = new JSONArray();
 						//获取挂号预结算的ghxh
 						
 						List<SechosDrug> DrugsList = sechosDrugService.getByJzlsh(rechargerecord.getGhxh());
@@ -1884,8 +1883,8 @@ public class Wx_CommonControllerApi extends BaseController{
 								SechosDrug dr = DrugsList.get(i);
 								if ("1".equals(dr.getYpbz())) {
 									//处方信息必须要药品时
-									JSONObject Prescription = new JSONObject();
-									Prescription.put("PrescriptionID", dr.getCfxh());
+									JSONObject PrescriptionItem = new JSONObject();
+									PrescriptionItem.put("PrescriptionID", dr.getCfxh());
 									SimpleDateFormat forma = new SimpleDateFormat("yyyyMMddhhmmss");
 									Date date = null;
 									try {
@@ -1895,12 +1894,13 @@ public class Wx_CommonControllerApi extends BaseController{
 										e.printStackTrace();
 									}
 									forma = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-									Prescription.put("DateTimeOfPrescription", forma.format(date));
-									Prescription.put("Flag", "Outpatient");
-									Prescription.put("Category", "常规");
+									PrescriptionItem.put("DateTimeOfPrescription", forma.format(date));
+									PrescriptionItem.put("Flag", "Outpatient");
+									PrescriptionItem.put("Category", "常规");
 									
 									JSONArray jsonArray = new JSONArray();
 									JSONObject jsonObject = new JSONObject();
+									JSONObject jsobj = new JSONObject();
 									jsonObject.put("MedCode", dr.getXmdm());
 									jsonObject.put("MedName", dr.getXmmc());
 									jsonObject.put("MedUnitDosage",dr.getYpgg());
@@ -1908,18 +1908,19 @@ public class Wx_CommonControllerApi extends BaseController{
 									jsonObject.put("MedPackingUnits", dr.getYpdw());
 									jsonObject.put("MedBasicUnits", dr.getJldw());
 									jsonObject.put("MedOrdingUnits", dr.getJldw());
-									int ypjl = (int) Double.parseDouble(dr.getYpjl());
-									jsonObject.put("MedPackingConverCoefficent", ypjl);//转换系数
+//									int ypjl = (int) Double.parseDouble(dr.getYpjl());
+									int xmsl = Double.valueOf(dr.getXmsl()).intValue();
+									jsonObject.put("MedPackingConverCoefficent", xmsl);//转换系数
 									jsonObject.put("MedOrdingConverCoefficent", 1);
 									int Xmsl = (int) Double.parseDouble(dr.getXmsl());
 									jsonObject.put("Quantity", Xmsl);
 									jsonArray.add(jsonObject);
-									Prescription.put("PrescriptionItems",jsonArray);
-									Prescriptions.add(Prescription);
+									JSONObject object = new JSONObject();
+									object.put("PrescriptionItem", jsonArray);
+									PrescriptionItem.put("PrescriptionItems", object);
+									Prescription.add(PrescriptionItem);
 								}
 							}
-							
-							
 						}
 						JSONObject PatientInfo = new JSONObject();
 						//根据pation查询用户信息
@@ -1941,11 +1942,17 @@ public class Wx_CommonControllerApi extends BaseController{
 						int age = Integer.parseInt(format.format(new Date())) - Integer.parseInt(format.format(patient.getPatientBirth()));
 						PatientInfo.put("PatientAge", age);
 						
+						Prescriptions.put("Prescription", Prescription);
+						
 						PrescriptionList.put("PatientInfo", PatientInfo);
 						PrescriptionList.put("Prescriptions", Prescriptions);
 						
+						
+						
+						JSONObject finjson = new JSONObject();
+						finjson.put("PrescriptionList", PrescriptionList);
 						Map<String, String> par1 = new HashMap<>();
-						par1.put("PrescriptionList", PrescriptionList.toJSONString());
+						par1.put("PrescriptionList", finjson.toJSONString());
 						String res =  wx_CommonServiceApi.task(par1);
 						JSONObject js = JSONObject.parseObject(res);
 						logger.info("发药机返回信息："+js.toJSONString());
@@ -1959,7 +1966,7 @@ public class Wx_CommonControllerApi extends BaseController{
 						}
 					} catch (Exception e) {
 						logger.info("错误信息为:"+e.getMessage());
-						throw new MyException("处理回调异常");
+						e.printStackTrace();
 					}
 					
 				}else{
@@ -2237,7 +2244,7 @@ public class Wx_CommonControllerApi extends BaseController{
 						logger.info("发药机返回信息："+js.toJSONString());
 						
 						//发药机回调判断
-						if ("true".equals(js.getJSONObject("Result").getJSONObject("Header").getString("ExecuteResult"))) {
+						if ("True".equals(js.getJSONObject("Result").getJSONObject("Header").getString("ExecuteResult"))) {
 							logger.info("发药成功");
 						}else {
 							logger.info("错误code为:"+js.getJSONObject("Result").getJSONObject("Header").getJSONObject("Error").getString("Code"));
@@ -2295,86 +2302,88 @@ public class Wx_CommonControllerApi extends BaseController{
 	@ApiOperation(value="发送发药机")
 	@ResponseBody
 	@RequestMapping(value="/sendFYJ",produces="application/json;charset=utf-8",method=RequestMethod.POST)
-	public R sendFYJ(@RequestBody Map<String, String> par){
-		Sechos_Rechargerecord rechargerecord = rechargerecordService.queryByOrderNumber(par.get("out_trade_no"));
-		//发药机接口
-		//查询处方信息
-		JSONObject PrescriptionList = new JSONObject();
-		JSONArray Prescriptions = new JSONArray();
-		List<SechosDrug> DrugsList = sechosDrugService.getByJzlsh(rechargerecord.getGhxh());
-		if (DrugsList.size()!=0) {
-			for (int i = 0; i < DrugsList.size(); i++) {
-				SechosDrug dr = DrugsList.get(i);
-				if ("1".equals(dr.getYpbz())) {
-					//处方信息必须要药品时
-					JSONObject Prescription = new JSONObject();
-					Prescription.put("PrescriptionID", dr.getCfxh());
-					SimpleDateFormat forma = new SimpleDateFormat("yyyyMMddhhmmss");
-					Date date = null;
-					try {
-						date = forma.parse(dr.getKfsj());
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					forma = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-					Prescription.put("DateTimeOfPrescription", forma.format(date));
-					Prescription.put("Flag", "Outpatient");
-					Prescription.put("Category", "常规");
-					
-					JSONArray jsonArray = new JSONArray();
-					JSONObject jsonObject = new JSONObject();
-					jsonObject.put("MedCode", dr.getXmdm());
-					jsonObject.put("MedName", dr.getXmmc());
-					jsonObject.put("MedUnitDosage",dr.getYpgg());
-					jsonObject.put("MedManufacturer", "厂商");//药品厂商名称
-					jsonObject.put("MedPackingUnits", dr.getYpdw());
-					jsonObject.put("MedBasicUnits", dr.getJldw());
-					jsonObject.put("MedOrdingUnits", dr.getJldw());
-					
-					int ypjl = (int) Double.parseDouble(dr.getYpjl());
-					jsonObject.put("MedPackingConverCoefficent", ypjl);//转换系数
-					jsonObject.put("MedOrdingConverCoefficent", 1);
-					int Xmsl = (int) Double.parseDouble(dr.getXmsl());
-					jsonObject.put("Quantity", Xmsl);
-					jsonArray.add(jsonObject);
-					Prescription.put("PrescriptionItems",jsonArray);
-					Prescriptions.add(Prescription);
-				}
-			}
-			
-		}
-		JSONObject PatientInfo = new JSONObject();
-		//根据pation查询用户信息
-		SecHos_Patient patient = patientService.getPatientByGuid(rechargerecord.getPatientRowGuid());
-		PatientInfo.put("PatientID", rechargerecord.getPatid());
-		PatientInfo.put("PatientName", rechargerecord.getPatientName());
-		switch (patient.getPatientSex()) {
-		case 0:
-			PatientInfo.put("PatientAdministrativeSex", "M");
-			break;
-			
-		case 1:
-			PatientInfo.put("PatientAdministrativeSex", "F");
-			break;
-		}
-		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-		PatientInfo.put("PatientDateofBirth", format1.format(patient.getPatientBirth())); 
-		SimpleDateFormat format = new SimpleDateFormat("yyyy");
-		int age = Integer.parseInt(format.format(new Date())) - Integer.parseInt(format.format(patient.getPatientBirth()));
-		PatientInfo.put("PatientAge", age);
-		
-		PrescriptionList.put("PatientInfo", PatientInfo);
-		PrescriptionList.put("Prescriptions", Prescriptions);
-		
-		Map<String, String> par1 = new HashMap<>();
-		par1.put("PrescriptionList", PrescriptionList.toJSONString());
-		String res =  wx_CommonServiceApi.task(par1);
+	public R sendFYJ(@RequestBody JSONObject par){
+//		Sechos_Rechargerecord rechargerecord = rechargerecordService.queryByOrderNumber(par.get("out_trade_no"));
+//		//发药机接口
+//		//查询处方信息
+//		JSONObject PrescriptionList = new JSONObject();
+//		JSONArray Prescriptions = new JSONArray();
+//		List<SechosDrug> DrugsList = sechosDrugService.getByJzlsh(rechargerecord.getGhxh());
+//		if (DrugsList.size()!=0) {
+//			for (int i = 0; i < DrugsList.size(); i++) {
+//				SechosDrug dr = DrugsList.get(i);
+//				if ("1".equals(dr.getYpbz())) {
+//					//处方信息必须要药品时
+//					JSONObject Prescription = new JSONObject();
+//					Prescription.put("PrescriptionID", dr.getCfxh());
+//					SimpleDateFormat forma = new SimpleDateFormat("yyyyMMddhhmmss");
+//					Date date = null;
+//					try {
+//						date = forma.parse(dr.getKfsj());
+//					} catch (ParseException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//					forma = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//					Prescription.put("DateTimeOfPrescription", forma.format(date));
+//					Prescription.put("Flag", "Outpatient");
+//					Prescription.put("Category", "常规");
+//					
+//					JSONArray jsonArray = new JSONArray();
+//					JSONObject jsonObject = new JSONObject();
+//					jsonObject.put("MedCode", dr.getXmdm());
+//					jsonObject.put("MedName", dr.getXmmc());
+//					jsonObject.put("MedUnitDosage",dr.getYpgg());
+//					jsonObject.put("MedManufacturer", "厂商");//药品厂商名称
+//					jsonObject.put("MedPackingUnits", dr.getYpdw());
+//					jsonObject.put("MedBasicUnits", dr.getJldw());
+//					jsonObject.put("MedOrdingUnits", dr.getJldw());
+//					
+//					int ypjl = (int) Double.parseDouble(dr.getYpjl());
+//					jsonObject.put("MedPackingConverCoefficent", ypjl);//转换系数
+//					jsonObject.put("MedOrdingConverCoefficent", 1);
+//					int Xmsl = (int) Double.parseDouble(dr.getXmsl());
+//					jsonObject.put("Quantity", Xmsl);
+//					jsonArray.add(jsonObject);
+//					Prescription.put("PrescriptionItems",jsonArray);
+//					Prescriptions.add(Prescription);
+//				}
+//			}
+//			
+//		}
+//		JSONObject PatientInfo = new JSONObject();
+//		//根据pation查询用户信息
+//		SecHos_Patient patient = patientService.getPatientByGuid(rechargerecord.getPatientRowGuid());
+//		PatientInfo.put("PatientID", rechargerecord.getPatid());
+//		PatientInfo.put("PatientName", rechargerecord.getPatientName());
+//		switch (patient.getPatientSex()) {
+//		case 0:
+//			PatientInfo.put("PatientAdministrativeSex", "M");
+//			break;
+//			
+//		case 1:
+//			PatientInfo.put("PatientAdministrativeSex", "F");
+//			break;
+//		}
+//		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+//		PatientInfo.put("PatientDateofBirth", format1.format(patient.getPatientBirth())); 
+//		SimpleDateFormat format = new SimpleDateFormat("yyyy");
+//		int age = Integer.parseInt(format.format(new Date())) - Integer.parseInt(format.format(patient.getPatientBirth()));
+//		PatientInfo.put("PatientAge", age);
+//		
+//		PrescriptionList.put("PatientInfo", PatientInfo);
+//		PrescriptionList.put("Prescriptions", Prescriptions);
+//		
+//		JSONObject finjson = new JSONObject();
+//		finjson.put("PrescriptionList", PrescriptionList);
+		Map<String, String> par2 = new HashMap<>();
+		par2.put("PrescriptionList", par.toJSONString());
+		String res =  wx_CommonServiceApi.task(par2);
 		JSONObject js = JSONObject.parseObject(res);
 		logger.info("发药机返回信息："+js.toJSONString());
 		
 		//发药机回调判断
-		if ("true".equals(js.getJSONObject("Result").getJSONObject("Header").getString("ExecuteResult"))) {
+		if ("True".equals(js.getJSONObject("Result").getJSONObject("Header").getString("ExecuteResult"))) {
 			logger.info("发药成功");
 		}else {
 			logger.info("错误code为:"+js.getJSONObject("Result").getJSONObject("Header").getJSONObject("Error").getString("Code"));
@@ -2537,6 +2546,18 @@ public class Wx_CommonControllerApi extends BaseController{
 				Date createTime = DateUtil.changeDate(new Date());
 				sechosDrug.setCreateTime(createTime);
 				sechosDrug.setPatientRowGuid(params.get("pationRowGuid"));
+				//获取厂家信息
+				params.clear();
+				params.put("ypdm", sechosDrug.getXmdm());
+				String res = wx_CommonServiceApi.getMedInfo(params);
+				JSONObject js = JSONObject.parseObject(result);
+				if (js.getBoolean("success")) {
+					JSONArray array =  js.getJSONArray("ypxxs");
+					sechosDrug.setSccj(array.getJSONObject(0).getString("sccj"));
+				}else{
+					logger.info("未查询到药品详细信息");
+				}
+				
 				sechosDrugService.save(sechosDrug);
 			}
 			
@@ -2828,6 +2849,26 @@ public class Wx_CommonControllerApi extends BaseController{
 			JSONArray arr = json.getJSONArray("patinfos");
 			if (arr.size() == 0) {
 				return R.error("未查到相关记录");
+			}
+			return R.ok().put("data", arr);
+		}else{
+			String str = json.getString("message");
+			String str2=str.substring(str.lastIndexOf("|")+1);
+			return R.error(str2);
+		}
+	}
+	
+	@ApiOperation(value="获取药品详细信息")
+	@ResponseBody
+	@RequestMapping(value="/getMedInfo",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	public R getMedInfo(@RequestBody Map<String, String> params){
+		checkParams(params, "ypdm");
+		String result =  wx_CommonServiceApi.getMedInfo(params);
+		JSONObject json = JSONObject.parseObject(result);
+		if (json.getBoolean("success")) {
+			JSONArray arr = json.getJSONArray("ypxxs");
+			if (arr.size() == 0) {
+				return R.error("未查到相关药品详细信息");
 			}
 			return R.ok().put("data", arr);
 		}else{

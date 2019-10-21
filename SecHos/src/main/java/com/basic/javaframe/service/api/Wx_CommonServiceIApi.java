@@ -1099,5 +1099,23 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		logger.info("查询住院患者接口返回成功》》》"+JSONObject.toJSONString(res));
 		return res;
 	}
+	
+	/**
+	 * 查询药品详细信息
+	 * <p>Title: getMedInfo</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @param params
+	 * @return
+	 */
+	public String getMedInfo(Map<String, String> params) {
+		params.put("yydm", yydm);
+		params.put("accesskey", accesskey);
+		params.put("action","GETZYHZBLH");
+		logger.info("查询药品详细信息接口参数》》》"+JSONObject.toJSONString(params));
+		String res = HttpUtil.sendPost(wnUrl,params);
+		logger.info("查询药品详细信息接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
 
 }

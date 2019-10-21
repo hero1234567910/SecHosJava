@@ -85,8 +85,16 @@ public class SechosDrug implements Serializable {
 	/****/
 	private String zyjf;
 	
+	private String sccj;
+	
 	private String patientRowGuid;
 	
+	public String getSccj() {
+		return sccj;
+	}
+	public void setSccj(String sccj) {
+		this.sccj = sccj;
+	}
 	public String getPatientRowGuid() {
 		return patientRowGuid;
 	}
