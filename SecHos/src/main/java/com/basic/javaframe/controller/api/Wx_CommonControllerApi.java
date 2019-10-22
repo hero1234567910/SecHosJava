@@ -212,7 +212,12 @@ public class Wx_CommonControllerApi extends BaseController{
 		JSONObject jsonObject = JSONObject.parseObject(result);
 		if (jsonObject.containsKey("errcode")) {
 			String errcode = jsonObject.getString("errcode");
-			return R.error("刷新token异常,errcode为"+errcode);
+			if ("42002".equals(errcode)) {
+				//重新获取token
+				JSONObject jsonobj = wx_CommonServiceApi.code2Token(params.get("code"));
+				logger.info("重新获取token成功"+jsonobj.toJSONString());
+				return R.ok().put("data", jsonobj);
+			}
 		}
 		return R.ok().put("data",jsonObject);
 	}
@@ -1904,7 +1909,7 @@ public class Wx_CommonControllerApi extends BaseController{
 									jsonObject.put("MedCode", dr.getXmdm());
 									jsonObject.put("MedName", dr.getXmmc());
 									jsonObject.put("MedUnitDosage",dr.getYpgg());
-									jsonObject.put("MedManufacturer", "厂商");//药品厂商名称
+									jsonObject.put("MedManufacturer", dr.getSccj());//药品厂商名称
 									jsonObject.put("MedPackingUnits", dr.getYpdw());
 									jsonObject.put("MedBasicUnits", dr.getJldw());
 									jsonObject.put("MedOrdingUnits", dr.getJldw());
@@ -1958,7 +1963,7 @@ public class Wx_CommonControllerApi extends BaseController{
 						logger.info("发药机返回信息："+js.toJSONString());
 						
 						//发药机回调判断
-						if ("true".equals(js.getJSONObject("Result").getJSONObject("Header").getString("ExecuteResult"))) {
+						if ("True".equals(js.getJSONObject("Result").getJSONObject("Header").getString("ExecuteResult"))) {
 							logger.info("发药成功");
 						}else {
 							logger.info("错误code为:"+js.getJSONObject("Result").getJSONObject("Header").getJSONObject("Error").getString("Code"));
@@ -2389,7 +2394,7 @@ public class Wx_CommonControllerApi extends BaseController{
 			logger.info("错误code为:"+js.getJSONObject("Result").getJSONObject("Header").getJSONObject("Error").getString("Code"));
 			logger.info("错误描述为:"+js.getJSONObject("Result").getJSONObject("Header").getJSONObject("Error").getString("Message"));
 		}
-	
+		
 		
 		
 		return R.ok();
@@ -2549,18 +2554,19 @@ public class Wx_CommonControllerApi extends BaseController{
 				//获取厂家信息
 				params.clear();
 				params.put("ypdm", sechosDrug.getXmdm());
+				params.put("page", "1");
+				params.put("jsfs", "3");
 				String res = wx_CommonServiceApi.getMedInfo(params);
-				JSONObject js = JSONObject.parseObject(result);
+				JSONObject js = JSONObject.parseObject(res);
 				if (js.getBoolean("success")) {
 					JSONArray array =  js.getJSONArray("ypxxs");
-					sechosDrug.setSccj(array.getJSONObject(0).getString("sccj"));
+					JSONObject j = array.getJSONObject(0);
+					sechosDrug.setSccj(j.getString("cjmc"));
 				}else{
 					logger.info("未查询到药品详细信息");
 				}
-				
 				sechosDrugService.save(sechosDrug);
 			}
-			
 			
 			return R.ok().put("data", arr);
 		}else{
@@ -2635,8 +2641,6 @@ public class Wx_CommonControllerApi extends BaseController{
 	public R getOutpatientFeeSettlementInfo(@RequestBody Map<String, String> params){
 		checkParams(params, "hzxm");
 		checkParams(params, "patid");
-//		checkParams(params, "ksrq");
-//		checkParams(params, "jsrq");
 		params.put("ksrq", ksrq);
 		params.put("jsrq", jsrq);
 		String result =  wx_CommonServiceApi.getOutpatientFeeSettlementInfo(params);

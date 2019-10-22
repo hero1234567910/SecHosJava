@@ -1111,7 +1111,7 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 	public String getMedInfo(Map<String, String> params) {
 		params.put("yydm", yydm);
 		params.put("accesskey", accesskey);
-		params.put("action","GETZYHZBLH");
+		params.put("action","GETYPXX");
 		logger.info("查询药品详细信息接口参数》》》"+JSONObject.toJSONString(params));
 		String res = HttpUtil.sendPost(wnUrl,params);
 		logger.info("查询药品详细信息接口返回成功》》》"+JSONObject.toJSONString(res));
