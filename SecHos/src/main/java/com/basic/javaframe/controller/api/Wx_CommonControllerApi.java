@@ -168,6 +168,37 @@ public class Wx_CommonControllerApi extends BaseController{
 		JSONObject jsonObject = JSONObject.parseObject(result);
 		if (jsonObject.containsKey("errcode")) {
 			String errcode = jsonObject.getString("errcode");
+			if ("40001".equals(errcode)) {
+				//重新获取
+				JSONObject jsonobj = wx_CommonServiceApi.code2Token(params.get("code"));
+				JSONObject Object = JSONObject.parseObject(jsonobj.getString("resultUser"));
+				logger.info("4001》》》 重新获取token成功"+jsonobj.toJSONString());
+				//
+				//获取openid,微信昵称，头像
+				String openid = Object.getString("openid");
+				String nickname = Object.getString("nickname");
+				String headimgurl = Object.getString("headimgurl");
+				
+				//根据openid查询是否有该用户,没有则生成一条新用户，有则返回该用户信息
+				SecHos_Patient pa = patientService.getPatientByOpenid(openid);
+				if (pa == null) {
+					pa = new SecHos_Patient();
+					pa.setDelFlag(DelFlagEnum.NDELFLAG.getCode());
+					pa.setCreateTime(DateUtil.changeDate(new Date()));
+					String uuid = java.util.UUID.randomUUID().toString();
+					pa.setRowGuid(uuid);
+					pa.setOpenid(openid);
+					pa.setHeadImgUrl(headimgurl);
+					pa.setAccessToken(jsonobj.getString("access_token"));
+					pa.setRefreshToken(jsonobj.getString("refresh_token"));
+					patientService.save(pa);
+					return R.ok().put("data", pa);
+				}
+				pa.setAccessToken(jsonobj.getString("access_token"));
+				pa.setRefreshToken(jsonobj.getString("refresh_token"));
+				logger.info(pa.toString());
+				return R.ok().put("data", pa);	
+			}
 			return R.error("获取网页授权用户信息异常,errcode为"+errcode).put("data", errcode);
 		}
 		//获取openid,微信昵称，头像
@@ -2279,9 +2310,6 @@ public class Wx_CommonControllerApi extends BaseController{
 					logger.info("返回给微信的xml为"+xmlwx);
 					return xmlwx;
 				}
-				
-				
-				
 			}
 			
 			
