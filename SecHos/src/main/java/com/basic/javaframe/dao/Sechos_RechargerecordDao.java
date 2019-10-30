@@ -33,4 +33,10 @@ public interface Sechos_RechargerecordDao extends BaseDao<Sechos_Rechargerecord>
 	 * @return
 	 */
 	Sechos_Rechargerecord getDetailByGuid(@Param("rowGuid") String rowGuid);
+
+	/**
+	 * 获取昨天门诊来访人数
+	 * @return
+	 */
+	int countYestdayMz();
 }

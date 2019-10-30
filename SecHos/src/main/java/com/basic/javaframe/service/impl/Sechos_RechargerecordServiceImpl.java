@@ -100,4 +100,9 @@ public class Sechos_RechargerecordServiceImpl implements Sechos_RechargerecordSe
 		return sechosRechargerecordDao.getDetailByGuid(rowGuid);
 	}
 
+	@Override
+	public int countYestdayMz() {
+		return sechosRechargerecordDao.countYestdayMz();
+	}
+
 }

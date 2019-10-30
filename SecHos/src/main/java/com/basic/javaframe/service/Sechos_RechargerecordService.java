@@ -30,4 +30,6 @@ public interface Sechos_RechargerecordService {
 	List<Sechos_Rechargerecord> selectAllRecharge();
 
 	Sechos_Rechargerecord getDetailByGuid(String rowGuid);
+
+	int countYestdayMz();
 }

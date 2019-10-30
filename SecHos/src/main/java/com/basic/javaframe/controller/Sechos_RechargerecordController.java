@@ -154,4 +154,12 @@ public class Sechos_RechargerecordController {
         Sechos_Rechargerecord sechosRechargerecord = sechosRechargerecordService.getDetailByGuid(rowGuid);
         return R.ok().put("data",sechosRechargerecord);
     }
+
+    @ApiOperation(value="获取昨天门诊到访人数")
+    @ResponseBody
+    @RequestMapping(value="/countYestdayMz",produces="application/json;charset=utf-8",method=RequestMethod.GET)
+    public R countYestdayMz(){
+        int count = sechosRechargerecordService.countYestdayMz();
+        return R.ok().put("data",count);
+    }
 }
