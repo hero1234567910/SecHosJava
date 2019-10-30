@@ -24,4 +24,10 @@ public interface Sechos_RechargerecordService {
 	void deleteBatch(String[] rowGuids);
 
 	Sechos_Rechargerecord queryByOrderNumber(String num);
+
+	List<Map<String, Object>> selectRechargeStatisical();
+
+	List<Sechos_Rechargerecord> selectAllRecharge();
+
+	Sechos_Rechargerecord getDetailByGuid(String rowGuid);
 }

@@ -15,7 +15,10 @@
         <result property="payTime" column="pay_time"/>
         <result property="recordStatus" column="record_status"/>
         <result property="patientRowGuid" column="patient_rowGuid"/>
+		<result property="patientName" column="patient_name"/>
         <result property="payType" column="pay_type"/>
+		<result property="sjh" column="sjh"/>
+		<result property="ghxh" column="ghxh"/>
     </resultMap>
 
 	<select id="getList" resultType="com.basic.javaframe.entity.Sechos_Rechargerecord">
@@ -65,8 +68,15 @@
     		<if test="recordStatusVague != null and recordStatusVague != ''"> and t.record_status like concat('%',#{recordStatusVague},'%') </if>
             <if test="patientRowGuid != null and patientRowGuid != ''"> and t.patient_rowGuid = #{patientRowGuid} </if>
     		<if test="patientRowGuidVague != null and patientRowGuidVague != ''"> and t.patient_rowGuid like concat('%',#{patientRowGuidVague},'%') </if>
+			<if test="patientName != null and patientName != ''"> and t.patient_name = #{patientName} </if>
+			<if test="patientNameVague != null and patientNameVague != ''"> and t.patient_name like concat('%',#{patientNameVague},'%') </if>
             <if test="payType != null and payType != ''"> and t.pay_type = #{payType} </if>
     		<if test="payTypeVague != null and payTypeVague != ''"> and t.pay_type like concat('%',#{payTypeVague},'%') </if>
+			<if test="sjh != null and sjh != ''"> and t.sjh = #{sjh} </if>
+			<if test="ghxh != null and ghxh != ''"> and t.ghxh = #{ghxh} </if>
+			<if test=" startTime != null and startTime != '' and endTime != null and endTime != '' ">
+				AND DATE_FORMAT( t.create_time, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
+			</if>
     		and t.del_flag =0
         </where>
     </sql>
@@ -163,4 +173,21 @@
 		</foreach>
 	</delete>
 
+	<!--门诊挂号曲线图-->
+	<select id="selectRechargeStatisical" resultType="map">
+       SELECT HOUR(e.create_time)as Hour,FLOOR(MINUTE(e.create_time)/30) as M, COUNT(*) as Count
+		FROM sechos_rechargerecord e
+		WHERE e.create_time BETWEEN (select DATE_SUB(curdate(),INTERVAL 1 DAY)) AND curdate() and e.pay_type = 1
+		GROUP BY FLOOR(MINUTE(e.create_time)/30),HOUR(e.create_time)
+		ORDER BY Hour(e.create_time);
+    </select>
+
+	<!-- 查询所有付费记录 -->
+	<select id="selectAllRecharge" resultType="com.basic.javaframe.entity.Sechos_Rechargerecord">
+        select pay_type from  sechos_rechargerecord where del_flag =0
+    </select>
+
+	<select id="getDetailByGuid" resultType="com.basic.javaframe.entity.Sechos_Rechargerecord">
+		select * from sechos_rechargerecord where row_guid =#{rowGuid} and del_flag = 0
+	</select>
 </mapper>
