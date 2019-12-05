@@ -3,7 +3,10 @@ package com.basic.javaframe.controller;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,9 +15,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSONObject;
 import com.basic.javaframe.common.WebSocket.WebSocketServer;
 import com.basic.javaframe.common.customclass.PassToken;
 import com.basic.javaframe.common.utils.DateUtil;
+import com.basic.javaframe.common.utils.HttpUtil;
 import com.basic.javaframe.common.utils.R;
 
 import io.swagger.annotations.Api;
@@ -25,6 +30,9 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/ceshi")
 @Api(value="测试")
 public class ceshiController {
+	
+	@Value(value="${wservice.url}")
+	public String wsUrl;
 	
 	/**
 	 * 获取项目根路径
@@ -55,8 +63,8 @@ public class ceshiController {
 	@ApiOperation(value="测试")
 	@RequestMapping(value="/test")
 	public void test(){
-		System.out.println(DateUtil.changeStrToDate3("19901210"));
-		System.out.println(this.getClass().getResource("").getPath());
+		Map<String, String> params = new HashMap<String, String>();
+		String res = HttpUtil.sendPost(wsUrl+"/getMedicalReportListService",params);
 	}
 	
 	//页面请求
