@@ -169,6 +169,12 @@ public class Frame_UserServiceImpl implements Frame_UserService {
 		frame_userDao.deletOaUsers();
 		frame_userDao.insertOaUsers(users);
 	}
+
+	@Override
+	public Frame_User getOAUserByLoginId(String loginId) {
+		// TODO Auto-generated method stub
+		return frame_userDao.getOAUserByLoginId(loginId);
+	}
 }
 
 

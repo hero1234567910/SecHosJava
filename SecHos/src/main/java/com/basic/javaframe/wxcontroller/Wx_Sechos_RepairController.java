@@ -1,18 +1,27 @@
 package com.basic.javaframe.wxcontroller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.basic.javaframe.common.JWT.TokenService;
 import com.basic.javaframe.common.customclass.PassToken;
 import com.basic.javaframe.common.utils.*;
+import com.basic.javaframe.entity.Frame_User;
 import com.basic.javaframe.entity.Sechos_Repair;
 import com.basic.javaframe.entity.Sechos_Repairsatisfaction;
 import com.basic.javaframe.service.Frame_AttachService;
+import com.basic.javaframe.service.Frame_UserService;
 import com.basic.javaframe.service.Sechos_RepairService;
 import com.basic.javaframe.service.Sechos_RepairsatisfactionService;
+import com.mysql.fabric.xmlrpc.base.Params;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+
+import org.apache.ibatis.javassist.tools.framedump;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +45,82 @@ public class Wx_Sechos_RepairController {
 
 	@Autowired
 	private Frame_AttachService attachService;
+	
+	@Autowired
+	private Frame_UserService userService;
+	
+	@Autowired
+    TokenService tokenService;
+	
+	//登录
+    @PassToken
+    @ApiOperation(value="登录接口")
+    @ResponseBody
+    @RequestMapping(value="/login",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+    public R login(@RequestBody Frame_User user){
+        Frame_User userForBase=userService.getFrameUserByLoginId(user.getLoginId());
+        if(userForBase==null){
+            
+        	//判断是否存于oa用户中
+        	Frame_User userOA = userService.getOAUserByLoginId(user.getLoginId());
+        	if (userOA == null) {
+        		return R.error("登录失败,用户不存在");
+			}else{
+				Map<String, String> parmas = new HashMap<>();
+				parmas.put("password", user.getPassword());
+				String password = HttpUtil.sendPostWithXWwwForm("http://10.20.200.62:8081/iis/DecryptApi/Encryp/getEncrypPassword",parmas);
+				JSONObject jsonObject = JSONObject.parseObject(password);
+				System.out.println(userOA.getPassword()+" >>>>>"+jsonObject.getString("data"));
+				if (!userOA.getPassword().equals(jsonObject.getString("data"))) {
+					return R.error("登录失败,密码错误");
+				}
+//				String token = tokenService.getToken(userForBase);
+                //根据用户行标获取部门名部门行标
+                Map<String, Object> map = new HashMap<>();
+                map.put("token", "");
+                map.put("userName", userOA.getUserName());
+                map.put("loginId", userOA.getLoginId());
+                map.put("mobile", userOA.getMobile());
+                map.put("sex", "");
+                map.put("userRowGuid", userOA.getRowGuid());
+                map.put("deptGuid","");
+                map.put("deptName", "");
+                return R.ok().put("data", map);
+			}
+        	
+            
+        }else {
+           //if (!userForBase.getPassword().equals(Sha256.SHA(user.getPassword(), "SHA-256"))){
+           // System.out.println(userForBase.getPassword()+">>>>>>"+AESUtil.encrypt(user.getPassword(), "expsoft1234"));
+            if (!userForBase.getPassword().equals(AESUtil.encrypt(user.getPassword(), "expsoft1234"))){
+                return R.error("登录失败,密码错误");
+            }else {
+                if(userForBase.getIsForbid()==1){
+                    return R.error("用户已经禁用");
+                }
+                if(userForBase.getDelFlag()==1){
+                    return R.error("用户不存在");
+                }
+                String token = tokenService.getToken(userForBase);
+                //根据用户行标获取部门名部门行标
+                Map<String, Object> maparams = userService.getDeptByGuid(userForBase.getRowGuid());
+                Map<String, Object> map = new HashMap<>();
+                map.put("token", token);
+                map.put("userName", userForBase.getUserName());
+                map.put("loginId", userForBase.getLoginId());
+                map.put("mobile", userForBase.getMobile());
+                map.put("sex", userForBase.getSex());
+                map.put("userRowGuid", userForBase.getRowGuid());
+                map.put("deptGuid", userForBase.getDeptGuid());
+                map.put("deptName", maparams.get("deptName"));
+                return R.ok().put("data", map);
+
+
+            }
+        }
+
+    }
+	
 	/**
 	 * 列表数据
 	 */

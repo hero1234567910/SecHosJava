@@ -161,4 +161,6 @@ public interface Frame_UserDao {
 	void deletOaUsers();
 
 	void insertOaUsers(List<Frame_User> users);
+
+	Frame_User getOAUserByLoginId(String loginId);
 }
