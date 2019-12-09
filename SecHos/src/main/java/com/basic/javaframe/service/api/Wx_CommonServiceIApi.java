@@ -26,7 +26,11 @@ import io.swagger.annotations.Info;
 
 @Service("wx_CommonServiceApi")
 public class Wx_CommonServiceIApi extends Api_BaseService{
-
+	
+	public void ceshi(){
+		System.out.println("ceshi");
+	}
+	
 	/**
 	 * 通过网页授权code获取token
 	 * <p>Title: code2Token</p>  
@@ -1115,6 +1119,21 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		logger.info("查询药品详细信息接口参数》》》"+JSONObject.toJSONString(params));
 		String res = HttpUtil.sendPost(wnUrl,params);
 		logger.info("查询药品详细信息接口返回成功》》》"+JSONObject.toJSONString(res));
+		return res;
+	}
+	
+	/**
+	 * 查询oa用户数据
+	 * <p>Title: updateOA</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @return
+	 */
+	public String updateOA() {
+		Map<String, String> params = new HashMap<>();
+		logger.info("查询oa用户数据接口》》》");
+		String res = HttpUtil.sendPost(wsUrl+"/getUsers", params);
+		logger.info("查询oa用户数据接口返回成功》》》");
 		return res;
 	}
 

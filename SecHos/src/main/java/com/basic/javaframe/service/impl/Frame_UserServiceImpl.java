@@ -163,6 +163,12 @@ public class Frame_UserServiceImpl implements Frame_UserService {
     public List<Frame_User> getUserByDeptGuid(String deptGuid) {
         return frame_userDao.getUserByDeptGuid(deptGuid);
     }
+
+	@Override
+	public void updateOaUsers(List<Frame_User> users) {
+		frame_userDao.deletOaUsers();
+		frame_userDao.insertOaUsers(users);
+	}
 }
 
 

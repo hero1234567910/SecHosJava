@@ -212,7 +212,54 @@
             #{rowGuid}
         </foreach>
     </update>
-
+	
+    <delete id="deletOaUsers">
+        delete from frame_userOA
+    </delete>
+    
+    <insert id="insertOaUsers" parameterType="com.basic.javaframe.entity.Frame_User">
+            insert into frame_userOA (
+			  `row_id`,
+			  `row_guid`,
+			  `del_flag`,
+			  `create_time`,
+			  `user_name`,
+			  `login_id`,
+			  `sex`,
+			  `gong_hao`,
+			  `password`,
+			  `dept_guid`,
+			  `duty`,
+			  `tel`,
+			  `mobile`,
+			  `is_forbid`,
+			  `lastlogin_time`,
+			  `sort_sq`,
+			  `openid`
+		) values 
+		<foreach collection="list" item="user" separator=",">
+		(
+			  #{user.rowId},
+			  #{user.rowGuid},
+			  #{user.delFlag},
+			  #{user.createTime},
+			  #{user.userName},
+			  #{user.loginId},
+			  #{user.sex},
+			  #{user.gongHao},
+			  #{user.password},
+			  #{user.deptGuid},
+			  #{user.duty},
+			  #{user.tel},
+			  #{user.mobile},
+			  #{user.isForbid},
+			  #{user.lastloginTime},
+			  #{user.sortSq},
+			  #{user.openid}
+		)
+        </foreach>
+    </insert>
+    
 
     <!--修改用户排序号 -->
     <update id="saveSortSq" parameterType="java.util.List">

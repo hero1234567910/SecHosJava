@@ -272,8 +272,10 @@ public class HttpUtil {
                             java.net.URLEncoder.encode(parameters.get(name),  
                                     "UTF-8")).append("&");  
                 }  
-                String temp_params = sb.toString();  
-                params = temp_params.substring(0, temp_params.length() - 1);  
+                String temp_params = sb.toString();
+                if (temp_params.length() != 0) {
+                	params = temp_params.substring(0, temp_params.length() - 1);  
+				}
             }  
             // 创建URL对象  
             java.net.URL connURL = new java.net.URL(url);  

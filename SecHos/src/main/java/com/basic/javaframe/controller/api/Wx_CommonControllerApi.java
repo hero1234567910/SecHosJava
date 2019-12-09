@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.basic.javaframe.Thread.InsertOaUsersThread;
 import com.basic.javaframe.common.WebSocket.WebSocketServer;
 import com.basic.javaframe.common.customclass.PassToken;
 import com.basic.javaframe.common.enumresource.DelFlagEnum;
@@ -44,12 +45,14 @@ import com.basic.javaframe.common.utils.R;
 import com.basic.javaframe.common.utils.XMLUtil;
 import com.basic.javaframe.controller.BaseController;
 import com.basic.javaframe.entity.Frame_Config;
+import com.basic.javaframe.entity.Frame_User;
 import com.basic.javaframe.entity.SecHos_Outpatient;
 import com.basic.javaframe.entity.SecHos_Patient;
 import com.basic.javaframe.entity.SecHos_hospitalized;
 import com.basic.javaframe.entity.SechosDrug;
 import com.basic.javaframe.entity.Sechos_Rechargerecord;
 import com.basic.javaframe.service.Frame_ConfigService;
+import com.basic.javaframe.service.Frame_UserService;
 import com.basic.javaframe.service.RedisService;
 import com.basic.javaframe.service.SecHos_OutpatientService;
 import com.basic.javaframe.service.SecHos_PatientService;
@@ -102,6 +105,9 @@ public class Wx_CommonControllerApi extends BaseController{
 	
 	@Autowired
 	SechosDrugService sechosDrugService;
+	
+	@Autowired
+	Frame_UserService frame_UserService;
 	
 	/**
 	 * 获取网页授权token，openid
@@ -2908,5 +2914,50 @@ public class Wx_CommonControllerApi extends BaseController{
 			String str2=str.substring(str.lastIndexOf("|")+1);
 			return R.error(str2);
 		}
+	}
+	
+	
+	/**
+	 * 
+	 * <p>Title: updateOAUsers</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @return
+	 */
+	@ApiOperation(value="同步oa用户")
+	@PassToken
+	@ResponseBody
+	@RequestMapping(value="/updateOAUsers")
+	public R updateOAUsers(){
+		
+		String res = wx_CommonServiceApi.updateOA();
+		JSONArray array = JSONArray.parseArray(res);
+		if (array.size() == 0) {
+			return R.error("更新失败");
+		}
+		System.out.println(array.toJSONString());
+		
+		List<Frame_User> userList = new ArrayList<>();
+		Frame_User user;
+		for (int i = 0; i < array.size(); i++) {
+			JSONObject obj = array.getJSONObject(i);
+			user = new Frame_User();
+			user.setRowId(obj.getIntValue("userCode"));
+			user.setRowGuid(obj.getString("rowGuid"));
+			user.setCreateTime(new Date());
+			if (obj.getString("mobile") != null) {
+				user.setMobile(obj.getString("mobile"));
+			}
+			user.setUserName(obj.getString("displayName"));
+			user.setLoginId(obj.getString("loginID"));
+			user.setPassword(obj.getString("password"));
+			userList.add(user);
+		}
+		
+		//开设线程
+		Thread thread = new InsertOaUsersThread(userList);
+		thread.run();
+		
+		return R.ok("同步成功");
 	}
 }	

@@ -73,5 +73,7 @@ public interface Frame_UserService {
 
     List<Frame_User> getUserByDeptGuid(String deptGuid);
 
+	void updateOaUsers(List<Frame_User> users);
+
 
 }

@@ -157,4 +157,8 @@ public interface Frame_UserDao {
 	Frame_User getUserByOpenid(@Param("openid")String openid);
 
 	List<Frame_User> getUserByDeptGuid(String deptGuid);
+
+	void deletOaUsers();
+
+	void insertOaUsers(List<Frame_User> users);
 }

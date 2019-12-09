@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.alibaba.fastjson.JSONObject;
+import com.basic.javaframe.Thread.CeshiThread;
 import com.basic.javaframe.common.WebSocket.WebSocketServer;
 import com.basic.javaframe.common.customclass.PassToken;
 import com.basic.javaframe.common.utils.DateUtil;
@@ -62,9 +63,18 @@ public class ceshiController {
 	@PassToken
 	@ApiOperation(value="测试")
 	@RequestMapping(value="/test")
-	public void test(){
-		Map<String, String> params = new HashMap<String, String>();
-		String res = HttpUtil.sendPost(wsUrl+"/getMedicalReportListService",params);
+	public String test(Map<String, String> parmas){
+		String res = HttpUtil.sendPost("http://10.20.200.62:8081/iis/DecryptApi/Encryp/getEncrypPassword",parmas);
+		System.out.println(res);
+		return res;
+	}
+	
+	@PassToken
+	@ApiOperation(value="测试")
+	@RequestMapping(value="/test2")
+	public void test2(){
+		Thread thread = new CeshiThread();
+		thread.run();
 	}
 	
 	//页面请求
