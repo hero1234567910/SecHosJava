@@ -44,6 +44,22 @@
             limit #{offset}, #{limit}
         </if>
     </select>
+    
+    <select id="getOAUsersList" resultType="com.basic.javaframe.entity.Frame_User">
+         select * from frame_useroa t
+        <include refid="where_clause"/>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by sort_sq desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
 
     <!--通过角色获取用户列表-->
     <select id="getUserFromRole" resultType="com.basic.javaframe.entity.Frame_User">

@@ -488,6 +488,18 @@ public class Frame_UserController {
         Frame_User frameUser = userService.getUserByOpenid(openid);
         return R.ok().put("data",frameUser);
     }
+    
+    @PassToken
+    @ApiOperation(value="获取oa用户数据")
+    @ResponseBody
+    @RequestMapping(value="/getOAUser",produces="application/json;charset=utf-8",method=RequestMethod.GET)
+    public LayuiUtil getOAUser(@RequestParam Map<String, Object> params){
+    	 Query query = new Query(params);
+    	 List<Frame_User> userList = userService.getOAUsersList(query);
+         int total = userService.getCount(query);
+         PageUtils pageUtil = new PageUtils(userList, total, query.getLimit(), query.getPage());
+         return LayuiUtil.data(pageUtil.getTotalCount(), pageUtil.getList());
+    }
 
 }
 

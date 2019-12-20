@@ -76,6 +76,8 @@ public interface Frame_UserService {
 	void updateOaUsers(List<Frame_User> users);
 
 	Frame_User getOAUserByLoginId(String loginId);
+
+	List<Frame_User> getOAUsersList(Map<String, Object> params);
 	
 	
 

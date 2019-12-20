@@ -69,6 +69,7 @@ public class ScheduledTask {
 			user = new Frame_User();
 			user.setRowId(obj.getIntValue("userCode"));
 			user.setRowGuid(obj.getString("rowGuid"));
+			user.setDuty(obj.getString("duty"));
 			user.setCreateTime(new Date());
 			if (obj.getString("mobile") != null) {
 				user.setMobile(obj.getString("mobile"));

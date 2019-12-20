@@ -175,6 +175,12 @@ public class Frame_UserServiceImpl implements Frame_UserService {
 		// TODO Auto-generated method stub
 		return frame_userDao.getOAUserByLoginId(loginId);
 	}
+
+	@Override
+	public List<Frame_User> getOAUsersList(Map<String, Object> params) {
+		// TODO Auto-generated method stub
+		return frame_userDao.getOAUsersList(params);
+	}
 }
 
 

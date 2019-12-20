@@ -163,4 +163,6 @@ public interface Frame_UserDao {
 	void insertOaUsers(List<Frame_User> users);
 
 	Frame_User getOAUserByLoginId(String loginId);
+
+	List<Frame_User> getOAUsersList(Map<String, Object> params);
 }
