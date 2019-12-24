@@ -53,7 +53,7 @@
                 order by ${sidx} ${order}
             </when>
             <otherwise>
-                order by sort_sq desc
+                order by deptName desc
             </otherwise>
         </choose>
         <if test="offset != null and limit != null">
@@ -255,7 +255,8 @@
 			  `is_forbid`,
 			  `lastlogin_time`,
 			  `sort_sq`,
-			  `openid`
+			  `openid`,
+			  `deptName`
 		) values 
 		<foreach collection="list" item="user" separator=",">
 		(
@@ -275,7 +276,8 @@
 			  #{user.isForbid},
 			  #{user.lastloginTime},
 			  #{user.sortSq},
-			  #{user.openid}
+			  #{user.openid},
+			  #{user.deptName}
 		)
         </foreach>
     </insert>

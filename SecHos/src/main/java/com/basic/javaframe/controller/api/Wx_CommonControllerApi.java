@@ -2946,6 +2946,7 @@ public class Wx_CommonControllerApi extends BaseController{
 			user.setRowGuid(obj.getString("rowGuid"));
 			user.setDuty(obj.getString("duty"));
 			user.setCreateTime(new Date());
+			user.setDeptName(obj.getString("deptName"));
 			if (obj.getString("mobile") != null) {
 				user.setMobile(obj.getString("mobile"));
 			}

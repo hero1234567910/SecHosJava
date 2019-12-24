@@ -52,8 +52,18 @@ public class Frame_User {
     private String openid;
 
     private String accessToken;
+    
+    private String deptName;
+    
+    public String getDeptName() {
+		return deptName;
+	}
 
-    public String getAccessToken() {
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+
+	public String getAccessToken() {
         return accessToken;
     }
 
