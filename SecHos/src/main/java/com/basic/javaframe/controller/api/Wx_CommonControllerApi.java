@@ -791,6 +791,9 @@ public class Wx_CommonControllerApi extends BaseController{
 					JSONArray children = new JSONArray();
 					for (int j = 0; j < arr.size(); j++) {
 						JSONObject arrItem = arr.getJSONObject(j);
+						if ("儿科".equals(arrItem.getString("yjksmc"))) {
+							continue;
+						}
 						if (starr[i].equals(arrItem.getString("yjksdm"))) {
 							JSONObject ch = new JSONObject();
 							da.put("ksdm", arrItem.getString("yjksdm"));
@@ -1039,6 +1042,9 @@ public class Wx_CommonControllerApi extends BaseController{
 				JSONArray children = new JSONArray();
 				for(int j= 0;j<arr.size();j++){
 					JSONObject arrItem = arr.getJSONObject(j);
+					if ("儿科".equals(arrItem.getString("yjksmc"))) {
+						continue;
+					}
 					if(starr[i].equals(arrItem.getString("yjksdm"))){
 						JSONObject ch = new JSONObject();
 						da.put("ksdm",arrItem.getString("yjksdm"));
