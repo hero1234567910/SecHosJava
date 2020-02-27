@@ -181,6 +181,11 @@ public class Frame_UserServiceImpl implements Frame_UserService {
 		// TODO Auto-generated method stub
 		return frame_userDao.getOAUsersList(params);
 	}
+
+	@Override
+	public void updateOaUser(Frame_User user) {
+		frame_userDao.updateOaUser(user);
+	}
 }
 
 

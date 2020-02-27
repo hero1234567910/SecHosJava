@@ -48,6 +48,9 @@ public class Frame_User {
     private Date lastloginTime;
     //排序号
     private int sortSq;
+    //推广次数
+    private int extensionCount;
+    
     //openid
     private String openid;
 
@@ -55,7 +58,15 @@ public class Frame_User {
     
     private String deptName;
     
-    public String getDeptName() {
+    public int getExtensionCount() {
+		return extensionCount;
+	}
+
+	public void setExtensionCount(int extensionCount) {
+		this.extensionCount = extensionCount;
+	}
+
+	public String getDeptName() {
 		return deptName;
 	}
 

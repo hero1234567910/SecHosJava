@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.Sechos_PopuPersonDao">
+
+
+    <select id="getByDetail" resultType="com.basic.javaframe.entity.Sechos_PopuPerson">
+        select * from sechos_popuPerson where row_guid = #{value}
+    </select>
+	 
+    <select id="getByPopuPersonGuid" resultType="com.basic.javaframe.entity.Sechos_PopuPerson">
+        select * from sechos_popuPerson where popuPersonGuid = #{value}
+    </select>
+    
+	<insert id="save" parameterType="com.basic.javaframe.entity.Sechos_PopuPerson" useGeneratedKeys="true" keyProperty="row_guid">
+		insert into sechos_popuPerson
+		(
+			`row_guid`, 
+			`create_time`, 
+			`del_flag`, 
+			`promoters`,
+			`promotersGuid`,
+			`popuPersonGuid`,
+			`popuPerson`
+		)
+		values
+		(
+			#{rowGuid}, 
+			#{createTime}, 
+			#{delFlag}, 
+			#{promoters},
+			#{promotersGuid},
+			#{popuPersonGuid},
+			#{popuPerson}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.basic.javaframe.entity.Sechos_PopuPerson">
+		update sechos_popuPerson 
+		<set>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+			<if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+			<if test="promoters != null">`promoters` = #{promoters},</if>
+			<if test="promotersGuid != null">`promotersGuid` = #{promotersGuid},</if>
+			<if test="popuPersonGuid != null">`popuPersonGuid` = #{popuPersonGuid},</if>
+			<if test="popuPerson != null">`popuPerson` = #{popuPerson}</if>
+		</set>
+		where row_guid = #{rowGuid}
+	</update>
+	
+	
+</mapper>

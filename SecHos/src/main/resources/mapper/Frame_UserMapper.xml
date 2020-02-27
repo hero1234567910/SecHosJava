@@ -205,6 +205,33 @@
         </set>
         where row_guid = #{rowGuid}
     </update>
+    
+    <!--更新用户oa-->
+    <update id="updateOaUser" parameterType="com.basic.javaframe.entity.Frame_User">
+        update frame_userOA
+        <set>
+            <if test="rowGuid != null">`row_guid` = #{rowGuid},</if>
+            <if test="delFlag != null">`del_flag` = #{delFlag},</if>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="userName != null">`user_name` = #{userName},</if>
+            <if test="loginId != null">`login_id` = #{loginId},</if>
+            <if test="sex != null">`sex` = #{sex},</if>
+            <if test="gongHao != null">`gong_hao` = #{gongHao},</if>
+            <if test="password != null">`password` = #{password},</if>
+            <if test="deptGuid != null">`dept_guid` = #{deptGuid},</if>
+            <if test="duty != null">`duty` = #{duty},</if>
+            <if test="tel != null">`tel` = #{tel},</if>
+            <if test="mobile != null">`mobile` = #{mobile},</if>
+<!--            <if test="isForbid != null">`is_forbid` = #{isForbid},</if>-->
+            <if test="lastloginTime != null">`lastlogin_time` = #{lastloginTime},</if>
+            <if test="sortSq != null">`sort_sq` = #{sortSq},</if>
+            <if test="openid != null">`openid` = #{openid}</if>
+            <if test="extensionCount != null">`extensionCount` = #{extensionCount}</if>
+        </set>
+        where row_guid = #{rowGuid}
+    </update>
+    
+    
     <!--更新用户-->
     <update id="updateAdmin" parameterType="com.basic.javaframe.entity.Frame_User">
         update frame_user
@@ -256,7 +283,8 @@
 			  `lastlogin_time`,
 			  `sort_sq`,
 			  `openid`,
-			  `deptName`
+			  `deptName`,
+			  `extensionCount`
 		) values 
 		<foreach collection="list" item="user" separator=",">
 		(
@@ -277,7 +305,8 @@
 			  #{user.lastloginTime},
 			  #{user.sortSq},
 			  #{user.openid},
-			  #{user.deptName}
+			  #{user.deptName},
+			  #{user.extensionCount}
 		)
         </foreach>
     </insert>

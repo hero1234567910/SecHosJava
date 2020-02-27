@@ -322,6 +322,13 @@ public class Wx_CommonControllerApi extends BaseController{
 						}
 						//默认取第一个
 						JSONObject json = array.getJSONObject(0);
+						String lxdh = "";
+						for (int i = 0; i < array.size(); i++) {
+							JSONObject j = array.getJSONObject(i);
+							if (!"".equals(j.getString("lxdh"))) {
+								lxdh = j.getString("lxdh");
+							}
+						}
 						//直接绑定患者信息
 						SecHos_Patient pa = patientService.getPatientByOpenid(params.get("openid"));
 						if (pa == null) {
@@ -330,7 +337,7 @@ public class Wx_CommonControllerApi extends BaseController{
 						pa.setPatientAddress(json.getString("lxdz"));
 						pa.setPatientBirth(DateUtil.changeStrToDate3(json.getString("birth")));
 						pa.setPatientIdcard(json.getString("zjh"));
-						pa.setPatientMobile(json.getString("lxdh"));
+						pa.setPatientMobile(lxdh);
 						pa.setPatientName(json.getString("hzxm"));
 						pa.setPatientSex((json.getString("sex") == SexEnum.MALE.getValue())?SexEnum.MALE.getCode():SexEnum.FEMALE.getCode());
 						pa.setPatientStatus(PatientStatusEnum.OUTPATIENT.getCode());
@@ -500,6 +507,60 @@ public class Wx_CommonControllerApi extends BaseController{
 				}
 			}else{
 				return R.error("门诊建档接口异常");
+			}
+					
+		}
+		
+		/**
+		 * 更新患者信息
+		 * <p>Title: bindingPatient</p>  	
+		 * <p>Description: </p>
+		 * @author hero  
+		 * @return
+		 */
+		@ApiOperation(value="患者建档")
+		@ResponseBody
+		@RequestMapping(value="/updatePatient",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+		public R updatePatient(@RequestBody Map<String, String> params){
+			checkParams(params, "patienGuid");
+			checkParams(params, "hzxm");
+			checkParams(params, "patid");
+			checkParams(params, "lxdh");
+			
+			//门诊患者
+			String result = wx_CommonServiceApi.updatePatient(params);
+			//解析结果
+			JSONObject jsonObject = JSONObject.parseObject(result);
+			if (jsonObject.containsKey("success")) {
+				boolean res = jsonObject.getBoolean("success");
+				if (res) {
+					//更新成功
+					
+					//直接绑定患者信息
+					SecHos_Patient pa = new SecHos_Patient();
+					pa.setRowGuid(params.get("patienGuid"));
+					pa.setPatientMobile(params.get("lxdh"));
+					patientService.update(pa);
+					
+//					//删除之前绑定的门诊记录
+//					List<SecHos_Outpatient> hoslist = pa.getOutpatients();
+//					if (hoslist != null && hoslist.size() != 0) {
+//						List<String> strlist = new ArrayList<>();
+//						for (int i = 0; i < hoslist.size(); i++) {
+//							String rowGuid = hoslist.get(i).getRowGuid();
+//							strlist.add(rowGuid);
+//						}
+//						String[] rowGuids = strlist.toArray(new String[strlist.size()]);
+//						outpatientService.deleteBatch(rowGuids);
+//					}
+					
+					return R.ok("绑定成功");
+				}else{
+					//建档失败
+					return R.error("更新用户信息异常");
+				}
+			}else{
+				return R.error("更新错误");
 			}
 					
 		}

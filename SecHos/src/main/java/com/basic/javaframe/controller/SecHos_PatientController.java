@@ -1,12 +1,22 @@
 package com.basic.javaframe.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
 import com.basic.javaframe.common.utils.DateUtil;
 import com.basic.javaframe.common.utils.LayuiUtil;
+import com.basic.javaframe.common.utils.MD5Util;
 import com.basic.javaframe.entity.SecHos_Patient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -16,6 +26,7 @@ import com.basic.javaframe.service.SecHos_PatientService;
 import com.basic.javaframe.common.utils.PageUtils;
 import com.basic.javaframe.common.utils.Query;
 import com.basic.javaframe.common.utils.R;
+import com.basic.javaframe.common.utils.StringUtil;
 
 
 /**
@@ -31,6 +42,18 @@ import com.basic.javaframe.common.utils.R;
 public class SecHos_PatientController {
 	@Autowired
 	private SecHos_PatientService secHosPatientService;
+	
+	@Value(value="${nl.appsecret}")
+	private String appsecret;
+	
+	@Value(value="${nl.appkey}")
+	private String appkey;
+	
+	@Value(value="${wx.api.appid}")
+	private String appid;
+	
+	@Value(value="${nl.url}")
+	private String nlUrl;
 	
 	/**
 	 * 列表数据
@@ -100,4 +123,148 @@ public class SecHos_PatientController {
 		SecHos_Patient secHosPatient = secHosPatientService.getPatientByGuid(rowGuid);
 		return R.ok().put("data",secHosPatient);
 	}
+	
+	/**
+	 * 对接新咨询
+	 * <p>Title: toAsk</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @return
+	 * @throws UnsupportedEncodingException 
+	 */
+	@ApiOperation(value="对接新咨询")
+	@ResponseBody
+	@RequestMapping(value="/toAsk",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	@PassToken
+	public R toAsk(@RequestBody Map<String, String> map) throws UnsupportedEncodingException{
+		String patienGuid = map.get("patienGuid");
+		if(StringUtil.isBlank(patienGuid)){
+			return R.error("patienGuid不能为空");
+		}
+		//根据patienGuid查询用户信息
+		SecHos_Patient secHosPatient = secHosPatientService.getPatientByGuid(patienGuid);
+		if(StringUtil.isBlank(secHosPatient.getPatientIdcard()) || secHosPatient.getPatientIdcard() == ""){
+			return R.error().put("data", "zwbd");
+		}
+		
+		if(StringUtil.isBlank(secHosPatient.getPatientMobile()) || secHosPatient.getPatientMobile() == ""){
+			return R.error().put("data", "sjhgx");
+		}
+		
+		
+		//拼接
+		SortedMap<Object, Object> obj =
+                new TreeMap<Object, Object>();
+		obj.put("appkey", appkey);
+		obj.put("idcard", secHosPatient.getPatientIdcard());
+		obj.put("mobile", secHosPatient.getPatientMobile());
+		obj.put("patientName", secHosPatient.getPatientName());
+		obj.put("tid", secHosPatient.getRowGuid());
+//		obj.put("appid", appid);
+//		obj.put("api", "wx");
+//		obj.put("", value)
+		String signature = createSign(obj);
+		
+		String patientName = secHosPatient.getPatientName();
+//		patientName = new String(patientName.getBytes("ISO-8859-1"),"UTF-8");
+		System.out.println(getEncoding(patientName));
+		
+		
+		
+		
+		patientName = gb2312ToUtf8(patientName);
+		String url = nlUrl+"page.html?appkey="+appkey+"&idcard="+secHosPatient.getPatientIdcard()+"&mobile="+secHosPatient.getPatientMobile()+"&patientName="+patientName+"&tid="+secHosPatient.getRowGuid()+"&api=wx&signature="+signature+"&module=newRS"+"&appid=wx870abf50c6bc6da3";
+		System.out.println("纳里健康的第一版url为》》》"+url);
+		
+		String enUrl = URLEncoder.encode(url, "GBK");
+		System.out.println("编码过后的url》》》"+enUrl);
+		String wxUrl = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx870abf50c6bc6da3&redirect_uri="+enUrl+"&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect";
+		System.out.println("最终解析的url》》》"+wxUrl);
+		
+		Map<String, String> p = new HashMap<String, String>();
+		p.put("wxUrl", wxUrl);
+		p.put("url", url);
+		return R.ok().put("data", p);
+	}
+	
+	public String createSign(SortedMap<Object,Object> parameters){
+		StringBuffer sb = new StringBuffer();
+		Set es = parameters.entrySet();//所有参与传参的参数按照accsii排序（升序）
+		Iterator it = es.iterator();
+		while(it.hasNext()) {
+			Map.Entry entry = (Map.Entry)it.next();
+			String k = (String)entry.getKey();
+			Object v = entry.getValue();
+			if(null != v && !"".equals(v) && !"sign".equals(k) && !"key".equals(k)) {
+			 sb.append(k + "=" + v + "&");
+			}
+		}
+		String s = sb.toString();
+		s = s.substring(0,s.length()-1);
+		s = s + appsecret;
+		System.out.println(s);
+		String sign = null;
+		try {
+			sign = MD5Util.md5Password(s).toLowerCase();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(sign+">>>>"+MD5Util.md5Password(s).toLowerCase()+">>>>>>>"+MD5Util.toMD5(s));
+		return sign;
+	}
+	
+	public  String getEncoding(String str) { 
+		String encode = "GB2312"; 
+		try { 
+		if (str.equals(new String(str.getBytes(encode), encode))) { //判断是不是GB2312
+		String s = encode; 
+		return s; //是的话，返回“GB2312“，以下代码同理
+		} 
+		} catch (Exception exception) { 
+		} 
+		encode = "ISO-8859-1"; 
+		try { 
+		if (str.equals(new String(str.getBytes(encode), encode))) { //判断是不是ISO-8859-1
+		String s1 = encode; 
+		return s1; 
+		} 
+		} catch (Exception exception1) { 
+		} 
+		encode = "UTF-8"; 
+		try { 
+		if (str.equals(new String(str.getBytes(encode), encode))) { //判断是不是UTF-8
+		String s2 = encode; 
+		return s2; 
+		} 
+		} catch (Exception exception2) { 
+		} 
+		encode = "GBK"; 
+		try { 
+		if (str.equals(new String(str.getBytes(encode), encode))) { //判断是不是GBK
+		String s3 = encode; 
+		return s3; 
+		} 
+		} catch (Exception exception3) { 
+		} 
+		return ""; //如果都不是，说明输入的内容不属于常见的编码格式。
+	}
+	
+	public static String gb2312ToUtf8(String str) { 
+		 
+        String urlEncode = "" ; 
+ 
+        try { 
+ 
+            urlEncode = URLEncoder.encode (str, "UTF-8" ); 
+ 
+        } catch (UnsupportedEncodingException e) { 
+ 
+            e.printStackTrace(); 
+ 
+        } 
+ 
+        return urlEncode; 
+	}
+
 }

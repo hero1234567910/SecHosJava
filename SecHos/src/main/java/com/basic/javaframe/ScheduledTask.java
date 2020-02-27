@@ -45,6 +45,9 @@ public class ScheduledTask {
 	
 	@Autowired
 	Wx_CommonServiceIApi wx_CommonServiceApi;
+	
+	@Autowired
+	Frame_UserService userService;
 	/**
 	 *    定时更新oa用户数据
 	 * @Title: financeStatic 
@@ -60,7 +63,6 @@ public class ScheduledTask {
 		if (array.size() == 0) {
 			logger.info("更新失败");
 		}
-		System.out.println(array.toJSONString());
 		
 		List<Frame_User> userList = new ArrayList<>();
 		Frame_User user;
@@ -78,6 +80,11 @@ public class ScheduledTask {
 			user.setUserName(obj.getString("displayName"));
 			user.setLoginId(obj.getString("loginID"));
 			user.setPassword(obj.getString("password"));
+			
+			//查询每一个推广次数
+			Frame_User u = userService.getOAUserByLoginId(obj.getString("loginID"));
+			user.setExtensionCount(u.getExtensionCount());
+			
 			userList.add(user);
 		}
 		

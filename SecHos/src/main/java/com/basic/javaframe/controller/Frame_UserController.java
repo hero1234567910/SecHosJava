@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.basic.javaframe.entity.Frame_Role_User;
 import com.basic.javaframe.entity.Frame_User;
+import com.basic.javaframe.entity.Sechos_PopuPerson;
 import com.mysql.jdbc.authentication.Sha256PasswordPlugin;
 
 import java.util.UUID;
@@ -70,6 +71,9 @@ public class Frame_UserController {
 
     @Autowired
     private Frame_DeptService frameDeptService;
+    
+    @Autowired
+    private Sechos_PopuPersonService sechos_PopuPersonService;
     /**
      * 获取所有正常用户
      * <p>Title: getUser</p>
@@ -500,6 +504,63 @@ public class Frame_UserController {
          PageUtils pageUtil = new PageUtils(userList, total, query.getLimit(), query.getPage());
          return LayuiUtil.data(pageUtil.getTotalCount(), pageUtil.getList());
     }
-
+    
+    /**
+     * 增加用户次数
+     * <p>Title: addUserCount</p>  
+     * <p>Description: </p>
+     * @author hero  
+     * @return
+     */
+    @PassToken
+    @ApiOperation(value="增加用户推广次数")
+    @ResponseBody
+    @RequestMapping(value="/addUserCount",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+    public R addUserCount(@RequestBody Map<String, Object> params){
+    	
+    	String promoters = (String) params.get("promoters");//推广人姓名
+    	String promotersGuid = (String) params.get("promotersGuid");
+    	
+//    	String popuPerson = (String) params.get("popuPerson");//被推广人姓名
+    	String popuPersonGuid = (String) params.get("popuPersonGuid");
+    	
+    	Boolean flag = false;
+    	synchronized(this){
+    		
+    		//通过推广人rowGuid查询是否已经推广过
+    		Sechos_PopuPerson per = sechos_PopuPersonService.getByPopuPersonGuid(popuPersonGuid);
+    		
+    		if (per == null) {
+				//该用户未经推广
+    			flag = true;
+			}
+    		
+    		String loginId = (String) params.get("loginId");
+    		
+    		//根据rowGuid新增次数
+        	Frame_User user = userService.getOAUserByLoginId(loginId);
+        	int count = user.getExtensionCount();
+        	if (count == 0) {
+    			count += 1;
+    		}
+        	user.setExtensionCount(count);
+        	userService.updateOaUser(user);
+    	}
+    	if (flag) {
+    		Sechos_PopuPerson person = new Sechos_PopuPerson();
+        	person.setRowGuid(UUID.randomUUID().toString());
+        	person.setCreateTime(new Date());
+//        	person.setPopuPerson(popuPerson);
+        	person.setPromoters(promoters);
+        	person.setPopuPersonGuid(popuPersonGuid);
+        	person.setPromotersGuid(promotersGuid);
+        	sechos_PopuPersonService.save(person);
+		}
+    	
+    	
+    	
+    	return R.ok();
+    }
+    
 }
 

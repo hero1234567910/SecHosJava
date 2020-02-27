@@ -117,6 +117,24 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 	}
 	
 	/**
+	 * 更新患者信息
+	 * <p>Title: bingdingOutPatient</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @return
+	 */
+	public String updatePatient(Map<String, String> params) {
+		// 准备参数
+		params.put("yydm",yydm);
+		params.put("accesskey",accesskey);
+		params.put("action","PUTHZXXGX");
+		logger.info("更新患者接口参数》》》"+JSONObject.toJSONString(params));
+	    String result = HttpUtil.sendPost(wnUrl,params);
+	    logger.info("更新患者接口返回成功》》》"+JSONObject.toJSONString(result));
+		return result;
+	}
+	
+	/**
 	 * 查询住院患者
 	 * <p>Title: bingdingHospitalized</p>  
 	 * <p>Description: </p>
