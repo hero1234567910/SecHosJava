@@ -21,5 +21,7 @@ public interface Sechos_PopuPersonDao extends BaseDao<Sechos_PopuPersonDao> {
 	Sechos_PopuPerson getByDetail(String rowGuid);
 
 	Sechos_PopuPerson getByPopuPersonGuid(String popuPersonGuid);
+
+	Sechos_PopuPerson getByPopuPersonOpenId(String openId);
     
 }

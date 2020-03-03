@@ -196,6 +196,12 @@
         </dependency>
 		<!-- apache poi end -->
 		
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient</artifactId>
+		</dependency>
+		
+		
 		<!-- websocket -->
 		<dependency>  
            <groupId>org.springframework.boot</groupId>  

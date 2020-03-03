@@ -41,6 +41,11 @@ public class Sechos_PopuPersonServiceImpl implements Sechos_PopuPersonService {
 		// TODO Auto-generated method stub
 		return sechos_PopuPersonDao.getByPopuPersonGuid(popuPersonGuid);
 	}
+
+	@Override
+	public Sechos_PopuPerson getByPopuPersonOpenId(String OpenId) {
+		return sechos_PopuPersonDao.getByPopuPersonOpenId(OpenId);
+	}
 	
 
 }

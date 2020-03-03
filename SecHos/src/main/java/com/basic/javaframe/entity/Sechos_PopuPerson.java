@@ -30,6 +30,16 @@ public class Sechos_PopuPerson {
     private String popuPersonGuid;
     //被推广人
     private String popuPerson;
+    
+    private String popuPersonOpenId;
+    
+	public String getPopuPersonOpenId() {
+		return popuPersonOpenId;
+	}
+
+	public void setPopuPersonOpenId(String popuPersonOpenId) {
+		this.popuPersonOpenId = popuPersonOpenId;
+	}
 
 	public Integer getRowId() {
 		return rowId;

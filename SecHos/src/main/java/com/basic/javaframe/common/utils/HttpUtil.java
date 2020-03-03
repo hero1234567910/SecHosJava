@@ -18,15 +18,38 @@ import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.EntityUtils;
+import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.druid.util.StringUtils;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+
+import sun.misc.BASE64Encoder;
+
 
 /**
  *  Http 工具类
@@ -37,6 +60,225 @@ import com.alibaba.fastjson.JSONObject;
   *
  */
 public class HttpUtil {  
+	
+	/** 
+     * 发送base64
+     *  
+     * @param url 
+     *            目的地址 
+     * @param parameters 
+     *            请求参数，Map类型。 
+     * @return 远程响应结果 
+     */  
+    public static String sendGetWithPic(String url, Map<String, String> parameters) { 
+        String result="";
+        InputStream in = null;// 读取响应输入流  
+        StringBuffer sb = new StringBuffer();// 存储参数  
+        String params = "";// 编码之后的参数
+        try {
+            // 编码请求参数  
+            if(parameters.size()==1){
+                for(String name:parameters.keySet()){
+                    sb.append(name).append("=").append(
+                            java.net.URLEncoder.encode(parameters.get(name),  
+                            "UTF-8"));
+                }
+                params=sb.toString();
+            }else{
+                for (String name : parameters.keySet()) {  
+                    sb.append(name).append("=").append(  
+                            java.net.URLEncoder.encode(parameters.get(name),  
+                                    "UTF-8")).append("&");  
+                }  
+                String temp_params = sb.toString();  
+                params = temp_params.substring(0, temp_params.length() - 1);  
+            }
+            String full_url = url + "?" + params; 
+            System.out.println(full_url); 
+            // 创建URL对象  
+            java.net.URL connURL = new java.net.URL(full_url);  
+            // 打开URL连接  
+            java.net.HttpURLConnection httpConn = (java.net.HttpURLConnection) connURL  
+                    .openConnection();  
+            // 设置通用属性  
+            httpConn.setRequestProperty("Accept", "*/*");  
+            httpConn.setRequestProperty("Connection", "Keep-Alive");  
+            httpConn.setRequestProperty("User-Agent",  
+                    "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)");  
+            // 建立实际的连接  
+            httpConn.connect();  
+            // 响应头部获取  
+            Map<String, List<String>> headers = httpConn.getHeaderFields();  
+            // 遍历所有的响应头字段  
+            for (String key : headers.keySet()) {  
+                System.out.println(key + "\t：\t" + headers.get(key));  
+            }  
+            in = httpConn.getInputStream();
+            byte[] bytes = new byte[in.available()];
+            // 将文件中的内容读入到数组中
+            in.read(bytes);
+            
+            
+            String base64Str = new BASE64Encoder().encode(bytes);	
+            result = base64Str;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally{
+            try {  
+                if (in != null) {  
+                    in.close();  
+                }  
+            } catch (IOException ex) {  
+                ex.printStackTrace();  
+            }  
+        }
+        return result ;
+    }  
+	
+    /** 
+     * 文件流转为文件存本地
+     *  
+     * @param url 
+     *            目的地址 
+     * @param parameters 
+     *            请求参数，Map类型。 
+     * @return 远程响应结果 
+     */  
+    public static String sendGetInto(String url, Map<String, String> parameters) { 
+        String result="";
+        InputStream in = null;// 读取响应输入流  
+        FileOutputStream out = null;
+        BufferedOutputStream bos = null;
+        StringBuffer sb = new StringBuffer();// 存储参数  
+        String params = "";// 编码之后的参数
+        try {
+            // 编码请求参数  
+            if(parameters.size()==1){
+                for(String name:parameters.keySet()){
+                    sb.append(name).append("=").append(
+                            java.net.URLEncoder.encode(parameters.get(name),  
+                            "UTF-8"));
+                }
+                params=sb.toString();
+            }else{
+                for (String name : parameters.keySet()) {  
+                    sb.append(name).append("=").append(  
+                            java.net.URLEncoder.encode(parameters.get(name),  
+                                    "UTF-8")).append("&");  
+                }  
+                String temp_params = sb.toString();  
+                params = temp_params.substring(0, temp_params.length() - 1);  
+            }
+            String full_url = url + "?" + params; 
+            System.out.println(full_url); 
+            // 创建URL对象  
+            java.net.URL connURL = new java.net.URL(full_url);  
+            // 打开URL连接  
+            java.net.HttpURLConnection httpConn = (java.net.HttpURLConnection) connURL  
+                    .openConnection();  
+            // 设置通用属性  
+            httpConn.setRequestProperty("Accept", "*/*");  
+            httpConn.setRequestProperty("Connection", "Keep-Alive");  
+            httpConn.setRequestProperty("User-Agent",  
+                    "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)");  
+            // 建立实际的连接  
+            httpConn.connect();  
+            // 响应头部获取  
+            Map<String, List<String>> headers = httpConn.getHeaderFields();  
+            // 遍历所有的响应头字段  
+            for (String key : headers.keySet()) {  
+                System.out.println(key + "\t：\t" + headers.get(key));  
+            }  
+            in = httpConn.getInputStream();
+            byte[] bytes = new byte[in.available()];
+            
+            String path = Thread.currentThread().getContextClassLoader().getResource("").getPath()+"templates";
+            File dir = new File(path);
+            if(!dir.exists()&&!dir.isDirectory()){//判断文件目录是否存在
+                dir.mkdirs();
+            }
+			//创建临时文件的api参数 (文件前缀,文件后缀,存放目录)
+            File file = File.createTempFile(UUID.randomUUID().toString(), ".png", dir);
+            String tempFileName = file.getName();
+            out = new FileOutputStream(file);
+            bos = new BufferedOutputStream(out);
+            bos.write(bytes);
+            path = file.getPath();
+            return path;
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally{
+            try {  
+                if (in != null) {  
+                    in.close();  
+                    out.close();
+                }  
+            } catch (IOException ex) {  
+                ex.printStackTrace();  
+            }  
+        }
+        return result ;
+    }  
+    
+    
+	
+	/**
+	 * 获取base64
+	 */
+	public static String sendGetWithPic(String url, String param) {
+        String result = "";
+        InputStream in = null;
+        try {
+            String urlNameString = url + "?" + param;
+            URL realUrl = new URL(urlNameString);
+            // 打开和URL之间的连接
+            URLConnection connection = realUrl.openConnection();
+            // 设置通用的请求属性
+            connection.setRequestProperty("accept", "*/*");
+            connection.setRequestProperty("connection", "Keep-Alive");
+            connection.setRequestProperty("user-agent",
+                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            // 建立实际的连接
+            connection.connect();
+            // 获取所有响应头字段
+            Map<String, List<String>> map = connection.getHeaderFields();
+            // 遍历所有的响应头字段
+            for (String key : map.keySet()) {
+                System.out.println(key + "--->" + map.get(key));
+            }
+            // 定义 BufferedReader输入流来读取URL的响应
+//            in = new BufferedReader(new InputStreamReader(
+//                    connection.getInputStream()));
+//            String line;
+//            while ((line = in.readLine()) != null) {
+//                result += line;
+//            }
+            in = connection.getInputStream();
+            byte[] bytes = new byte[in.available()];
+            // 将文件中的内容读入到数组中
+            in.read(bytes);
+            
+            
+            String base64Str = new BASE64Encoder().encode(bytes);	
+            result = base64Str;
+        } catch (Exception e) {
+            System.out.println("发送GET请求出现异常！" + e);
+            e.printStackTrace();
+        }
+        // 使用finally块来关闭输入流
+        finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+        return result;
+    }
+	
 	
 	/**
      * 向指定URL发送GET方法的请求
@@ -1114,7 +1356,114 @@ public class HttpUtil {
 		conn.disconnect();
 		return sb.toString();
 	}
+    
+    /**
+     * post请求 以json格式入参
+     * <p>Title: doPost</p>  
+     * <p>Description: </p>
+     * @author hero  
+     * @param url
+     * @param myclass
+     * @return
+     */
+    public static String doPost(String url, Object myclass) {
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        HttpPost posturl = new HttpPost(url);
+        String result = null;
+        String jsonSting = JSON.toJSONString(myclass);
+        StringEntity entity = new StringEntity(jsonSting, "UTF-8");
+        posturl.setEntity(entity);
+        posturl.setHeader("Content-Type", "application/json;charset=utf8");
+        // 响应模型
+        CloseableHttpResponse response = null;
+        try {
+            // 由客户端执行(发送)Post请求
+           response = httpClient.execute(posturl);
+            // 从响应模型中获取响应实体
+            HttpEntity responseEntity = response.getEntity();
 
+            System.out.println("响应状态为:" + response.getStatusLine());
+            if (responseEntity != null) {
+                System.out.println("响应内容长度为:" + responseEntity.getContentLength());
+                //EntityUtils.toString 只可调用一次
+                String resStr = EntityUtils.toString(responseEntity);
+                System.out.println("响应内容为:" + resStr);
+                return resStr;
+            }
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                // 释放资源
+                if (httpClient != null) {
+                    httpClient.close();
+                }
+                if (response != null) {
+                    response.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+      return null;
+    }
+    
+    
+    public static String dourl(String url,Object clzz){
+        try {
+            String jsonString = JSON.toJSONString(clzz);
+            URL url1 = new URL(url);
+            HttpURLConnection conn = (HttpURLConnection) url1.openConnection();
+            //设置允许输出
+            conn.setDoOutput(true);
+            //设置允许输入
+            conn.setDoInput(true);
+            //设置不用缓存
+            conn.setUseCaches(false);
+            conn.setRequestMethod("POST");
+
+            //设置传递方式
+            conn.setRequestProperty("contentType", "application/json");
+            // 设置维持长连接
+            conn.setRequestProperty("Connection", "Keep-Alive");
+            // 设置文件字符集:
+            conn.setRequestProperty("Charset", "UTF-8");
+            //开始请求
+            byte[] bytes = jsonString.toString().getBytes();
+            //写流
+            OutputStream stream = conn.getOutputStream();
+            stream.write(bytes);
+            stream.flush();
+            stream.close();
+            int resultCode=conn.getResponseCode();
+              if(conn.getResponseCode()==200){
+              InputStream inputStream = conn.getInputStream();
+              byte[] bytes1 = new byte[inputStream.available()];
+              inputStream.read(bytes1);
+              //转字符串
+              String s = new String(bytes);
+              System.out.println(s);
+                  return s;
+          }else {
+                  //获取响应内容
+                  int code = conn.getResponseCode();
+                  String responseMessage = conn.getResponseMessage();
+                  System.out.println(code);
+                  String s = String.valueOf(code);
+                  return "响应状态码是:"+s+"响应内容是：======="+responseMessage;
+              }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+                  return null;
+    }
+
+    
+    
     /** 
      * 主函数，测试请求 
      *  

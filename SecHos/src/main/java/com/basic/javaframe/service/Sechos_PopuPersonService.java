@@ -19,4 +19,6 @@ public interface Sechos_PopuPersonService {
 	Sechos_PopuPerson getByDetail(String rowGuid);
 	
 	Sechos_PopuPerson getByPopuPersonGuid(String popuPersonGuid);
+	
+	Sechos_PopuPerson getByPopuPersonOpenId(String OpenId);
 }

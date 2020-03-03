@@ -1,5 +1,7 @@
 package com.basic.javaframe.common.utils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +19,27 @@ private static final String SUFFIX_XML = "</xml>";
 private static final String PREFIX_CDATA = "<![CDATA[";
 
 private static final String SUFFIX_CDATA = "]]>";
+	
 
+	/** 
+	 * @功能 读取流 
+	 * @param inStream 
+	 * @return 字节数组 
+	 * @throws Exception 
+	 */  
+	public static byte[] readStream(InputStream inStream) throws Exception {  
+	    ByteArrayOutputStream outSteam = new ByteArrayOutputStream();  
+	    byte[] buffer = new byte[1024];  
+	    int len = -1;  
+	    while ((len = inStream.read(buffer)) != -1) {  
+	        outSteam.write(buffer, 0, len);  
+	    }  
+	    outSteam.close();  
+	    inStream.close();  
+	    return outSteam.toByteArray();  
+	} 
+
+	
 	/**
 	 * 转化成xml, 单层无嵌套
 	 * @param map

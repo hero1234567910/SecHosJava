@@ -12,6 +12,10 @@
         select * from sechos_popuPerson where popuPersonGuid = #{value}
     </select>
     
+    <select id="getByPopuPersonOpenId" resultType="com.basic.javaframe.entity.Sechos_PopuPerson">
+        select * from sechos_popuPerson where popuPersonOpenId = #{value}
+    </select>
+    
 	<insert id="save" parameterType="com.basic.javaframe.entity.Sechos_PopuPerson" useGeneratedKeys="true" keyProperty="row_guid">
 		insert into sechos_popuPerson
 		(
@@ -21,7 +25,8 @@
 			`promoters`,
 			`promotersGuid`,
 			`popuPersonGuid`,
-			`popuPerson`
+			`popuPerson`,
+			`popuPersonOpenId`
 		)
 		values
 		(
@@ -31,7 +36,8 @@
 			#{promoters},
 			#{promotersGuid},
 			#{popuPersonGuid},
-			#{popuPerson}
+			#{popuPerson},
+			#{popuPersonOpenId}
 		)
 	</insert>
 	 
@@ -44,7 +50,8 @@
 			<if test="promoters != null">`promoters` = #{promoters},</if>
 			<if test="promotersGuid != null">`promotersGuid` = #{promotersGuid},</if>
 			<if test="popuPersonGuid != null">`popuPersonGuid` = #{popuPersonGuid},</if>
-			<if test="popuPerson != null">`popuPerson` = #{popuPerson}</if>
+			<if test="popuPerson != null">`popuPerson` = #{popuPerson},</if>
+			<if test="popuPersonOpenId != null">`popuPersonOpenId` = #{popuPersonOpenId}</if>
 		</set>
 		where row_guid = #{rowGuid}
 	</update>

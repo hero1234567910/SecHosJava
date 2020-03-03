@@ -83,6 +83,27 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 	}
 	
 	/**
+	 * 获取微信token
+	 * <p>Title: getToken</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @return
+	 */
+	public String getToken(){
+		Map<String, String> params = new HashMap<>();
+		params.put("appid", appid);
+		params.put("secret", appsecret);
+		params.put("grant_type", "client_credential");
+		
+		logger.info("获取网页授权token接口参数》》》"+JSONObject.toJSONString(params));
+	    String result = HttpUtil.sendGet("https://api.weixin.qq.com/cgi-bin/token",params);
+	    logger.info("获取网页授权token接口返回成功》》》"+JSONObject.toJSONString(result));
+		
+		return result;
+	}
+	
+	
+	/**
 	 * 微信获取用户信息
 	 * <p>Title: getWxUserByToken</p>  
 	 * <p>Description: </p>
@@ -1152,6 +1173,50 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 		logger.info("查询oa用户数据接口》》》");
 		String res = HttpUtil.sendPost(wsUrl+"/getUsers", params);
 		logger.info("查询oa用户数据接口返回成功》》》");
+		return res;
+	}
+	
+	/**
+	 * 获取二维码关注公众号
+	 * <p>Title: getDoctorPic</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @param accessToken
+	 * @return
+	 */
+	public String getDoctorPic(String accessToken,String popuPersonGuid) {
+		Map<String, String> params = new HashMap<>();
+		JSONObject js = new JSONObject();
+		js.put("scene_str", popuPersonGuid);
+		
+		JSONObject o = new JSONObject();
+		o.put("scene", js);
+		
+		JSONObject parJson = new JSONObject();
+		parJson.put("expire_seconds", 2592000);
+		parJson.put("action_name", "QR_STR_SCENE");
+		parJson.put("action_info", o);
+		
+		logger.info("获取二维码关注公众号接口》》》"+parJson);
+		String res = HttpUtil.doPost("https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token="+accessToken,parJson);
+		logger.info("获取二维码关注公众号接口返回成功》》》"+res);
+		return res;
+	}
+	
+	/**
+	 * 根据ticket换取图片
+	 * <p>Title: getByTicket</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @return
+	 */
+	public String getByTicket(String ticket) {
+		Map<String, String> params = new HashMap<>();
+		params.put("ticket", ticket);
+		
+		logger.info("获取二维码接口》》》"+ticket);
+		String res = HttpUtil.sendGetInto("https://mp.weixin.qq.com/cgi-bin/showqrcode",params);
+		logger.info("获取二维码接口返回成功》》》"+res);
 		return res;
 	}
 

@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import com.alibaba.fastjson.JSON;
 
@@ -42,6 +43,7 @@ import com.basic.javaframe.common.exception.MyException;
 import com.basic.javaframe.common.utils.AmountUtils;
 import com.basic.javaframe.common.utils.DateUtil;
 import com.basic.javaframe.common.utils.R;
+import com.basic.javaframe.common.utils.SignUtil;
 import com.basic.javaframe.common.utils.XMLUtil;
 import com.basic.javaframe.controller.BaseController;
 import com.basic.javaframe.entity.Frame_Config;
@@ -50,6 +52,7 @@ import com.basic.javaframe.entity.SecHos_Outpatient;
 import com.basic.javaframe.entity.SecHos_Patient;
 import com.basic.javaframe.entity.SecHos_hospitalized;
 import com.basic.javaframe.entity.SechosDrug;
+import com.basic.javaframe.entity.Sechos_PopuPerson;
 import com.basic.javaframe.entity.Sechos_Rechargerecord;
 import com.basic.javaframe.service.Frame_ConfigService;
 import com.basic.javaframe.service.Frame_UserService;
@@ -58,6 +61,7 @@ import com.basic.javaframe.service.SecHos_OutpatientService;
 import com.basic.javaframe.service.SecHos_PatientService;
 import com.basic.javaframe.service.SecHos_hospitalizedService;
 import com.basic.javaframe.service.SechosDrugService;
+import com.basic.javaframe.service.Sechos_PopuPersonService;
 import com.basic.javaframe.service.Sechos_RechargerecordService;
 import com.basic.javaframe.service.api.Wx_CommonServiceIApi;
 
@@ -109,6 +113,113 @@ public class Wx_CommonControllerApi extends BaseController{
 	@Autowired
 	Frame_UserService frame_UserService;
 	
+	@Autowired
+	Sechos_PopuPersonService popuPersonService;
+	
+	/**
+	 * 二院服务器配置
+	 * <p>Title: zjgService</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @return
+	 */
+	@PassToken
+	@RequestMapping(value="/zjgService",method=RequestMethod.GET)
+	public String zjgService(HttpServletRequest request){
+		
+		logger.info("推送接口");
+		InputStream ins = null;
+		String remess = "";
+		try {
+			ins = request.getInputStream();
+	        byte[] rebyte = XMLUtil.readStream(ins);  
+	        remess = new String(rebyte);  
+	        
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		if (remess.equals("")) {
+			return "";
+		}
+		
+		JSONObject jsonObject = JSONObject.parseObject(remess);
+		
+		//获取来自用户的用户名
+		String FromUserName = jsonObject.getString("FromUserName");
+		//获取来自用户的创建时间
+		String CreateTime = jsonObject.getString("CreateTime");
+		//事件
+		String event = jsonObject.getString("Event");
+		if ("subscribe".equals(event)) {
+			//订阅事件
+			String ev = jsonObject.getString("EventKey");
+			if (ev != null && ev.startsWith("qrscene_")) {
+				//以qrscene_开头说明是新用户关注
+				//获取openId，并根据openid获取用户信息(注意是否为第一次关注)
+				
+				//获取推广人guid
+				String promotersGuid = ev.substring(8);
+				
+				String fromUserOpenId = jsonObject.getString("FromUserName");
+				SecHos_Patient patient = patientService.getPatientByOpenid(fromUserOpenId);
+				if (patient == null) {
+					//说明该用户从未登录过平台 直接登记+1
+					
+					Sechos_PopuPerson person = new Sechos_PopuPerson();
+		        	person.setRowGuid(UUID.randomUUID().toString());
+		        	person.setCreateTime(new Date());
+		        	person.setPopuPersonOpenId(fromUserOpenId);
+		        	
+		        	//推广人姓名和guid
+		        	person.setPromotersGuid(promotersGuid);
+		        	popuPersonService.save(person);
+					
+				}else{
+					//说明之前有过登录
+					Sechos_PopuPerson person = popuPersonService.getByPopuPersonOpenId(fromUserOpenId);
+					if (person == null) {
+						//说明没有登记过 直接登记+1
+						Sechos_PopuPerson p = new Sechos_PopuPerson();
+			        	p.setRowGuid(UUID.randomUUID().toString());
+			        	p.setCreateTime(new Date());
+			        	p.setPopuPersonOpenId(fromUserOpenId);
+			        	
+			        	//推广人姓名和guid
+			        	p.setPromotersGuid(promotersGuid);
+			        	popuPersonService.save(p);
+						
+					}
+					
+					
+				}
+				
+				
+			}
+		}
+		
+		
+		// 微信加密签名
+        String signature = request.getParameter("signature");
+        // 时间戳
+        String timestamp = request.getParameter("timestamp");
+        // 随机数
+        String nonce = request.getParameter("nonce");
+        // 随机字符串
+        String echostr = request.getParameter("echostr");
+        
+        System.out.println(signature+"   "+timestamp);
+        
+        // 通过检验signature对请求进行校验，若校验成功则原样返回echostr，表示接入成功，否则接入失败
+        if (SignUtil.checkSignature(signature, timestamp, nonce)) {
+            return echostr;
+        }else{
+        	return "";
+        }
+	}
+	
+	
 	/**
 	 * 获取网页授权token，openid
 	 * <p>Title: code2Token</p>  
@@ -153,6 +264,135 @@ public class Wx_CommonControllerApi extends BaseController{
 		pa.setRefreshToken(jsonobj.getString("refresh_token"));
 		logger.info(pa.toString());
 		return R.ok().put("data", pa);	
+	}
+	
+	/**
+	 * 获取网页授权token，openid
+	 * <p>Title: code2Token</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @param code
+	 * @return
+	 */
+	@PassToken
+	@RequestMapping(value="/code2TokenDoctor",produces="application/json;charset=utf-8",method=RequestMethod.POST)
+	@ResponseBody
+	public R code2TokenDoctor(@RequestBody String code,HttpServletRequest request){
+		System.out.println(code);
+		JSONObject jsonobj = wx_CommonServiceApi.code2Token(code);
+		
+		JSONObject jsonObject = JSONObject.parseObject(jsonobj.getString("resultUser"));
+		if (jsonObject.containsKey("errcode")) {
+			String errcode = jsonObject.getString("errcode");
+			return R.error("获取网页授权用户信息异常,errcode为"+errcode).put("data", errcode);
+		}
+		//获取openid,微信昵称，头像
+		String openid = jsonObject.getString("openid");
+		String nickname = jsonObject.getString("nickname");
+		String headimgurl = jsonObject.getString("headimgurl");
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("accessToken", jsonobj.getString("access_token"));
+		session.setAttribute("refreshToken", jsonobj.getString("refresh_token"));
+		
+		return R.ok().put("data", jsonobj.getString("access_token"));
+	}
+	
+//	/**
+//	 * 获取二维码
+//	 * <p>Title: getDoctorPic</p>  
+//	 * <p>Description: </p>
+//	 * @author hero  
+//	 * @return
+//	 */
+//	@PassToken
+//	@RequestMapping(value="/getDoctorPic",produces="application/json;charset=utf-8",method=RequestMethod.GET)
+//	@ResponseBody
+//	public R getDoctorPic(HttpServletRequest request){
+//		
+//		HttpSession session = request.getSession();
+//		String accessToken = (String) session.getAttribute("accessToken");
+//		String refreshToken = (String) session.getAttribute("refreshToken");
+//		
+//		String res = wx_CommonServiceApi.getDoctorPic(accessToken);
+//		JSONObject jsonObject = JSONObject.parseObject(res);
+//		
+//		if(jsonObject.containsKey("errcode")){
+//			//微信出错
+//			logger.info(jsonObject.toJSONString());
+//			String errcode = jsonObject.getString("errcode");
+//			if (errcode.equals("40001")) {
+//				//token过期 刷新token再试
+//				Map<String, String> params = new HashMap<String, String>();
+//				params.put("refresh_token", refreshToken);
+//				String result = wx_CommonServiceApi.refreshToken(params);
+//				JSONObject json = JSONObject.parseObject(result);
+//				if (json.containsKey("errcode")) {
+//					String err = json.getString("errcode");
+//					if ("42002".equals(err)) {
+//						//重新获取token
+////						JSONObject jsonobj = wx_CommonServiceApi.code2Token(params.get("code"));
+////						logger.info("重新获取token成功"+jsonobj.toJSONString());
+////						return R.ok().put("data", jsonobj);
+//					}
+//					
+//				}else{
+//					session.setAttribute("accessToken", json.getString("access_token"));
+//					session.setAttribute("refreshToken", json.getString("refresh_token"));
+//					//再次获取
+//					String r = wx_CommonServiceApi.getDoctorPic((String)session.getAttribute("accessToken"));
+//					JSONObject j = JSONObject.parseObject(r);
+//					return R.ok().put("data", j.getString("url"));
+//				}
+//			}else{
+//				return R.error("系统出错,请联系管理员");
+//			}
+//		}
+//		
+//		
+//		return R.ok().put("data", jsonObject.getString("url"));
+//	}
+	
+	/**
+	 * 获取二维码
+	 * <p>Title: getDoctorPic</p>  
+	 * <p>Description: </p>
+	 * @author hero  
+	 * @return
+	 */
+	@PassToken
+	@RequestMapping(value="/getDoctorPic",produces="application/json;charset=utf-8",method=RequestMethod.GET)
+	@ResponseBody
+	public R getDoctorPic(HttpServletRequest request){
+		//获取token
+		
+		String resObj = wx_CommonServiceApi.getToken();
+		JSONObject json = JSONObject.parseObject(resObj);
+		
+		if (json.containsKey("errcode")) {
+			return R.error("系统异常");
+		}
+		HttpSession session = request.getSession();
+		session.setAttribute("wxToken", json.getString("access_token"));
+		session.setAttribute("wxTokenExpires", json.getString("expires_in"));
+		
+		String accessToken = (String) session.getAttribute("wxToken");
+		String popuPersonGuid = request.getParameter("popuPersonGuid");
+		
+		String res = wx_CommonServiceApi.getDoctorPic(accessToken,popuPersonGuid);
+		JSONObject jsonObject = JSONObject.parseObject(res);
+		
+		if(jsonObject.containsKey("errcode")){
+			//微信出错
+			logger.info(jsonObject.toJSONString());
+			String errcode = jsonObject.getString("errcode");
+			return R.error("系统异常");
+		}
+		
+		//根据ticket换取二维码
+		String rString = wx_CommonServiceApi.getByTicket(jsonObject.getString("ticket"));
+		System.out.println("根据ticket换取结果为"+rString);
+		return R.ok().put("data", rString);
 	}
 	
 	/**
