@@ -1,20 +1,11 @@
 package com.basic.javaframe.service.impl;
 
+import com.basic.javaframe.dao.Sechos_PopuPersonDao;
+import com.basic.javaframe.entity.Sechos_PopuPerson;
+import com.basic.javaframe.service.Sechos_PopuPersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.basic.javaframe.dao.Sechos_ConsultationDao;
-import com.basic.javaframe.dao.Sechos_PopuPersonDao;
-import com.basic.javaframe.entity.Sechos_Consultation;
-import com.basic.javaframe.entity.Sechos_PopuPerson;
-import com.basic.javaframe.service.Sechos_ConsultationService;
-import com.basic.javaframe.service.Sechos_PopuPersonService;
 
 
 
@@ -46,6 +37,11 @@ public class Sechos_PopuPersonServiceImpl implements Sechos_PopuPersonService {
 	public Sechos_PopuPerson getByPopuPersonOpenId(String OpenId) {
 		return sechos_PopuPersonDao.getByPopuPersonOpenId(OpenId);
 	}
-	
+
+	@Override
+	public int getMyPopuCount(String promotersGuid) {
+		return sechos_PopuPersonDao.getMyPopuCount(promotersGuid);
+	}
+
 
 }

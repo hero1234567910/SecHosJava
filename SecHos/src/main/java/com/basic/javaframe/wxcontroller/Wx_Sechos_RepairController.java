@@ -1,6 +1,5 @@
 package com.basic.javaframe.wxcontroller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.basic.javaframe.common.JWT.TokenService;
 import com.basic.javaframe.common.customclass.PassToken;
 import com.basic.javaframe.common.utils.*;
@@ -11,12 +10,8 @@ import com.basic.javaframe.service.Frame_AttachService;
 import com.basic.javaframe.service.Frame_UserService;
 import com.basic.javaframe.service.Sechos_RepairService;
 import com.basic.javaframe.service.Sechos_RepairsatisfactionService;
-import com.mysql.fabric.xmlrpc.base.Params;
-
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-
-import org.apache.ibatis.javassist.tools.framedump;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -67,13 +62,13 @@ public class Wx_Sechos_RepairController {
         		return R.error("登录失败,用户不存在");
 			}else{
 				Map<String, String> parmas = new HashMap<>();
-				parmas.put("password", user.getPassword());
-				String password = HttpUtil.sendPostWithXWwwForm("http://10.20.200.62:8081/iis/DecryptApi/Encryp/getEncrypPassword",parmas);
-				JSONObject jsonObject = JSONObject.parseObject(password);
-				System.out.println(userOA.getPassword()+" >>>>>"+jsonObject.getString("data"));
-				if (!userOA.getPassword().equals(jsonObject.getString("data"))) {
-					return R.error("登录失败,密码错误");
-				}
+//				parmas.put("password", user.getPassword());
+//				String password = HttpUtil.sendPostWithXWwwForm("http://10.20.200.62:8081/iis/DecryptApi/Encryp/getEncrypPassword",parmas);
+//				JSONObject jsonObject = JSONObject.parseObject(password);
+//				System.out.println(userOA.getPassword()+" >>>>>"+jsonObject.getString("data"));
+//				if (!userOA.getPassword().equals(jsonObject.getString("data"))) {
+//					return R.error("登录失败,密码错误");
+//				}
 //				String token = tokenService.getToken(userForBase);
                 //根据用户行标获取部门名部门行标
                 Map<String, Object> map = new HashMap<>();

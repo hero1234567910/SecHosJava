@@ -1,9 +1,6 @@
 package com.basic.javaframe.service;
 
 
-import java.util.List;
-import java.util.Map;
-
 import com.basic.javaframe.entity.Sechos_PopuPerson;
 
 /**
@@ -21,4 +18,11 @@ public interface Sechos_PopuPersonService {
 	Sechos_PopuPerson getByPopuPersonGuid(String popuPersonGuid);
 	
 	Sechos_PopuPerson getByPopuPersonOpenId(String OpenId);
+
+	/**
+	 * 获取推广次数
+	 * @param promotersGuid
+	 * @return
+	 */
+	int getMyPopuCount(String promotersGuid);
 }

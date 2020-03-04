@@ -1,12 +1,6 @@
 package com.basic.javaframe.dao;
 
-import org.apache.ibatis.annotations.Param;
-
-import com.basic.javaframe.entity.Sechos_Consultation;
 import com.basic.javaframe.entity.Sechos_PopuPerson;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * 
@@ -23,5 +17,12 @@ public interface Sechos_PopuPersonDao extends BaseDao<Sechos_PopuPersonDao> {
 	Sechos_PopuPerson getByPopuPersonGuid(String popuPersonGuid);
 
 	Sechos_PopuPerson getByPopuPersonOpenId(String openId);
+
+	/**
+	 * 查询推广次数
+	 * @param promotersGuid
+	 * @return
+	 */
+	int getMyPopuCount(String promotersGuid);
     
 }

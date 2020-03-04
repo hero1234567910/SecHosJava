@@ -3,6 +3,8 @@ package com.basic.javaframe.dao;
 import com.basic.javaframe.entity.SecHos_Patient;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 
  * 
@@ -23,4 +25,13 @@ public interface SecHos_PatientDao extends BaseDao<SecHos_Patient> {
      * @return
      */
     SecHos_Patient getPatientByGuid(@Param("rowGuid") String rowGuid);
+
+    /**
+     * 查询被推广人列表
+     * @param promotersGuid
+     * @param offset
+     * @param limit
+     * @return
+     */
+    List<SecHos_Patient> getPatientListByOpenId(@Param("promotersGuid") String promotersGuid , @Param("offset") Integer offset, @Param("limit")Integer limit);
 }

@@ -16,7 +16,7 @@
         select * from sechos_popuPerson where popuPersonOpenId = #{value}
     </select>
     
-	<insert id="save" parameterType="com.basic.javaframe.entity.Sechos_PopuPerson" useGeneratedKeys="true" keyProperty="row_guid">
+	<insert id="save" parameterType="com.basic.javaframe.entity.Sechos_PopuPerson" useGeneratedKeys="true" keyProperty="rowId">
 		insert into sechos_popuPerson
 		(
 			`row_guid`, 
@@ -55,6 +55,10 @@
 		</set>
 		where row_guid = #{rowGuid}
 	</update>
-	
-	
+
+	<!--查询推广次数-->
+	<select id="getMyPopuCount" resultType="int">
+		select count(*) from sechos_popuPerson where promotersGuid =#{promotersGuid}
+	</select>
+
 </mapper>

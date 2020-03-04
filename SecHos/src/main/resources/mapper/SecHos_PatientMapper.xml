@@ -166,4 +166,11 @@
 	<select id="getPatientByGuid" resultType="com.basic.javaframe.entity.SecHos_Patient">
 		select * from sechos_patient where row_guid =#{rowGuid} and del_flag = 0;
 	</select>
+
+	<!--查询被推广人列表-->
+	<select id="getPatientListByOpenId" resultType="com.basic.javaframe.entity.SecHos_Patient">
+		select p.patient_name , p.patient_mobile from sechos_patient p where p.openid in
+		(select u.popuPersonOpenId from sechos_popuPerson u where u.promotersGuid =#{promotersGuid})
+			limit #{offset}, #{limit}
+	</select>
 </mapper>
