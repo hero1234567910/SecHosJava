@@ -3,7 +3,6 @@
 
 <mapper namespace="com.basic.javaframe.dao.Sechos_PopuPersonDao">
 
-
     <select id="getByDetail" resultType="com.basic.javaframe.entity.Sechos_PopuPerson">
         select * from sechos_popuPerson where row_guid = #{value}
     </select>
@@ -61,4 +60,9 @@
 		select count(*) from sechos_popuPerson where promotersGuid =#{promotersGuid}
 	</select>
 
+	<!--查询推广次数大于0的-->
+	<select id="getPopuListByAdmin" resultType="com.basic.javaframe.entity.Frame_User">
+		select oa.user_name,oa.row_guid,oa.extensionCount from frame_useroa oa where oa.extensionCount > 0 order by oa.extensionCount desc
+		limit #{offset}, #{limit}
+	</select>
 </mapper>

@@ -1,6 +1,10 @@
 package com.basic.javaframe.dao;
 
+import com.basic.javaframe.entity.Frame_User;
 import com.basic.javaframe.entity.Sechos_PopuPerson;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * 
@@ -24,5 +28,13 @@ public interface Sechos_PopuPersonDao extends BaseDao<Sechos_PopuPersonDao> {
 	 * @return
 	 */
 	int getMyPopuCount(String promotersGuid);
+
+	/**
+	 * 查询推广次数大于0的
+	 * @param offset
+	 * @param limit
+	 * @return
+	 */
+	List<Frame_User> getPopuListByAdmin(@Param("offset") Integer offset, @Param("limit")Integer limit);
     
 }

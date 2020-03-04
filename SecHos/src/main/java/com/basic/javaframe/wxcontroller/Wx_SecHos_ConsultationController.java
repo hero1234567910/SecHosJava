@@ -2,6 +2,7 @@ package com.basic.javaframe.wxcontroller;
 
 import com.basic.javaframe.common.customclass.PassToken;
 import com.basic.javaframe.common.utils.*;
+import com.basic.javaframe.entity.Frame_User;
 import com.basic.javaframe.entity.SecHos_Patient;
 import com.basic.javaframe.entity.Sechos_Consultation;
 import com.basic.javaframe.service.SecHos_PatientService;
@@ -120,9 +121,24 @@ public class Wx_SecHos_ConsultationController {
         String promotersGuid = params.get("promotersGuid").toString();
         Integer offset = Integer.parseInt(params.get("offset").toString());
         Integer limit = Integer.parseInt(params.get("limit").toString());
-        System.out.println(promotersGuid+"--"+offset+"--"+limit);
         List<SecHos_Patient> secHosPatientList = secHosPatientService.getPatientListByOpenId(promotersGuid, offset, limit);
         return R.ok().put("data", secHosPatientList);
+    }
+
+    /**
+     * 查询推广次数大于0的
+     *
+     * @param
+     * @return
+     */
+    @ApiOperation(value = "查询推广次数大于0的")
+    @ResponseBody
+    @RequestMapping(value = "/getPopuListByAdmin", produces = "application/json;charset=utf-8", method = RequestMethod.GET)
+    public R getPopuListByAdmin(@RequestParam Map<String, Object> params) {
+        Integer offset = Integer.parseInt(params.get("offset").toString());
+        Integer limit = Integer.parseInt(params.get("limit").toString());
+        List<Frame_User> frameUserList = sechosPopuPersonService.getPopuListByAdmin(offset, limit);
+        return R.ok().put("data", frameUserList);
     }
 
 }
