@@ -14,8 +14,10 @@ import javax.servlet.http.HttpSession;
 
 import com.alibaba.fastjson.JSON;
 
+import org.apache.catalina.util.URLEncoder;
 import org.apache.commons.lang.ArrayUtils;
 import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,7 @@ import com.basic.javaframe.common.enumresource.SexEnum;
 import com.basic.javaframe.common.exception.MyException;
 import com.basic.javaframe.common.utils.AmountUtils;
 import com.basic.javaframe.common.utils.DateUtil;
+import com.basic.javaframe.common.utils.JsonXmlUtils;
 import com.basic.javaframe.common.utils.R;
 import com.basic.javaframe.common.utils.SignUtil;
 import com.basic.javaframe.common.utils.XMLUtil;
@@ -124,7 +127,7 @@ public class Wx_CommonControllerApi extends BaseController{
 	 * @return
 	 */
 	@PassToken
-	@RequestMapping(value="/zjgService",method=RequestMethod.GET)
+	@RequestMapping(value="/zjgService")
 	public String zjgService(HttpServletRequest request){
 		
 		logger.info("推送接口");
@@ -143,8 +146,20 @@ public class Wx_CommonControllerApi extends BaseController{
 		if (remess.equals("")) {
 			return "";
 		}
+		logger.info("推送的xml为》》》》"+remess);
 		
-		JSONObject jsonObject = JSONObject.parseObject(remess);
+		//xml字符串转json
+		JSONObject Object = null;
+		try {
+			Object = JsonXmlUtils.xmlToJson(remess);
+		} catch (DocumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		logger.info("转成json为"+Object.toJSONString());
+		JSONObject jsonObject = Object.getJSONObject("xml");
+		logger.info("最终转成json为"+jsonObject.toJSONString());
 		
 		//获取来自用户的用户名
 		String FromUserName = jsonObject.getString("FromUserName");
@@ -175,7 +190,14 @@ public class Wx_CommonControllerApi extends BaseController{
 		        	//推广人姓名和guid
 		        	person.setPromotersGuid(promotersGuid);
 		        	popuPersonService.save(person);
-					
+		        	
+		        	
+		        	//查询该用户 次数加1
+		        	Frame_User u = frame_UserService.getOAUserByLoginId(fromUserOpenId);
+					int count = u.getExtensionCount();
+					count += 1;
+					u.setExtensionCount(count);
+					frame_UserService.updateOaUser(u);
 				}else{
 					//说明之前有过登录
 					Sechos_PopuPerson person = popuPersonService.getByPopuPersonOpenId(fromUserOpenId);
@@ -189,6 +211,13 @@ public class Wx_CommonControllerApi extends BaseController{
 			        	//推广人姓名和guid
 			        	p.setPromotersGuid(promotersGuid);
 			        	popuPersonService.save(p);
+			        	
+			        	//查询该用户 次数加1
+			        	Frame_User u = frame_UserService.getOAUserByLoginId(fromUserOpenId);
+						int count = u.getExtensionCount();
+						count += 1;
+						u.setExtensionCount(count);
+						frame_UserService.updateOaUser(u);
 						
 					}
 					
@@ -377,8 +406,9 @@ public class Wx_CommonControllerApi extends BaseController{
 		session.setAttribute("wxTokenExpires", json.getString("expires_in"));
 		
 		String accessToken = (String) session.getAttribute("wxToken");
-		String popuPersonGuid = request.getParameter("popuPersonGuid");
 		
+		String popuPersonGuid = request.getParameter("popuPersonGuid");
+		System.out.println("获取的personGuid为"+popuPersonGuid);
 		String res = wx_CommonServiceApi.getDoctorPic(accessToken,popuPersonGuid);
 		JSONObject jsonObject = JSONObject.parseObject(res);
 		
@@ -390,7 +420,13 @@ public class Wx_CommonControllerApi extends BaseController{
 		}
 		
 		//根据ticket换取二维码
-		String rString = wx_CommonServiceApi.getByTicket(jsonObject.getString("ticket"));
+		String rString="";
+		try {
+			rString = wx_CommonServiceApi.getByTicket(java.net.URLEncoder.encode(jsonObject.getString("ticket"),"UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println("根据ticket换取结果为"+rString);
 		return R.ok().put("data", rString);
 	}

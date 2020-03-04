@@ -1187,6 +1187,7 @@ public class Wx_CommonServiceIApi extends Api_BaseService{
 	public String getDoctorPic(String accessToken,String popuPersonGuid) {
 		Map<String, String> params = new HashMap<>();
 		JSONObject js = new JSONObject();
+		System.out.println("推广人用户guid为"+popuPersonGuid);
 		js.put("scene_str", popuPersonGuid);
 		
 		JSONObject o = new JSONObject();

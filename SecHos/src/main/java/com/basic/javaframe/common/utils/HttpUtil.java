@@ -3,6 +3,8 @@ package com.basic.javaframe.common.utils;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -41,7 +43,9 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.support.StaticApplicationContext;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.druid.util.StringUtils;
@@ -60,6 +64,10 @@ import sun.misc.BASE64Encoder;
   *
  */
 public class HttpUtil {  
+	
+	static String tempPath = "C:/uploadFile/temp/";
+	
+	static String filePath = "https://p.zjgwsjk.com/2ysechos/";
 	
 	/** 
      * 发送base64
@@ -185,26 +193,29 @@ public class HttpUtil {
             httpConn.connect();  
             // 响应头部获取  
             Map<String, List<String>> headers = httpConn.getHeaderFields();  
-            // 遍历所有的响应头字段  
-            for (String key : headers.keySet()) {  
-                System.out.println(key + "\t：\t" + headers.get(key));  
-            }  
-            in = httpConn.getInputStream();
-            byte[] bytes = new byte[in.available()];
+//            // 遍历所有的响应头字段  
+//            for (String key : headers.keySet()) {  
+//                System.out.println(key + "\t：\t" + headers.get(key));  
+//            }  
             
-            String path = Thread.currentThread().getContextClassLoader().getResource("").getPath()+"templates";
-            File dir = new File(path);
-            if(!dir.exists()&&!dir.isDirectory()){//判断文件目录是否存在
-                dir.mkdirs();
+            
+            
+         	//得到输入流
+            in = httpConn.getInputStream();
+            
+            File file = new File(tempPath+UUID.randomUUID().toString()+".jpg");
+            FileOutputStream fout = new FileOutputStream(file);
+            int l = -1;
+            byte[] tmp = new byte[1024];
+            while ((l = in.read(tmp)) != -1) {
+                fout.write(tmp, 0, l);
+                // 注意这里如果用OutputStream.write(buff)的话，图片会失真，大家可以试试
             }
-			//创建临时文件的api参数 (文件前缀,文件后缀,存放目录)
-            File file = File.createTempFile(UUID.randomUUID().toString(), ".png", dir);
-            String tempFileName = file.getName();
-            out = new FileOutputStream(file);
-            bos = new BufferedOutputStream(out);
-            bos.write(bytes);
-            path = file.getPath();
-            return path;
+            fout.flush();
+            fout.close();
+
+            result = filePath+"file/temp/"+file.getName();
+            
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -212,13 +223,12 @@ public class HttpUtil {
             try {  
                 if (in != null) {  
                     in.close();  
-                    out.close();
                 }  
             } catch (IOException ex) {  
                 ex.printStackTrace();  
             }  
         }
-        return result ;
+		return result;
     }  
     
     
