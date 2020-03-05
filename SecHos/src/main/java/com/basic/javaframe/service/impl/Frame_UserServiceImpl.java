@@ -186,6 +186,18 @@ public class Frame_UserServiceImpl implements Frame_UserService {
 	public void updateOaUser(Frame_User user) {
 		frame_userDao.updateOaUser(user);
 	}
+
+	@Override
+	public Frame_User getOAUserByOpenId(String fromUserOpenId) {
+		// TODO Auto-generated method stub
+		return frame_userDao.getOAUserByOpenId(fromUserOpenId);
+	}
+
+	@Override
+	public Frame_User getOaUserByRowGuid(String promotersGuid) {
+		// TODO Auto-generated method stub
+		return frame_userDao.getOaUserByRowGuid(promotersGuid);
+	}
 }
 
 

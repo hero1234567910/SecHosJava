@@ -76,6 +76,14 @@
     <select id="getOAUserByLoginId" resultType="com.basic.javaframe.entity.Frame_User">
         select * from frame_userOA where login_id = #{loginId}
     </select>
+    
+    <select id="getOAUserByOpenId" resultType="com.basic.javaframe.entity.Frame_User">
+        select * from frame_userOA where openid = #{value}
+    </select>
+    
+    <select id="getOaUserByRowGuid" resultType="com.basic.javaframe.entity.Frame_User">
+        select * from frame_userOA where row_guid = #{value}
+    </select>
 
     <!--用户名重复检测-->
     <!-- 验证重复性 -->

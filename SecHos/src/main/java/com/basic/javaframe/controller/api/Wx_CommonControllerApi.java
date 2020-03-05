@@ -193,7 +193,7 @@ public class Wx_CommonControllerApi extends BaseController{
 		        	
 		        	
 		        	//查询该用户 次数加1
-		        	Frame_User u = frame_UserService.getOAUserByLoginId(fromUserOpenId);
+		        	Frame_User u = frame_UserService.getOaUserByRowGuid(promotersGuid);
 					int count = u.getExtensionCount();
 					count += 1;
 					u.setExtensionCount(count);
@@ -213,18 +213,14 @@ public class Wx_CommonControllerApi extends BaseController{
 			        	popuPersonService.save(p);
 			        	
 			        	//查询该用户 次数加1
-			        	Frame_User u = frame_UserService.getOAUserByLoginId(fromUserOpenId);
+			        	Frame_User u = frame_UserService.getOaUserByRowGuid(promotersGuid);
+			        	
 						int count = u.getExtensionCount();
 						count += 1;
 						u.setExtensionCount(count);
 						frame_UserService.updateOaUser(u);
-						
 					}
-					
-					
 				}
-				
-				
 			}
 		}
 		
