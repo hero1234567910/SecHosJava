@@ -65,4 +65,8 @@
 		select oa.user_name,oa.row_guid,oa.extensionCount from frame_useroa oa where oa.extensionCount > 0 order by oa.extensionCount desc
 		limit #{offset}, #{limit}
 	</select>
+
+	<select id="getCountByGuid" resultType="com.basic.javaframe.entity.Frame_User">
+		select extensionCount from frame_useroa where row_guid =#{rowGuid}
+	</select>
 </mapper>

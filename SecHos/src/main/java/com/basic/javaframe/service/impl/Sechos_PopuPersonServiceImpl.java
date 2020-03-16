@@ -49,5 +49,10 @@ public class Sechos_PopuPersonServiceImpl implements Sechos_PopuPersonService {
         return sechos_PopuPersonDao.getPopuListByAdmin(offset, limit);
     }
 
+    @Override
+    public Frame_User getCountByGuid(String rowGuid) {
+        return sechos_PopuPersonDao.getCountByGuid(rowGuid);
+    }
+
 
 }

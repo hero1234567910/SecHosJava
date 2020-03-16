@@ -36,5 +36,12 @@ public interface Sechos_PopuPersonDao extends BaseDao<Sechos_PopuPersonDao> {
 	 * @return
 	 */
 	List<Frame_User> getPopuListByAdmin(@Param("offset") Integer offset, @Param("limit")Integer limit);
+
+	/**
+	 * 直接读表次数
+	 * @param rowGuid
+	 * @return
+	 */
+	Frame_User getCountByGuid(String rowGuid);
     
 }

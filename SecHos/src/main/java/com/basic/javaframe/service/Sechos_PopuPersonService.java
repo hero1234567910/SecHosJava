@@ -34,4 +34,11 @@ public interface Sechos_PopuPersonService {
      * @return
      */
     List<Frame_User> getPopuListByAdmin(Integer offset, Integer limit);
+
+    /**
+     * 直接读表次数
+     * @param rowGuid
+     * @return
+     */
+    Frame_User getCountByGuid(String rowGuid);
 }

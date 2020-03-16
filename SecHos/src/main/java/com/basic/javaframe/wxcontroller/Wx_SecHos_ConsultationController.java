@@ -141,4 +141,18 @@ public class Wx_SecHos_ConsultationController {
         return R.ok().put("data", frameUserList);
     }
 
+    /**
+     * 直接查询次数
+     *
+     * @param rowGuid
+     * @return ExtensionCount
+     */
+    @ApiOperation(value = "直接查询次数")
+    @ResponseBody
+    @RequestMapping(value = "/getCountByGuid", produces = "application/json;charset=utf-8", method = RequestMethod.POST)
+    public R getCountByGuid(@RequestParam String rowGuid) {
+        Frame_User frameUser = sechosPopuPersonService.getCountByGuid(rowGuid);
+        return R.ok().put("data", frameUser.getExtensionCount());
+    }
+
 }
