@@ -166,7 +166,7 @@ public interface Frame_UserDao {
 
 	List<Frame_User> getOAUsersList(Map<String, Object> params);
 
-	Object updateOaUser(Frame_User user);
+	void updateOaUser(Frame_User user);
 
 	Frame_User getOAUserByOpenId(String fromUserOpenId);
 
