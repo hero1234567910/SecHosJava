@@ -3282,6 +3282,7 @@ public class Wx_CommonControllerApi extends BaseController{
 			user = new Frame_User();
 			user.setRowId(obj.getIntValue("userCode"));
 			user.setRowGuid(obj.getString("rowGuid"));
+			user.setDelFlag(obj.getIntValue("delFlag"));
 			user.setDuty(obj.getString("duty"));
 			user.setCreateTime(new Date());
 			user.setDeptName(obj.getString("deptName"));
@@ -3294,7 +3295,11 @@ public class Wx_CommonControllerApi extends BaseController{
 			
 			//查询每一个推广次数
 			Frame_User u = frame_UserService.getOAUserByLoginId(obj.getString("loginID"));
-			user.setExtensionCount(u.getExtensionCount());
+			if(u != null){
+				user.setExtensionCount(u.getExtensionCount());
+			}else
+				user.setExtensionCount(0);
+			
 			
 			userList.add(user);
 		}

@@ -74,7 +74,7 @@
     </select>
     
     <select id="getOAUserByLoginId" resultType="com.basic.javaframe.entity.Frame_User">
-        select * from frame_userOA where login_id = #{loginId}
+        select * from frame_userOA where login_id = #{loginId} and del_flag = 0
     </select>
     
     <select id="getOAUserByOpenId" resultType="com.basic.javaframe.entity.Frame_User">

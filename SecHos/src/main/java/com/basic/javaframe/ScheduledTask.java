@@ -70,6 +70,7 @@ public class ScheduledTask {
 			JSONObject obj = array.getJSONObject(i);
 			user = new Frame_User();
 			user.setRowId(obj.getIntValue("userCode"));
+			user.setDelFlag(obj.getIntValue("delFlag"));
 			user.setRowGuid(obj.getString("rowGuid"));
 			user.setDuty(obj.getString("duty"));
 			user.setCreateTime(new Date());
@@ -83,7 +84,10 @@ public class ScheduledTask {
 			
 			//查询每一个推广次数
 			Frame_User u = userService.getOAUserByLoginId(obj.getString("loginID"));
-			user.setExtensionCount(u.getExtensionCount());
+			if(u != null){
+				user.setExtensionCount(u.getExtensionCount());
+			}else
+				user.setExtensionCount(0);
 			
 			userList.add(user);
 		}
