@@ -3272,9 +3272,8 @@ public class Wx_CommonControllerApi extends BaseController{
 		String res = wx_CommonServiceApi.updateOA();
 		JSONArray array = JSONArray.parseArray(res);
 		if (array.size() == 0) {
-			return R.error("更新失败");
+			logger.info("更新失败");
 		}
-		System.out.println(array.toJSONString());
 		
 		List<Frame_User> userList = new ArrayList<>();
 		Frame_User user;
@@ -3292,6 +3291,11 @@ public class Wx_CommonControllerApi extends BaseController{
 			user.setUserName(obj.getString("displayName"));
 			user.setLoginId(obj.getString("loginID"));
 			user.setPassword(obj.getString("password"));
+			
+			//查询每一个推广次数
+			Frame_User u = frame_UserService.getOAUserByLoginId(obj.getString("loginID"));
+			user.setExtensionCount(u.getExtensionCount());
+			
 			userList.add(user);
 		}
 		
@@ -3299,6 +3303,7 @@ public class Wx_CommonControllerApi extends BaseController{
 		Thread thread = new InsertOaUsersThread(userList);
 		thread.run();
 		
-		return R.ok("同步成功");
+		logger.info("同步成功");
+		return R.ok();
 	}
 }	
