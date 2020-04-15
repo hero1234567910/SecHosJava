@@ -369,4 +369,36 @@ public class Wx_InformationInfoController {
         InformationInfo informationInfo = informationInfoService.getHosIntroduction(infoGuid);
         return R.ok().put("data",informationInfo);
     }
+
+    /**
+     * 微信端获取门诊介绍
+     * @param
+     * @return
+     */
+    @PassToken
+    @ApiOperation(value = "微信端获取门诊介绍")
+    @ResponseBody
+    @RequestMapping(value = "/getWxInfo",produces = "application/json;charset=utf-8", method = RequestMethod.GET)
+    public R getWxInfo(){
+        String categoryGuid = "c5e6a261-c690-4ac6-9fce-7a9d74d0ff0d";
+        String infoGuid = infoCategoryService.getSingleInfoByCateGuid(categoryGuid);
+        InformationInfo informationInfo = informationInfoService.getHosIntroduction(infoGuid);
+        return R.ok().put("data",informationInfo);
+    }
+
+    /**
+     * 微信端获取住院介绍
+     * @param
+     * @return
+     */
+    @PassToken
+    @ApiOperation(value = "微信端获取住院介绍")
+    @ResponseBody
+    @RequestMapping(value = "/getWxInfo2",produces = "application/json;charset=utf-8", method = RequestMethod.GET)
+    public R getWxInfo2(){
+        String categoryGuid = "cac1c7c3-2c5d-4d96-bb51-b0c236239bf3";
+        String infoGuid = infoCategoryService.getSingleInfoByCateGuid(categoryGuid);
+        InformationInfo informationInfo = informationInfoService.getHosIntroduction(infoGuid);
+        return R.ok().put("data",informationInfo);
+    }
 }
