@@ -173,8 +173,9 @@
 
 	<!--查询被推广人列表-->
 	<select id="getPatientListByOpenId" resultType="com.basic.javaframe.entity.SecHos_Patient">
-		select p.patient_name , p.patient_mobile from sechos_patient p where p.openid in
+		<!-- select p.patient_name , p.patient_mobile from sechos_patient p where p.openid in
 		(select u.popuPersonOpenId from sechos_popuPerson u where u.promotersGuid =#{promotersGuid})
-			limit #{offset}, #{limit}
+			limit #{offset}, #{limit} -->
+			select DISTINCT(p.patient_name),p.patient_mobile from sechos_patient p left join sechos_popuPerson u on p.openid = u.popuPersonOpenId where u.promotersGuid =#{promotersGuid} limit #{offset}, #{limit}
 	</select>
 </mapper>

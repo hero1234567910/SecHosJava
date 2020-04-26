@@ -179,46 +179,51 @@ public class Wx_CommonControllerApi extends BaseController{
 				
 				String fromUserOpenId = jsonObject.getString("FromUserName");
 				SecHos_Patient patient = patientService.getPatientByOpenid(fromUserOpenId);
-				if (patient == null) {
-					//说明该用户从未登录过平台 直接登记+1
-					
-					Sechos_PopuPerson person = new Sechos_PopuPerson();
-		        	person.setRowGuid(UUID.randomUUID().toString());
-		        	person.setCreateTime(new Date());
-		        	person.setPopuPersonOpenId(fromUserOpenId);
-		        	
-		        	//推广人姓名和guid
-		        	person.setPromotersGuid(promotersGuid);
-		        	popuPersonService.save(person);
-		        	
-		        	
-		        	//查询该用户 次数加1
-		        	Frame_User u = frame_UserService.getOaUserByRowGuid(promotersGuid);
-					int count = u.getExtensionCount();
-					count += 1;
-					u.setExtensionCount(count);
-					frame_UserService.updateOaUser(u);
-				}else{
-					//说明之前有过登录
-					Sechos_PopuPerson person = popuPersonService.getByPopuPersonOpenId(fromUserOpenId);
-					if (person == null) {
-						//说明没有登记过 直接登记+1
-						Sechos_PopuPerson p = new Sechos_PopuPerson();
-			        	p.setRowGuid(UUID.randomUUID().toString());
-			        	p.setCreateTime(new Date());
-			        	p.setPopuPersonOpenId(fromUserOpenId);
+				//查询是否已经被推广过
+				Sechos_PopuPerson po = popuPersonService.getByPopuPersonOpenId(fromUserOpenId);
+				if(po == null){
+					//说明该用户未被推广过
+					if (patient == null) {
+						//说明该用户从未登录过平台 直接登记+1
+						
+						Sechos_PopuPerson person = new Sechos_PopuPerson();
+			        	person.setRowGuid(UUID.randomUUID().toString());
+			        	person.setCreateTime(new Date());
+			        	person.setPopuPersonOpenId(fromUserOpenId);
 			        	
 			        	//推广人姓名和guid
-			        	p.setPromotersGuid(promotersGuid);
-			        	popuPersonService.save(p);
+			        	person.setPromotersGuid(promotersGuid);
+			        	popuPersonService.save(person);
+			        	
 			        	
 			        	//查询该用户 次数加1
 			        	Frame_User u = frame_UserService.getOaUserByRowGuid(promotersGuid);
-			        	
 						int count = u.getExtensionCount();
 						count += 1;
 						u.setExtensionCount(count);
 						frame_UserService.updateOaUser(u);
+					}else{
+						//说明之前有过登录
+						Sechos_PopuPerson person = popuPersonService.getByPopuPersonOpenId(fromUserOpenId);
+						if (person == null) {
+							//说明没有登记过 直接登记+1
+							Sechos_PopuPerson p = new Sechos_PopuPerson();
+				        	p.setRowGuid(UUID.randomUUID().toString());
+				        	p.setCreateTime(new Date());
+				        	p.setPopuPersonOpenId(fromUserOpenId);
+				        	
+				        	//推广人姓名和guid
+				        	p.setPromotersGuid(promotersGuid);
+				        	popuPersonService.save(p);
+				        	
+				        	//查询该用户 次数加1
+				        	Frame_User u = frame_UserService.getOaUserByRowGuid(promotersGuid);
+				        	
+							int count = u.getExtensionCount();
+							count += 1;
+							u.setExtensionCount(count);
+							frame_UserService.updateOaUser(u);
+						}
 					}
 				}
 			}
