@@ -19,6 +19,7 @@
         <result property="openid" column="openid"/>
 		<result property="headImgUrl" column="headimgUrl"/>
 		<result property="patientStatus" column="patient_status"/>
+		<result property="patientJztype" column="patient_jztype"/>
 		<collection property="hospitalizedList" ofType="com.basic.javaframe.entity.SecHos_hospitalized">
 		    <id column="hospitalizedRowId" property="rowId"/>
             <result property="rowGuid" column="hospitalizedrowGuid"/>
@@ -102,7 +103,8 @@
 			`patient_mobile`, 
 			`openid`, 
 			`headimgUrl`,
-			`patient_status`
+			`patient_status`,
+			`patient_jztype`
 		)
 		values
 		(
@@ -118,7 +120,8 @@
 			#{patientMobile}, 
 			#{openid}, 
 			#{headImgUrl},
-			#{patientStatus}
+			#{patientStatus},
+			#{patientJztype}
 		)
 	</insert>
 	 
@@ -137,7 +140,8 @@
 			<if test="patientMobile != null">`patient_mobile` = #{patientMobile}, </if>
 			<if test="openid != null">`openid` = #{openid}, </if>
 			<if test="headImgUrl != null">`headimgUrl` = #{headImgUrl},</if>
-			<if test="patientStatus != null">`patient_status` = #{patientStatus}</if>
+			<if test="patientStatus != null">`patient_status` = #{patientStatus},</if>
+			<if test="patientJztype != null">`patient_jztype` = #{patientJztype}</if>
 		</set>
 		where row_guid = #{rowGuid}
 	</update>

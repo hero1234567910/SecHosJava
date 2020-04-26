@@ -58,6 +58,16 @@ public class SecHos_Patient implements Serializable {
 	
 	private String refreshToken;
 	
+	private Integer patientJztype;
+	
+	public Integer getPatientJztype() {
+		return patientJztype;
+	}
+
+	public void setPatientJztype(Integer patientJztype) {
+		this.patientJztype = patientJztype;
+	}
+
 	public String getRefreshToken() {
 		return refreshToken;
 	}

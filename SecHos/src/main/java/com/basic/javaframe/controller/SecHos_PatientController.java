@@ -100,6 +100,7 @@ public class SecHos_PatientController {
      * 修改
      */
     @ApiOperation(value = "修改患者")
+    @PassToken
     @ResponseBody
     @RequestMapping(value = "/update", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
     public R update(@RequestBody SecHos_Patient secHosPatient) {

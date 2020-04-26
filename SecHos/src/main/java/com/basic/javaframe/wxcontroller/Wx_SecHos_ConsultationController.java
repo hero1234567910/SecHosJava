@@ -116,7 +116,7 @@ public class Wx_SecHos_ConsultationController {
      */
     @ApiOperation(value = "查询被推广人列表")
     @ResponseBody
-    @RequestMapping(value = "/getPatientListByOpenId", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+    @RequestMapping(value = "/getPatientListByOpenId", produces = "application/json; charset=utf-8", method = RequestMethod.GET)
     public R getPatientListByOpenId(@RequestParam Map<String, Object> params) {
         String promotersGuid = params.get("promotersGuid").toString();
         Integer offset = Integer.parseInt(params.get("offset").toString());
