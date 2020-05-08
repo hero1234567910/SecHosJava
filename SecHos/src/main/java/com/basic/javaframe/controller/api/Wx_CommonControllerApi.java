@@ -1,21 +1,20 @@
 package com.basic.javaframe.controller.api;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import com.alibaba.fastjson.JSON;
-
-import org.apache.catalina.util.URLEncoder;
-import org.apache.commons.lang.ArrayUtils;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.basic.javaframe.Thread.InsertOaUsersThread;
+import com.basic.javaframe.common.WebSocket.WebSocketServer;
+import com.basic.javaframe.common.customclass.PassToken;
+import com.basic.javaframe.common.enumresource.*;
+import com.basic.javaframe.common.exception.MyException;
+import com.basic.javaframe.common.utils.*;
+import com.basic.javaframe.controller.BaseController;
+import com.basic.javaframe.entity.*;
+import com.basic.javaframe.service.*;
+import com.basic.javaframe.service.api.Wx_CommonServiceIApi;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -23,53 +22,17 @@ import org.dom4j.io.SAXReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.basic.javaframe.Thread.InsertOaUsersThread;
-import com.basic.javaframe.common.WebSocket.WebSocketServer;
-import com.basic.javaframe.common.customclass.PassToken;
-import com.basic.javaframe.common.enumresource.DelFlagEnum;
-import com.basic.javaframe.common.enumresource.PatientEnum;
-import com.basic.javaframe.common.enumresource.PatientStatusEnum;
-import com.basic.javaframe.common.enumresource.PayTypeEnum;
-import com.basic.javaframe.common.enumresource.RecordStatusEnum;
-import com.basic.javaframe.common.enumresource.SexEnum;
-import com.basic.javaframe.common.exception.MyException;
-import com.basic.javaframe.common.utils.AmountUtils;
-import com.basic.javaframe.common.utils.DateUtil;
-import com.basic.javaframe.common.utils.JsonXmlUtils;
-import com.basic.javaframe.common.utils.R;
-import com.basic.javaframe.common.utils.SignUtil;
-import com.basic.javaframe.common.utils.XMLUtil;
-import com.basic.javaframe.controller.BaseController;
-import com.basic.javaframe.entity.Frame_Config;
-import com.basic.javaframe.entity.Frame_User;
-import com.basic.javaframe.entity.SecHos_Outpatient;
-import com.basic.javaframe.entity.SecHos_Patient;
-import com.basic.javaframe.entity.SecHos_hospitalized;
-import com.basic.javaframe.entity.SechosDrug;
-import com.basic.javaframe.entity.Sechos_PopuPerson;
-import com.basic.javaframe.entity.Sechos_Rechargerecord;
-import com.basic.javaframe.service.Frame_ConfigService;
-import com.basic.javaframe.service.Frame_UserService;
-import com.basic.javaframe.service.RedisService;
-import com.basic.javaframe.service.SecHos_OutpatientService;
-import com.basic.javaframe.service.SecHos_PatientService;
-import com.basic.javaframe.service.SecHos_hospitalizedService;
-import com.basic.javaframe.service.SechosDrugService;
-import com.basic.javaframe.service.Sechos_PopuPersonService;
-import com.basic.javaframe.service.Sechos_RechargerecordService;
-import com.basic.javaframe.service.api.Wx_CommonServiceIApi;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.UUID;
+import java.util.*;
 
 @Api(value="微信通用接口")
 @RestController
@@ -1130,9 +1093,9 @@ public class Wx_CommonControllerApi extends BaseController{
 					JSONArray children = new JSONArray();
 					for (int j = 0; j < arr.size(); j++) {
 						JSONObject arrItem = arr.getJSONObject(j);
-						if ("儿科".equals(arrItem.getString("yjksmc"))) {
-							continue;
-						}
+//						if ("儿科".equals(arrItem.getString("yjksmc"))) {
+//							continue;
+//						}
 						if (starr[i].equals(arrItem.getString("yjksdm"))) {
 							JSONObject ch = new JSONObject();
 							da.put("ksdm", arrItem.getString("yjksdm"));
@@ -1381,9 +1344,9 @@ public class Wx_CommonControllerApi extends BaseController{
 				JSONArray children = new JSONArray();
 				for(int j= 0;j<arr.size();j++){
 					JSONObject arrItem = arr.getJSONObject(j);
-					if ("儿科".equals(arrItem.getString("yjksmc"))) {
-						continue;
-					}
+//					if ("儿科".equals(arrItem.getString("yjksmc"))) {
+//						continue;
+//					}
 					if(starr[i].equals(arrItem.getString("yjksdm"))){
 						JSONObject ch = new JSONObject();
 						da.put("ksdm",arrItem.getString("yjksdm"));
