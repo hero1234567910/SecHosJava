@@ -146,6 +146,27 @@
 		where row_guid = #{rowGuid}
 	</update>
 	
+	<update id="updatePj" parameterType="com.basic.javaframe.entity.SecHos_Patient">
+		update sechos_patient
+		<set>
+			<if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+			<if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+			<if test="patientBirth != null">`patient_birth` = #{patientBirth}, </if>
+			<if test="patientName != null">`patient_name` = #{patientName}, </if>
+			<if test="patientSex != null">`patient_sex` = #{patientSex}, </if>
+			<if test="patientIdcard != null">`patient_idcard` = #{patientIdcard}, </if>
+			<if test="patientAddress != null">`patient_address` = #{patientAddress}, </if>
+			<if test="patientMobile != null">`patient_mobile` = #{patientMobile}, </if>
+			<if test="openid != null">`openid` = #{openid}, </if>
+			<if test="headImgUrl != null">`headimgUrl` = #{headImgUrl},</if>
+			<if test="patientStatus != null">`patient_status` = #{patientStatus},</if>
+			`patient_jztype` = #{patientJztype}
+		</set>
+		where row_guid = #{rowGuid}
+	</update>
+	
 	<delete id="deleteBatch">
 		update sechos_patient set `del_flag` = 1 where row_guid in
 		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">

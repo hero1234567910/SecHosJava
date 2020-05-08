@@ -34,4 +34,6 @@ public interface SecHos_PatientService {
      * @return
      */
     List<SecHos_Patient> getPatientListByOpenId(String promotersGuid, Integer offset, Integer limit);
+
+	void updatePj(SecHos_Patient pa);
 }

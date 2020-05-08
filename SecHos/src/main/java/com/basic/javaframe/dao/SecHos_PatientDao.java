@@ -34,4 +34,6 @@ public interface SecHos_PatientDao extends BaseDao<SecHos_Patient> {
      * @return
      */
     List<SecHos_Patient> getPatientListByOpenId(@Param("promotersGuid") String promotersGuid , @Param("offset") Integer offset, @Param("limit")Integer limit);
+
+	void updatePj(SecHos_Patient pa);
 }

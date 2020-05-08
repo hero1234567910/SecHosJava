@@ -860,7 +860,8 @@ public class Wx_CommonControllerApi extends BaseController{
 			}
 			pa.setPatientIdcard(params.get("zjh"));
 			pa.setPatientName(params.get("hzxm"));
-			patientService.update(pa);
+			pa.setPatientJztype(null);
+			patientService.updatePj(pa);
 			return R.ok().put("绑定身份信息成功", pa);
 		}
 		

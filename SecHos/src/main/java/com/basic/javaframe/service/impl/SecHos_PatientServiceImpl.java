@@ -57,4 +57,10 @@ public class SecHos_PatientServiceImpl implements SecHos_PatientService {
         return secHosPatientDao.getPatientListByOpenId(promotersGuid, offset, limit);
     }
 
+	@Override
+	public void updatePj(SecHos_Patient pa) {
+		// TODO Auto-generated method stub
+		secHosPatientDao.updatePj(pa);
+	}
+
 }
