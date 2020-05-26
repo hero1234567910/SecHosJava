@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.Sechos_DepartmentDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.basic.javaframe.entity.Sechos_Department" id="sechosDepartmentMap">
+        <result property="rowId" column="row_id"/>
+        <result property="rowGuid" column="row_guid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="sortSq" column="sort_sq"/>
+    </resultMap>
+
+    <select id="getList" resultType="com.basic.javaframe.entity.Sechos_Department">
+        select * from sechos_department t
+        <include refid="where_clause"/>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by sort_sq desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="getCount" resultType="int">
+        select count(*) from sechos_department t
+        <include refid="where_clause"/>
+    </select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''">and t.row_id = #{rowId}</if>
+            <if test="rowIdVague != null and rowIdVague != ''">and t.row_id like concat('%',#{rowIdVague},'%')</if>
+            <if test="rowGuid != null and rowGuid != ''">and t.row_guid = #{rowGuid}</if>
+            <if test="rowGuidVague != null and rowGuidVague != ''">and t.row_guid like concat('%',#{rowGuidVague},'%')
+            </if>
+            <if test="createTime != null and createTime != ''">and t.create_time = #{createTime}</if>
+            <if test="createTimeVague != null and createTimeVague != ''">and t.create_time like
+                concat('%',#{createTimeVague},'%')
+            </if>
+            <if test="delFlag != null and delFlag != ''">and t.del_flag = #{delFlag}</if>
+            <if test="delFlagVague != null and delFlagVague != ''">and t.del_flag like concat('%',#{delFlagVague},'%')
+            </if>
+            <if test="sortSq != null and sortSq != ''">and t.sort_sq = #{sortSq}</if>
+            <if test="sortSqVague != null and sortSqVague != ''">and t.sort_sq like concat('%',#{sortSqVague},'%')</if>
+            <if test="departmentName != null and departmentName != ''">and t.department_name = #{departmentName}</if>
+            <if test="departmentNameVague != null and departmentNameVague != ''">and t.department_name like
+                concat('%',#{departmentName},'%')
+            </if>
+            and t.del_flag = 0
+        </where>
+    </sql>
+
+    <insert id="save" parameterType="com.basic.javaframe.entity.Sechos_Department" useGeneratedKeys="true"
+            keyProperty="rowId">
+        insert into sechos_department
+        (`row_guid`,
+         `create_time`,
+         `del_flag`,
+         `sort_sq`,
+         `department_name`,
+         `pic_guid`,
+         `upload_imgGuid`)
+        values (#{rowGuid},
+                #{createTime},
+                #{delFlag},
+                #{sortSq},
+                #{departmentName},
+                #{picGuid},
+                #{uploadImgGuid})
+    </insert>
+
+    <update id="update" parameterType="com.basic.javaframe.entity.Sechos_Department">
+        update sechos_department
+        <set>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="delFlag != null">`del_flag` = #{delFlag},</if>
+            <if test="sortSq != null">`sort_sq` = #{sortSq},</if>
+            <if test="departmentName != null">`department_name` = #{departmentName},</if>
+            <if test="uploadImgGuid != null">`upload_imgGuid` = #{uploadImgGuid},</if>
+            <if test="picGuid != null">`pic_guid` = #{picGuid}</if>
+        </set>
+        where row_guid = #{rowGuid}
+    </update>
+
+    <delete id="deleteBatch">
+        update sechos_department set `del_flag` = 1 where row_guid in
+        <foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+            #{rowGuid}
+        </foreach>
+    </delete>
+
+    <select id="getDetailByGuid" resultType="com.basic.javaframe.entity.Sechos_Department">
+        select *
+        from sechos_department
+        where row_guid = #{rowGuid}
+          and del_flag = 0
+    </select>
+
+    <select id="getDepartmentList" resultType="com.basic.javaframe.entity.Sechos_Department">
+        select d.row_guid, d.department_name, a.content_url as imgUrl
+        from sechos_department d
+                 left join frame_attach a on d.upload_imgGuid = a.row_guid
+        where d.del_flag = 0
+        ORDER BY d.sort_sq desc
+    </select>
+
+    <!--名称重复验证-->
+    <select id="checkDepartmentName" resultType="com.basic.javaframe.entity.Sechos_Department">
+        select * from sechos_department where department_name=#{departmentName} and del_flag = 0
+        <if test="rowGuid != null and rowGuid != ''">
+            and row_guid != #{rowGuid}
+        </if>
+    </select>
+
+</mapper>

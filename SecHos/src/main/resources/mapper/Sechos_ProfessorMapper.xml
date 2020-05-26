@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.Sechos_ProfessorDao">
+
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.basic.javaframe.entity.Sechos_Professor" id="sechosDepartmentMap">
+        <result property="rowId" column="row_id"/>
+        <result property="rowGuid" column="row_guid"/>
+        <result property="createTime" column="create_time"/>
+        <result property="delFlag" column="del_flag"/>
+        <result property="sortSq" column="sort_sq"/>
+        <result property="professorName" column="professor_name"/>
+        <result property="professorContent" column="professor_Content"/>
+        <result property="professorHos" column="professor_hos"/>
+        <result property="professorTitle" column="professor_title"/>
+        <result property="departmentGuid" column="departmentGuid"/>
+    </resultMap>
+
+    <select id="getList" resultType="com.basic.javaframe.entity.Sechos_Professor">
+        select * from sechos_professor t
+        <include refid="where_clause"/>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+            <otherwise>
+                order by sort_sq desc
+            </otherwise>
+        </choose>
+        <if test="offset != null and limit != null">
+            limit #{offset}, #{limit}
+        </if>
+    </select>
+
+    <select id="getCount" resultType="int">
+        select count(*) from sechos_professor t
+        <include refid="where_clause"/>
+    </select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''">and t.row_id = #{rowId}</if>
+            <if test="rowIdVague != null and rowIdVague != ''">and t.row_id like concat('%',#{rowIdVague},'%')</if>
+            <if test="rowGuid != null and rowGuid != ''">and t.row_guid = #{rowGuid}</if>
+            <if test="rowGuidVague != null and rowGuidVague != ''">and t.row_guid like concat('%',#{rowGuidVague},'%')
+            </if>
+            <if test="createTime != null and createTime != ''">and t.create_time = #{createTime}</if>
+            <if test="createTimeVague != null and createTimeVague != ''">and t.create_time like
+                concat('%',#{createTimeVague},'%')
+            </if>
+            <if test="delFlag != null and delFlag != ''">and t.del_flag = #{delFlag}</if>
+            <if test="delFlagVague != null and delFlagVague != ''">and t.del_flag like concat('%',#{delFlagVague},'%')
+            </if>
+            <if test="sortSq != null and sortSq != ''">and t.sort_sq = #{sortSq}</if>
+            <if test="sortSqVague != null and sortSqVague != ''">and t.sort_sq like concat('%',#{sortSqVague},'%')</if>
+            <if test="professorName != null and professorName != ''">and t.professor_name = #{professorName}</if>
+            <if test="professorNameVague != null and professorNameVague != ''">and t.professor_name like
+                concat('%',#{professorNameVague},'%')
+            </if>
+            <if test="professorContent != null and professorContent != ''">and t.professor_content =
+                #{professorContent}
+            </if>
+
+            <if test="professorHos != null and professorHos != ''">and t.professor_hos = #{professorHos}</if>
+            <if test="professorHosVague != null and professorHosVague != ''">and t.professor_hos like
+                concat('%',#{professorHosVague},'%')
+            </if>
+            <if test="professorTitle != null and professorTitle != ''">and t.professor_title = #{professorTitle}</if>
+            <if test="professorTitleVague != null and professorTitleVague != ''">and t.professor_title like
+                concat('%',#{professorTitleVague},'%')
+            </if>
+            <if test="departmentGuid != null and departmentGuid != ''">and t.departmentGuid = #{departmentGuid}</if>
+            and t.del_flag = 0
+        </where>
+    </sql>
+
+    <insert id="save" parameterType="com.basic.javaframe.entity.Sechos_Professor" useGeneratedKeys="true"
+            keyProperty="rowId">
+        insert into sechos_professor
+        (`row_guid`,
+         `create_time`,
+         `del_flag`,
+         `sort_sq`,
+         `professor_name`,
+         `pic_guid`,
+         `professor_content`,
+         `professor_hos`,
+         `professor_title`,
+         `departmentGuid`,
+         `departmentName`,
+         `upload_imgGuid`)
+        values (#{rowGuid},
+                #{createTime},
+                #{delFlag},
+                #{sortSq},
+                #{professorName},
+                #{picGuid},
+                #{professorContent},
+                #{professorHos},
+                #{professorTitle},
+                #{departmentGuid},
+                #{departmentName},
+                #{uploadImgGuid})
+    </insert>
+
+    <update id="update" parameterType="com.basic.javaframe.entity.Sechos_Professor">
+        update sechos_professor
+        <set>
+            <if test="createTime != null">`create_time` = #{createTime},</if>
+            <if test="delFlag != null">`del_flag` = #{delFlag},</if>
+            <if test="sortSq != null">`sort_sq` = #{sortSq},</if>
+            <if test="professorName != null">`professor_name` = #{professorName},</if>
+            <if test="professorContent != null">`professor_content` = #{professorContent},</if>
+            <if test="professorHos != null">`professor_hos` = #{professorHos},</if>
+            <if test="professorTitle != null">`professor_title` = #{professorTitle},</if>
+            <if test="departmentGuid != null">`departmentGuid` = #{departmentGuid},</if>
+            <if test="departmentName != null">`departmentName` = #{departmentName},</if>
+            <if test="uploadImgGuid != null">`upload_imgGuid` = #{uploadImgGuid},</if>
+            <if test="picGuid != null">`pic_guid` = #{picGuid}</if>
+        </set>
+        where row_guid = #{rowGuid}
+    </update>
+
+    <delete id="deleteBatch">
+        update sechos_professor set `del_flag` = 1 where row_guid in
+        <foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+            #{rowGuid}
+        </foreach>
+    </delete>
+
+    <select id="getDetailByGuid" resultType="com.basic.javaframe.entity.Sechos_Professor">
+        select *
+        from sechos_professor
+        where row_guid = #{rowGuid}
+          and del_flag = 0
+    </select>
+
+    <select id="getListByGuid" resultType="com.basic.javaframe.entity.Sechos_Professor">
+        select p.row_guid,
+               p.professor_name,
+               p.professor_content,
+               p.professor_hos,
+               p.professor_title,
+               a.content_url as imgUrl
+        from sechos_professor p
+                 left join frame_attach a on p.upload_imgGuid = a.row_guid
+        where p.del_flag = 0
+          and p.departmentGuid = #{departmentGuid}
+        ORDER BY p.sort_sq desc
+    </select>
+
+    <!--名称重复验证-->
+    <select id="checkProfessorName" resultType="com.basic.javaframe.entity.Sechos_Professor">
+        select * from sechos_professor where professor_name=#{professorName} and del_flag = 0
+        <if test="rowGuid != null and rowGuid != ''">
+            and row_guid != #{rowGuid}
+        </if>
+    </select>
+
+</mapper>
