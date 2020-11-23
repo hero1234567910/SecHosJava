@@ -414,7 +414,7 @@ public class Wx_CommonControllerApi extends BaseController{
 		JSONObject jsonObject = JSONObject.parseObject(result);
 		if (jsonObject.containsKey("errcode")) {
 			String errcode = jsonObject.getString("errcode");
-			if ("40001".equals(errcode)) {
+			if ("40001".equals(errcode) || "40014".equals(errcode)) {
 				//重新获取
 				JSONObject jsonobj = wx_CommonServiceApi.code2Token(params.get("code"));
 				JSONObject Object = JSONObject.parseObject(jsonobj.getString("resultUser"));
