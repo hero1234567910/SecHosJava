@@ -157,4 +157,39 @@ public class SecHos_HealthyController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 导出记录
+     */
+    @PassToken
+    @ResponseBody
+    @RequestMapping(value="/exportInfos")
+    public void exportInfos(HttpServletRequest request,HttpServletResponse response){
+
+        List<SecHos_Healthy> healList = secHos_HealthyService.getListByCurrentDay();
+
+        if(healList == null){
+            throw new RuntimeException("暂无数据");
+        }
+
+        for (SecHos_Healthy heal : healList) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String time = "";
+            if (heal.getDate() != null) {
+                time = sdf.format(heal.getDate());
+            }
+            //类型不同，参数借用存放
+            heal.setRowGuid(time);
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("data", healList);
+        map.put("name",healList.get(0).getName());
+        map.put("height",healList.get(0).getHeight());
+        map.put("sex",healList.get(0).getSex());
+        try {
+            ExcelUtils.exportExcel("填报信息表全部", "填报信息表全部", map, response, request);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

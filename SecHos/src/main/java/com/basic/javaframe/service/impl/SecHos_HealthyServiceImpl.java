@@ -67,4 +67,10 @@ public class SecHos_HealthyServiceImpl implements SecHos_HealthyService {
     public List<SecHos_Healthy> getListByName(String name) {
         return secHos_HealthyDao.getListByName(name);
     }
+
+    @Override
+    public List<SecHos_Healthy> getListByCurrentDay() {
+        List<SecHos_Healthy> SecHosHealthyList = secHos_HealthyDao.getListByCurrentDay();
+        return SecHosHealthyList;
+    }
 }

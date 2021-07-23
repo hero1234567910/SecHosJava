@@ -142,4 +142,8 @@
 	<select id="getListByName" resultType="com.basic.javaframe.entity.SecHos_Healthy">
 		select * from SecHos_Healthy where name = #{name}
 	</select>
+
+	<select id="getListByCurrentDay" resultType="com.basic.javaframe.entity.SecHos_Healthy">
+		select * from SecHos_Healthy where date BETWEEN (select date_format(now(),'%Y-%m-%d 00:00:00')) AND (select date_format(now(),'%Y-%m-%d 23:59:59'))
+	</select>
 </mapper>
