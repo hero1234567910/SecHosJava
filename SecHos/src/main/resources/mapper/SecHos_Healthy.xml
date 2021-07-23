@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.basic.javaframe.dao.SecHos_HealthyDao">
+
+
+
+	<select id="getList" resultType="com.basic.javaframe.entity.SecHos_Healthy">
+		select * from SecHos_Healthy t <include refid="where_clause" />
+		<if test="nameGroup != null">
+			group by name
+		</if>
+		order by date desc,row_id desc
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="getCount" resultType="int">
+		select
+		<choose>
+			<when test="nameGroup != null">
+				COUNT(distinct name)
+			</when>
+			<otherwise>
+				COUNT(*)
+			</otherwise>
+		</choose>
+		from SecHos_Healthy t  <include refid="where_clause" />
+
+
+
+
+	</select>
+
+    <!-- 搜索数据区域 -->
+    <sql id="where_clause">
+        <where>
+            1=1
+            <if test="rowId != null and rowId != ''"> and t.row_id = #{rowId} </if>
+    		<if test="rowIdVague != null and rowIdVague != ''"> and t.row_id like concat('%',#{rowIdVague},'%') </if>
+            <if test="rowGuid != null and rowGuid != ''"> and t.row_guid = #{rowGuid} </if>
+    		<if test="rowGuidVague != null and rowGuidVague != ''"> and t.row_guid like concat('%',#{rowGuidVague},'%') </if>
+            <if test="createTime != null and createTime != ''"> and t.create_time = #{createTime} </if>
+    		<if test="createTimeVague != null and createTimeVague != ''"> and t.create_time like concat('%',#{createTimeVague},'%') </if>
+            <if test="delFlag != null and delFlag != ''"> and t.del_flag = #{delFlag} </if>
+    		<if test="delFlagVague != null and delFlagVague != ''"> and t.del_flag like concat('%',#{delFlagVague},'%') </if>
+            <if test="sortSq != null and sortSq != ''"> and t.sort_sq = #{sortSq} </if>
+			<if test="sortSqVague != null and sortSqVague != ''"> and t.sort_sq like concat('%',#{sortSqVague},'%') </if>
+			<if test="openId != null and openId != ''"> and t.openId = #{openId} </if>
+			<if test="name != null and name != ''"> and t.name = #{name} </if>
+			<if test="nameVague != null and nameVague != ''"> and t.name like concat('%',#{nameVague},'%') </if>
+			<if test="date != null and date != ''"> and t.date like concat(#{date},'%') </if>
+    		 and del_flag = 0
+        </where>
+    </sql>
+	 
+	<insert id="save" parameterType="com.basic.javaframe.entity.SecHos_Healthy" useGeneratedKeys="true" keyProperty="rowId">
+		insert into SecHos_Healthy
+		(
+			`row_guid`, 
+			`create_time`, 
+			`del_flag`, 
+			`sort_sq`, 
+			`name`,
+			`age`,
+			`date`,
+			`height`,
+			`sex`,
+			`weight`,
+			`bloodPressure`,
+			`heartRate`,
+			`fastingBloodGlucose`,
+			`postprandialBloodGlucose`,
+			`openId`
+		)
+		values
+		(
+			#{rowGuid}, 
+			#{createTime}, 
+			#{delFlag}, 
+			#{sortSq}, 
+			#{name},
+			#{age},
+			#{date},
+			#{height},
+			#{sex},
+			#{weight},
+			#{bloodPressure},
+			#{heartRate},
+			#{fastingBloodGlucose},
+			#{postprandialBloodGlucose},
+			#{openId}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.basic.javaframe.entity.SecHos_Healthy">
+		update SecHos_Healthy
+		<set>
+			<if test="rowGuid != null">`row_guid` = #{rowGuid}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="delFlag != null">`del_flag` = #{delFlag}, </if>
+			<if test="sortSq != null">`sort_sq` = #{sortSq}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="age != null">`age` = #{age}, </if>
+			<if test="date != null">`date` = #{date}, </if>
+			<if test="height != null">`height` = #{height}, </if>
+			<if test="sex != null">`sex` = #{sex}, </if>
+			<if test="weight != null">`weight` = #{weight}, </if>
+			<if test="bloodPressure != null">`bloodPressure` = #{bloodPressure}, </if>
+			<if test="heartRate != null">`heartRate` = #{heartRate}, </if>
+			<if test="fastingBloodGlucose != null">`fastingBloodGlucose` = #{fastingBloodGlucose}, </if>
+			<if test="postprandialBloodGlucose != null">`postprandialBloodGlucose` = #{postprandialBloodGlucose}, </if>
+			<if test="openId != null">`openId` = #{openId}</if>
+		</set>
+		where row_guid = #{rowGuid}
+	</update>
+	
+	<delete id="deleteBatch">
+		update SecHos_Healthy set `del_flag` = 1 where row_guid in
+		<foreach item="rowGuid" collection="array" open="(" separator="," close=")">
+			#{rowGuid}
+		</foreach>
+	</delete>
+
+	<select id="getByDetail" resultType="com.basic.javaframe.entity.SecHos_Healthy">
+		select * from SecHos_Healthy where openId = #{openId} and date = #{date}
+	</select>
+
+	<select id="getByOpenId" resultType="com.basic.javaframe.entity.SecHos_Healthy">
+		select * from SecHos_Healthy where openId = #{openId} limit 1;
+	</select>
+
+	<select id="getByRowGuid" resultType="com.basic.javaframe.entity.SecHos_Healthy">
+		select * from SecHos_Healthy where row_guid = #{value}
+	</select>
+
+	<select id="getListByOpenId" resultType="com.basic.javaframe.entity.SecHos_Healthy">
+		select * from SecHos_Healthy where openId = #{openId}
+	</select>
+
+	<select id="getListByName" resultType="com.basic.javaframe.entity.SecHos_Healthy">
+		select * from SecHos_Healthy where name = #{name}
+	</select>
+</mapper>

@@ -52,6 +52,16 @@ public class DateUtil {
 		}
 		return null;
 	}
+
+	public static Date changeStrToDateSDF_YMDHMS(String dateStr) {
+		try {
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			return  format.parse(dateStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	public static Date changeStrToDate2(String dateStr){
 		try {

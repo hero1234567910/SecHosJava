@@ -132,86 +132,86 @@ public class Sechos_Outboundm2mController {
 		return R.ok().put("data",sechosOutboundm2mList);
 	}
 
-	/**
-	 * excel导出
-	 *
-	 * @param @param request
-	 * @param @param response    设定文件
-	 * @return void    返回类型
-	 * @throws
-	 * @Title: exportExcel
-	 * @Description: excel导出
-	 */
-	@PassToken
-	@ApiOperation(value = "导出Excel")
-	@ResponseBody
-	@RequestMapping(value = "/exportExcel/{outboundGuid}", produces = "application/json; charset=utf-8", method = RequestMethod.GET)
-	public void exportExcel(HttpServletRequest request, HttpServletResponse response, @PathVariable("outboundGuid") String outboundGuid) {
-		try {
-			SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-			Sechos_Outbound sechosOutbound = sechosOutboundService.getDetailByGuid(outboundGuid);
-			String excelHead = sechosOutbound.getOutboundOrderNum();
-			//String[] secondHead = {procurement.getPurchaseDate().toString(),procurement.getInboundDate().toString(),procurement.getPurchaseNote()};
-			String[] secondTitle = {"下单日期","出库日期","采购备注"};
-			String[] firstTitle = {"材料名称", "材料单价", "材料数量", "材料总价"};
-			HSSFWorkbook workbook = ExcelUtil.makeFirstHead("出库详单", firstTitle);
-			HSSFSheet sheet = workbook.createSheet("采购总览");
-			sheet.setDefaultColumnWidth(20);
-			HSSFRow row1=sheet.createRow(0);
-			//创建单元格（excel的单元格，参数为列索引，可以是0～255之间的任何一个
-			HSSFCell cell=row1.createCell(0);
-			//设置单元格内容
-			cell.setCellValue("出库总览表");
-			//合并单元格CellRangeAddress构造参数依次表示起始行，截至行，起始列， 截至列
-			sheet.addMergedRegion(new CellRangeAddress(0,0,0,3));
-			//在sheet里创建第二行
-			HSSFRow row2=sheet.createRow(1);
-			//创建单元格并设置单元格内容
-			row2.createCell(0).setCellValue("下单日期");
-			row2.createCell(1).setCellValue("出库日期");
-			row2.createCell(2).setCellValue("出库备注");
-			row2.createCell(3).setCellValue("总金额");
-
-			HSSFRow row3=sheet.createRow(2);
-			//System.out.println(procurement.toString());
-			if(null==sechosOutbound.getOutboundDate()){
-				String InboundDate="";
-				String PurchaseNote;
-				if(null==sechosOutbound.getOrderDate()){
-					PurchaseNote = "";
-				}else{
-					PurchaseNote = sechosOutbound.getOutboundNote();
-				}
-				String date=sDateFormat.format(sechosOutbound.getOrderDate());
-				row3.createCell(0).setCellValue(date);
-				row3.createCell(1).setCellValue(InboundDate);
-				row3.createCell(2).setCellValue(PurchaseNote);
-				row3.createCell(3).setCellValue(sechosOutbound.getOutboundPrice().toString());
-			}else{
-				String date=sDateFormat.format(sechosOutbound.getOrderDate());
-				String date2=sDateFormat.format(sechosOutbound.getOutboundDate());
-				row3.createCell(0).setCellValue(date);
-				row3.createCell(1).setCellValue(date2);
-				row3.createCell(2).setCellValue(sechosOutbound.getOutboundNote());
-				row3.createCell(3).setCellValue(sechosOutbound.getOutboundPrice().toString());
-			}
-
-			String[] beanProperty = {"drugName", "drugPrice", "drugAmount", "drugTotalPrice"};
-
-			List<Sechos_Outboundm2m> sechosOutboundm2mList = sechosOutboundm2mService.getListByPGuid(outboundGuid);
-			//System.out.println(sechosPurchasingm2mList.toString());
-			HSSFWorkbook workbook1 = ExcelUtil.exportExcelData(workbook,sechosOutboundm2mList,beanProperty);
-
-			String fileName = "出库表_"+sechosOutbound.getOutboundOrderNum()+".xls";
-			//提示浏览器以下载文件的形式接受
-			response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileName, "UTF-8"));
-			OutputStream outputStream = response.getOutputStream();
-			workbook1.write(outputStream);
-			outputStream.flush();
-			outputStream.close();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	/**
+//	 * excel导出
+//	 *
+//	 * @param @param request
+//	 * @param @param response    设定文件
+//	 * @return void    返回类型
+//	 * @throws
+//	 * @Title: exportExcel
+//	 * @Description: excel导出
+//	 */
+//	@PassToken
+//	@ApiOperation(value = "导出Excel")
+//	@ResponseBody
+//	@RequestMapping(value = "/exportExcel/{outboundGuid}", produces = "application/json; charset=utf-8", method = RequestMethod.GET)
+//	public void exportExcel(HttpServletRequest request, HttpServletResponse response, @PathVariable("outboundGuid") String outboundGuid) {
+//		try {
+//			SimpleDateFormat sDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+//			Sechos_Outbound sechosOutbound = sechosOutboundService.getDetailByGuid(outboundGuid);
+//			String excelHead = sechosOutbound.getOutboundOrderNum();
+//			//String[] secondHead = {procurement.getPurchaseDate().toString(),procurement.getInboundDate().toString(),procurement.getPurchaseNote()};
+//			String[] secondTitle = {"下单日期","出库日期","采购备注"};
+//			String[] firstTitle = {"材料名称", "材料单价", "材料数量", "材料总价"};
+//			HSSFWorkbook workbook = ExcelUtil.makeFirstHead("出库详单", firstTitle);
+//			HSSFSheet sheet = workbook.createSheet("采购总览");
+//			sheet.setDefaultColumnWidth(20);
+//			HSSFRow row1=sheet.createRow(0);
+//			//创建单元格（excel的单元格，参数为列索引，可以是0～255之间的任何一个
+//			HSSFCell cell=row1.createCell(0);
+//			//设置单元格内容
+//			cell.setCellValue("出库总览表");
+//			//合并单元格CellRangeAddress构造参数依次表示起始行，截至行，起始列， 截至列
+//			sheet.addMergedRegion(new CellRangeAddress(0,0,0,3));
+//			//在sheet里创建第二行
+//			HSSFRow row2=sheet.createRow(1);
+//			//创建单元格并设置单元格内容
+//			row2.createCell(0).setCellValue("下单日期");
+//			row2.createCell(1).setCellValue("出库日期");
+//			row2.createCell(2).setCellValue("出库备注");
+//			row2.createCell(3).setCellValue("总金额");
+//
+//			HSSFRow row3=sheet.createRow(2);
+//			//System.out.println(procurement.toString());
+//			if(null==sechosOutbound.getOutboundDate()){
+//				String InboundDate="";
+//				String PurchaseNote;
+//				if(null==sechosOutbound.getOrderDate()){
+//					PurchaseNote = "";
+//				}else{
+//					PurchaseNote = sechosOutbound.getOutboundNote();
+//				}
+//				String date=sDateFormat.format(sechosOutbound.getOrderDate());
+//				row3.createCell(0).setCellValue(date);
+//				row3.createCell(1).setCellValue(InboundDate);
+//				row3.createCell(2).setCellValue(PurchaseNote);
+//				row3.createCell(3).setCellValue(sechosOutbound.getOutboundPrice().toString());
+//			}else{
+//				String date=sDateFormat.format(sechosOutbound.getOrderDate());
+//				String date2=sDateFormat.format(sechosOutbound.getOutboundDate());
+//				row3.createCell(0).setCellValue(date);
+//				row3.createCell(1).setCellValue(date2);
+//				row3.createCell(2).setCellValue(sechosOutbound.getOutboundNote());
+//				row3.createCell(3).setCellValue(sechosOutbound.getOutboundPrice().toString());
+//			}
+//
+//			String[] beanProperty = {"drugName", "drugPrice", "drugAmount", "drugTotalPrice"};
+//
+//			List<Sechos_Outboundm2m> sechosOutboundm2mList = sechosOutboundm2mService.getListByPGuid(outboundGuid);
+//			//System.out.println(sechosPurchasingm2mList.toString());
+//			HSSFWorkbook workbook1 = ExcelUtil.exportExcelData(workbook,sechosOutboundm2mList,beanProperty);
+//
+//			String fileName = "出库表_"+sechosOutbound.getOutboundOrderNum()+".xls";
+//			//提示浏览器以下载文件的形式接受
+//			response.setHeader("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileName, "UTF-8"));
+//			OutputStream outputStream = response.getOutputStream();
+//			workbook1.write(outputStream);
+//			outputStream.flush();
+//			outputStream.close();
+//
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 }

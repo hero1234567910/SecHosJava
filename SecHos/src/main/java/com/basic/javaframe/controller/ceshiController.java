@@ -64,7 +64,7 @@ public class ceshiController {
 	@ApiOperation(value="测试")
 	@RequestMapping(value="/test")
 	public String test(Map<String, String> parmas){
-		String res = HttpUtil.sendPostWithXWwwForm("http://10.20.200.62:8081/iis/DecryptApi/Encryp/getEncrypPassword",parmas);
+		String res = HttpUtil.sendPostWithXWwwForm("http://10.20.200.62:8088/iis/DecryptApi/Encryp/getEncrypPassword",parmas);
 		System.out.println(res);
 		return res;
 	}

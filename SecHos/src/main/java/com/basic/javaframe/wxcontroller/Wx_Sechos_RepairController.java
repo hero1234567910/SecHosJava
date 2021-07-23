@@ -64,7 +64,7 @@ public class Wx_Sechos_RepairController {
 			}else{
 				Map<String, String> parmas = new HashMap<>();
 				parmas.put("password", user.getPassword());
-				String password = HttpUtil.sendPostWithXWwwForm("http://10.20.200.62:8081/iis/DecryptApi/Encryp/getEncrypPassword",parmas);
+				String password = HttpUtil.sendPostWithXWwwForm("http://10.20.200.64:8081/iis/DecryptApi/Encryp/getEncrypPassword",parmas);
 				JSONObject jsonObject = JSONObject.parseObject(password);
 				System.out.println(userOA.getPassword()+" >>>>>"+jsonObject.getString("data"));
 				if (!userOA.getPassword().equals(jsonObject.getString("data"))) {
