@@ -183,9 +183,9 @@ public class SecHos_HealthyController {
         }
         Map<String, Object> map = new HashMap<>();
         map.put("data", healList);
-        map.put("name",healList.get(0).getName());
-        map.put("height",healList.get(0).getHeight());
-        map.put("sex",healList.get(0).getSex());
+//        map.put("name",healList.get(0).getName());
+//        map.put("height",healList.get(0).getHeight());
+//        map.put("sex",healList.get(0).getSex());
         try {
             ExcelUtils.exportExcel("填报信息表全部", "填报信息表全部", map, response, request);
         } catch (IOException e) {
