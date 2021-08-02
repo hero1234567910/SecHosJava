@@ -18,5 +18,5 @@ public interface SecHos_HealthyDao extends BaseDao<SecHos_Healthy>{
 
     List<SecHos_Healthy> getListByName(String name);
 
-    List<SecHos_Healthy> getListByCurrentDay();
+    List<SecHos_Healthy> getListByCurrentDay(Date date);
 }

@@ -14,11 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @CrossOrigin
@@ -164,9 +163,26 @@ public class SecHos_HealthyController {
     @PassToken
     @ResponseBody
     @RequestMapping(value="/exportInfos")
-    public void exportInfos(HttpServletRequest request,HttpServletResponse response){
+    public void exportInfos(@RequestParam String dateTime,HttpServletRequest request,HttpServletResponse response){
 
-        List<SecHos_Healthy> healList = secHos_HealthyService.getListByCurrentDay();
+
+        SimpleDateFormat sdf1 =new SimpleDateFormat("yyyy-MM-dd");
+        List<SecHos_Healthy> healList = new ArrayList<>();
+        try {
+            Date date = sdf1.parse(dateTime);
+
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            c.add(Calendar.DAY_OF_MONTH,-1);
+
+
+            healList  = secHos_HealthyService.getListByCurrentDay(date);
+        }catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
 
         if(healList == null){
             throw new RuntimeException("暂无数据");
