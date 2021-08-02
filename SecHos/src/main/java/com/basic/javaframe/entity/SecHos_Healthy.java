@@ -37,6 +37,8 @@ public class SecHos_Healthy implements Serializable {
 
    private String height;
 
+   private String sq;
+
    private String sex;
 
    private String weight;
@@ -50,6 +52,18 @@ public class SecHos_Healthy implements Serializable {
    private String postprandialBloodGlucose;
 
    private String openId;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public String getSq() {
+        return sq;
+    }
+
+    public void setSq(String sq) {
+        this.sq = sq;
+    }
 
     public String getOpenId() {
         return openId;
